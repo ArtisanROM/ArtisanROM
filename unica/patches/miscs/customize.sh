@@ -10,7 +10,7 @@ SET_PROP "system" "ro.build.display.id" "ExtremeROM $ROM_CODENAME $ROM_VERSION -
 # Set ArtisanROM updater flags
 SET_PROP "system" "ro.artisanrom.version" "$ROM_VERSION"
 SET_PROP "system" "ro.artisanrom.target" "$TARGET_CODENAME"
-SET_PROP "system" "ro.artisanrom.beta" "$ROM_BETA"
+SET_PROP "system" "ro.artisanrom.type" "$ROM_BETA"
 
 # Disable FRP
 SET_PROP "vendor" "ro.frp.pst" ""
