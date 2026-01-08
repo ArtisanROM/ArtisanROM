@@ -17,10 +17,10 @@
 
 VERSION_MAJOR=3
 VERSION_MINOR=0
-VERSION_PATCH=0-alpha1
+VERSION_PATCH=0
 
 ROM_VERSION="${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
 # Append current commit hash to version name
-ROM_VERSION+="-$(git rev-parse --short HEAD)"
+ROM_VERSION+=" "
 
 ROM_CODENAME="Quant"
