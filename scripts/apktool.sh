@@ -140,7 +140,7 @@ DECODE()
     # - Disabled debug info
     # - Use .locals directive instead of the .registers one
     # - Use a sequential numbering scheme for labels
-    EVAL "apktool d -b -j \"$THREAD_COUNT\" -o \"$OUTPUT_PATH\" -p \"$FRAMEWORK_DIR\" -t \"$FRAMEWORK_TAG\" -s \"$INPUT_FILE\"" || exit 1
+    EVAL "apktool d -j \"$THREAD_COUNT\" -o \"$OUTPUT_PATH\" -p \"$FRAMEWORK_DIR\" -t \"$FRAMEWORK_TAG\" -s \"$INPUT_FILE\"" || exit 1
 
     # DEX format version might not be matching minSdkVersion, currently we handle
     # baksmali manually as apktool will by default use minSdkVersion when available
