@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="disclaimer_unica_description">ExtremeROM Revived 是一個由社群驅動的免費專案，按原樣提供，不保證其效能或相容性。\n安裝或使用此軟體即表示您接受任何潛在損壞、資料遺失或故障的全部責任。ExtremeROM Revived 團隊對因使用而直接或間接引起的任何問題不負責任。\n\n由於裝置完整性檢查（例如 Play Integrity、硬體認證、root 偵測），某些應用可能無法正常運作。\n使用者有責任透過隱藏偵測或套用自己的變通方式來處理這些情況。\n這些問題與 ROM 無關，維護者無法修復。\n\nExtremeROM Revived 現在是免費的，將來也會一直完全免費。\n如果您為該軟體付費或作為付費服務或套件的一部分獲得，請立即申請退款，您可能已遭詐騙。\n\n如需協助、更新或社群討論，請透過我們的官方頻道在 GitHub 或 XDAForums 與我們聯絡。</string>
-</resources>
