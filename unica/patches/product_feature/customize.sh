@@ -336,13 +336,6 @@ fi
 #     fi
 # fi
 
-if $SOURCE_SUPPORT_HOTSPOT_ENHANCED_OPEN; then
-    if ! $TARGET_SUPPORT_HOTSPOT_ENHANCED_OPEN; then
-        LOG_STEP_IN "- Applying Hotspot Enhanced Open patches"
-        APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" "$SRC_DIR/unica/patches/product_feature/wifi/SecSettings.apk/0003-Disable-Hotspot-Enhanced-Open.patch"
-        LOG_STEP_OUT
-    fi
-fi
 
 if ! $SOURCE_AUDIO_SUPPORT_ACH_RINGTONE; then
     if $TARGET_AUDIO_SUPPORT_ACH_RINGTONE; then
