@@ -56,7 +56,7 @@ REPLACE_KERNEL_BINARIES()
         fi
     else
         LOG "- Cloning ExtremeKernel"
-        EVAL "git clone "$EXTREMEKRNL_REPO" --single-branch "$KERNEL_TMP_DIR" --recurse-submodules"
+        EVAL "git clone --branch bpf111 --single-branch --recurse-submodules "$EXTREMEKRNL_REPO" "$KERNEL_TMP_DIR""
     fi
 
     LOG "- Running the kernel build script."
