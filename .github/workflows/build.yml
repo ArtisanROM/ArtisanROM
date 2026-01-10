@@ -85,9 +85,18 @@ jobs:
           source ./buildenv.sh ${{ matrix.target }}
           ./scripts/make_rom.sh --force
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: build-output
-          path: out/*.zip
-          if-no-files-found: error
+      - name: Upload build to Pixeldrain
+        env:
+          PIXELDRAIN_API_KEY: ${{ secrets.PD_API }}
+        run: |
+          echo "Uploading ROM files to Pixeldrain..."
+          for file in out/*.zip; do
+            if [ -f "$file" ]; then
+              RESPONSE=$(curl -s -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/)
+              FILE_ID=$(echo $RESPONSE | jq -r '.id')
+              FILE_NAME=$(basename "$file")
+              echo "$FILE_NAME → https://pixeldrain.com/u/$FILE_ID"
+            else
+              echo "No ZIP files found to upload."
+            fi
+          done
