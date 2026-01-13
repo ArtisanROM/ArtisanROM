@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roms>
+    <rom channel="stable">
+        <version>3.0.1</version>
+        <date>2026-01-13</date>
+        <filename>ExtremeROM_Revived-y2s-20260113-stable.zip</filename>
+        <url>https://example.com/downloads/ExtremeROM_Revived-y2s-20260113-stable.zip</url>
+        <md5>PUT_MD5_CHECKSUM_STABLE</md5>
+        <size>1234567890</size>
+    </rom>
+
+    <rom channel="beta">
+        <version>3.0.0-alpha2</version>
+        <date>2026-01-13</date>
+        <filename>ExtremeROM_Revived-y2s-20260113-beta.zip</filename>
+        <url>https://example.com/downloads/ExtremeROM_Revived-y2s-20260113-beta.zip</url>
+        <md5>PUT_MD5_CHECKSUM_BETA</md5>
+        <size>1234567890</size>
+    </rom>
+</roms>
