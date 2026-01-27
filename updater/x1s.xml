@@ -8,13 +8,3 @@
         <md5>PUT_MD5_CHECKSUM_STABLE</md5>
         <size>1234567890</size>
     </rom>
-
-    <rom channel="beta">
-        <version>3.0.1</version>
-        <date>2026-01-16</date>
-        <filename>filename.zip</filename>
-        <url>https://pixeldrain.com/api/file/ZbBDjtEA?download</url>
-        <md5>PUT_MD5_CHECKSUM_BETA</md5>
-        <size>5057282048</size>
-    </rom>
-</roms>
