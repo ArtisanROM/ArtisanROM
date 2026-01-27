@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roms>
+    <rom channel="stable">
+        <version>3.0.0</version>
+        <date>2026-01-14</date>
+        <filename>filename.zip</filename>
+        <url>https://addsoon.com</url>
+        <md5>PUT_MD5_CHECKSUM_STABLE</md5>
+        <size>1234567890</size>
+    </rom>
