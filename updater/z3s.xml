@@ -2,9 +2,10 @@
 <roms>
     <rom channel="stable">
         <version>3.0.0</version>
-        <date>2026-01-14</date>
-        <filename>filename.zip</filename>
-        <url>https://addsoon.com</url>
+        <date>2026-02-01</date>
+        <filename>ExtremeROM_OFFICIAL_3.0.0_20260201_z3s-sign.zip</filename>
+        <url>https://pixeldrain.com/api/file/CxzLeUC7?download</url>
         <md5>PUT_MD5_CHECKSUM_STABLE</md5>
-        <size>1234567890</size>
+        <size>5023727616</size>
     </rom>
+</roms>
