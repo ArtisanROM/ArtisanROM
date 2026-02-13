@@ -45,6 +45,9 @@ while read -r FILE; do
         SET_CSC_FEATURE_CONFIG "CscFeature_Setting_SupportMenuSmartTutor" "FALSE"
         SET_CSC_FEATURE_CONFIG "CscFeature_Setting_ConfigLongPressType" 1
         SET_CSC_FEATURE_CONFIG "CscFeature_Common_DisableBixby" --delete
+        SET_CSC_FEATURE_CONFIG "CscFeature_Contact_EnableSmartCall" "TRUE"
+        SET_CSC_FEATURE_CONFIG "CscFeature_Setting_ConfigOperatorCallService" "TRUE"
+        SET_CSC_FEATURE_CONFIG "CscFeature_Common_ConfigHiyaService" "TRUE"
         LOG_STEP_OUT
 
         LOG "- Encoding $FILE"
