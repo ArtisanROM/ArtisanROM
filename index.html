@@ -240,12 +240,14 @@
         
         /* Mobile Menu Animation */
         #mobileMenu {
+            display: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(-20px);
             opacity: 0;
             pointer-events: none;
         }
         #mobileMenu.active {
+            display: block;
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
@@ -286,7 +288,7 @@
     <canvas id="bgCanvas"></canvas>
 
     <!-- Global Navigation -->
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl">
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl relative">
         <div class="glass px-6 py-2 flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
                 <div class="logo-container flex items-center">
@@ -314,7 +316,7 @@
         </div>
 
         <!-- Mobile Menu Dropdown -->
-        <div id="mobileMenu" class="md:hidden mt-3 glass overflow-hidden">
+        <div id="mobileMenu" class="md:hidden absolute left-0 right-0 mt-3 glass overflow-hidden">
             <div class="flex flex-col p-4 gap-4 text-center text-[10px] font-extrabold uppercase tracking-[0.3em] opacity-80">
                 <button onclick="switchView('home'); toggleMobileMenu();" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5">Home</button>
                 <button onclick="switchView('wiki'); toggleMobileMenu();" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5">Wiki</button>
@@ -870,4 +872,5 @@
 </body>
 
 </html>
+
 
