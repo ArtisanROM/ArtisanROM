@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@100;300;400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+	
         :root {
             --bg: #030712;
             --text: #f9fafb;
@@ -240,14 +241,12 @@
         
         /* Mobile Menu Animation */
         #mobileMenu {
-            display: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(-20px);
             opacity: 0;
             pointer-events: none;
         }
         #mobileMenu.active {
-            display: block;
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
@@ -281,7 +280,7 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 0.75rem;
         }
-        .light-mode #modalContent {
+		.light-mode #modalContent {
 			background: rgba(255, 255, 255, 0.85) !important;
 			border: 1px solid rgba(0, 0, 0, 0.1) !important;
 			backdrop-filter: blur(20px);
@@ -294,7 +293,12 @@
 		.light-mode #aboutView .glass {
 			background: rgba(255, 255, 255, 0.75) !important;
 			border: 1px solid rgba(0, 0, 0, 0.08) !important;
+		}
+		.light-mode .github-stats-container {
+		background: rgba(224, 222, 222, 0.85);
+		border: 1px solid rgba(0, 0, 0, 0.12);
 	}
+
     </style>
 </head>
 <body class="selection:bg-cyan-500/30">
@@ -302,7 +306,7 @@
     <canvas id="bgCanvas"></canvas>
 
     <!-- Global Navigation -->
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl relative">
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl">
         <div class="glass px-6 py-2 flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
                 <div class="logo-container flex items-center">
@@ -330,7 +334,7 @@
         </div>
 
         <!-- Mobile Menu Dropdown -->
-        <div id="mobileMenu" class="md:hidden absolute left-0 right-0 mt-3 glass overflow-hidden">
+        <div id="mobileMenu" class="md:hidden mt-3 glass overflow-hidden">
             <div class="flex flex-col p-4 gap-4 text-center text-[10px] font-extrabold uppercase tracking-[0.3em] opacity-80">
                 <button onclick="switchView('home'); toggleMobileMenu();" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5">Home</button>
                 <button onclick="switchView('wiki'); toggleMobileMenu();" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5">Wiki</button>
@@ -837,6 +841,18 @@
         const themeBtn = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const snakeImg = document.getElementById('snakeAnimation');
+		function updateSnake(isLight) {
+			const ts = Date.now(); // cache buster
+
+			if (isLight) {
+				snakeImg.src =
+				`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake.svg?ts=${ts}`;
+			} else {
+				snakeImg.src =
+				`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake-dark.svg?palette=github-dark&ts=${ts}`;
+			}
+		}
+		
 
         themeBtn.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
@@ -844,13 +860,17 @@
             themeIcon.className = isLight ? 'ph-bold ph-sun text-lg' : 'ph-bold ph-moon text-lg';
             
             // Update snake animation based on theme
-            if (snakeImg) {
-                if (isLight) {
-                    snakeImg.src = 'https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake.svg';
-                } else {
-                    snakeImg.src = 'https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake-dark.svg?palette=github-dark';
-                }
-            }
+            function updateSnake(isLight) {
+				const ts = Date.now();
+
+				if (isLight) {
+					snakeImg.src =
+					`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake.svg?ts=${ts}`;
+				} else {
+					snakeImg.src =
+					`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake-dark.svg?palette=github-dark&ts=${ts}`;
+				}
+			}
         });
 
         // REVEAL ANIMATIONS
@@ -868,6 +888,8 @@
         window.addEventListener('scroll', revealElements);
         window.addEventListener('resize', initCanvas);
         window.onload = () => {
+		const isLight = document.body.classList.contains('light-mode');
+		if (snakeImg) updateSnake(isLight);
             initCanvas();
             animate();
             revealElements();
@@ -884,8 +906,4 @@
         }
     </script>
 </body>
-
 </html>
-
-
-
