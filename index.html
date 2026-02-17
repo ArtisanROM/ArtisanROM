@@ -281,6 +281,20 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 0.75rem;
         }
+        .light-mode #modalContent {
+			background: rgba(255, 255, 255, 0.85) !important;
+			border: 1px solid rgba(0, 0, 0, 0.1) !important;
+			backdrop-filter: blur(20px);
+		}
+
+		.light-mode #deviceModal {
+			background: rgba(0, 0, 0, 0.35) !important;
+		}
+		/* Fix About card in light mode */
+		.light-mode #aboutView .glass {
+			background: rgba(255, 255, 255, 0.75) !important;
+			border: 1px solid rgba(0, 0, 0, 0.08) !important;
+	}
     </style>
 </head>
 <body class="selection:bg-cyan-500/30">
@@ -872,5 +886,6 @@
 </body>
 
 </html>
+
 
 
