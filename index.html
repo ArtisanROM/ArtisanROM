@@ -241,12 +241,14 @@
         
         /* Mobile Menu Animation */
         #mobileMenu {
+			display: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(-20px);
             opacity: 0;
             pointer-events: none;
         }
         #mobileMenu.active {
+			display: block;
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
@@ -907,3 +909,4 @@
     </script>
 </body>
 </html>
+
