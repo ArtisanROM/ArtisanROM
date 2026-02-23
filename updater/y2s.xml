@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
     <rom channel="stable">
-        <version>3.0.1</version>
-        <date>2026-02-14</date>
-        <filename>ExtremeROM_OFFICIAL_3.0.1_20260214_y2s-sign.zip</filename>
-        <url>https://pixeldrain.com/api/file/Cu5u4utH?download</url>
-        <md5>3a44f7b5e6cbafe277a134c80c69862f</md5>
-        <size>5084530164</size>
+        <version>3.0.5</version>
+        <date>2026-02-23</date>
+        <filename>ExtremeROM_OFFICIAL_3.0.5_20260223_y2s-sign.zip</filename>
+        <url>https://pixeldrain.com/api/file/jhCQxLC5?download</url>
+        <md5>facbd8fc21a0b6a5490b4acfe2851e70</md5>
+        <size>5431329560</size>
     </rom>
 </roms>
