@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
-    <rom channel="stable">
-        <version>3.0.5</version>
-        <date>2026-02-23</date>
-        <filename>ExtremeROM_OFFICIAL_3.0.5_20260223_c1s-sign.zip</filename>
-        <url>https://pixeldrain.com/api/file/YTXxmQpQ?download</url>
-        <md5>9df4d18be0d84e94df14fca50e3ba939</md5>
-        <size>5466965856</size>
-    </rom>
+  <rom channel="stable">
+    <version>3.0.6</version>
+    <date>2026-02-27</date>
+    <filename>ExtremeROM_OFFICIAL_3.0.6_20260227_c1s-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-c1s/ExtremeROM_OFFICIAL_3.0.6_20260227_c1s-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-c1s/ExtremeROM_OFFICIAL_3.0.6_20260227_c1s-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-c1s/ExtremeROM_OFFICIAL_3.0.6_20260227_c1s-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-c1s/ExtremeROM_OFFICIAL_3.0.6_20260227_c1s-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-c1s/ExtremeROM_OFFICIAL_3.0.6_20260227_c1s-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-c1s/ExtremeROM_OFFICIAL_3.0.6_20260227_c1s-sign.zip.part_05</part6>
+    <md5>a39f7a1ee9df46773a63864f5e6e4b1d</md5>
+    <size>5467096620</size>
+  </rom>
 </roms>
