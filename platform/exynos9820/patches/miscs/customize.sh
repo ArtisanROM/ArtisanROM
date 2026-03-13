@@ -114,7 +114,8 @@ if [ ! -f "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" ]; then
     LOG_STEP_OUT
 fi
 
+# [TEMP] will need to find fix
 # https://github.com/duhansysl/Bluetooth-Library-Patcher/blob/67e598ad142ed296b487a7a4585927c993d4f35d/hexpatcher.sh#L43
-HEX_PATCH "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" \
-    "289765394805003736008052" "289765392a00001436008052"
+# HEX_PATCH "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" \
+#     "289765394805003736008052" "289765392a00001436008052"
 
