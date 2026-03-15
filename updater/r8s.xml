@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
   <rom channel="stable">
-    <version>3.0.6</version>
-    <date>2026-02-27</date>
-    <filename>ExtremeROM_OFFICIAL_3.0.6_20260227_r8s-sign.zip</filename>
-    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-r8s/ExtremeROM_OFFICIAL_3.0.6_20260227_r8s-sign.zip.part_00</part1>
-    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-r8s/ExtremeROM_OFFICIAL_3.0.6_20260227_r8s-sign.zip.part_01</part2>
-    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-r8s/ExtremeROM_OFFICIAL_3.0.6_20260227_r8s-sign.zip.part_02</part3>
-    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-r8s/ExtremeROM_OFFICIAL_3.0.6_20260227_r8s-sign.zip.part_03</part4>
-    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-r8s/ExtremeROM_OFFICIAL_3.0.6_20260227_r8s-sign.zip.part_04</part5>
-    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.6-r8s/ExtremeROM_OFFICIAL_3.0.6_20260227_r8s-sign.zip.part_05</part6>
-    <md5>bbe08575cf1648fb9463bcae431da771</md5>
-    <size>5433800607</size>
+    <version>3.0.7</version>
+    <date>2026-03-15</date>
+    <filename>ExtremeROM_OFFICIAL_3.0.7_20260315_r8s-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-r8s/ExtremeROM_OFFICIAL_3.0.7_20260315_r8s-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-r8s/ExtremeROM_OFFICIAL_3.0.7_20260315_r8s-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-r8s/ExtremeROM_OFFICIAL_3.0.7_20260315_r8s-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-r8s/ExtremeROM_OFFICIAL_3.0.7_20260315_r8s-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-r8s/ExtremeROM_OFFICIAL_3.0.7_20260315_r8s-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-r8s/ExtremeROM_OFFICIAL_3.0.7_20260315_r8s-sign.zip.part_05</part6>
+    <md5>12dc62493b7d975a2962c7e5896e1bdb</md5>
+    <size>5433903704</size>
   </rom>
 </roms>
