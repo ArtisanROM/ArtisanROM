@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roms>
+  <rom channel="stable">
+    <version>3.0.7</version>
+    <date>2026-03-15</date>
+    <filename>ExtremeROM_OFFICIAL_3.0.7_20260315_beyond0lte-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-beyond0lte/ExtremeROM_OFFICIAL_3.0.7_20260315_beyond0lte-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-beyond0lte/ExtremeROM_OFFICIAL_3.0.7_20260315_beyond0lte-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-beyond0lte/ExtremeROM_OFFICIAL_3.0.7_20260315_beyond0lte-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-beyond0lte/ExtremeROM_OFFICIAL_3.0.7_20260315_beyond0lte-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-beyond0lte/ExtremeROM_OFFICIAL_3.0.7_20260315_beyond0lte-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-beyond0lte/ExtremeROM_OFFICIAL_3.0.7_20260315_beyond0lte-sign.zip.part_05</part6>
+    <md5>2ef637db1bd37e43583adb74e04d5684</md5>
+    <size>5071006093</size>
+  </rom>
+</roms>
