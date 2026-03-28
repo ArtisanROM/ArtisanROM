@@ -7,4 +7,11 @@
         prop="persist.sys.artisanrom.bootsound"
         on="true"
         off="false" />
+    <setting
+        name="Vulkan Rendering"
+        description="Enable Vulkan (Experimental)"
+        type="ext4"
+        prop="persist.sys.artisanrom.vulkan"
+        on="true"
+        off="false" />
 </settings>
