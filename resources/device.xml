@@ -40,4 +40,8 @@
         codename="beyond2lte"
         name="Galaxy S10+"
         banner_url="https://raw.githubusercontent.com/ArtisanROM/ExtremeROM-Revived/refs/heads/main/resources/banners/beyond2lte.png" />
+    <device
+        codename="test"
+        name="Galaxy S20+"
+        banner_url="https://raw.githubusercontent.com/ArtisanROM/ExtremeROM-Revived/refs/heads/main/resources/banners/y2s.png" />
 </devices>
