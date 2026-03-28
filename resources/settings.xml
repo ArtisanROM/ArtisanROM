@@ -6,4 +6,28 @@
         prop="persist.sys.artisanrom.bootsound"
         on_zip="true"
         off_zip="false" />
+    <setting
+        name="testing 123"
+        description="Enable or disable Boot sounds"
+        prop="persist.sys.artisanrom.bootsound"
+        on_zip="true"
+        off_zip="false" />
+    <setting
+        name="ac5 Sound"
+        description="Enable or disable Boot sounds"
+        prop="persist.sys.artisanrom.bootsound"
+        on_zip="true"
+        off_zip="false" />
+    <setting
+        name="v4a Sound"
+        description="Enable or disable Boot sounds"
+        prop="persist.sys.artisanrom.bootsound"
+        on_zip="true"
+        off_zip="false" />
+    <setting
+        name="test refresh rate"
+        description="Enable or disable Boot sounds"
+        prop="persist.sys.artisanrom.bootsound"
+        on_zip="true"
+        off_zip="false" />
 </settings>
