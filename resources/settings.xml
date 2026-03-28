@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+    <setting
+        name="Boot Sound"
+        description="Enable or disable Boot sounds"
+        prop="persist.sys.artisanrom.bootsound"
+        on_value="true"
+        off_value="false" />
+</settings>
