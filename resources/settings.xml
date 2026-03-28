@@ -6,10 +6,4 @@
         prop="persist.sys.artisanrom.bootsound"
         on_zip="true"
         off_zip="false" />
-    <setting
-        name="Test Device"
-        description="Enables test features"
-        prop="ro.artisanrom.type"
-        on_zip="true"
-        off_zip="false" />
 </settings>
