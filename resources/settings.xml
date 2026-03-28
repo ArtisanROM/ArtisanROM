@@ -4,6 +4,12 @@
         name="Boot Sound"
         description="Enable or disable Boot sounds"
         prop="persist.sys.artisanrom.bootsound"
-        on_value="true"
-        off_value="false" />
+        on_zip="true"
+        off_zip="false" />
+    <setting
+        name="Test Device"
+        description="Enables test features"
+        prop="ro.artisanrom.type"
+        on_zip="true"
+        off_zip="false" />
 </settings>
