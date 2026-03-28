@@ -3,6 +3,7 @@
     <setting
         name="Boot Sound"
         description="Enable or disable Boot sounds"
+        type="ksu"
         prop="persist.sys.artisanrom.bootsound"
         on_zip="https://github.com/ArtisanROM/rom_resources/releases/download/test/artisan_bsound_on.zip"
         off_zip="https://github.com/ArtisanROM/rom_resources/releases/download/test/artisan_bsound_off.zip" />
