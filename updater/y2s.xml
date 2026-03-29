@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
   <rom channel="stable">
-    <version>3.0.7</version>
+    <version>3.1.0</version>
     <date>2026-03-15</date>
     <filename>ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip</filename>
     <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-y2s/ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip.part_00</part1>
@@ -13,4 +13,20 @@
     <md5>8267d72ec7dd05fc007c8c95a13c2ad8</md5>
     <size>5428394584</size>
   </rom>
+  <kernel channel="G986B">
+    <version>3.1.0</version>
+    <date>2026-03-15</date>
+    <filename>ArtisanKRNL_3.1.0_y2s_*.zip</filename>
+    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanKRNL_3.1.0_y2s_*.zip</part6>
+    <md5>hash_here</md5>
+    <size>size_here</size>
+  </kernel>
+  <kernel channel="G985F">
+    <version>3.1.0</version>
+    <date>2026-03-15</date>
+    <filename>ArtisanKRNL_3.1.0_y2slte_*.zip</filename>
+    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanKRNL_3.1.0_y2slte_*.zip</part6>
+    <md5>hash_here</md5>
+    <size>size_here</size>
+  </kernel>
 </roms>
