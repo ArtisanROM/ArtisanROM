@@ -14,4 +14,11 @@
         prop="persist.sys.artisanrom.vulkan"
         on="true"
         off="false" />
+    <setting
+        name="Unlimited Google Photos"
+        description="Enable Unlimited Google Photos (Alpha4 only)"
+        type="ext4"
+        prop="persist.sys.artisanrom.gphotos"
+        on="true"
+        off="false" />
 </settings>
