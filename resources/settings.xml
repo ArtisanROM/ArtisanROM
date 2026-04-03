@@ -4,20 +4,25 @@
         name="Boot Sound"
         description="Enable or disable Boot sounds"
         type="ext4"
+        reboot="yes"
         prop="persist.sys.artisanrom.bootsound"
         on="true"
         off="false" />
     <setting
         name="Vulkan Rendering"
         description="Enable Vulkan (Experimental)"
+        warning="Enabling this may lead to overheating, device instability, and battery degradation. I am not responsible for any issues that result from its use."
         type="ext4"
+        reboot="yes"
         prop="persist.sys.artisanrom.vulkan"
         on="true"
         off="false" />
     <setting
         name="Unlimited Google Photos"
         description="Enable Unlimited Google Photos (Alpha4 only)"
+        warning="I am not liable for any issues that may occur after you enable the Unlimited Google Photos spoof, including but not limited to account suspension, legal action from Google, or your device being restricted from accessing Google services."
         type="ext4"
+        reboot="no"
         prop="persist.sys.artisanrom.gphotos"
         on="true"
         off="false" />
