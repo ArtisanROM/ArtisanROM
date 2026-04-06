@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
   <rom channel="stable">
-    <version>3.0.7</version>
-    <date>2026-03-15</date>
-    <filename>ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip</filename>
-    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-y2s/ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip.part_00</part1>
-    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-y2s/ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip.part_01</part2>
-    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-y2s/ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip.part_02</part3>
-    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-y2s/ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip.part_03</part4>
-    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-y2s/ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip.part_04</part5>
-    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.0.7-y2s/ExtremeROM_OFFICIAL_3.0.7_20260315_y2s-sign.zip.part_05</part6>
-    <md5>8267d72ec7dd05fc007c8c95a13c2ad8</md5>
-    <size>5428394584</size>
+    <version>3.1.0</version>
+    <date>2026-04-06</date>
+    <filename>ArtisanROM_OFFICIAL_3.1.0_20260406_y2s-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanROM_OFFICIAL_3.1.0_20260406_y2s-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanROM_OFFICIAL_3.1.0_20260406_y2s-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanROM_OFFICIAL_3.1.0_20260406_y2s-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanROM_OFFICIAL_3.1.0_20260406_y2s-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanROM_OFFICIAL_3.1.0_20260406_y2s-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanROM_OFFICIAL_3.1.0_20260406_y2s-sign.zip.part_05</part6>
+    <md5>3eba3dae7721619b7f52be0346c1c901</md5>
+    <size>5380734039</size>
   </rom>
-  <kernel channel="G986B">
-    <version>3.1.0</version>
-    <date>2026-03-15</date>
-    <filename>ArtisanKRNL-v3.1.0_y2s_UNOFFICIAL_KSU_29-03-2026_18-17-46.zip</filename>
-    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-y2s-kernel/ArtisanKRNL-v3.1.0_y2s_UNOFFICIAL_KSU_29-03-2026_18-17-46.zip</link>
-    <md5>hash_here</md5>
-    <size>5428394584</size>
-  </kernel>
-  <kernel channel="G985F">
-    <version>3.1.0</version>
-    <date>2026-03-15</date>
-    <filename>ArtisanKRNL_3.1.0_y2slte_*.zip</filename>
-    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-y2s/ArtisanKRNL_3.1.0_y2slte_*.zip</part6>
-    <md5>hash_here</md5>
-    <size>size_here</size>
-  </kernel>
 </roms>
