@@ -28,6 +28,7 @@ unica/patches/product_feature/resolution/system/system/bin/* binary
 
 # Platform-specific prebuilt blobs
 platform/exynos9820/patches/vendor/vendor/** binary
+platform/exynos9825/patches/vendor/vendor/** binary
 platform/exynos990/patches/vendor/vendor/** binary
 
 # Device-specific prebuilt blobs
