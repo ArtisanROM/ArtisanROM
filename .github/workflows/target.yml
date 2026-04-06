@@ -1,0 +1,43 @@
+name: Import d1xks from EternityROM
+on: workflow_dispatch
+
+jobs:
+  import-folder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout UN1CA Repository
+        uses: actions/checkout@v4
+        with:
+          ref: sixteen
+
+      - name: Fetch and Copy d1xks
+        run: |
+          # 1. I clone just the top layer of EternityROM's 'fifteen' branch to save time
+          git clone --depth 1 -b fifteen https://github.com/Ocin4ever/EternityROM.git /tmp/EternityROM
+          
+          # 2. I make sure the 'target' directory exists in my UN1CA workspace
+          mkdir -p target
+          
+          # 3. I remove any old d1xks folder to avoid mixing old and new files
+          rm -rf target/d1xks
+          
+          # 4. I copy the fresh d1xks folder exactly where it belongs
+          cp -r /tmp/EternityROM/target/d1xks target/
+
+      - name: Configure Bot Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and Push Update
+        run: |
+          # Stage the newly copied folder
+          git add target/d1xks
+          
+          # Check if there are actual changes before trying to commit
+          if git diff --cached --quiet; then
+            echo "No changes detected. The d1xks folder is already up to date."
+          else
+            git commit -m "Import d1xks target from EternityROM (Branch: fifteen)"
+            git push origin sixteen          
+          fi
