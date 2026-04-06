@@ -1,0 +1,42 @@
+name: Import exynos9825 from UN1CA
+on: workflow_dispatch
+
+jobs:
+  import-folder:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Your Repository
+        uses: actions/checkout@v4
+        with:
+          ref: sixteen
+
+      - name: Fetch and Copy exynos9825
+        run: |
+          # 1. Clone the 'sixteen' branch from the UN1CA source repository (depth 1 for speed)
+          git clone --depth 1 -b sixteen https://github.com/Ocin4ever/UN1CA.git /tmp/UN1CA_SOURCE
+          
+          # 2. Ensure the parent platform directory exists
+          mkdir -p platform
+          
+          # 3. Copy the exynos9825 directory into the platform folder
+          cp -r /tmp/UN1CA_SOURCE/platform/exynos9825 platform/
+
+      - name: Configure Bot Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and Push Update
+        run: |
+          # 4. Stage the specific folder for commit
+          git add platform/exynos9825
+          
+          # 5. Check for changes before committing to avoid empty commit errors
+          if git diff --cached --quiet; then
+            echo "No changes detected. The platform/exynos9825 folder is already up to date."
+          else
+            git commit -m "platform: Update exynos9825 from Ocin4ever/UN1CA (sixteen)"
+            git push origin sixteen
+          fi
