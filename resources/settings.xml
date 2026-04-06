@@ -26,12 +26,4 @@
         prop="persist.sys.artisanrom.gphotos"
         on="true"
         off="false" />
-    <setting
-        name="Boot Sound"
-        description="Enable or disable Boot sounds"
-        type="ext4"
-        reboot="yes"
-        prop="ro.artisanrom.version"
-        on="3.0.7"
-        off="3.1.0" />
 </settings>
