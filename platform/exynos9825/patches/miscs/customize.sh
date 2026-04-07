@@ -17,6 +17,12 @@ LOG_STEP_IN "- Enabling FS Verity"
 SET_PROP "vendor" "ro.apk_verity.mode" "2"
 LOG_STEP_OUT
 
+LOG_STEP_IN "- Setting /data to F2FS"
+FROM="noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic"
+TO="noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678"
+sed -i -e "${LINE}s/ext4/f2fs/g" -e "${LINE}s/$FROM/$TO/g" "$WORK_DIR/vendor/etc/fstab.exynos9825"
+LOG_STEP_OUT
+
 LOG_STEP_IN "- Disabling A2DP Offload"
 SET_PROP "system" persist.bluetooth.a2dp_offload.disabled "true"
 LOG_STEP_OUT
@@ -80,35 +86,34 @@ SET_PROP "product" "bluetooth.profile.vcp.controller.enabled" "false"
 ADD_TO_WORK_DIR "b0sxxx" "system" "system/apex/com.android.bt.apex" 0 0 644 "u:object_r:system_file:s0"
 LOG_STEP_OUT
 
-# # BT-lib-patch
-# if [ ! -f "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" ]; then
-#     LOG_STEP_IN "- Extracting libbluetooth_jni.so from com.android.bt.apex"
+# BT-lib-patch
+if [ ! -f "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" ]; then
+    LOG_STEP_IN "- Extracting libbluetooth_jni.so from com.android.bt.apex"
 
-#     [ -d "$TMP_DIR" ] && EVAL "rm -rf \"$TMP_DIR\""
-#     mkdir -p "$TMP_DIR"
+    [ -d "$TMP_DIR" ] && EVAL "rm -rf \"$TMP_DIR\""
+    mkdir -p "$TMP_DIR"
 
-#     EVAL "unzip -j \"$WORK_DIR/system/system/apex/com.android.bt.apex\" \"apex_payload.img\" -d \"$TMP_DIR\""
+    EVAL "unzip -j \"$WORK_DIR/system/system/apex/com.android.bt.apex\" \"apex_payload.img\" -d \"$TMP_DIR\""
 
-#     if ! sudo -n -v &> /dev/null; then
-#         LOG "\033[0;33m! Asking user for sudo password\033[0m"
-#         if ! sudo -v 2> /dev/null; then
-#             ABORT "Root permissions are required to unpack APEX image"
-#         fi
-#     fi
+    if ! sudo -n -v &> /dev/null; then
+        LOG "\033[0;33m! Asking user for sudo password\033[0m"
+        if ! sudo -v 2> /dev/null; then
+            ABORT "Root permissions are required to unpack APEX image"
+        fi
+    fi
 
-#     mkdir -p "$TMP_DIR/tmp_out"
-#     EVAL "sudo mount -o ro \"$TMP_DIR/apex_payload.img\" \"$TMP_DIR/tmp_out\""
-#     EVAL "sudo cat \"$TMP_DIR/tmp_out/lib64/libbluetooth_jni.so\" > \"$WORK_DIR/system/system/lib64/libbluetooth_jni.so\""
+    mkdir -p "$TMP_DIR/tmp_out"
+    EVAL "sudo mount -o ro \"$TMP_DIR/apex_payload.img\" \"$TMP_DIR/tmp_out\""
+    EVAL "sudo cat \"$TMP_DIR/tmp_out/lib64/libbluetooth_jni.so\" > \"$WORK_DIR/system/system/lib64/libbluetooth_jni.so\""
 
-#     EVAL "sudo umount \"$TMP_DIR/tmp_out\""
-#     rm -rf "$TMP_DIR"
+    EVAL "sudo umount \"$TMP_DIR/tmp_out\""
+    rm -rf "$TMP_DIR"
 
-#     SET_METADATA "system" "system/lib64/libbluetooth_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    SET_METADATA "system" "system/lib64/libbluetooth_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
 
-#     LOG_STEP_OUT
-# fi
+    LOG_STEP_OUT
+fi
 
-# # https://github.com/duhansysl/Bluetooth-Library-Patcher/blob/67e598ad142ed296b487a7a4585927c993d4f35d/hexpatcher.sh#L43
-# HEX_PATCH "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" \
-#     "289765394805003736008052" "289765392a00001436008052"
-
+# https://github.com/duhansysl/Bluetooth-Library-Patcher/blob/67e598ad142ed296b487a7a4585927c993d4f35d/hexpatcher.sh#L43
+HEX_PATCH "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" \
+    "00122a0140395f01086bde030014" "2a00001428008052"
