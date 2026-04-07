@@ -172,6 +172,15 @@ DECOMPRESS_APEX()
         # 3. Delete compressed archive
         rm "$capex_file"
     done
+
+    LOG "  - Updating fs_config and file_contexts mappings..."
+    if [ -f "$WORK_DIR/configs/fs_config-system" ]; then
+        sed -i 's/\.capex/.apex/g' "$WORK_DIR/configs/fs_config-system"
+    fi
+    
+    if [ -f "$WORK_DIR/configs/file_context-system" ]; then
+        sed -i 's/\.capex/.apex/g' "$WORK_DIR/configs/file_context-system"
+    fi
     
     LOG_STEP_OUT
 }
