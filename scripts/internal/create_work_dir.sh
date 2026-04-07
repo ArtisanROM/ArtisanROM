@@ -150,6 +150,32 @@ COPY_TARGET_KERNEL()
         [ -d "$WORK_DIR/kernel" ] && [ -n "$(find "$WORK_DIR/kernel" -maxdepth 0 -empty)" ] && rm -rf "$WORK_DIR/kernel"
     fi
 }
+
+DECOMPRESS_APEX()
+{   
+    # apex patch by @Devandroid-bit
+    LOG_STEP_IN "- Decompressing CAPEX files to fix Watchdog bootloop"
+    
+    # Find .capex
+    find "$WORK_DIR/system" -type f -name "*.capex" | while read -r capex_file; do
+        local dir_name=$(dirname "$capex_file")
+        local base_name=$(basename "$capex_file" .capex)
+        
+        LOG "  > Extracting $base_name.capex..."
+        
+        # 1. Extract 'original_apex'
+        unzip -q -j "$capex_file" original_apex -d "$dir_name"
+        
+        # 2. Rename to .apex
+        mv "$dir_name/original_apex" "$dir_name/$base_name.apex"
+        
+        # 3. Delete compressed archive
+        rm "$capex_file"
+    done
+    
+    LOG_STEP_OUT
+}
+
 # ]
 
 mkdir -p "$WORK_DIR"
@@ -157,5 +183,6 @@ mkdir -p "$WORK_DIR/configs"
 COPY_SOURCE_FIRMWARE
 COPY_TARGET_FIRMWARE
 COPY_TARGET_KERNEL
+DECOMPRESS_APEX
 
 exit 0
