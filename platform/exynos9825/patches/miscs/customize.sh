@@ -17,12 +17,6 @@ LOG_STEP_IN "- Enabling FS Verity"
 SET_PROP "vendor" "ro.apk_verity.mode" "2"
 LOG_STEP_OUT
 
-LOG_STEP_IN "- Setting /data to F2FS"
-FROM="noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic"
-TO="noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678"
-sed -i -e "${LINE}s/ext4/f2fs/g" -e "${LINE}s/$FROM/$TO/g" "$WORK_DIR/vendor/etc/fstab.exynos9825"
-LOG_STEP_OUT
-
 LOG_STEP_IN "- Disabling A2DP Offload"
 SET_PROP "system" persist.bluetooth.a2dp_offload.disabled "true"
 LOG_STEP_OUT
