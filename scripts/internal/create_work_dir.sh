@@ -151,25 +151,51 @@ COPY_TARGET_KERNEL()
     fi
 }
 
-# PATCH: REPLACE INCOMPATIBLE APEX FILES (by @Devandroid-bit)
+# PATCH: REPLACE & MAP INCOMPATIBLE APEX by @Devandroid-bit
 REPLACE_BROKEN_APEX()
 {
-    LOG_STEP_IN "- Replacing incompatible APEX files with working ones"
+    LOG_STEP_IN "- Replacing and Mapping APEX files"
     
     # Check if the directory containing your fixes exists in your repository
     if [ -d "$SRC_DIR/prebuilts/apex_fixes" ]; then
-        LOG "  > Found apex_fixes directory. Copying files..."
-        
-        # Copy and overwrite APEX files in the system working directory
-        # Using -f to force overwrite
+        LOG "  > Copying working APEX to system/apex/..."
+        # Force copy files to the physical system directory
         cp -f "$SRC_DIR/prebuilts/apex_fixes/"*.apex "$WORK_DIR/system/apex/"
-        
-        # Ensure permissions are correct for mkfs.erofs
         chmod 644 "$WORK_DIR/system/apex/"*.apex
         
-        LOG "  [OK] APEX files replaced successfully."
+        LOG "  > Updating mappings in fs_config and file_contexts..."
+        
+        # Define configuration file paths
+        local FS_CONF="$WORK_DIR/configs/fs_config-system"
+        local FL_CONT="$WORK_DIR/configs/file_context-system"
+
+        # List of renames to perform in config files for Android 16 compatibility
+        # We transform old "google" or "compressed" references into the expected OneUI 8 names
+        if [ -f "$FS_CONF" ]; then
+            # Bluetooth Fix: Ensure the system looks for com.android.bt.apex
+            sed -i 's/com\.google\.android\.bt/com\.android\.bt/g' "$FS_CONF"
+            sed -i 's/com\.android\.btservices/com\.android\.bt/g' "$FS_CONF"
+            
+            # Tethering Fix: Remove _compressed tag and google prefix
+            sed -i 's/com\.google\.android\.tethering/com\.android\.tethering/g' "$FS_CONF"
+            sed -i 's/com\.android\.tethering_compressed/com\.android\.tethering/g' "$FS_CONF"
+            
+            # Path Alignment: Ensure the path starts with system/apex/ in the config
+            # mkfs.erofs is extremely strict about the relative path matching the source tree
+            sed -i 's| apex/| system/apex/|g' "$FS_CONF"
+        fi
+
+        # Apply the same logic for SELinux security labels (file_contexts)
+        if [ -f "$FL_CONT" ]; then
+            sed -i 's/com\.google\.android\.bt/com\.android\.bt/g' "$FL_CONT"
+            sed -i 's/com\.android\.btservices/com\.android\.bt/g' "$FL_CONT"
+            sed -i 's/com\.google\.android\.tethering/com\.android\.tethering/g' "$FL_CONT"
+            sed -i 's/com\.android\.tethering_compressed/com\.android\.tethering/g' "$FL_CONT"
+        fi
+
+        LOG "  [OK] Replacement and Mapping finished."
     else
-        LOG "  [!] No apex_fixes directory found in repository. Skipping."
+        LOG "  [!] No fixes found in prebuilts/apex_fixes. Skipping."
     fi
     
     LOG_STEP_OUT
