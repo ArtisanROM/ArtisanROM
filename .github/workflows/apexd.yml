@@ -1,0 +1,36 @@
+name: Setup APEX Fixes Directory
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-folder:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: sixteen
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create directory and dummy file
+        run: |
+          mkdir -p prebuilts/apex_fixes
+          echo "Create an empty file." > prebuilts/apex_fixes/dummy.txt
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add
+          git add prebuilts/apex_fixes/dummy.txt
+          
+          # Commit
+          if git diff --staged --quiet; then
+            echo "Le dossier et le fichier existent déjà."
+          else
+            git commit -m "chore: create apex_fixes folder"
+            git push origin sixteen
+          fi
