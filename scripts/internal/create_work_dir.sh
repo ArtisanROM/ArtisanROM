@@ -151,35 +151,25 @@ COPY_TARGET_KERNEL()
     fi
 }
 
-DECOMPRESS_APEX()
-{   
-    # apex patch by @Devandroid-bit
-    LOG_STEP_IN "- Decompressing CAPEX files to fix Watchdog bootloop"
+# PATCH: REPLACE INCOMPATIBLE APEX FILES (by @Devandroid-bit)
+REPLACE_BROKEN_APEX()
+{
+    LOG_STEP_IN "- Replacing incompatible APEX files with working ones"
     
-    # Find .capex
-    find "$WORK_DIR/system" -type f -name "*.capex" | while read -r capex_file; do
-        local dir_name=$(dirname "$capex_file")
-        local base_name=$(basename "$capex_file" .capex)
+    # Check if the directory containing your fixes exists in your repository
+    if [ -d "$SRC_DIR/prebuilts/apex_fixes" ]; then
+        LOG "  > Found apex_fixes directory. Copying files..."
         
-        LOG "  > Extracting $base_name.capex..."
+        # Copy and overwrite APEX files in the system working directory
+        # Using -f to force overwrite
+        cp -f "$SRC_DIR/prebuilts/apex_fixes/"*.apex "$WORK_DIR/system/apex/"
         
-        # 1. Extract 'original_apex'
-        unzip -q -j "$capex_file" original_apex -d "$dir_name"
+        # Ensure permissions are correct for mkfs.erofs
+        chmod 644 "$WORK_DIR/system/apex/"*.apex
         
-        # 2. Rename to .apex
-        mv "$dir_name/original_apex" "$dir_name/$base_name.apex"
-        
-        # 3. Delete compressed archive
-        rm "$capex_file"
-    done
-
-    LOG "  - Updating fs_config and file_contexts mappings..."
-    if [ -f "$WORK_DIR/configs/fs_config-system" ]; then
-        sed -i 's/\.capex/.apex/g' "$WORK_DIR/configs/fs_config-system"
-    fi
-    
-    if [ -f "$WORK_DIR/configs/file_context-system" ]; then
-        sed -i 's/\.capex/.apex/g' "$WORK_DIR/configs/file_context-system"
+        LOG "  [OK] APEX files replaced successfully."
+    else
+        LOG "  [!] No apex_fixes directory found in repository. Skipping."
     fi
     
     LOG_STEP_OUT
@@ -192,6 +182,6 @@ mkdir -p "$WORK_DIR/configs"
 COPY_SOURCE_FIRMWARE
 COPY_TARGET_FIRMWARE
 COPY_TARGET_KERNEL
-DECOMPRESS_APEX
+REPLACE_BROKEN_APEX
 
 exit 0
