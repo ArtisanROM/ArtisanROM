@@ -1,70 +1,34 @@
 # [
-EXTREMEKRNL_REPO="https://github.com/Android-Artisan/android_kernel_samsung_exynos9820"
-EXTREMEKRNL_BRANCH="main"
-
-BUILD_KERNEL()
-{
-    local PARENT=$(pwd)
-    cd $KERNEL_TMP_DIR
-
-    EVAL "./build.sh -m ${TARGET_CODENAME} -k y -r n"
-
-    cd $PARENT
-}
-
-SAFE_PULL_CHANGES()
-{
-    set -eo pipefail
-
-    local PARENT=$(pwd)
-
-    cd "$KERNEL_TMP_DIR"
-
-    EVAL "git fetch origin"
-
-    LOCAL=$(git rev-parse @)
-    REMOTE=$(git rev-parse origin/main)
-    BASE=$(git merge-base @ origin/main)
-
-    # Now we have three cases that we need to take care of.
-    if [[ "$LOCAL" == "$REMOTE" ]]; then
-        LOG "- Local branch is up-to-date with remote."
-    elif [[ "$LOCAL" == "$BASE" ]]; then
-        LOG "- Fast-forward possible. Pulling."
-        EVAL "git pull --ff-only"
-    elif [[ "$REMOTE" == "$BASE" ]]; then
-        LOGW "- Local branch is ahead of remote. Not doing anything."
-    else
-        cd "$PARENT"
-        ABORT "Remote history has diverged (possible force-push)."
-    fi
-
-    cd "$PARENT"
-}
+EXTREMEKRNL_REPO="https://github.com/Ocin4ever/ExtremeKernel/releases"
 
 REPLACE_KERNEL_BINARIES()
 {
-    local KERNEL_TMP_DIR="$KERNEL_TMP_DIR-$TARGET_PLATFORM"
-    [[ ! -d "$KERNEL_TMP_DIR" ]] && mkdir -p "$KERNEL_TMP_DIR"
+    [ -d "$TMP_DIR" ] && rm -rf "$TMP_DIR"
+    mkdir -p "$TMP_DIR"
+    # ​This kernel actually won't boot. You need to flash Creeeeger/9820_kernel from the OneUI8Stable branch instead: https://github.com/Creeeeger/9820_kernel
+    # Changed from /latest/download/ to /download/v1.0/ 
+    # This ensures it grabs the d1xks kernel from the initial release
+    ZIP_LINK="https://github.com/Ocin4ever/ExtremeKernel/releases/download/v1.0/ExtremeKRNL-Nexus-${TARGET_CODENAME}.zip"
 
-    if [[ -d "$KERNEL_TMP_DIR/.git" ]]; then
-        LOG "- Existing git repo found, trying to pull latest changes"
-        if ! SAFE_PULL_CHANGES; then
-            ABORT "Could not pull latest Kernel changes. If you hold local changes, please rebase to the new base. If not, cleaning the kernel_tmp_dir should suffice."
-        fi
-    else
-        LOG "- Cloning ExtremeKernel"
-        EVAL "git clone --branch $EXTREMEKRNL_BRANCH --single-branch --recurse-submodules \"$EXTREMEKRNL_REPO\" \"$KERNEL_TMP_DIR\""
+    LOG "Downloading $(basename "$ZIP_LINK")"
+    
+    # Added -f to curl so it fails immediately if the link is 404
+    if ! curl -L -f -s -o "$TMP_DIR/krnl.zip" "$ZIP_LINK"; then
+        LOG "ERROR: Failed to download kernel! Check if the link is correct."
+        exit 1
     fi
 
-    LOG "- Running the kernel build script."
-    BUILD_KERNEL
+    LOG "Extracting kernel binaries"
+    echo "$WORK_DIR"
+    rm -f "$WORK_DIR/kernel/"*.img
+    
+    # Unzip the necessary kernel components
+    unzip -q -j "$TMP_DIR/krnl.zip" \
+        "files/boot.img" "files/dtbo.img" "files/dtb.img" \
+        -d "$WORK_DIR/kernel"
 
-    for i in "boot" "dtb" "dtbo"; do
-        [[ -f "$WORK_DIR/kernel/$i.img" ]] && rm -f "$WORK_DIR/kernel/$i.img"
-        mv -f "$KERNEL_TMP_DIR/build/out/$TARGET_CODENAME/$i.img" "$WORK_DIR/kernel/$i.img"
-    done
+    rm -rf "$TMP_DIR"
 }
-# ]
+
 
 REPLACE_KERNEL_BINARIES
