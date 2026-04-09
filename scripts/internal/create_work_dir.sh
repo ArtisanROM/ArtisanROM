@@ -160,13 +160,13 @@ REPLACE_BROKEN_APEX()
         LOG "  > Cleaning old BT and Tethering files to avoid duplicates..."
         
         # Remove any existing Bluetooth or Tethering modules (regardless of their old names)
-        rm -f "$WORK_DIR/system/apex/com."*"tethering"*
-        rm -f "$WORK_DIR/system/apex/com."*"bt"*
+        rm -f "$WORK_DIR/system/system/apex/com."*"tethering"*
+        rm -f "$WORK_DIR/system/system/apex/com."*"bt"*
         
-        LOG "  > Copying working APEX to system/apex/..."
+        LOG "  > Copying working APEX to system/system/apex/..."
         # Copy the new OneUI 7 fixes
-        cp -f "$SRC_DIR/prebuilts/apex_fixes/"*.apex "$WORK_DIR/system/apex/"
-        chmod 644 "$WORK_DIR/system/apex/"*.apex
+        cp -f "$SRC_DIR/prebuilts/apex_fixes/"*.apex "$WORK_DIR/system/system/apex/"
+        chmod 644 "$WORK_DIR/system/system/apex/"*.apex
         
         LOG "  > Appending explicit rules to fs_config and file_contexts..."
         
@@ -176,17 +176,17 @@ REPLACE_BROKEN_APEX()
         # Instead of sed replacing, we explicitly APPEND the exact permissions mkfs.erofs wants
         if [ -f "$FS_CONF" ]; then
             # We add both path formats just to be absolutely foolproof
-            echo "apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
             echo "system/apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
+            echo "system/system/apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
             
-            echo "apex/com.android.tethering.apex 0 0 0644" >> "$FS_CONF"
-            echo "system/apex/com.android.tethering.apex 0 0 0644" >> "$FS_CONF"
+            echo "system/apex/com.google.android.tethering_compressed.apex 0 0 0644" >> "$FS_CONF"
+            echo "system/system/apex/com.google.android.tethering_compressed.apex 0 0 0644" >> "$FS_CONF"
         fi
 
         # Append standard SELinux contexts for the new files
         if [ -f "$FL_CONT" ]; then
-            echo "/system/apex/com\.android\.bt\.apex u:object_r:system_file:s0" >> "$FL_CONT"
-            echo "/system/apex/com\.android\.tethering\.apex u:object_r:system_file:s0" >> "$FL_CONT"
+            echo "/system/system/apex/com\.android\.bt\.apex u:object_r:system_file:s0" >> "$FL_CONT"
+            echo "/system/system/apex/com\.google\.android\.tethering_compressed\.apex u:object_r:system_file:s0" >> "$FL_CONT"
         fi
 
         LOG "  [OK] Replacement and Mapping finished."
