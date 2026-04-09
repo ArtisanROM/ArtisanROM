@@ -151,20 +151,23 @@ COPY_TARGET_KERNEL()
     fi
 }
 
-# PATCH: REPLACE & MAP INCOMPATIBLE APEX by @Devandroid-bit
+# ==========================================
+# PATCH: REPLACE & MAP INCOMPATIBLE APEX
+# ==========================================
 REPLACE_BROKEN_APEX()
 {
     LOG_STEP_IN "- Replacing and Mapping APEX files"
     
     if [ -d "$SRC_DIR/prebuilts/apex_fixes" ]; then
-        LOG "  > Cleaning old BT and Tethering files to avoid duplicates..."
+        LOG "  > Cleaning old BT and Tethering files from nested system directory..."
         
         # Remove any existing Bluetooth or Tethering modules (regardless of their old names)
+        # Using the system/system/apex path as identified in TWRP
         rm -f "$WORK_DIR/system/system/apex/com."*"tethering"*
         rm -f "$WORK_DIR/system/system/apex/com."*"bt"*
         
         LOG "  > Copying working APEX to system/system/apex/..."
-        # Copy the new OneUI 7 fixes
+        # Copy the OneUI 7 fixes into the nested system directory
         cp -f "$SRC_DIR/prebuilts/apex_fixes/"*.apex "$WORK_DIR/system/system/apex/"
         chmod 644 "$WORK_DIR/system/system/apex/"*.apex
         
@@ -173,17 +176,18 @@ REPLACE_BROKEN_APEX()
         local FS_CONF="$WORK_DIR/configs/fs_config-system"
         local FL_CONT="$WORK_DIR/configs/file_context-system"
 
-        # Instead of sed replacing, we explicitly APPEND the exact permissions mkfs.erofs wants
         if [ -f "$FS_CONF" ]; then
-            # We add both path formats just to be absolutely foolproof
+            # We add the paths relative to the image root for mkfs.erofs
+            # Bluetooth rules
             echo "system/apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
             echo "system/system/apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
             
+            # Tethering rules - using the exact '_compressed' name found in TWRP
             echo "system/apex/com.google.android.tethering_compressed.apex 0 0 0644" >> "$FS_CONF"
             echo "system/system/apex/com.google.android.tethering_compressed.apex 0 0 0644" >> "$FS_CONF"
         fi
 
-        # Append standard SELinux contexts for the new files
+        # Append SELinux contexts for the nested system paths
         if [ -f "$FL_CONT" ]; then
             echo "/system/system/apex/com\.android\.bt\.apex u:object_r:system_file:s0" >> "$FL_CONT"
             echo "/system/system/apex/com\.google\.android\.tethering_compressed\.apex u:object_r:system_file:s0" >> "$FL_CONT"
@@ -196,6 +200,7 @@ REPLACE_BROKEN_APEX()
     
     LOG_STEP_OUT
 }
+
 
 # ]
 
