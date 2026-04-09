@@ -1,0 +1,26 @@
+From 2e4ff8206a15a6fb77547f7b1f27bc0f07212fa0 Mon Sep 17 00:00:00 2001
+From: Fred <frignacio16@gmail.com>
+Date: Thu, 9 Apr 2026 21:32:37 +0800
+Subject: [PATCH] Fix Color Format for OMX
+
+Signed-off-by: Fred <frignacio16@gmail.com>
+---
+ smali/com/samsung/android/sum/core/filter/EncoderFilter.smali | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali b/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali
+index 15feca2..90202d0 100644
+--- a/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali
++++ b/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali
+@@ -1885,7 +1885,7 @@
+     invoke-virtual {v2, v7, v4}, Landroid/media/MediaFormat;->setInteger(Ljava/lang/String;I)V
+ 
+     :cond_11
+-    const v4, 0x7f420888
++    const v4, 0x7f000789
+ 
+     invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+-- 
+2.53.0
+
