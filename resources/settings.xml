@@ -19,7 +19,7 @@
         off="false" />
     <setting
         name="Unlimited Google Photos"
-        description="Enable Unlimited Google Photos (Alpha4 only)"
+        description="Enable Unlimited Google Photos"
         warning="I am not liable for any issues that may occur after you enable the Unlimited Google Photos spoof, including but not limited to account suspension, legal action from Google, losing all your uploaded data, or your device being restricted from accessing Google services."
         type="ext4"
         reboot="no"
