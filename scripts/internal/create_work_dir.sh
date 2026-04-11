@@ -181,9 +181,9 @@ REPLACE_BROKEN_APEX()
 
         if [ -f "$FS_CONF" ]; then
             # Path relative to the image root ($WORK_DIR/system)
-            # Physical: $WORK_DIR/system/system/apex/file.apex -> Relative: system/apex/file.apex
-            echo "system/apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
-            echo "system/apex/com.google.android.tethering_compressed.apex 0 0 0644" >> "$FS_CONF"
+            # Physical: $WORK_DIR/system/system/apex/file.apex -> Relative: system/system/apex/file.apex
+            echo "system/system/apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
+            echo "system/system/apex/com.google.android.tethering_compressed.apex 0 0 0644" >> "$FS_CONF"
         fi
 
         if [ -f "$FL_CONT" ]; then
