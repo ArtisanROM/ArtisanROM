@@ -1,13 +1,19 @@
-
 /vendor u:object_r:vendor_file:s0
 /vendor/bin u:object_r:vendor_file:s0
 /vendor/bin/hw u:object_r:vendor_file:s0
+/vendor/bin/hw/android\.hardware\.audio\.service u:object_r:hal_audio_default_exec:s0
+/vendor/bin/hw/android\.hardware\.media\.omx@1\.0-service u:object_r:mediacodec_exec:s0
 /vendor/bin/hw/rild u:object_r:rild_exec:s0
 /vendor/bin/hw/vendor\.samsung\.hardware\.biometrics\.face@3\.0-service u:object_r:hal_face_default_exec:s0
 /vendor/bin/hw/vendor\.samsung\.hardware\.light-service u:object_r:hal_light_default_exec:s0
+/vendor/bin/hw/vendor\.samsung\.hardware\.snap-service u:object_r:hal_snap_default_exec:s0
+/vendor/bin/hw/vendor\.samsung\.hardware\.sysinput@1\.3-service u:object_r:hal_sysinput_default_exec:s0
+/vendor/bin/hw/vendor\.samsung\.hardware\.thermal@1\.0-service u:object_r:hal_thermal_default_exec:s0
 /vendor/bin/hw/vendor\.samsung\.hardware\.uwb@1\.0-service u:object_r:hal_uwb_default_exec:s0
 /vendor/bin/hw/vendor\.samsung\.hardware\.vibrator-service u:object_r:hal_vibrator_default_exec:s0
 /vendor/bin/hw/wpa_supplicant u:object_r:hal_wifi_supplicant_default_exec:s0
+/vendor/bin/snap_utility_64 u:object_r:vendor_file:s0
+/vendor/build\.prop u:object_r:vendor_file:s0
 /vendor/etc u:object_r:vendor_configs_file:s0
 /vendor/etc/init u:object_r:vendor_configs_file:s0
 /vendor/etc/init/init\.vendor\.rilcommon\.rc u:object_r:vendor_configs_file:s0
@@ -66,8 +72,14 @@
 /vendor/firmware/uwb u:object_r:vendor_firmware_file:s0
 /vendor/firmware/uwb/libsr100t_dev_fw\.bin u:object_r:vendor_firmware_file:s0
 /vendor/firmware/uwb/libsr100t_prod_fw\.bin u:object_r:vendor_firmware_file:s0
+/vendor/lib/libDualCamBokehCapture\.camera\.samsung\.so u:object_r:vendor_file:s0
+/vendor/lib/liblivefocus_capture_engine\.so u:object_r:vendor_file:s0
+/vendor/lib/liblivefocus_preview_engine\.so u:object_r:vendor_file:s0
 /vendor/lib64 u:object_r:vendor_file:s0
 /vendor/lib64/android\.hardware\.light-V1-ndk_platform\.so u:object_r:vendor_file:s0
+/vendor/lib64/libDualCamBokehCapture\.camera\.samsung\.so u:object_r:vendor_file:s0
+/vendor/lib64/liblivefocus_capture_engine\.so u:object_r:vendor_file:s0
+/vendor/lib64/liblivefocus_preview_engine\.so u:object_r:vendor_file:s0
 /vendor/lib64/libmemunreachable\.so u:object_r:vendor_file:s0
 /vendor/lib64/libril_sem\.so u:object_r:vendor_file:s0
 /vendor/lib64/libsec-ril\.so u:object_r:vendor_file:s0
