@@ -1,0 +1,206 @@
+####################################
+# from generate-common-build-props
+# These properties identify this partition image.
+####################################
+ro.product.vendor.brand=samsung
+ro.product.vendor.device=d1x
+ro.product.vendor.manufacturer=samsung
+ro.product.vendor.model=SM-N971N
+ro.product.vendor.name=d1xks
+ro.vendor.product.cpu.abilist=arm64-v8a
+ro.vendor.product.cpu.abilist32=
+ro.vendor.product.cpu.abilist64=arm64-v8a
+ro.vendor.build.date=Wed Aug 16 10:50:45 KST 2023
+ro.vendor.build.date.utc=1692150645
+ro.vendor.build.fingerprint=samsung/d1xks/d1x:12/SP1A.210812.016/N971NKSU2HWH5:user/release-keys
+ro.vendor.build.id=SP1A.210812.016
+ro.vendor.build.tags=release-keys
+ro.vendor.build.type=user
+ro.vendor.build.version.incremental=N971NKSU2HWH5
+ro.vendor.build.version.release=12
+ro.vendor.build.version.release_or_codename=12
+ro.vendor.build.version.sdk=31
+####################################
+# from device/samsung/universal9820/vendor.universal9825.prop
+####################################
+#
+# vendor.prop for universal9825
+#
+ro.soc.manufacturer=Samsung
+ro.soc.model=Exynos 9825
+####################################
+# from out/target/product/d1x/obj/ETC/android_info_prop_intermediates/android_info.prop
+####################################
+####################################
+# from variable ADDITIONAL_VENDOR_PROPERTIES
+####################################
+ro.vndk.version=31
+ro.bionic.arch=arm64
+ro.bionic.cpu_variant=cortex-a53
+ro.bionic.2nd_arch=arm
+ro.bionic.2nd_cpu_variant=cortex-a53
+persist.sys.dalvik.vm.lib.2=libart.so
+dalvik.vm.isa.arm64.variant=cortex-a53
+dalvik.vm.isa.arm64.features=default
+dalvik.vm.isa.arm.variant=cortex-a53
+dalvik.vm.isa.arm.features=default
+ro.product.first_api_level=28
+ro.vendor.build.security_patch=
+ro.product.board=exynos9825
+ro.board.platform=universal9825
+ro.hwui.use_vulkan=
+####################################
+# from variable PRODUCT_VENDOR_PROPERTIES
+####################################
+dalvik.vm.heapstartsize=8m
+# Removed by post_process_props.py because overridden by dalvik.vm.heapgrowthlimit=256m
+#dalvik.vm.heapgrowthlimit?=192m
+dalvik.vm.heapsize=512m
+dalvik.vm.heaptargetutilization=0.75
+dalvik.vm.heapminfree=512k
+dalvik.vm.heapmaxfree=8m
+ro.zygote=zygote64
+# Removed by post_process_props.py because overridden by ro.config.ringtone?=Over_the_Horizon.ogg
+#ro.config.ringtone?=Ring_Synth_04.ogg
+# Removed by post_process_props.py because overridden by ro.config.notification_sound?=Spaceline.ogg
+#ro.config.notification_sound?=pixiedust.ogg
+# Removed by post_process_props.py because overridden by ro.zygote=zygote64_32
+#ro.zygote?=zygote32
+ro.logd.size.stats=64K
+log.tag.stats_log=I
+ro.carrier=unknown
+# Removed by post_process_props.py because overridden by ro.config.notification_sound?=Spaceline.ogg
+#ro.config.notification_sound?=OnTheHunt.ogg
+# Removed by post_process_props.py because overridden by ro.config.alarm_alert=Homecoming.ogg
+#ro.config.alarm_alert?=Alarm_Classic.ogg
+ro.vendor.sec.radio.def_network=9
+vendor.sec.rild.libpath=/vendor/lib64/libsec-ril.so
+ro.radio.noril=no
+ro.telephony.default_cdma_sub=0
+ro.vendor.epdg.support=true
+ro.vendor.radio.first_api_level=28
+ro.security.fips_fmp.ver=1.5
+####################################
+# from variable PRODUCT_DEFAULT_PROPERTY_OVERRIDES
+####################################
+ro.surface_flinger.has_wide_color_display=true
+ro.surface_flinger.has_HDR_display=true
+ro.surface_flinger.use_color_management=true
+ro.storage.support.sdcard=0
+persist.sys.usb.config=mtp
+####################################
+# from variable PRODUCT_PROPERTY_OVERRIDES
+####################################
+net.dns1=8.8.8.8
+net.dns2=8.8.4.4
+# Removed by post_process_props.py because vendor.rild.libpath is a disallowed key
+#vendor.rild.libpath=/vendor/lib64/libsec-ril.so
+ro.debug_level=0x494d
+exynos.modempath=/dev/block/mmcblk0p5
+exynos.slog.path=
+dalvik.vm.heapgrowthlimit=256m
+persist.demo.hdmirotationlock=false
+dev.usbsetting.embedded=on
+audio.offload.min.duration.secs=30
+ro.incremental.enable=yes
+aaudio.mmap_policy=2
+aaudio.mmap_exclusive_policy=2
+aaudio.hw_burst_min_usec=2000
+ro.opengles.version=196610
+debug.slsi_platform=1
+debug.hwc.winupdate=1
+debug.sf.disable_backpressure=1
+ro.vendor.ddk.set.afbc=1
+log.tag.EDEN=INFO
+ro.vendor.eden.devices=CPU1_GPU1_NPU1
+ro.vendor.eden.npu.version.path=/sys/devices/platform/npu@17800000/version
+ro.hardware.vulkan=mali
+ro.hardware.egl=mali
+graphics.gpu.profiler.support=true
+security.ASKS.policy_version=00000000
+security.ASKS.version=0
+security.ASKS.time_value=00000000
+security.ASKS.rufs_enable=true
+security.ADP.version=0
+security.ADP.policy_version=00000000
+sys.config.activelaunch_enable=true
+drm.service.enabled=true
+ro.smps.enable=true
+ro.apex.updatable=true
+sys.config.hardcoder.enable=false
+sys.config.ibs.enable=false
+ro.control_privapp_permissions=enforce
+ro.vendor.sec.radio.def_network=9
+vendor.sec.rild.libpath=/vendor/lib64/libsec-ril.so
+ro.radio.noril=no
+ro.telephony.default_cdma_sub=0
+ro.vendor.epdg.support=true
+ro.security.cass.feature=1
+ro.hardware.keystore=mdfpp
+ro.security.keystore.keytype=sakv2,gak,
+security.securehw.available=false
+security.securenvm.available=false
+ro.security.vpnpp.ver=2.3
+ro.security.vpnpp.release=1.0
+ro.crypto.metadata_init_delete_all_keys.enabled=false
+ro.hw.use_hwc_services=1
+ro.hw.use_virtual_display=1
+ro.hw.use_disable_composition_type_gles=1
+ro.hw.use_secure_encoder_only=1
+ro.hardware.chipname=exynos9825
+sys.perf.hmp=4:4
+ro.config.ringtone=ACH_Galaxy_Bells.ogg
+ro.config.notification_sound=ACH_Brightline.ogg
+ro.config.alarm_alert=ACH_Morning_Xylophone.ogg
+ro.config.media_sound=Media_preview_Touch_the_light.ogg
+ro.config.ringtone_2=ACH_Atomic_Bell.ogg
+ro.config.notification_sound_2=ACH_Three_Star.ogg
+ro.config.vc_call_vol_steps=8
+ro.sf.lcd_density=420
+ro.frp.pst=
+ro.slmk.dha_cached_min=4
+ro.slmk.dha_cached_max=24
+ro.slmk.dha_empty_min=8
+ro.slmk.dha_empty_max=30
+ro.slmk.dha_2ndprop_thMB=6144
+ro.slmk.2nd.dha_cached_min=4
+ro.slmk.2nd.dha_cached_max=24
+ro.slmk.2nd.dha_empty_min=8
+ro.slmk.2nd.dha_empty_max=30
+ro.slmk.add_bonusEFK=2
+ro.slmk.v_bonusEFK=175944
+ro.slmk.custom_sw_limit=275
+ro.slmk.2nd.custom_sw_limit=275
+ro.slmk.base_swaptotal=2560
+ro.slmk.enable_picked_adj=true
+ro.config.systemaudiodebug=abox
+ro.vendor.nfc.feature.chipname=SLSI
+ro.vendor.nfc.support.advancedsetting=true
+ro.vendor.nfc.support.autoselect=true
+ro.vendor.nfc.support.defaultaid=false
+ro.vendor.nfc.support.nonaid=false
+ro.vendor.nfc.support.othercategory=true
+ro.vendor.nfc.support.uicc=true
+ro.camera.notify_nfc=1
+ro.vendor.nfc.info.antpos=1
+ro.vendor.nfc.support.ese=true
+ro.gfx.driver.0=com.samsung.gamedriver.ex9825
+ro.gfx.driver.1=com.samsung.pregpudriver.ex9825
+ro.hardware.egl=mali
+graphics.gpu.profiler.support=true
+# end of file
+
+# Added by scripts/utils/module_utils.sh
+dalvik.vm.dex2oat64.enabled=true
+ro.oem_unlock_supported=0
+ro.apk_verity.mode=2
+debug.sf.latch_unsignaled=1
+debug.sf.high_fps_late_app_phase_offset_ns=0
+debug.sf.high_fps_late_sf_phase_offset_ns=0
+debug.sf.show_refresh_rate_overlay_render_rate=true
+ro.surface_flinger.game_default_frame_rate_override=60
+ro.surface_flinger.enable_frame_rate_override=false
+ro.surface_flinger.use_content_detection_for_refresh_rate=false
+ro.hwui.use_vulkan=true
+debug.hwui.use_hint_manager=true
+ro.security.fips.ux=Disabled
