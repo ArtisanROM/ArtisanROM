@@ -151,55 +151,6 @@ COPY_TARGET_KERNEL()
     fi
 }
 
-# PATCH: REPLACE & MAP INCOMPATIBLE APEX by @Devandroid-bit
-REPLACE_BROKEN_APEX()
-{
-    LOG_STEP_IN "- Replacing APEX files in Nested System (System-in-System)"
-    
-    if [ -d "$SRC_DIR/prebuilts/apex_fixes" ]; then
-        # Ensure the nested destination directory exists
-        mkdir -p "$WORK_DIR/system/system/apex"
-
-        LOG "  > Cleaning specific files from BOTH locations to prevent conflicts..."
-        # 1. Remove from top-level /system/apex (The ones you don't want)
-        rm -f "$WORK_DIR/system/apex/com."*"tethering"*
-        rm -f "$WORK_DIR/system/apex/com."*"bt"*
-
-        # 2. Remove from nested /system/system/apex (To prepare for the new ones)
-        rm -f "$WORK_DIR/system/system/apex/com."*"tethering"*
-        rm -f "$WORK_DIR/system/system/apex/com."*"bt"*
-        
-        LOG "  > Copying OneUI 7 fixes to nested system/system/apex/..."
-        # We only copy the fixes to the nested folder as requested
-        cp -f "$SRC_DIR/prebuilts/apex_fixes/"*.apex "$WORK_DIR/system/system/apex/"
-        chmod 644 "$WORK_DIR/system/system/apex/"*.apex
-        
-        LOG "  > Updating configurations with exact nested paths..."
-        
-        local FS_CONF="$WORK_DIR/configs/fs_config-system"
-        local FL_CONT="$WORK_DIR/configs/file_context-system"
-
-        if [ -f "$FS_CONF" ]; then
-            # Path relative to the image root ($WORK_DIR/system)
-            # Physical: $WORK_DIR/system/system/apex/file.apex -> Relative: system/system/apex/file.apex
-            echo "system/system/apex/com.android.bt.apex 0 0 0644" >> "$FS_CONF"
-            echo "system/system/apex/com.google.android.tethering_compressed.apex 0 0 0644" >> "$FS_CONF"
-        fi
-
-        if [ -f "$FL_CONT" ]; then
-            # Full path for SELinux labeling in the running OS
-            echo "/system/system/apex/com\.android\.bt\.apex u:object_r:system_file:s0" >> "$FL_CONT"
-            echo "/system/system/apex/com\.google\.android\.tethering_compressed\.apex u:object_r:system_file:s0" >> "$FL_CONT"
-        fi
-
-        LOG "  [OK] Nested APEX replacement complete. Root apex folder was preserved."
-    else
-        LOG "  [!] No fixes found in prebuilts/apex_fixes. Skipping."
-    fi
-    
-    LOG_STEP_OUT
-}
-
 # ]
 
 mkdir -p "$WORK_DIR"
@@ -207,6 +158,5 @@ mkdir -p "$WORK_DIR/configs"
 COPY_SOURCE_FIRMWARE
 COPY_TARGET_FIRMWARE
 COPY_TARGET_KERNEL
-REPLACE_BROKEN_APEX
 
 exit 0
