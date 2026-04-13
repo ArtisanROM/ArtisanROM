@@ -1,4 +1,4 @@
-name: Setup APEX Fixes Directory
+name: Setup lib Directory
 
 on:
   workflow_dispatch:
@@ -16,8 +16,8 @@ jobs:
 
       - name: Create directory and dummy file
         run: |
-          mkdir -p prebuilts/apex_fixes
-          echo "Create an empty file." > prebuilts/apex_fixes/dummy.txt
+          mkdir -p prebuilts/samsung/p3sxxx/vendor/lib
+          echo "Create an empty file." > prebuilts/samsung/p3sxxx/vendor/lib/dummy.txt
 
       - name: Commit and Push changes
         run: |
@@ -25,12 +25,12 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           # Add
-          git add prebuilts/apex_fixes/dummy.txt
+          git add prebuilts/samsung/p3sxxx/vendor/lib/dummy.txt
           
           # Commit
           if git diff --staged --quiet; then
-            echo "Le dossier et le fichier existent déjà."
+            echo "Folder already exists."
           else
-            git commit -m "chore: create apex_fixes folder"
+            git commit -m "patch: add some exynos9825 fixes"
             git push origin sixteen
           fi
