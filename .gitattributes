@@ -28,11 +28,10 @@ platform/exynos990/patches/vendor/vendor/** binary
 # Device-specific prebuilt blobs
 target/r8s/patches/vendor/vendor/** binary
 # ... (rest of the file)
-
 # Move this general rule UP
 prebuilts/*/*/*/** binary
-
 # Move LFS rules to the BOTTOM to ensure they take priority
 *.apk filter=lfs diff=lfs merge=lfs -text
 prebuilts/samsung/m3q/system/priv_app/SamsungSmartSuggestions/SamsungSmartSuggestions.apk filter=lfs diff=lfs merge=lfs -text
 prebuilts/samsung/m3qxx/system/priv_app/SamsungSmartSuggestions/SamsungSmartSuggestions.apk filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
