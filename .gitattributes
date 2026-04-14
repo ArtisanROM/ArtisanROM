@@ -1,10 +1,8 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text eol=lf
-
 # Denote all files that are truly binary and should not be modified.
-
 # Common file extensions
-*.apk binary
+*.apk filter=lfs diff=lfs merge=lfs -text
 *.apex binary
 *.bin binary
 *.so binary
@@ -18,17 +16,23 @@
 *.qmg binary
 *.webp binary
 *.pdf binary
-
 # ROM-specific prebuilt blobs
 prebuilts/bootable/deprecated-ota/updater binary
 prebuilts/*/*/*/** binary
 unica/mods/csc/*/** binary
 unica/mods/rezetprop/system/bin/rezetprop binary
 unica/patches/product_feature/resolution/system/system/bin/* binary
-
 # Platform-specific prebuilt blobs
 platform/exynos9820/patches/vendor/vendor/** binary
 platform/exynos990/patches/vendor/vendor/** binary
-
 # Device-specific prebuilt blobs
 target/r8s/patches/vendor/vendor/** binary
+# ... (rest of the file)
+
+# Move this general rule UP
+prebuilts/*/*/*/** binary
+
+# Move LFS rules to the BOTTOM to ensure they take priority
+*.apk filter=lfs diff=lfs merge=lfs -text
+prebuilts/samsung/m3q/system/priv_app/SamsungSmartSuggestions/SamsungSmartSuggestions.apk filter=lfs diff=lfs merge=lfs -text
+prebuilts/samsung/m3qxx/system/priv_app/SamsungSmartSuggestions/SamsungSmartSuggestions.apk filter=lfs diff=lfs merge=lfs -text
