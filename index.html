@@ -17,6 +17,19 @@
             --accent: #0ea5e9;
             --particle: rgba(14, 165, 233, 0.4);
             --warning: #ef4444;
+			--bg-body: #050507;
+            --bg-card: rgba(29, 29, 31, 0.4);
+            --bg-card-hover: rgba(44, 44, 46, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #98989d;
+            --accent-blue: #2997ff;
+            --accent-cyan: #30cfd0;
+            --accent-gradient: linear-gradient(135deg, #2997ff 0%, #30cfd0 100%);
+            --nav-glass: rgba(0, 0, 0, 0.5);
+            --spotlight-color: rgba(255, 255, 255, 0.15);
+            --border-color: rgba(255,255,255,0.1);
+            --particle-color: rgba(41, 151, 255, 0.5);
+            --canvas-bg: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #000000 100%);
         }
 
         .light-mode {
@@ -25,6 +38,16 @@
             --glass: rgba(0, 0, 0, 0.03);
             --border: rgba(0, 0, 0, 0.08);
             --particle: rgba(14, 165, 233, 0.2);
+			--bg-body: #f5f5f7;
+            --bg-card: rgba(255, 255, 255, 0.6);
+            --bg-card-hover: rgba(255, 255, 255, 0.9);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --nav-glass: rgba(255, 255, 255, 0.85);
+            --spotlight-color: rgba(0, 0, 0, 0.08);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --particle-color: rgba(0, 113, 227, 0.4);
+            --canvas-bg: radial-gradient(circle at 50% 50%, #e6e6e9 0%, #ffffff 100%);
         }
 
         body {
@@ -142,117 +165,448 @@
         code {
             font-family: 'JetBrains Mono', monospace;
         }
-
-        /* Wiki Specific Styles */
-        .wiki-step-title {
-            color: #22d3ee;
-            font-weight: 800;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .wiki-warning {
-            border: 1px solid #78350f;
-            background: rgba(120, 53, 15, 0.1);
-            color: #fbbf24;
-            padding: 1.25rem;
-            border-radius: 12px;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-        .wiki-sub-heading {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            color: var(--text);
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.5rem;
-        }
-        .wiki-tip {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .twrp-frame {
-            background: #1e1e1e;
-            border: 8px solid #333;
-            border-radius: 20px;
-            overflow: hidden;
-            width: 280px;
-            margin: 20px 0;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .twrp-header {
-            background: #f39c12;
-            padding: 10px;
-            color: white;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .twrp-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 15px;
-            background: #2c2c2c;
-        }
-        .twrp-btn {
-            background: #555;
-            color: #ddd;
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .twrp-btn.active {
-            border: 2px solid #e74c3c;
-        }
-        .req-list li {
+		
+		/* --- Utilities --- */
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 22px;
             position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            z-index: 5; /* Ensure content is above canvas */
         }
-        .req-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: white;
+
+        .text-gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
-        .req-link {
-            color: #3b82f6;
-            text-decoration: underline;
-            text-underline-offset: 4px;
+
+        /* --- Wiki Tabs --- */
+        .wiki-tab-bar {
+            display: flex; gap: 8px; flex-wrap: wrap; padding: 6px;
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 18px; backdrop-filter: blur(20px);
         }
-        .req-link:hover {
-            color: #60a5fa;
+        .wiki-tab {
+            display: flex; align-items: center; gap: 7px; padding: 9px 18px;
+            border-radius: 12px; font-size: 0.72rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--text-secondary); background: transparent; border: none;
+            cursor: pointer; white-space: nowrap;
+            transition: background 0.3s cubic-bezier(0.4,0,0.2,1), color 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .wiki-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+        .wiki-tab.active { background: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(168,85,247,0.15)); border: 1px solid rgba(14,165,233,0.3); color: #0ea5e9; }
+        .wiki-panel { display: none; animation: fadeIn 0.45s cubic-bezier(0.4,0,0.2,1) forwards; }
+        .wiki-panel.active { display: block; }
+        .light-mode .wiki-tab:hover { background: rgba(0,0,0,0.04); }
+        .light-mode .wiki-tab.active { background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(168,85,247,0.08)); }
+
+        /* --- Wiki Page Styles --- */
+        .wiki-nav-item {
+            display: block;
+            padding: 10px 15px;
+            color: var(--text-secondary);
+            border-left: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-bottom: 5px;
         }
         
+        .wiki-nav-item:hover, .wiki-nav-item.active {
+            color: var(--accent-blue);
+            border-left-color: var(--accent-blue);
+            background: rgba(41, 151, 255, 0.05);
+        }
+
+        .wiki-content {
+            flex-grow: 1;
+            max-width: 800px;
+        }
+
+        .wiki-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .wiki-header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .wiki-section {
+            margin-bottom: 50px;
+        }
+
+        .wiki-section h2 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .wiki-section h3 {
+            font-size: 1.3rem;
+            margin: 30px 0 15px 0;
+            color: var(--accent-cyan);
+        }
+
+        .wiki-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .wiki-list {
+            list-style: disc;
+            padding-left: 20px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .wiki-list li { margin-bottom: 10px; }
+
+        .wiki-image {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 16px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            display: block;
+            height: auto;
+        }
+
+        .wiki-image.small { max-width: 300px; }
+
+        .wiki-code {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #f8f8f2;
+            display: block;
+            margin: 10px 0;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .warning-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            color: #ffb74d;
+        }
+        
+        .info-box {
+            background: rgba(41, 151, 255, 0.1);
+            border: 1px solid rgba(41, 151, 255, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            color: var(--accent-blue);
+        }
+		
         /* Mobile Menu Animation */
         #mobileMenu {
-			display: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(-20px);
+            max-height: 0;
+            overflow: hidden;
+            visibility: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        visibility 0s linear 0.4s;
+            transform: translateY(-10px);
             opacity: 0;
             pointer-events: none;
         }
         #mobileMenu.active {
-			display: block;
+            max-height: 400px;
+            visibility: visible;
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        visibility 0s linear 0s;
         }
+
+        /* ══════════════════════════════════════
+           ANIMATIONS
+        ══════════════════════════════════════ */
+
+        /* Scroll progress bar */
+        #scrollProgress {
+            position: fixed; top: 0; left: 0;
+            height: 2px; width: 0%;
+            background: linear-gradient(to right, #0ea5e9, #a855f7, #22d3ee);
+            z-index: 9999; transition: width 0.1s linear;
+            box-shadow: 0 0 8px rgba(14,165,233,0.6);
+        }
+
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(270deg, #60a5fa, #a855f7, #22d3ee, #60a5fa);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 5s ease infinite;
+        }
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Hero circuit float */
+        .hero-circuit {
+            animation: circuitFloat 6s ease-in-out infinite;
+        }
+        @keyframes circuitFloat {
+            0%, 100% { transform: translate(-50%, -60%) translateY(0px); }
+            50%       { transform: translate(-50%, -60%) translateY(-12px); }
+        }
+
+        /* Typewriter cursor */
+        .typewriter-cursor {
+            display: inline-block; width: 2px; height: 1em;
+            background: #0ea5e9; margin-left: 2px;
+            vertical-align: middle;
+            animation: cursorBlink 0.8s step-end infinite;
+        }
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+        /* 3D Tilt card */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transform: perspective(800px);
+            transition: box-shadow 0.3s ease;
+            will-change: transform;
+        }
+        .tilt-card:hover {
+            box-shadow: 0 20px 60px rgba(14,165,233,0.15), 0 0 0 1px rgba(14,165,233,0.2);
+        }
+        .tilt-card .tilt-shine {
+            position: absolute; inset: 0; border-radius: inherit;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .tilt-card:hover .tilt-shine { opacity: 1; }
+
+        /* Ripple */
+        .ripple-btn { position: relative; overflow: hidden; }
+        .ripple-btn .ripple {
+            position: absolute; border-radius: 50%;
+            transform: scale(0); animation: rippleAnim 0.55s linear;
+            background: rgba(255,255,255,0.25); pointer-events: none;
+        }
+        @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+        /* Staggered reveal delays */
+        .reveal-d1 { transition-delay: 0.05s !important; }
+        .reveal-d2 { transition-delay: 0.12s !important; }
+        .reveal-d3 { transition-delay: 0.19s !important; }
+        .reveal-d4 { transition-delay: 0.26s !important; }
+
+        /* Magnetic button */
+        .magnetic { transition: transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94); display: inline-flex; }
+
+        /* ── HERO GLOW ── */
+        .hero-glow {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -60%);
+            width: 700px; height: 400px;
+            background: radial-gradient(ellipse at center, rgba(14,165,233,0.12) 0%, rgba(168,85,247,0.06) 50%, transparent 70%);
+            pointer-events: none; z-index: 0; filter: blur(40px);
+        }
+        .hero-glow-2 {
+            position: absolute; top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px; height: 200px;
+            background: radial-gradient(ellipse at center, rgba(168,85,247,0.08) 0%, transparent 70%);
+            pointer-events: none; z-index: 0; filter: blur(60px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+            50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.1); }
+        }
+        .hero-content { position: relative; z-index: 1; }
+
+        /* ── FEATURE CARDS ── */
+        .feature-card-blue   { border-top: 2px solid rgba(96,165,250,0.5) !important; }
+        .feature-card-purple { border-top: 2px solid rgba(168,85,247,0.5) !important; }
+        .feature-card-orange { border-top: 2px solid rgba(251,146,60,0.5) !important; }
+        .feature-card-cyan   { border-top: 2px solid rgba(34,211,238,0.5) !important; }
+        .feature-card { text-align: left !important; align-items: flex-start !important; }
+
+        /* ── DEVICE CARDS ── */
+        .chipset-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 999px;
+            font-size: 0.6rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2);
+            color: rgba(14,165,233,0.8); margin-top: 10px;
+        }
+
+        /* ── SECTION DIVIDERS ── */
+        .section-divider {
+            position: relative; height: 1px; margin: 0 auto; max-width: 800px;
+            background: linear-gradient(to right, transparent, rgba(14,165,233,0.2), transparent);
+        }
+        .section-divider::after {
+            content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            width: 300px; height: 40px;
+            background: radial-gradient(ellipse at center, rgba(14,165,233,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ── SERIES LABEL ── */
+        .series-label { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+        .series-label::before {
+            content: ''; width: 3px; height: 1.2em;
+            background: linear-gradient(to bottom, #0ea5e9, #a855f7);
+            border-radius: 2px; flex-shrink: 0;
+        }
+
+        /* ── FOOTER GRADIENT ── */
+        .footer-gradient-line {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(14,165,233,0.4), rgba(168,85,247,0.3), transparent);
+        }
+
+        /* ── CHANGELOG ── */
+        .cl-version-block { border-left: 2px solid rgba(14,165,233,0.3); padding-left: 1.25rem; }
+        .cl-version-title { font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .cl-version-date  { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.4; margin-bottom: 0.75rem; }
+        .cl-category      { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin: 0.75rem 0 0.4rem; opacity: 0.8; }
+        .cl-item          { display: flex; align-items: flex-start; gap: 0.5rem; color: var(--text-secondary); margin-bottom: 0.3rem; font-size: 0.8rem; }
+        .cl-item::before  { content: '—'; color: rgba(14,165,233,0.5); flex-shrink: 0; margin-top: 1px; }
+        #changelogModal .cl-scroll::-webkit-scrollbar       { width: 4px; }
+        #changelogModal .cl-scroll::-webkit-scrollbar-track { background: transparent; }
+        #changelogModal .cl-scroll::-webkit-scrollbar-thumb { background: rgba(14,165,233,0.3); border-radius: 2px; }
+        .light-mode #changelogModalContent { background: rgba(255,255,255,0.92) !important; border: 1px solid rgba(0,0,0,0.1) !important; backdrop-filter: blur(20px); }
+        .light-mode #changelogModal        { background: rgba(0,0,0,0.35) !important; }
+
+        /* ── SKELETON LOADER ── */
+        @keyframes shimmer {
+            0%   { background-position: -600px 0; }
+            100% { background-position:  600px 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+            background-size: 600px 100%;
+            animation: shimmer 1.6s cubic-bezier(0.4,0,0.2,1) infinite;
+            border-radius: 8px;
+        }
+        .skeleton-line { height: 10px; margin-bottom: 10px; }
+        .skeleton-line.w-1\/2 { width: 50%; }
+        .skeleton-line.w-3\/4 { width: 75%; }
+        .skeleton-line.w-full { width: 100%; }
+        .light-mode .skeleton {
+            background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%);
+            background-size: 600px 100%;
+        }
+
+        /* ── COPY CODE BUTTON ── */
+        .wiki-code-wrap { position: relative; }
+        .wiki-copy-btn {
+            position: absolute; top: 10px; right: 10px;
+            display: flex; align-items: center; gap: 5px;
+            padding: 4px 10px; border-radius: 8px;
+            font-size: 0.6rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .wiki-copy-btn:hover { background: rgba(14,165,233,0.15); border-color: rgba(14,165,233,0.3); color: #0ea5e9; }
+        .wiki-copy-btn.copied { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.3); color: #22c55e; }
+        .light-mode .wiki-copy-btn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: rgba(0,0,0,0.4); }
+        .light-mode .wiki-copy-btn:hover { background: rgba(14,165,233,0.1); color: #0ea5e9; }
+
+        /* ── VERSION BADGE ── */
+        .version-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 999px; margin-top: 8px;
+            font-size: 0.6rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);
+            color: rgba(168,85,247,0.8);
+            transition: all 0.3s ease;
+        }
+        .version-badge.coming-soon {
+            background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.3);
+        }
+        .version-badge.skeleton-badge {
+            width: 80px; height: 22px; background: none;
+            border: none;
+        }
+
+        /* ── ERROR STATE ── */
+        .error-state {
+            display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+            padding: 16px; border-radius: 12px;
+            background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.15);
+        }
+        .error-state p { font-size: 0.75rem; font-weight: 700; color: rgba(239,68,68,0.7); margin: 0; }
+        .retry-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 8px;
+            font-size: 0.65rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+            color: rgba(239,68,68,0.7); cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .retry-btn:hover { background: rgba(239,68,68,0.18); color: #ef4444; }
+
+        /* Source Dropdown */
+        #sourceDropdown {
+            position: absolute; right: 0; top: calc(100% + 10px);
+            min-width: 170px;
+            background: rgba(10, 10, 20, 0.75);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.12); border-radius: 16px;
+            overflow: hidden; z-index: 200;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(14,165,233,0.08);
+            transform-origin: top right;
+            transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.2s;
+            opacity: 0; transform: scale(0.92) translateY(-6px); visibility: hidden;
+        }
+        #sourceDropdown.open {
+            opacity: 1; transform: scale(1) translateY(0); visibility: visible;
+            transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0s;
+        }
+        #sourceDropdown a {
+            display: flex; align-items: center; gap: 9px; padding: 11px 16px;
+            font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.7); transition: background 0.15s ease, color 0.15s ease;
+        }
+        #sourceDropdown a:hover { background: rgba(14,165,233,0.12); color: #0ea5e9; }
+        #sourceDropdown a + a { border-top: 1px solid rgba(255,255,255,0.07); }
+        .light-mode #sourceDropdown { background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.1); box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+        .light-mode #sourceDropdown a { color: rgba(0,0,0,0.6); }
+        .light-mode #sourceDropdown a + a { border-color: rgba(0,0,0,0.07); }
 
         /* About Page Styles */
         .github-stats-container {
@@ -304,7 +658,7 @@
     </style>
 </head>
 <body class="selection:bg-cyan-500/30">
-
+    <div id="scrollProgress"></div>
     <canvas id="bgCanvas"></canvas>
 
     <!-- Global Navigation -->
@@ -321,7 +675,19 @@
                 <button onclick="switchView('home')" class="nav-link hover:opacity-100 hover:text-cyan-400 transition-all">Home</button>
                 <button onclick="switchView('wiki')" class="nav-link hover:opacity-100 hover:text-cyan-400 transition-all">Wiki</button>
                 <button onclick="switchView('about')" class="nav-link hover:opacity-100 hover:text-cyan-400 transition-all">About</button>
-                <a href="https://github.com/ArtisanROM/" target="_blank" class="hover:opacity-100 hover:text-cyan-400 transition-all">Source</a>
+                <div class="relative" id="sourceDropdownWrap">
+                    <button onclick="toggleSourceDropdown()" class="hover:opacity-100 hover:text-cyan-400 transition-all flex items-center gap-1">
+                        Source <i class="ph-bold ph-caret-down text-[10px]" id="sourceCaretIcon" style="transition: transform 0.2s ease;"></i>
+                    </button>
+                    <div id="sourceDropdown">
+                        <a href="https://github.com/ArtisanROM/" target="_blank" onclick="closeSourceDropdown()">
+                            <i class="ph-bold ph-github-logo text-base"></i> GitHub
+                        </a>
+                        <a href="https://xdaforums.com/t/rom-oneui-8-port-16-extremerom-quant-for-galaxy-s20-series-exynos-only.4777536/" target="_blank" onclick="closeSourceDropdown()">
+                            <i class="ph-bold ph-globe text-base"></i> XDA Forums
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <div class="flex items-center gap-2">
@@ -341,107 +707,248 @@
                 <button onclick="switchView('home'); toggleMobileMenu();" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5">Home</button>
                 <button onclick="switchView('wiki'); toggleMobileMenu();" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5">Wiki</button>
                 <button onclick="switchView('about'); toggleMobileMenu();" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5">About</button>
-                <a href="https://github.com/ArtisanROM/" target="_blank" class="py-3 hover:text-cyan-400 transition-all">Source</a>
+                <a href="https://github.com/ArtisanROM/" target="_blank" class="py-3 hover:text-cyan-400 transition-all border-b border-white/5 flex items-center justify-center gap-2"><i class="ph-bold ph-github-logo"></i> GitHub</a>
+                <a href="https://xdaforums.com/t/rom-oneui-8-port-16-extremerom-quant-for-galaxy-s20-series-exynos-only.4777536/" target="_blank" class="py-3 hover:text-cyan-400 transition-all flex items-center justify-center gap-2"><i class="ph-bold ph-globe"></i> XDA Forums</a>
             </div>
         </div>
     </nav>
 
     <!-- VIEW: LANDING PAGE -->
     <main id="homeView" class="view active">
-        <header class="pt-48 pb-20 px-6 text-center">
-            <div class="reveal inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full text-[10px] font-black uppercase tracking-widest text-cyan-400 mb-6 border-cyan-500/30 bg-cyan-500/5">
-                <i class="ph-bold ph-info text-sm animate-blink"></i>
-                Exynos Architecture Only
-            </div>
-            <h1 class="reveal text-5xl md:text-8xl font-extrabold tracking-tighter leading-none mb-6">
-                Performance <br> <span class="gradient-text">Quantified.</span>
-            </h1>
-            <p class="reveal text-lg md:text-xl opacity-60 max-w-2xl mx-auto font-medium mb-10">
-                A work-in-progress ROM based on OneUI aiming for simplicity and ease of use.
-            </p>
-            <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})" class="w-full sm:w-auto px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-white font-bold rounded-2xl transition-all shadow-[0_0_30px_rgba(6,182,212,0.3)] flex items-center justify-center gap-2">
-                    <i class="ph-bold ph-download-simple"></i>
-                    Download
-                </button>
-                <button onclick="switchView('wiki')" class="w-full sm:w-auto px-8 py-4 glass hover:bg-white/[0.08] text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2">
-                    <i class="ph-bold ph-book-open text-lg"></i>
-                    Installation Wiki
-                </button>
+        <header class="pt-48 pb-20 px-6 text-center" style="position:relative; overflow:hidden;">
+            <div class="hero-glow"></div>
+            <div class="hero-glow-2"></div>
+            <svg class="hero-circuit" style="position:absolute;top:50%;left:50%;width:600px;height:300px;opacity:0.045;pointer-events:none;z-index:0;" viewBox="0 0 600 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="200" y="100" width="200" height="100" rx="8" stroke="#0ea5e9" stroke-width="1.5"/>
+                <line x1="200" y1="130" x2="100" y2="130" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="200" y1="150" x2="60"  y2="150" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="200" y1="170" x2="100" y2="170" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="400" y1="130" x2="500" y2="130" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="400" y1="150" x2="540" y2="150" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="400" y1="170" x2="500" y2="170" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="250" y1="100" x2="250" y2="60"  stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="300" y1="100" x2="300" y2="40"  stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="350" y1="100" x2="350" y2="60"  stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="250" y1="200" x2="250" y2="240" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="300" y1="200" x2="300" y2="260" stroke="#0ea5e9" stroke-width="1"/>
+                <line x1="350" y1="200" x2="350" y2="240" stroke="#0ea5e9" stroke-width="1"/>
+                <circle cx="100" cy="130" r="4" fill="#0ea5e9"/><circle cx="60"  cy="150" r="4" fill="#a855f7"/>
+                <circle cx="100" cy="170" r="4" fill="#0ea5e9"/><circle cx="500" cy="130" r="4" fill="#0ea5e9"/>
+                <circle cx="540" cy="150" r="4" fill="#a855f7"/><circle cx="500" cy="170" r="4" fill="#0ea5e9"/>
+                <rect x="240" y="50"  width="20" height="10" rx="2" fill="#0ea5e9"/>
+                <rect x="290" y="30"  width="20" height="10" rx="2" fill="#a855f7"/>
+                <rect x="340" y="50"  width="20" height="10" rx="2" fill="#0ea5e9"/>
+                <rect x="240" y="240" width="20" height="10" rx="2" fill="#0ea5e9"/>
+                <rect x="290" y="260" width="20" height="10" rx="2" fill="#a855f7"/>
+                <rect x="340" y="240" width="20" height="10" rx="2" fill="#0ea5e9"/>
+            </svg>
+            <div class="hero-content">
+                <div class="reveal inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full text-[10px] font-black uppercase tracking-widest text-red-400 mb-6 border-red-500/30 bg-red-500/5">
+                    <i class="ph-bold ph-warning text-sm animate-blink"></i>
+                    Exynos Devices Only
+                </div>
+                <h1 class="reveal text-5xl md:text-8xl font-extrabold tracking-tighter leading-none mb-6">
+                    Performance <br> <span class="gradient-text">Quantified.</span>
+                </h1>
+                <p class="reveal text-lg md:text-xl opacity-60 max-w-2xl mx-auto font-medium mb-10">
+                    <span id="typewriterText"></span><span class="typewriter-cursor"></span>
+                </p>
+                <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})" class="ripple-btn w-full sm:w-auto px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-white font-bold rounded-2xl transition-all shadow-[0_0_30px_rgba(6,182,212,0.3)] flex items-center justify-center gap-2">
+                        <i class="ph-bold ph-download-simple"></i>
+                        Download
+                    </button>
+                    <button onclick="switchView('wiki')" class="ripple-btn w-full sm:w-auto px-8 py-4 glass hover:bg-white/[0.08] text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2">
+                        <i class="ph-bold ph-book-open text-lg"></i>
+                        Installation Wiki
+                    </button>
+                </div>
             </div>
         </header>
 
+        <!-- Section Divider -->
+        <div class="section-divider mx-6"></div>
+
         <!-- Features Section -->
         <section id="features" class="max-w-5xl mx-auto px-6 py-20">
+            <p class="reveal text-[11px] font-extrabold uppercase tracking-[0.3em] opacity-40 text-center mb-12">Features</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="reveal glass p-8 md:col-span-3 flex flex-col md:flex-row items-center gap-8 hover:bg-white/[0.05] transition-all group">
-                    <div class="w-20 h-20 shrink-0 rounded-3xl bg-blue-500/20 flex items-center justify-center text-4xl text-blue-400">
-                        <i class="ph-fill ph-cpu"></i>
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <h3 class="text-2xl font-bold mb-2">Kernel Tweaks</h3>
-                        <p class="opacity-60 leading-relaxed font-medium">Advanced CPU governor tuning and optimized scheduler logic for sustained peak performance.</p>
-                    </div>
+                <div class="reveal reveal-d1 tilt-card glass p-8 md:col-span-3 flex flex-col md:flex-row items-start gap-8 hover:bg-white/[0.05] transition-all feature-card feature-card-blue" style="position:relative;">
+                    <div class="tilt-shine"></div>
+                    <div class="w-20 h-20 shrink-0 rounded-3xl bg-blue-500/20 flex items-center justify-center text-4xl text-blue-400"><i class="ph-fill ph-cpu"></i></div>
+                    <div class="flex-1"><h3 class="text-2xl font-bold mb-2">Kernel Tweaks</h3><p class="opacity-60 leading-relaxed font-medium">Advanced CPU governor tuning and optimized scheduler logic for sustained peak performance.</p></div>
                 </div>
-                <div class="reveal glass p-8 flex flex-col items-center text-center hover:bg-white/[0.05] transition-all group">
-                    <div class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center text-3xl text-purple-400 mb-4">
-                        <i class="ph-fill ph-shield-check"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Deknoxed</h3>
-                    <p class="opacity-60 text-sm font-medium">Stripped of Samsung Knox and telemetry for absolute privacy.</p>
+                <div class="reveal reveal-d2 tilt-card glass p-8 flex flex-col items-start hover:bg-white/[0.05] transition-all feature-card feature-card-purple" style="position:relative;">
+                    <div class="tilt-shine"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center text-3xl text-purple-400 mb-4"><i class="ph-fill ph-shield-check"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Deknoxed</h3><p class="opacity-60 text-sm font-medium">Stripped of Samsung Knox and telemetry for absolute privacy.</p>
                 </div>
-                <div class="reveal glass p-8 flex flex-col items-center text-center hover:bg-white/[0.05] transition-all group border-cyan-500/20">
-                    <div class="w-16 h-16 rounded-2xl bg-orange-500/20 flex items-center justify-center text-3xl text-orange-400 mb-4">
-                        <i class="ph-fill ph-arrows-clockwise"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">OTA Updates</h3>
-                    <p class="opacity-60 text-sm font-medium">Seamless wireless updates via the ArtisanROM updater.</p>
+                <div class="reveal reveal-d3 tilt-card glass p-8 flex flex-col items-start hover:bg-white/[0.05] transition-all feature-card feature-card-orange" style="position:relative;">
+                    <div class="tilt-shine"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-orange-500/20 flex items-center justify-center text-3xl text-orange-400 mb-4"><i class="ph-fill ph-arrows-clockwise"></i></div>
+                    <h3 class="text-xl font-bold mb-2">OTA Updates</h3><p class="opacity-60 text-sm font-medium">Seamless wireless updates via the ArtisanROM updater.</p>
                 </div>
-                <div class="reveal glass p-8 flex flex-col items-center text-center hover:bg-white/[0.05] transition-all group">
-                    <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-3xl text-cyan-400 mb-4">
-                        <i class="ph-fill ph-sparkle"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Galaxy AI</h3>
-                    <p class="opacity-60 text-sm font-medium">Ported intelligent features to legacy Exynos hardware.</p>
+                <div class="reveal reveal-d4 tilt-card glass p-8 flex flex-col items-start hover:bg-white/[0.05] transition-all feature-card feature-card-cyan" style="position:relative;">
+                    <div class="tilt-shine"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-3xl text-cyan-400 mb-4"><i class="ph-fill ph-sparkle"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Galaxy AI</h3><p class="opacity-60 text-sm font-medium">Ported intelligent features to legacy Exynos hardware.</p>
                 </div>
             </div>
         </section>
 
+        <!-- Section Divider -->
+        <div class="section-divider mx-6"></div>
+
+        <!-- Changelog Section -->
+        <section id="changelog" class="max-w-5xl mx-auto px-6 py-10">
+            <div class="glass p-8 md:p-10">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-xl text-cyan-400"><i class="ph-fill ph-notepad"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold leading-none">Changelog</h3>
+                            <p id="changelogVersion" class="text-[11px] font-bold uppercase tracking-widest text-cyan-500/70 mt-1">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="changelogDate" class="text-[11px] font-bold uppercase tracking-widest opacity-30"></span>
+                        <button onclick="openChangelogModal()" class="magnetic ripple-btn flex items-center gap-2 px-4 py-2 glass hover:bg-white/[0.08] text-[11px] font-extrabold uppercase tracking-widest transition-all rounded-xl hover:text-cyan-400">
+                            <i class="ph-bold ph-clock-counter-clockwise"></i>Full History
+                        </button>
+                    </div>
+                </div>
+                <div id="changelogLatest" class="text-sm opacity-80 leading-relaxed">
+                    <div class="space-y-2 pt-1">
+                        <div class="skeleton skeleton-line w-1/2"></div>
+                        <div class="skeleton skeleton-line w-full"></div>
+                        <div class="skeleton skeleton-line w-3/4"></div>
+                        <div class="skeleton skeleton-line w-full"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Changelog History Modal -->
+        <div id="changelogModal" class="fixed inset-0 z-[200] hidden items-center justify-center p-6 bg-black/80 backdrop-blur-md opacity-0 transition-opacity duration-300">
+            <div id="changelogModalContent" class="glass max-w-2xl w-full relative scale-95 transition-transform duration-300 flex flex-col" style="max-height:85vh;">
+                <div class="flex items-center justify-between p-8 pb-5 border-b border-white/5 flex-shrink-0">
+                    <div>
+                        <h2 class="text-3xl font-extrabold tracking-tighter">Full Changelog</h2>
+                        <p class="text-[11px] font-bold uppercase tracking-widest text-cyan-500/70 mt-1">ExtremeROM Quant — All versions</p>
+                    </div>
+                    <button onclick="closeChangelogModal()" class="text-xl opacity-40 hover:opacity-100 transition-opacity ml-4 flex-shrink-0"><i class="ph ph-x"></i></button>
+                </div>
+                <div id="changelogHistory" class="cl-scroll overflow-y-auto p-8 pt-6 space-y-8 text-sm leading-relaxed">
+                    <div class="flex items-center gap-3 opacity-40">
+                        <div class="w-3 h-3 rounded-full bg-cyan-500/50 animate-pulse"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest">Loading history...</span>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 px-8 py-4 border-t border-white/5 flex items-center justify-between">
+                    <a href="https://github.com/ArtisanROM/ExtremeROM-Revived/blob/sixteen/CHANGELOG.md" target="_blank" class="text-[11px] font-bold uppercase tracking-widest text-cyan-500/60 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                        <i class="ph-bold ph-github-logo"></i> View on GitHub
+                    </a>
+                    <button onclick="closeChangelogModal()" class="ripple-btn px-5 py-2 glass hover:bg-white/[0.08] text-[11px] font-extrabold uppercase tracking-widest rounded-xl transition-all">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Divider -->
+        <div class="section-divider mx-6"></div>
+
         <!-- Fleet Section -->
         <section id="fleet" class="max-w-6xl mx-auto px-6 py-20">
-            <h2 class="reveal text-center text-xs font-bold mb-12 opacity-50 uppercase tracking-[0.4em]">Supported Devices</h2>
-            
-            <h3 class="reveal text-sm font-bold opacity-30 mb-6 uppercase tracking-widest pl-4 text-center">Exynos Series</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Note 20 Ultra -->
-                <div class="reveal glass device-card p-8 text-center cursor-pointer group" onclick="openModal('Note 20 Ultra', 'SM-N986B / SM-N985F', 'c2s', 'Exynos 990', '6.9&quot; WQHD+ 120Hz', 'https://pixeldrain.com/u/HZoqEJFX', 'https://pixeldrain.com/u/9mYQXS21')">
-                    <h4 class="text-2xl font-bold mb-2 tracking-tight">Note 20 Ultra</h4>
+            <h2 class="reveal text-center text-xs font-bold mb-16 opacity-50 uppercase tracking-[0.4em]">Download</h2>
+
+            <div class="series-label reveal pl-2 mb-6"><span class="text-sm font-extrabold uppercase tracking-widest opacity-60">Note 20 Series</span></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                <div class="reveal reveal-d1 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="c2s" onclick="openModal('Note 20 Ultra','SM-N986B / SM-N985F','c2s','Exynos 990','6.9&quot; WQHD+ 120Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">Note 20 Ultra</h4>
                     <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-N986B / SM-N985F<span class="opacity-40 font-mono text-[10px] ml-1">c2s</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 990</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
                 </div>
-                <!-- Note 20 -->
-                <div class="reveal glass device-card p-8 text-center cursor-pointer group" onclick="openModal('Note 20', 'SM-N981B / SM-N980F', 'c1s', 'Exynos 990', '6.7&quot; FHD+ 60Hz', 'https://pixeldrain.com/u/fuixGg9q', 'https://pixeldrain.com/u/4zYLvJ96')">
-                    <h4 class="text-2xl font-bold mb-2 tracking-tight">Note 20</h4>
-                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-N981B / SM-N980F <span class="opacity-40 font-mono text-[10px] ml-1">c1s</span></p>
+                <div class="reveal reveal-d2 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="c1s" onclick="openModal('Note 20','SM-N981B / SM-N980F','c1s','Exynos 990','6.7&quot; FHD+ 60Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">Note 20</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-N981B / SM-N980F<span class="opacity-40 font-mono text-[10px] ml-1">c1s</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 990</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
                 </div>
-                <!-- S20 Ultra -->
-                <div class="reveal glass device-card p-8 text-center cursor-pointer group" onclick="openModal('S20 Ultra', 'SM-G988B', 'z3s', 'Exynos 990', '6.9&quot; WQHD+ 120Hz', 'https://pixeldrain.com/u/DJNGsdE1', 'https://pixeldrain.com/u/nwY247aj')">
-                    <h4 class="text-2xl font-bold mb-2 tracking-tight">S20 Ultra</h4>
-                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G988B <span class="opacity-40 font-mono text-[10px] ml-1">z3s</span></p>
+            </div>
+
+            <div class="series-label reveal pl-2 mb-6"><span class="text-sm font-extrabold uppercase tracking-widest opacity-60">S20 Series</span></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                <div class="reveal reveal-d1 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="z3s" onclick="openModal('S20 Ultra','SM-G988B','z3s','Exynos 990','6.9&quot; WQHD+ 120Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S20 Ultra</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G988B<span class="opacity-40 font-mono text-[10px] ml-1">z3s</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 990</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
                 </div>
-                <!-- S20 Plus -->
-                <div class="reveal glass device-card p-8 text-center cursor-pointer group" onclick="openModal('S20 Plus', 'SM-G986B / SM-G985F', 'y2s', 'Exynos 990', '6.7&quot; WQHD+ 120Hz', 'https://pixeldrain.com/u/qzdQu5pK', 'https://pixeldrain.com/u/1cmgv1gN')">
-                    <h4 class="text-2xl font-bold mb-2 tracking-tight">S20+</h4>
+                <div class="reveal reveal-d2 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="y2s" onclick="openModal('S20 Plus','SM-G986B / SM-G985F','y2s','Exynos 990','6.7&quot; WQHD+ 120Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S20+</h4>
                     <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G986B / SM-G985F<span class="opacity-40 font-mono text-[10px] ml-1">y2s</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 990</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
                 </div>
-                <!-- S20 -->
-                <div class="reveal glass device-card p-8 text-center cursor-pointer group" onclick="openModal('S20', 'SM-G981B / SM-G980F', 'x1s', 'Exynos 990', '6.2&quot; WQHD+ 120Hz', 'https://pixeldrain.com/u/vRWThc8G', 'https://pixeldrain.com/u/qEEMTgYB')">
-                    <h4 class="text-2xl font-bold mb-2 tracking-tight">S20</h4>
-                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G981B / SM-G980F <span class="opacity-40 font-mono text-[10px] ml-1">x1s</span></p>
+                <div class="reveal reveal-d3 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="x1s" onclick="openModal('S20','SM-G981B / SM-G980F','x1s','Exynos 990','6.2&quot; WQHD+ 120Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S20</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G981B / SM-G980F<span class="opacity-40 font-mono text-[10px] ml-1">x1s</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 990</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
                 </div>
-                <!-- S20 FE -->
-                <div class="reveal glass device-card p-8 text-center cursor-pointer group" onclick="openModal('S20 FE', 'SM-G780F', 'r8s', 'Exynos 990', '6.5&quot; FHD+ 120Hz', 'https://pixeldrain.com/u/5mi61DrS', 'https://pixeldrain.com/u/wcYg1ij1')">
-                    <h4 class="text-2xl font-bold mb-2 tracking-tight">S20 FE</h4>
-                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G780F <span class="opacity-40 font-mono text-[10px] ml-1">r8s</span></p>
+                <div class="reveal reveal-d4 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="r8s" onclick="openModal('S20 FE','SM-G780F','r8s','Exynos 990','6.5&quot; FHD+ 120Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S20 FE</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G780F<span class="opacity-40 font-mono text-[10px] ml-1">r8s</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 990</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
+                </div>
+            </div>
+
+            <div class="series-label reveal pl-2 mb-6"><span class="text-sm font-extrabold uppercase tracking-widest opacity-60">S10 Series</span></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="reveal reveal-d1 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="beyond0lte" onclick="openModal('S10e','SM-G970F','beyond0lte','Exynos 9820','5.8&quot; FHD+ 60Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S10e</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G970F<span class="opacity-40 font-mono text-[10px] ml-1">beyond0lte</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 9820</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
+                </div>
+                <div class="reveal reveal-d2 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="beyond1lte" onclick="openModal('S10','SM-G973F','beyond1lte','Exynos 9820','6.1&quot; WQHD+ 60Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S10</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G973F<span class="opacity-40 font-mono text-[10px] ml-1">beyond1lte</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 9820</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
+                </div>
+                <div class="reveal reveal-d3 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="beyond2lte" onclick="openModal('S10 Plus','SM-G975F','beyond2lte','Exynos 9820','6.4&quot; WQHD+ 60Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S10+</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G975F<span class="opacity-40 font-mono text-[10px] ml-1">beyond2lte</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 9820</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
+                </div>
+                <div class="reveal reveal-d4 tilt-card glass device-card p-8 text-center cursor-pointer" style="position:relative;" data-code="beyondx" onclick="openModal('S10 5G','SM-G977B','beyondx','Exynos 9820','6.7&quot; WQHD+ 60Hz')">
+                    <div class="tilt-shine"></div>
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400/60 mx-auto mb-4"><i class="ph-fill ph-device-mobile"></i></div>
+                    <h4 class="text-2xl font-bold mb-1 tracking-tight">S10 5G</h4>
+                    <p class="text-xs font-medium text-cyan-500/80 tracking-wide uppercase">SM-G977B<span class="opacity-40 font-mono text-[10px] ml-1">beyondx</span></p>
+                    <span class="chipset-badge"><i class="ph-bold ph-cpu text-[10px]"></i>Exynos 9820</span>
+                    <span class="version-badge skeleton skeleton-badge"></span>
                 </div>
             </div>
         </section>
@@ -450,184 +957,155 @@
     <!-- VIEW: WIKI PAGE -->
     <main id="wikiView" class="view pt-40 pb-20 px-6">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-5xl font-extrabold mb-12">Installation Guide</h1>
+            <h1 class="text-5xl font-extrabold mb-4">Documentation</h1>
+            <p class="mb-10" style="color: var(--text-secondary);">Complete guides for ExtremeROM on Exynos devices.</p>
 
-            <div class="space-y-24">
+            <!-- Tab Bar -->
+            <div class="wiki-tab-bar">
+                <button class="wiki-tab active" onclick="switchWikiTab('req', this)">
+                    <i class="ph-bold ph-list-checks"></i> Requirements
+                </button>
+                <button class="wiki-tab" onclick="switchWikiTab('s20', this)">
+                    <i class="ph-bold ph-device-mobile"></i> S20 / Note20
+                </button>
+                <button class="wiki-tab" onclick="switchWikiTab('s10', this)">
+                    <i class="ph-bold ph-device-mobile"></i> S10 Series
+                </button>
+                <button class="wiki-tab" onclick="switchWikiTab('bootloader', this)">
+                    <i class="ph-bold ph-lock-open"></i> Bootloader Unlock
+                </button>
+                <button class="wiki-tab" onclick="switchWikiTab('integrity', this)">
+                    <i class="ph-bold ph-shield-check"></i> Play Integrity
+                </button>
+            </div>
+
+            <div class="wiki-content mt-8">
+
                 <!-- Requirements -->
-                <section class="reveal">
-                    <h2 class="text-3xl font-bold mb-6">Requirements:</h2>
-                    <ul class="req-list opacity-90 text-sm">
-                        <li>A Computer with the required <a href="https://developer.samsung.com/android-usb-driver" target="_blank" class="req-link">Samsung USB Drivers</a></li>
-                        <li><a href="https://dl.extremerom.org/Odin3%20v3.14.1_3B_PatcheD.zip" target="_blank" class="req-link">Odin3</a></li>
-                        <li><a href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip" target="_blank" class="req-link">ADB Platform Tools</a></li>
-                        <li>The phone itself (duh)</li>
-                        <li>A USB C cable with data support</li>
-                        <li>A functional brain</li>
-                    </ul>
-                </section>
-
-                <!-- STEP 0: Bootloader Unlock -->
-                <section class="reveal">
-                    <h2 class="wiki-step-title">Guide on how to unlock the bootloader on your Samsung phone if you have not already</h2>
-                    
-                    <div class="wiki-warning">
-                        <i class="ph-bold ph-warning-circle text-2xl"></i>
-                        <div>
-                            <p class="font-bold">WARNING: YOU WILL LOOSE ALL OF YOUR DATA FROM DOING THIS.</p>
-                            <p class="opacity-80">IF YOU WOULD LIKE TO BACKUP ALL YOUR DATA USE <span class="text-cyan-400 font-bold">Samsung Smart Switch PC</span></p>
+                <div id="wiki-req" class="wiki-panel active">
+                    <div class="wiki-section">
+                        <h2>Requirements</h2>
+                        <ul class="wiki-list">
+                            <li>A Computer with the required <a href="https://developer.samsung.com/android-usb-driver" target="_blank" style="color: var(--accent-blue);">Samsung USB Drivers</a></li>
+                            <li><a href="https://dl.extremerom.org/Odin3%20v3.14.1_3B_PatcheD.zip" target="_blank" style="color: var(--accent-blue);">Odin3 (Patched)</a></li>
+                            <li><a href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip" target="_blank" style="color: var(--accent-blue);">ADB Platform Tools</a></li>
+                            <li>A copy of ExtremeROM for your device</li>
+                            <li>The phone itself (duh)</li>
+                            <li>A USB C cable with data support</li>
+                        </ul>
+                        <div class="warning-box">
+                            <strong>⚠️ Important:</strong> Make sure you have your bootloader unlocked already.
                         </div>
                     </div>
+                    <div class="info-box"><strong>Credits:</strong> Written by @EndaDwagon and @osrott61 (no kang pls).</div>
+                </div>
 
-                    <h3 class="wiki-sub-heading">Enable Developer Options</h3>
-                    <ul class="space-y-2 opacity-70 font-medium text-sm list-disc pl-5">
-                        <li>Firstly, Open settings</li>
-                        <li>Then, select About Phone, then hit the Software information tab.</li>
-                        <li>Next, tap on the Build Number 7 times to activate developer mode on your device.</li>
-                    </ul>
-
-                    <h3 class="wiki-sub-heading">Enable OEM Unlocking</h3>
-                    <ul class="space-y-2 opacity-70 font-medium text-sm list-disc pl-5">
-                        <li>Go back to the Settings screen, scroll down and tap on Developer Options.</li>
-                        <li>Now, find and turn on the switch beside Enable OEM unlocking.</li>
-                        <li>A confirmation prompt will come up, press Enable.</li>
-                    </ul>
-
-                    <h3 class="wiki-sub-heading">Unlocking the phone</h3>
-                    <div class="glass p-6 rounded-2xl space-y-4">
-                        <p class="text-sm opacity-80 leading-relaxed">
-                            Power off the phone, then hold down the <b>Volume Up + Volume Down</b> buttons simultaneously while connected to a PC via USB.
-                        </p>
-                        <p class="text-sm opacity-80 leading-relaxed">
-                            Once a blue screen appears, <b>hold volume up</b> for about 3 seconds.
-                        </p>
-                        <p class="text-sm opacity-80 leading-relaxed">
-                            Press volume up again to confirm and then you're done.
-                        </p>
-                    </div>
-                    <div class="wiki-tip">
-                        <i class="ph-bold ph-info"></i>
-                        <span>Your device should reset after this and boot back into stock.</span>
-                    </div>
-                </section>
-
-                <!-- STEP 1 -->
-                <section class="reveal">
-                    <h2 class="wiki-step-title">1. Restock your device</h2>
-                    <p class="opacity-70 leading-relaxed font-medium mb-4">
-                        Firstly, Please flash the latest stock Bootloader (BL) and Modem (CP) on your device with Odin3. If you are unsure as to where you can get your stock firmware from, we recommend <a href="https://samfw.com" target="_blank" class="text-cyan-400 underline decoration-cyan-400/30 underline-offset-4 hover:decoration-cyan-400 transition-all font-bold">Samfw</a>.
-                    </p>
-                    <div class="wiki-warning">
-                        <i class="ph-bold ph-warning"></i>
-                        <span>Be sure to flash the Odinpack for your device in the USERDATA slot</span>
-                    </div>
-                    <div class="bg-[#111] border border-white/10 rounded-2xl p-4 overflow-hidden">
-                        <div class="flex items-center gap-2 mb-4 border-b border-white/5 pb-2">
-                            <i class="ph-bold ph-monitor text-cyan-400"></i>
-                            <span class="text-[10px] uppercase font-bold tracking-widest opacity-50">Odin3 Interface Simulation</span>
+                <!-- S20 / Note20 -->
+                <div id="wiki-s20" class="wiki-panel">
+                    <div class="wiki-section">
+                        <h2>Galaxy S20 / Note20 Series</h2>
+                        <h3>1. Restock your device</h3>
+                        <p class="wiki-text">Flash the latest stock Bootloader (BL) and Modem (CP) on your device with Odin3. If you are unsure where to get your stock firmware, we recommend Samfw.</p>
+                        <div class="warning-box">⚠️ Be sure to flash the Odinpack for your device in the USERDATA slot</div>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/odin-example3.jpg" alt="Odin Example" class="wiki-image">
+                        <p class="wiki-text">💡 Tip: to save time, turn off Auto Reboot in the options tab in Odin. Once Odin says Pass carry on to the next step.</p>
+                        <h3>2. Reboot to TWRP</h3>
+                        <p class="wiki-text">Hold <strong>Power + Volume Down</strong> until screen goes black. Then immediately switch to holding <strong>Power + Volume Up</strong>.</p>
+                        <h3>3. Prepare for Flashing</h3>
+                        <p class="wiki-text">In TWRP, navigate to the wipe button, then press Format Data.</p>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/TWRPHomeWipe.png" alt="TWRP Wipe" class="wiki-image small">
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/WipeFormatData.png" alt="Format Data" class="wiki-image small">
+                        <p class="wiki-text">Type <code>yes</code> and confirm.</p>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/FormatData.png" alt="Type Yes" class="wiki-image small">
+                        <p class="wiki-text">Go back to Home → Wipe → Slide to Factory Reset. Then Reboot → Recovery.</p>
+                        <h3>4. Installing the ROM</h3>
+                        <p class="wiki-text">Go to <strong>Advanced → ADB Sideload</strong> and swipe to start.</p>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/ADBSideload.png" alt="ADB Sideload" class="wiki-image small">
+                        <p class="wiki-text">On PC, open command prompt in the platform-tools folder. Type:</p>
+                        <div class="wiki-code-wrap">
+                            <code class="wiki-code">adb sideload &lt;drag ROM zip here&gt;</code>
+                            <button class="wiki-copy-btn" onclick="copyCode(this)"><i class="ph-bold ph-copy"></i><span>Copy</span></button>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-80">
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-2 bg-white/5 p-2 rounded">
-                                    <div class="w-4 h-4 border border-cyan-400 flex items-center justify-center text-[10px] text-cyan-400">✓</div>
-                                    <span class="text-xs font-mono">BL</span>
-                                    <div class="flex-1 h-4 bg-white/10 rounded"></div>
-                                </div>
-                                <div class="flex items-center gap-2 bg-white/5 p-2 rounded">
-                                    <div class="w-4 h-4 border border-white/20"></div>
-                                    <span class="text-xs font-mono">AP</span>
-                                    <div class="flex-1 h-4 bg-white/10 rounded"></div>
-                                </div>
-                                <div class="flex items-center gap-2 bg-white/5 p-2 rounded">
-                                    <div class="w-4 h-4 border border-cyan-400 flex items-center justify-center text-[10px] text-cyan-400">✓</div>
-                                    <span class="text-xs font-mono">CP</span>
-                                    <div class="flex-1 h-4 bg-white/10 rounded"></div>
-                                </div>
-                                <div class="flex items-center gap-2 bg-white/5 p-2 rounded border border-cyan-500/40">
-                                    <div class="w-4 h-4 border border-cyan-400 flex items-center justify-center text-[10px] text-cyan-400">✓</div>
-                                    <span class="text-xs font-mono">USERDATA</span>
-                                    <div class="flex-1 text-[8px] font-mono opacity-50 truncate">...ExtremeROM_OdinPack.tar</div>
-                                </div>
-                            </div>
-                            <div class="bg-black p-4 rounded text-[10px] font-mono text-green-400/70 overflow-hidden h-32">
-                                <p>&lt;ID:0/009&gt; Added!!</p>
-                                <p>&lt;OSM&gt; Enter CS for MD5..</p>
-                                <p>&lt;OSM&gt; Checking MD5 finished Successfully..</p>
-                                <p>&lt;OSM&gt; Leave CS..</p>
-                            </div>
-                        </div>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/ADBSideloadTutorialGIF.gif" alt="ADB GIF" class="wiki-image">
+                        <p class="wiki-text">Once finished, press "Reboot System".</p>
                     </div>
-                    <div class="wiki-tip">
-                        <i class="ph-bold ph-lightbulb"></i>
-                        <span>Tip: to save time, turn off Auto Reboot in the options tab in Odin. Once Odin says Pass carry on to the next step.</span>
-                    </div>
-                </section>
+                    <div class="info-box"><strong>Credits:</strong> Written by @EndaDwagon and @osrott61 (no kang pls).</div>
+                </div>
 
-                <!-- STEP 2 -->
-                <section class="reveal">
-                    <h2 class="wiki-step-title">2. Reboot to TWRP</h2>
-                    <p class="opacity-70 leading-relaxed font-medium">
-                        While the phone is still connected to the computer (and on Download mode), hold the <b>Bixby + Power + Volume Down</b> buttons at the same time. After the screen goes black carry on holding Bixby and Power but instead of Volume Down hold <b>Volume Up</b> instead.
-                    </p>
-                </section>
-
-                <!-- STEP 3 -->
-                <section class="reveal">
-                    <h2 class="wiki-step-title">3. Prepare for flashing</h2>
-                    <p class="opacity-70 leading-relaxed font-medium mb-8">
-                        Now that you are in TWRP, navigate to the wipe button, then press format data.
-                    </p>
-                    
-                    <div class="flex flex-col md:flex-row items-center gap-12">
-                        <div class="twrp-frame">
-                            <div class="twrp-header">
-                                <span>CPU: 34°C</span>
-                                <span>2:24 PM</span>
-                                <span>Battery: 23%</span>
-                            </div>
-                            <div class="p-3 bg-[#2c2c2c] flex items-center gap-2 border-b border-white/5">
-                                <div class="w-6 h-6 bg-[#f39c12] rounded-full flex items-center justify-center text-[10px]">⚡</div>
-                                <div class="text-[10px] leading-tight">
-                                    <p class="font-bold">Team Win Recovery Project</p>
-                                    <p class="opacity-50">ExtremeROM-Quant</p>
-                                </div>
-                            </div>
-                            <div class="twrp-grid">
-                                <div class="twrp-btn">Install</div>
-                                <div class="twrp-btn active">Wipe</div>
-                                <div class="twrp-btn">Backup</div>
-                                <div class="twrp-btn">Restore</div>
-                                <div class="twrp-btn">Mount</div>
-                                <div class="twrp-btn">Settings</div>
-                                <div class="twrp-btn">Advanced</div>
-                                <div class="twrp-btn">Reboot</div>
-                            </div>
+                <!-- S10 Series -->
+                <div id="wiki-s10" class="wiki-panel">
+                    <div class="wiki-section">
+                        <h2>Galaxy S10 Series (S10e, S10, S10+, S10 5G)</h2>
+                        <h3>1. Restock your device</h3>
+                        <p class="wiki-text">Flash the latest stock Bootloader (BL) and Modem (CP) on your device with Odin3. If you are unsure where to get your stock firmware, we recommend Samfw.</p>
+                        <div class="warning-box">⚠️ Be sure to flash the Odinpack for your device in the USERDATA slot</div>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/odin-example3.jpg" alt="Odin Example" class="wiki-image">
+                        <p class="wiki-text">💡 Tip: to save time, turn off Auto Reboot in the options tab in Odin. Once Odin says Pass carry on to the next step.</p>
+                        <h3>2. Reboot to TWRP</h3>
+                        <p class="wiki-text">While the phone is still connected to the computer (and on Download mode), hold the <strong>Bixby + Power + Volume Down</strong> buttons at the same time. After the screen goes black carry on holding Bixby and Power but instead of Volume Down hold <strong>Volume Up</strong> instead.</p>
+                        <h3>3. Prepare for flashing</h3>
+                        <p class="wiki-text">Now that you are in TWRP, navigate to the wipe button, then press Format Data.</p>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/TWRPHomeWipe.png" alt="TWRP Wipe" class="wiki-image small">
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/WipeFormatData.png" alt="Format Data" class="wiki-image small">
+                        <p class="wiki-text">Type <code>yes</code> and confirm.</p>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/FormatData.png" alt="Type Yes" class="wiki-image small">
+                        <p class="wiki-text">Go back to Home → Wipe → Slide to Factory Reset. Then Reboot → Recovery.</p>
+                        <h3>4. Repartitioning and Cleaning</h3>
+                        <p class="wiki-text">Go into <strong>Advanced → ADB Sideload</strong> and swipe to start.</p>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/ADBSideload.png" alt="ADB Sideload" class="wiki-image small">
+                        <p class="wiki-text">On PC, open command prompt in the platform-tools folder. Type:</p>
+                        <div class="wiki-code-wrap">
+                            <code class="wiki-code">adb sideload &lt;drag repartitioner zip here&gt;</code>
+                            <button class="wiki-copy-btn" onclick="copyCode(this)"><i class="ph-bold ph-copy"></i><span>Copy</span></button>
                         </div>
-                        <div class="flex-1">
-                            <p class="text-sm opacity-60 font-medium mb-4 italic">Follow sequence:</p>
-                            <div class="space-y-4">
-                                <div class="glass p-4 rounded-xl text-xs font-bold border-l-4 border-cyan-500">Press Format Data</div>
-                                <div class="glass p-4 rounded-xl text-xs font-bold opacity-60">Type 'yes' and confirm</div>
-                                <div class="glass p-4 rounded-xl text-xs font-bold opacity-60">Go back to Home &rarr; Wipe &rarr; Slide to Factory Reset</div>
-                                <div class="glass p-4 rounded-xl text-xs font-bold opacity-60">Reboot &rarr; Recovery</div>
-                            </div>
-                        </div>
+                        <img src="https://github.com/ExtremeXT/ExtremeROM/raw/fifteen/wiki-res/ADBSideloadTutorialGIF.gif" alt="ADB GIF" class="wiki-image">
+                        <p class="wiki-text">Repeat this step for the cleaner file.</p>
+                        <h3>5. Installing the ROM</h3>
+                        <p class="wiki-text">Now repeat the ADB Sideload process but with the ROM zip file.</p>
                     </div>
-                </section>
+                    <div class="info-box"><strong>Credits:</strong> Written by @EndaDwagon and @osrott61 (no kang pls).</div>
+                </div>
 
-                <!-- STEP 4 -->
-                <section class="reveal">
-                    <h2 class="wiki-step-title">4. Installing the ROM</h2>
-                    <p class="opacity-70 leading-relaxed font-medium mb-6">
-                        Go to <b>Advanced &rarr; ADB Sideload</b>.
-                    </p>
-                    <div class="space-y-4">
-                        <p class="text-[10px] uppercase font-bold tracking-widest opacity-40">On PC Terminal:</p>
-                        <div class="bg-black/80 p-6 rounded-2xl border border-white/10 font-mono text-cyan-400 text-lg">
-                            adb sideload &lt;drag ROM zip here&gt;
-                        </div>
-                        <p class="opacity-70 leading-relaxed font-medium">Once finished, press "Reboot System".</p>
+                <!-- Bootloader Unlock -->
+                <div id="wiki-bootloader" class="wiki-panel">
+                    <div class="wiki-section">
+                        <h2>Bootloader Unlock Guide</h2>
+                        <div class="warning-box"><strong>WARNING:</strong> YOU WILL LOSE ALL OF YOUR DATA FROM DOING THIS. BACKUP FIRST!</div>
+                        <h3>1. Enable Developer Options</h3>
+                        <p class="wiki-text">Open Settings → About Phone → Software information. Tap on <strong>Build Number</strong> 7 times.</p>
+                        <h3>2. Enable OEM Unlocking</h3>
+                        <p class="wiki-text">Go back to Settings → Developer Options. Turn on <strong>Enable OEM unlocking</strong>.</p>
+                        <h3>3. Unlocking the phone</h3>
+                        <p class="wiki-text"><strong>S20/S21/S22:</strong> Power off. Hold <strong>Vol Up + Vol Down</strong> while connecting to PC.</p>
+                        <p class="wiki-text"><strong>S10:</strong> Power off. Hold <strong>Vol Down + Bixby</strong> while connecting to PC.</p>
+                        <p class="wiki-text">Once the blue screen appears, hold Volume Up for about 3 seconds to unlock. Press Volume Up again to confirm.</p>
                     </div>
-                </section>
+                    <div class="info-box"><strong>Credits:</strong> Written by @EndaDwagon and @osrott61 (no kang pls).</div>
+                </div>
+
+                <!-- Play Integrity -->
+                <div id="wiki-integrity" class="wiki-panel">
+                    <div class="wiki-section">
+                        <h2>Achieving Strong Play Integrity</h2>
+                        <div class="info-box"><strong>Note:</strong> As of Nov 2025, keyboxes expire frequently. This method achieves Basic/Device integrity.</div>
+                        <h3>1. Requirements</h3>
+                        <ul class="wiki-list">
+                            <li><a href="https://github.com/PerformanC/ReZygisk/releases/" target="_blank" style="color: var(--accent-blue);">ReZygisk Module</a></li>
+                            <li><a href="https://github.com/osm0sis/PlayIntegrityFork/releases" target="_blank" style="color: var(--accent-blue);">PlayIntegrityFork</a></li>
+                            <li><a href="https://github.com/5ec1cff/TrickyStore/releases" target="_blank" style="color: var(--accent-blue);">TrickyStore</a></li>
+                            <li><a href="https://github.com/KOWX712/Tricky-Addon-Update-Target-List/" target="_blank" style="color: var(--accent-blue);">TrickyAddon</a></li>
+                        </ul>
+                        <h3>2. Install Modules</h3>
+                        <p class="wiki-text">Open KernelSU Next → Modules → Install. Install all downloaded zips. Reboot.</p>
+                        <h3>3. Configuration</h3>
+                        <p class="wiki-text">Open KernelSU Next → Modules.</p>
+                        <p class="wiki-text"><strong>Play Integrity Fork:</strong> Press 'Action' then Close.</p>
+                        <p class="wiki-text"><strong>Tricky Store:</strong> Press 'Open'. In Tricky Addon menu: Select All, Deselect Unnecessary, Set Valid Keybox.</p>
+                        <p class="wiki-text">Finally, verify with a Play Integrity Checker app.</p>
+                    </div>
+                    <div class="info-box"><strong>Credits:</strong> Written by @EndaDwagon and @osrott61 (no kang pls).</div>
+                </div>
+
             </div>
         </div>
     </main>
@@ -705,6 +1183,51 @@
                     </li>
                 </ul>
             </section>
+
+            <div class="w-full h-[1px] bg-white/10 mt-12 mb-12"></div>
+
+            <section>
+                <div class="about-section-header">
+                    <i class="ph-bold ph-users text-cyan-400"></i>
+                    <span>Contributors</span>
+                </div>
+                <p class="opacity-60 text-sm mb-8 leading-relaxed">People who made ExtremeROM Quant possible.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="https://github.com/Android-Artisan" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-cyan-500/20 transition-all group">
+                        <img src="https://github.com/Android-Artisan.png" class="w-10 h-10 rounded-full" alt="Android-Artisan">
+                        <div>
+                            <p class="font-bold text-sm group-hover:text-cyan-400 transition-colors">Android-Artisan</p>
+                            <p class="text-[11px] opacity-40 uppercase tracking-widest font-bold">Lead Developer</p>
+                        </div>
+                        <i class="ph-bold ph-github-logo ml-auto opacity-30 group-hover:opacity-70 transition-opacity"></i>
+                    </a>
+                    <a href="https://github.com/ExtremeXT" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-cyan-500/20 transition-all group">
+                        <img src="https://github.com/ExtremeXT.png" class="w-10 h-10 rounded-full" alt="ExtremeXT">
+                        <div>
+                            <p class="font-bold text-sm group-hover:text-cyan-400 transition-colors">ExtremeXT</p>
+                            <p class="text-[11px] opacity-40 uppercase tracking-widest font-bold">Original ROM Author</p>
+                        </div>
+                        <i class="ph-bold ph-github-logo ml-auto opacity-30 group-hover:opacity-70 transition-opacity"></i>
+                    </a>
+                    <a href="https://github.com/immohammeeed" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-cyan-500/20 transition-all group">
+                        <img src="https://github.com/immohammeeed.png" class="w-10 h-10 rounded-full" alt="immohammeeed">
+                        <div>
+                            <p class="font-bold text-sm group-hover:text-cyan-400 transition-colors">Monux ツ</p>
+                            <p class="text-[11px] opacity-40 uppercase tracking-widest font-bold">Website Development</p>
+                        </div>
+                        <i class="ph-bold ph-github-logo ml-auto opacity-30 group-hover:opacity-70 transition-opacity"></i>
+                    </a>
+                    <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-lg opacity-40">
+                            <i class="ph-bold ph-user"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm opacity-40">EndaDwagon & osrott61</p>
+                            <p class="text-[11px] opacity-30 uppercase tracking-widest font-bold">Play Integrity Guide</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -737,11 +1260,10 @@
     </div>
 
     <!-- Final Branding Footer -->
-    <footer class="py-24 px-6 text-center border-t border-white/5">
+    <div class="footer-gradient-line"></div>
+    <footer class="py-24 px-6 text-center">
         <div class="max-w-4xl mx-auto space-y-4">
-            <p class="text-[11px] font-extrabold uppercase tracking-[0.3em] opacity-40">
-                &copy; 2026 Project ArtisanROM - All rights reserved
-            </p>
+            <p class="text-[11px] font-extrabold uppercase tracking-[0.3em] opacity-40">&copy; 2026 ExtremeROM Quant - All rights reserved</p>
             <div class="flex items-center justify-center gap-6 mb-4">
                 <a href="https://github.com/ArtisanROM/" target="_blank" class="opacity-40 hover:opacity-100 transition-opacity"><i class="ph-bold ph-github-logo text-2xl"></i></a>
             </div>
@@ -752,7 +1274,14 @@
     </footer>
 
     <script>
-        // BACKGROUND CANVAS PARTICLES
+        // ── SCROLL PROGRESS ──
+        window.addEventListener('scroll', () => {
+            const doc = document.documentElement;
+            document.getElementById('scrollProgress').style.width =
+                (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+        });
+
+        // ── PARTICLES WITH CONNECTIONS ──
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -761,31 +1290,103 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 80; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 0.5,
+                    size: Math.random() * 2.5 + 0.3,
                     vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3
+                    vy: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.6 + 0.2
                 });
             }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const particleColor = getComputedStyle(document.documentElement).getPropertyValue('--particle').trim();
+            const baseColor = getComputedStyle(document.documentElement).getPropertyValue('--particle').trim();
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = baseColor;
+                        ctx.globalAlpha = (1 - dist / 120) * 0.15;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
             particles.forEach(p => {
                 p.x += p.vx; p.y += p.vy;
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
                 if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = particleColor; ctx.fill();
+                ctx.globalAlpha = p.opacity; ctx.fillStyle = baseColor; ctx.fill();
             });
+            ctx.globalAlpha = 1;
             requestAnimationFrame(animate);
         }
 
-        // NAVIGATION LOGIC
+        // ── TYPEWRITER ──
+        const typewriterEl = document.getElementById('typewriterText');
+        const typewriterStr = 'A work-in-progress ROM based on OneUI aiming for simplicity and ease of use.';
+        let twIndex = 0;
+        function typeWriter() {
+            if (typewriterEl && twIndex < typewriterStr.length) {
+                typewriterEl.textContent += typewriterStr[twIndex++];
+                setTimeout(typeWriter, 28);
+            }
+        }
+        setTimeout(typeWriter, 900);
+
+        // ── 3D TILT ──
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left, y = e.clientY - rect.top;
+                const rotX = ((y - rect.height / 2) / rect.height * 2) * -8;
+                const rotY = ((x - rect.width  / 2) / rect.width  * 2) *  8;
+                card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+                const shine = card.querySelector('.tilt-shine');
+                if (shine) shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.08) 0%, transparent 60%)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+                const shine = card.querySelector('.tilt-shine');
+                if (shine) shine.style.background = '';
+            });
+        });
+
+        // ── MAGNETIC (changelog button only) ──
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width  / 2;
+                const y = e.clientY - rect.top  - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
+        });
+
+        // ── RIPPLE ──
+        document.querySelectorAll('.ripple-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const r = document.createElement('span');
+                r.className = 'ripple';
+                r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+                btn.appendChild(r);
+                setTimeout(() => r.remove(), 600);
+            });
+        });
+
+        // ── NAVIGATION ──
         function switchView(viewName) {
             document.getElementById('homeView').classList.toggle('active', viewName === 'home');
             document.getElementById('wikiView').classList.toggle('active', viewName === 'wiki');
@@ -794,121 +1395,254 @@
             revealElements();
         }
 
-        // MOBILE MENU LOGIC
+        // ── MOBILE MENU ──
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileToggle = document.getElementById('mobileMenuToggle');
-        
         function toggleMobileMenu() {
             mobileMenu.classList.toggle('active');
-            const icon = mobileToggle.querySelector('i');
-            icon.className = mobileMenu.classList.contains('active') ? 'ph-bold ph-x text-lg' : 'ph-bold ph-list text-lg';
+            mobileToggle.querySelector('i').className = mobileMenu.classList.contains('active') ? 'ph-bold ph-x text-lg' : 'ph-bold ph-list text-lg';
         }
-
         mobileToggle.addEventListener('click', toggleMobileMenu);
 
-        // MODAL LOGIC
-        function openModal(name, model, code, chipset, display, romUrl, odinUrl) {
+        // ── RELEASES ──
+        let releaseMap = {};
+        let latestVersion = null;
+
+        async function fetchReleases() {
+            try {
+                const res = await fetch(
+                    'https://api.github.com/repos/ArtisanROM/ExtremeROM-Revived/releases/latest',
+                    { headers: { 'Accept': 'application/vnd.github.v3+json' } }
+                );
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const release = await res.json();
+                latestVersion = release.tag_name || null;
+                const lines = (release.body || '').replace(/\r/g, '').split('\n');
+                let currentCode = null;
+                for (const raw of lines) {
+                    const line = raw.trim(); if (!line) continue;
+                    if (line.startsWith('### ') && !line.startsWith('####')) {
+                        const m = line.match(/\*\*([a-z0-9]+)[:\*]/i);
+                        if (m) { currentCode = m[1].trim().toLowerCase(); if (!releaseMap[currentCode]) releaseMap[currentCode] = { rom: null, odin: null }; }
+                        continue;
+                    }
+                    if (!currentCode) continue;
+                    if (line.startsWith('####')) {
+                        const urlMatch = line.match(/\(([^)]+)\)/);
+                        if (!urlMatch) continue;
+                        const url = urlMatch[1].trim();
+                        if (/ROM/i.test(line) && !/Odin/i.test(line)) releaseMap[currentCode].rom = url;
+                        else if (/Odin/i.test(line)) releaseMap[currentCode].odin = url;
+                    }
+                }
+                // Update version badges on all device cards
+                document.querySelectorAll('[data-code]').forEach(card => {
+                    const badge = card.querySelector('.version-badge');
+                    if (!badge) return;
+                    const code = card.dataset.code;
+                    badge.classList.remove('skeleton', 'skeleton-badge');
+                    if (releaseMap[code]) {
+                        badge.innerHTML = `<i class="ph-bold ph-tag text-[9px]"></i>${latestVersion || 'Latest'}`;
+                        badge.classList.remove('coming-soon');
+                    } else {
+                        badge.innerHTML = `<i class="ph-bold ph-clock text-[9px]"></i>Coming Soon`;
+                        badge.classList.add('coming-soon');
+                    }
+                });
+            } catch(e) {
+                // On error, clear skeleton badges and show error indicator
+                document.querySelectorAll('[data-code] .version-badge').forEach(badge => {
+                    badge.classList.remove('skeleton', 'skeleton-badge');
+                    badge.innerHTML = `<i class="ph-bold ph-warning text-[9px]"></i>Retry`;
+                    badge.classList.add('coming-soon');
+                    badge.style.cursor = 'pointer';
+                    badge.onclick = (ev) => { ev.stopPropagation(); fetchReleases(); };
+                });
+                console.warn('[Releases] fetch failed:', e.message);
+            }
+        }
+
+        function setModalButton(el, url, label, icon, primary) {
+            if (url) {
+                el.href = url;
+                el.removeAttribute('aria-disabled');
+                el.style.pointerEvents = ''; el.style.opacity = '';
+                el.className = primary
+                    ? 'w-full bg-cyan-500 hover:bg-cyan-400 text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2'
+                    : 'w-full bg-white/5 hover:bg-white/10 text-xs font-bold uppercase tracking-widest py-4 rounded-2xl transition-all flex items-center justify-center gap-2';
+                el.innerHTML = `<i class="ph-bold ${icon}"></i> ${label}`;
+            } else {
+                el.removeAttribute('href');
+                el.setAttribute('aria-disabled', 'true');
+                el.style.pointerEvents = 'none'; el.style.opacity = '0.4';
+                el.className = 'w-full bg-white/5 text-xs font-bold uppercase tracking-widest py-4 rounded-2xl flex items-center justify-center gap-2 cursor-not-allowed';
+                el.innerHTML = `<i class="ph-bold ph-clock"></i> Coming Soon`;
+            }
+        }
+
+        // ── MODAL ──
+        function openModal(name, model, code, chipset, display) {
             document.getElementById('modalTitle').innerText = name;
             document.getElementById('modalSub').innerText = `${model} (${code})`;
             document.getElementById('modalChipset').innerText = chipset;
             document.getElementById('modalDisplay').innerHTML = display;
-            
-            // Set download links
-            const romLink = document.getElementById('modalRomLink');
-            const odinLink = document.getElementById('modalOdinLink');
-            
-            romLink.href = romUrl || "#";
-            odinLink.href = odinUrl || "#";
-            
+            const links = releaseMap[code.toLowerCase()] || { rom: null, odin: null };
+            setModalButton(document.getElementById('modalRomLink'),  links.rom,  'Download ROM',       'ph-download', true);
+            setModalButton(document.getElementById('modalOdinLink'), links.odin, 'Download Odin Pack', 'ph-archive',  false);
             const modal = document.getElementById('deviceModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => { 
-                modal.style.opacity = '1'; 
-                document.getElementById('modalContent').style.transform = 'scale(1)';
-            }, 10);
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.style.opacity = '1'; document.getElementById('modalContent').style.transform = 'scale(1)'; }, 10);
         }
-
         function closeModal() {
             const modal = document.getElementById('deviceModal');
-            modal.style.opacity = '0';
-            document.getElementById('modalContent').style.transform = 'scale(0.95)';
-            setTimeout(() => { 
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
+            modal.style.opacity = '0'; document.getElementById('modalContent').style.transform = 'scale(0.95)';
+            setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
         }
 
-        // THEME TOGGLE
-        const themeBtn = document.getElementById('themeToggle');
+        // ── THEME ──
+        const themeBtn  = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
-        const snakeImg = document.getElementById('snakeAnimation');
-		function updateSnake(isLight) {
-			const ts = Date.now(); // cache buster
-
-			if (isLight) {
-				snakeImg.src =
-				`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake.svg?ts=${ts}`;
-			} else {
-				snakeImg.src =
-				`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake-dark.svg?palette=github-dark&ts=${ts}`;
-			}
-		}
-		
-
+        const snakeImg  = document.getElementById('snakeAnimation');
+        function updateSnake(isLight) {
+            const ts = Date.now();
+            snakeImg.src = isLight
+                ? `https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake.svg?ts=${ts}`
+                : `https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake-dark.svg?palette=github-dark&ts=${ts}`;
+        }
         themeBtn.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
             const isLight = document.body.classList.contains('light-mode');
             themeIcon.className = isLight ? 'ph-bold ph-sun text-lg' : 'ph-bold ph-moon text-lg';
-            
-            // Update snake animation based on theme
-            function updateSnake(isLight) {
-				const ts = Date.now();
-
-				if (isLight) {
-					snakeImg.src =
-					`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake.svg?ts=${ts}`;
-				} else {
-					snakeImg.src =
-					`https://raw.githubusercontent.com/Android-Artisan/Android-Artisan/output/github-contribution-grid-snake-dark.svg?palette=github-dark&ts=${ts}`;
-				}
-			}
+            updateSnake(isLight);
         });
 
-        // REVEAL ANIMATIONS
+        // ── REVEAL ──
         function revealElements() {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 50) {
-                    el.classList.add('active');
-                }
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
             });
         }
 
-        // INITIALIZATION
+        // ── COPY CODE ──
+        function copyCode(btn) {
+            const code = btn.previousElementSibling;
+            navigator.clipboard.writeText(code.textContent.trim()).then(() => {
+                btn.classList.add('copied');
+                btn.querySelector('span').textContent = 'Copied!';
+                btn.querySelector('i').className = 'ph-bold ph-check';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.querySelector('span').textContent = 'Copy';
+                    btn.querySelector('i').className = 'ph-bold ph-copy';
+                }, 2000);
+            });
+        }
+
+        // ── INIT ──
         window.addEventListener('scroll', revealElements);
         window.addEventListener('resize', initCanvas);
         window.onload = () => {
-		const isLight = document.body.classList.contains('light-mode');
-		if (snakeImg) updateSnake(isLight);
-            initCanvas();
-            animate();
-            revealElements();
+            const isLight = document.body.classList.contains('light-mode');
+            if (snakeImg) updateSnake(isLight);
+            initCanvas(); animate(); revealElements();
+            fetchReleases();
+        };
+        window.onclick = function(e) {
+            if (e.target == document.getElementById('deviceModal')) closeModal();
+            if (!e.target.closest('nav') && mobileMenu.classList.contains('active')) toggleMobileMenu();
+            if (!e.target.closest('#sourceDropdownWrap')) closeSourceDropdown();
         };
 
-        // Close elements on outside click
-        window.onclick = function(event) {
-            const modal = document.getElementById('deviceModal');
-            if (event.target == modal) closeModal();
-            
-            if (!event.target.closest('nav') && mobileMenu.classList.contains('active')) {
-                toggleMobileMenu();
+        // ── CHANGELOG ──
+        const CHANGELOG_API = 'https://api.github.com/repos/ArtisanROM/ExtremeROM-Revived/contents/CHANGELOG.md?ref=sixteen';
+        let parsedChangelog = [];
+        function looksLikeVersion(s) { return /\d/.test(s); }
+        function parseChangelog(md) {
+            const lines = md.replace(/\r/g, '').split('\n');
+            const blocks = []; let current = null, currentCat = null;
+            for (const rawLine of lines) {
+                const line = rawLine.trim(); if (!line) continue;
+                const hm = line.match(/^#{1,2}\s+(.+)$/);
+                if (hm) {
+                    const raw = hm[1].trim().replace(/\[|\]/g, '');
+                    if (!looksLikeVersion(raw)) continue;
+                    if (current) blocks.push(current);
+                    const d = raw.indexOf(' - ');
+                    current = { version: d !== -1 ? raw.slice(0,d).trim() : raw, date: d !== -1 ? raw.slice(d+3).trim() : '', categories: [] };
+                    currentCat = null; continue;
+                }
+                if (!current) continue;
+                if (line.startsWith('### ')) { currentCat = { name: line.slice(4).trim(), items: [] }; current.categories.push(currentCat); continue; }
+                if (line.startsWith('- ') || line.startsWith('* ')) {
+                    if (!currentCat) { currentCat = { name: 'Changes', items: [] }; current.categories.push(currentCat); }
+                    currentCat.items.push(line.slice(2).trim());
+                }
+            }
+            if (current) blocks.push(current);
+            return blocks;
+        }
+        function renderVersionBlock(block) {
+            let html = `<div class="cl-version-block"><div class="cl-version-title">${block.version}</div>${block.date ? `<div class="cl-version-date">${block.date}</div>` : ''}`;
+            for (const cat of block.categories) {
+                html += `<div class="cl-category">${cat.name}</div>`;
+                for (const item of cat.items) html += `<div class="cl-item"><span>${item}</span></div>`;
+            }
+            return html + '</div>';
+        }
+        async function fetchChangelog() {
+            document.getElementById('changelogVersion').textContent = 'Loading...';
+            document.getElementById('changelogLatest').innerHTML = `<div class="space-y-2 pt-1"><div class="skeleton skeleton-line w-1/2"></div><div class="skeleton skeleton-line w-full"></div><div class="skeleton skeleton-line w-3/4"></div><div class="skeleton skeleton-line w-full"></div></div>`;
+            try {
+                const res = await fetch(CHANGELOG_API, { headers: { 'Accept': 'application/vnd.github.v3.raw' } });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                parsedChangelog = parseChangelog(await res.text());
+                if (!parsedChangelog.length) { document.getElementById('changelogVersion').textContent = 'No entries'; document.getElementById('changelogLatest').innerHTML = '<p class="opacity-40 text-xs uppercase tracking-widest font-bold">No entries found.</p>'; return; }
+                const l = parsedChangelog[0];
+                document.getElementById('changelogVersion').textContent = l.version;
+                document.getElementById('changelogDate').textContent = l.date;
+                document.getElementById('changelogLatest').innerHTML = renderVersionBlock(l);
+            } catch(e) {
+                document.getElementById('changelogVersion').textContent = 'Error';
+                document.getElementById('changelogLatest').innerHTML = `<div class="error-state"><p><i class="ph-bold ph-warning-circle"></i> Failed to load changelog${e.message ? ': ' + e.message : ''}.</p><button class="retry-btn" onclick="fetchChangelog()"><i class="ph-bold ph-arrow-clockwise"></i> Retry</button></div>`;
             }
         }
+        function openChangelogModal() {
+            if (parsedChangelog.length) document.getElementById('changelogHistory').innerHTML = parsedChangelog.map(renderVersionBlock).join('');
+            const modal = document.getElementById('changelogModal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.style.opacity = '1'; document.getElementById('changelogModalContent').style.transform = 'scale(1)'; }, 10);
+        }
+        function closeChangelogModal() {
+            const modal = document.getElementById('changelogModal');
+            modal.style.opacity = '0'; document.getElementById('changelogModalContent').style.transform = 'scale(0.95)';
+            setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
+        }
+        document.getElementById('changelogModal').addEventListener('click', function(e) { if (e.target === this) closeChangelogModal(); });
+        fetchChangelog();
+        // ── SOURCE DROPDOWN ──
+        function toggleSourceDropdown() {
+            const dd = document.getElementById('sourceDropdown');
+            const caret = document.getElementById('sourceCaretIcon');
+            const isOpen = dd.classList.contains('open');
+            dd.classList.toggle('open', !isOpen);
+            caret.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+        function closeSourceDropdown() {
+            const dd = document.getElementById('sourceDropdown');
+            const caret = document.getElementById('sourceCaretIcon');
+            if (dd) { dd.classList.remove('open'); }
+            if (caret) caret.style.transform = 'rotate(0deg)';
+        }
+
+        // ── WIKI TABS ──
+        function switchWikiTab(id, btn) {
+            document.querySelectorAll('.wiki-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.wiki-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('wiki-' + id).classList.add('active');
+            btn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
     </script>
 </body>
 </html>
-
-
-
