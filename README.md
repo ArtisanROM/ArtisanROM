@@ -96,6 +96,7 @@ This project is licensed under the terms of the [GNU General Public License v3.0
 - **[3q5i](https://github.com/3q5i)** for support and ideas for the ROM.
 - **[Majaahh](https://github.com/Majaahh)** for help and support.
 - **[irvinhaha](https://github.com/irvinhaha)** for designing many banners and logos
+- **[CiprianDinca](https://github.com/CiprianDinca9)** for custom ExtremeROM ringtones
 - More that I can't remember right now and will have to be added in the future
 
 ## Original ExtremeROM credits:

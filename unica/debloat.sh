@@ -85,6 +85,7 @@ system/app/SamsungTTSVoice_pt_BR_f00
 system/app/SamsungTTSVoice_ru_RU_f00
 system/app/SamsungTTSVoice_th_TH_f00
 system/app/SamsungTTSVoice_vi_VN_f00
+system/app/SamsungTTS
 system/app/SilentLog
 system/app/SimAppDialog
 system/app/Traceur
