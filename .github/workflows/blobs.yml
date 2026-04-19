@@ -23,6 +23,8 @@ jobs:
             path: "prebuilts/samsung/a73xqxx"
           - module: "Galaxy S22 Ultra (b0sxxx)"
             path: "prebuilts/samsung/b0sxxx"
+           - module: "Galaxy S26 Ultra (m3xxx)"
+            path: "prebuilts/samsung/m3qxx"
           - module: "Galaxy Flip 7 FE (b7rxxx)"
             path: "prebuilts/samsung/b7rxxx"
           - module: "Galaxy S23 Ultra (dm3qxxx)"
