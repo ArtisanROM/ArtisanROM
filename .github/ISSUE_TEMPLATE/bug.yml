@@ -89,7 +89,7 @@ body:
       label: "Have you read the Wiki?"
       description: "Confirm that you checked the Wiki for troubleshooting before opening this issue."
       options:
-        - "Yes, I have read the Wiki and other Issues"
-        - "No, I have not read the Wiki and other Issues"
+        - "No, I have not read the Wiki and other Issues, open or closed"
+        - "Yes, I have read the Wiki and other Issues, open or closed"
     validations:
       required: true

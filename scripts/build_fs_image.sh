@@ -152,7 +152,12 @@ PREPARE_SCRIPT()
         exit 1
     fi
 
-    FS_TYPE="$1"
+    if [[ "$*" == *"optics"* || "$*" == *"prism"* || "$*" == *"odm"* ]]; then
+        FS_TYPE="ext4"
+    else
+        FS_TYPE="erofs"
+    fi
+    
     if [[ "$FS_TYPE" != "ext4" ]] && \
             [[ "$FS_TYPE" != "f2fs" ]] && \
             [[ "$FS_TYPE" != "erofs" ]]; then
