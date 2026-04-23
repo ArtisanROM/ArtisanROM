@@ -13,4 +13,12 @@
     <md5>25139c165586799d8f0114b901110654</md5>
     <size>5386018549</size>
   </rom>
+  <kernel channel="G780F">
+    <version>3.1.5</version>
+    <date>2026-04-23</date>
+    <filename>ArtisanKRNL-v3.1.5_r8s_OFFICIAL_KSU_23-04-2026_07-14-05.zip</filename>
+    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.5-kernel/ArtisanKRNL-v3.1.5_r8s_OFFICIAL_KSU_23-04-2026_07-14-05.zip</link>
+    <md5>947a3ea92b50c172caa72f3f42f25d71</md5>
+    <size>21448566</size>
+  </kernel>
 </roms>

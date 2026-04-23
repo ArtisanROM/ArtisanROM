@@ -13,4 +13,20 @@
     <md5>e8af6e054ed0465e249406fcad468f6d</md5>
     <size>5415627551</size>
   </rom>
+  <kernel channel="N981B">
+    <version>3.1.5</version>
+    <date>2026-04-23</date>
+    <filename>ArtisanKRNL-v3.1.5_c1s_OFFICIAL_KSU_23-04-2026_07-11-39.zip</filename>
+    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.5-kernel/ArtisanKRNL-v3.1.5_c1s_OFFICIAL_KSU_23-04-2026_07-11-39.zip</link>
+    <md5>f55cb260d19ff8383641bd87171d28eb</md5>
+    <size>22441590</size>
+  </kernel>
+  <kernel channel="N980F">
+    <version>3.1.5</version>
+    <date>2026-04-23</date>
+    <filename>ArtisanKRNL-v3.1.5_c1slte_OFFICIAL_KSU_23-04-2026_07-12-14.zip</filename>
+    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.5-kernel/ArtisanKRNL-v3.1.5_c1slte_OFFICIAL_KSU_23-04-2026_07-12-14.zip</link>
+    <md5>f28cef56e226f599f3abbfbef3a38ffc</md5>
+    <size>22318601</size>
+  </kernel>
 </roms>
