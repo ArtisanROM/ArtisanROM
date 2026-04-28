@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
   <rom channel="stable">
-    <version>3.1.0</version>
-    <date>2026-04-07</date>
-    <filename>ArtisanROM_OFFICIAL_3.1.0_20260407_z3s-sign.zip</filename>
-    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-z3s/ArtisanROM_OFFICIAL_3.1.0_20260407_z3s-sign.zip.part_00</part1>
-    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-z3s/ArtisanROM_OFFICIAL_3.1.0_20260407_z3s-sign.zip.part_01</part2>
-    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-z3s/ArtisanROM_OFFICIAL_3.1.0_20260407_z3s-sign.zip.part_02</part3>
-    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-z3s/ArtisanROM_OFFICIAL_3.1.0_20260407_z3s-sign.zip.part_03</part4>
-    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-z3s/ArtisanROM_OFFICIAL_3.1.0_20260407_z3s-sign.zip.part_04</part5>
-    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.0-z3s/ArtisanROM_OFFICIAL_3.1.0_20260407_z3s-sign.zip.part_05</part6>
-    <md5>c90ee23e9c3dd422e4f563ac0f8610cc</md5>
-    <size>5380830797</size>
+    <version>3.1.1</version>
+    <date>2026-04-28</date>
+    <filename>ArtisanROM_OFFICIAL_3.1.1_20260428_z3s-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-z3s/ArtisanROM_OFFICIAL_3.1.1_20260428_z3s-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-z3s/ArtisanROM_OFFICIAL_3.1.1_20260428_z3s-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-z3s/ArtisanROM_OFFICIAL_3.1.1_20260428_z3s-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-z3s/ArtisanROM_OFFICIAL_3.1.1_20260428_z3s-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-z3s/ArtisanROM_OFFICIAL_3.1.1_20260428_z3s-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-z3s/ArtisanROM_OFFICIAL_3.1.1_20260428_z3s-sign.zip.part_05</part6>
+    <md5>70f0a23eceebfa7d548ecbe875c7ff15</md5>
+    <size>5367094279</size>
   </rom>
-  <kernel channel="G988B">
-    <version>3.1.5</version>
-    <date>2026-04-23</date>
-    <filename>ArtisanKRNL-v3.1.5_z3s_OFFICIAL_KSU_23-04-2026_07-22-13.zip</filename>
-    <link>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.5-kernel/ArtisanKRNL-v3.1.5_z3s_OFFICIAL_KSU_23-04-2026_07-22-13.zip</link>
-    <md5>30b8cf43150433fe635652efd3f94f0d</md5>
-    <size>21932883</size>
-  </kernel>
 </roms>
