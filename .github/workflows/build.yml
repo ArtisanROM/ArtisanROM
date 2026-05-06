@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [a52sxq, a73xq, m52xq, o1s, p3s, r9s, t2s]
+        target: [x1s, y2s, z3s]
 
     steps:
       - name: Checkout repo
@@ -80,4 +80,20 @@ jobs:
       - name: Build ROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh --no-rom-zip
+          ./scripts/make_rom.sh 
+          
+      - name: Upload build to Pixeldrain
+        env:
+          PIXELDRAIN_API_KEY: ${{ secrets.PD_API }}
+        run: |
+          echo "Uploading ROM files to Pixeldrain..."
+          for file in out/*.zip; do
+            if [ -f "$file" ]; then
+              RESPONSE=$(curl -s -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/)
+              FILE_ID=$(echo $RESPONSE | jq -r '.id')
+              FILE_NAME=$(basename "$file")
+              echo "$FILE_NAME → https://pixeldrain.com/u/$FILE_ID"
+            else
+              echo "No ZIP files found to upload."
+            fi
+          done
