@@ -83,6 +83,7 @@ jobs:
           ./scripts/make_rom.sh 
           
       - name: Upload build to Pixeldrain
+        if: github.event_name == 'workflow_dispatch'
         env:
           PIXELDRAIN_API_KEY: ${{ secrets.PD_API }}
         run: |
