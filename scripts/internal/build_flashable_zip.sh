@@ -250,6 +250,7 @@ GENERATE_UPDATER_SCRIPT()
     $DEBUG || BROTLI_EXTENSION=".br"
 
     local PARTITION_COUNT=0
+    local HAS_UP_PARAM=false
     local HAS_BOOT=false
     local HAS_DTBO=false
     local HAS_INIT_BOOT=false
@@ -264,6 +265,7 @@ GENERATE_UPDATER_SCRIPT()
     local HAS_ODM_DLKM=false
     local HAS_SYSTEM_DLKM=false
 
+    [ -f "$TMP_DIR/up_param.bin" ] && HAS_UP_PARAM=true
     [ -f "$TMP_DIR/boot.img" ] && HAS_BOOT=true
     [ -f "$TMP_DIR/dtbo.img" ] && HAS_DTBO=true
     [ -f "$TMP_DIR/init_boot.img" ] && HAS_INIT_BOOT=true
@@ -412,6 +414,12 @@ GENERATE_UPDATER_SCRIPT()
             echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
             echo    '/boot");'
         fi
+        if $HAS_UP_PARAM; then
+            echo    'ui_print("Installing up_param image...");'
+            echo -n 'package_extract_file("up_param.bin", "'
+            echo -n "$TARGET_BOOT_DEVICE_PATH"
+            echo    '/up_param");'
+        fi
 
         if [ -f "$SRC_DIR/target/$TARGET_CODENAME/installer/install-end.edify" ]; then
             cat "$SRC_DIR/target/$TARGET_CODENAME/installer/install-end.edify"
@@ -550,6 +558,12 @@ if [ -d "$WORK_DIR/kernel" ]; then
 
         LOG_STEP_OUT
     done < <(find "$WORK_DIR/kernel" -maxdepth 1 -type f -name "*.img")
+fi
+
+
+if [ -f "$WORK_DIR/up_param.bin" ]; then
+    LOG "- Copying up_param.bin"
+    cp -a "$WORK_DIR/up_param.bin" "$TMP_DIR/up_param.bin"
 fi
 
 LOG "- Generating updater-script"
