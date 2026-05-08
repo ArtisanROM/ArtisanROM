@@ -100,7 +100,7 @@
 .method public getAvailabilityStatus()I
     .locals 0
 
-    const-string p0, "persist.sys.unica.bootsound"
+    const-string p0, "persist.sys.artisanrom.bootsound"
 
     invoke-static {p0}, Landroid/os/SemSystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
@@ -195,7 +195,7 @@
 .method public isChecked()Z
     .locals 1
 
-    const-string p0, "persist.sys.unica.bootsound"
+    const-string p0, "persist.sys.artisanrom.bootsound"
 
     const/4 v0, 0x1
 
@@ -390,7 +390,7 @@
 .method public setChecked(Z)Z
     .locals 2
 
-    const-string v0, "persist.sys.unica.bootsound"
+    const-string v0, "persist.sys.artisanrom.bootsound"
 
     invoke-static {p1}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
 
