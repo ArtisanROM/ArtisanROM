@@ -89,6 +89,7 @@ run_cmd()
 }
 
 alias unica=run_cmd
+alias quant="./scripts/make_rom.sh"
 # ]
 
 SRC_DIR="$(_GET_SRC_DIR)"
