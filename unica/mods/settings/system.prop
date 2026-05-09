@@ -1,2 +1,0 @@
-# disable gphoto spoof by default
-persist.sys.unica.gphotos=false
