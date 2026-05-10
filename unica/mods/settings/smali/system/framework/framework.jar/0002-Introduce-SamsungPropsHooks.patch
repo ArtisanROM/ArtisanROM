@@ -1,20 +1,20 @@
-From f299cbce0b640455fa7013bbac7f3b7c2eecc06d Mon Sep 17 00:00:00 2001
+From 0be35e0ee9fdc5078055c3cf3f10b9ab36eb2a43 Mon Sep 17 00:00:00 2001
 From: Salvo Giangreco <giangrecosalvo9@gmail.com>
 Date: Fri, 24 Oct 2025 11:59:09 +0200
 Subject: [PATCH] Introduce SamsungPropsHooks
 
 UN1CA: this patch is not complete! Please check unica/mods/settings/customize.sh for more info.
 ---
- .../io/mesalabs/unica/SamsungPropsHooks.smali | 437 ++++++++++++++++++
- 1 file changed, 437 insertions(+)
+ .../io/mesalabs/unica/SamsungPropsHooks.smali | 447 ++++++++++++++++++
+ 1 file changed, 447 insertions(+)
  create mode 100644 smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali
 
 diff --git a/smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali b/smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali
 new file mode 100644
-index 00000000..0c4ac7b4
+index 00000000..03068681
 --- /dev/null
 +++ b/smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali
-@@ -0,0 +1,437 @@
+@@ -0,0 +1,447 @@
 +.class public final Lio/mesalabs/unica/SamsungPropsHooks;
 +.super Ljava/lang/Object;
 +.source "SamsungPropsHooks.java"
@@ -140,7 +140,23 @@ index 00000000..0c4ac7b4
 +
 +    move-result p0
 +
++    const-string v2, "ro.product.odm.model"
++
++    const-string v3, "ro.boot.em.model"
++
++    const-string v4, "MODEL"
++
 +    if-eqz p0, :cond_2
++
++    invoke-static {v2}, Landroid/os/SemSystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object p0
++
++    invoke-static {v3, p0}, Landroid/os/SemSystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object p0
++
++    invoke-static {v4, p0}, Lio/mesalabs/unica/SamsungPropsHooks;->setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
 +
 +    const/16 p0, 0x23
 +
@@ -161,15 +177,13 @@ index 00000000..0c4ac7b4
 +
 +    move-result p0
 +
-+    const-string v2, "MODEL"
-+
 +    if-eqz p0, :cond_3
 +
 +    const-string p0, "SM-A526B"
 +
-+    invoke-static {v2, p0}, Lio/mesalabs/unica/SamsungPropsHooks;->setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
++    invoke-static {v4, p0}, Lio/mesalabs/unica/SamsungPropsHooks;->setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
 +
-+    goto/16 :goto_2
++    goto :goto_2
 +
 +    :cond_3
 +    const-string p0, "com.google.android.apps.photos"
@@ -212,7 +226,7 @@ index 00000000..0c4ac7b4
 +
 +    const-string p0, "Pixel XL"
 +
-+    invoke-static {v2, p0}, Lio/mesalabs/unica/SamsungPropsHooks;->setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
++    invoke-static {v4, p0}, Lio/mesalabs/unica/SamsungPropsHooks;->setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
 +
 +    const-string p0, "FINGERPRINT"
 +
@@ -270,19 +284,15 @@ index 00000000..0c4ac7b4
 +
 +    if-nez p0, :cond_6
 +
-+    const-string p0, "ro.product.odm.model"
-+
-+    invoke-static {p0}, Landroid/os/SemSystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
++    invoke-static {v2}, Landroid/os/SemSystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 +
 +    move-result-object p0
 +
-+    const-string v0, "ro.boot.em.model"
-+
-+    invoke-static {v0, p0}, Landroid/os/SemSystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++    invoke-static {v3, p0}, Landroid/os/SemSystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 +
 +    move-result-object p0
 +
-+    invoke-static {v2, p0}, Lio/mesalabs/unica/SamsungPropsHooks;->setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
++    invoke-static {v4, p0}, Lio/mesalabs/unica/SamsungPropsHooks;->setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
 +
 +    :cond_6
 +    :goto_2
