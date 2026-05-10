@@ -33,6 +33,11 @@ if [[ $TARGET_OS_SINGLE_SYSTEM_IMAGE == "essi" ]]; then
     # Cleanup variables
     unset TARGET_FIRMWARE_PATH W_HEX H_HEX WIDTH HEIGHT BOOT_QMG
     LOG_STEP_OUT
+    LOG_STEP_IN "- Applying Boot Animation patches"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/bootsamsung.qmg"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/bootsamsungloop.qmg"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/shutdown.qmg"
+    LOG_STEP_OUT
 else
     LOG "- Non-Exynos device detected. Skipping custom up_param."
 fi
