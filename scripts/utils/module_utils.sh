@@ -62,7 +62,7 @@ DECODE_APK()
     return 0
 }
 
-# GET_GALAXY_STORE_DOWNLOAD_URL "<package name>"
+# GET_GALAXY_STORE_DOWNLOAD_URL "<package name/id>"
 # Returns a URL to download the desidered app from Samsung servers.
 GET_GALAXY_STORE_DOWNLOAD_URL()
 {
@@ -103,10 +103,14 @@ GET_GALAXY_STORE_DOWNLOAD_URL()
     local OUT
     local REQUEST
     for i in "${DEVICES[@]}"; do
-        OUT="$(curl -L -s "https://vas.samsungapps.com/stub/stubUpdateCheck.as?appId=$PACKAGE&versionCode=0&deviceId=$i&mcc=262&mnc=01&csc=EUX&sdkVer=$OS&oneUiVersion=$ONEUI&systemId=0")"
-        OUT="$(grep -o -P "(?<=<productId>)[^<]+" <<< "$OUT")"
-        if [ ! "$OUT" ]; then
-            continue
+        if [[ "$PACKAGE" =~ ^[+-]?[0-9]+$ ]]; then
+            OUT="$PACKAGE"
+        else
+            OUT="$(curl -L -s "https://vas.samsungapps.com/stub/stubUpdateCheck.as?appId=$PACKAGE&versionCode=0&deviceId=$i&mcc=262&mnc=01&csc=EUX&sdkVer=$OS&oneUiVersion=$ONEUI&systemId=0")"
+            OUT="$(grep -o -P "(?<=<productId>)[^<]+" <<< "$OUT")"
+            if [ ! "$OUT" ]; then
+                continue
+            fi
         fi
 
         REQUEST="$PROTOCOL"
