@@ -6,7 +6,6 @@
     <SecPreference android:title="@string/unica_keybox_clear_title" android:key="unica_keybox_clear" settings:controller="io.mesalabs.unica.settings.keybox.KeyboxClearPreferenceController" />
     <com.samsung.android.settings.widget.SecInsetCategoryPreference />
     <SecSwitchPreference android:title="@string/unica_pif_title" android:key="unica_pif" android:summary="@string/summary_placeholder" settings:controller="io.mesalabs.unica.settings.pif.PIFPreferenceController" />
-    <SecSwitchPreference android:title="@string/unica_pif_attest_key_title" android:key="unica_pif_attest_key" settings:controller="io.mesalabs.unica.settings.pif.PIFBlockAttestKeyPreferenceController" />
     <SecPreference android:title="@string/unica_pif_update_title" android:key="unica_pif_update" settings:controller="io.mesalabs.unica.settings.pif.PIFUpdatePreferenceController" />
     <SecPreference android:title="@string/unica_pif_custom_title" android:key="unica_pif_custom" />
     <com.samsung.android.settings.widget.SecInsetCategoryPreference />

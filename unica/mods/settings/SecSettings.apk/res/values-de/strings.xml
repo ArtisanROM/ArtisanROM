@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Neustart</string>
     <string name="unica_menu_reboot_title">Neustart Optionen</string>
     <string name="unica_native_blur_title">Live-Blur-Effekt aktivieren</string>
-    <string name="unica_pif_attest_key_title">DroidGuard Schlüssel blockieren</string>
     <string name="unica_pif_custom_title">Importiere PIF Props von Datei</string>
     <string name="unica_pif_summary">Spoof dein Gerät um Google Play Attestation zu bestehen.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

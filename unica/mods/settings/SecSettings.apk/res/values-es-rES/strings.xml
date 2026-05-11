@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Reiniciar</string>
     <string name="unica_menu_reboot_title">Opciones de reinicio</string>
     <string name="unica_native_blur_title">Activar efecto de desenfoque en tiempo real</string>
-    <string name="unica_pif_attest_key_title">Bloquear verificación de claves de DroidGuard</string>
     <string name="unica_pif_custom_title">Importar props personalizadas de PIF desde archivo</string>
     <string name="unica_pif_summary">Suplantar tu dispositivo para pasar la certificación de Google Play.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

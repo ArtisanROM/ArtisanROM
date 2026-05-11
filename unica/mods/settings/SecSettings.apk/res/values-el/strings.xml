@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Επανεκκίνηση</string>
     <string name="unica_menu_reboot_title">Επιλογές επανεκκίνησης</string>
     <string name="unica_native_blur_title">Ενεργοποίηση ζωντανού εφέ θόλωσης</string>
-    <string name="unica_pif_attest_key_title">Αποκλεισμός attestation κλειδιού DroidGuard</string>
     <string name="unica_pif_custom_title">Εισαγωγή προσαρμοσμένων PIF props από αρχείο</string>
     <string name="unica_pif_summary">Πλαστογράφηση της συσκευής για επιτυχή έλεγχο Google Play Integrity.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

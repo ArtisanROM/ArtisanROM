@@ -8,8 +8,8 @@ UN1CA: this patch is not complete! Please check unica/mods/pif/customize.sh for 
  .../keystore2/AndroidKeyStoreSpi.smali        |    2 +
  ...grityHooks$$ExternalSyntheticLambda0.smali |   30 +
  .../mesalabs/unica/PlayIntegrityHooks$1.smali |   79 ++
- .../mesalabs/unica/PlayIntegrityHooks.smali   | 1045 +++++++++++++++++
- 4 files changed, 1156 insertions(+)
+ .../mesalabs/unica/PlayIntegrityHooks.smali   | 1028 +++++++++++++++++
+ 4 files changed, 1139 insertions(+)
  create mode 100644 smali_classes6/io/mesalabs/unica/PlayIntegrityHooks$$ExternalSyntheticLambda0.smali
  create mode 100644 smali_classes6/io/mesalabs/unica/PlayIntegrityHooks$1.smali
  create mode 100644 smali_classes6/io/mesalabs/unica/PlayIntegrityHooks.smali
@@ -660,30 +660,13 @@ index 00000000..4c1b9aa6
 +.end method
 +
 +.method private static blacklist shouldBlockKeyAttestation()Z
-+    .locals 2
-+
-+    const-string v0, "persist.sys.unica.pif.block_attest_key"
-+
-+    const/4 v1, 0x0
-+
-+    invoke-static {v0, v1}, Landroid/os/SemSystemProperties;->getBoolean(Ljava/lang/String;Z)Z
-+
-+    move-result v0
-+
-+    if-nez v0, :cond_0
++    .locals 1
 +
 +    invoke-static {}, Lio/mesalabs/unica/KeyProviderManager;->isKeyboxAvailable()Z
 +
 +    move-result v0
 +
-+    if-eqz v0, :cond_0
-+
-+    const/4 v0, 0x1
-+
 +    return v0
-+
-+    :cond_0
-+    return v1
 +.end method
 +
 +.method public static blacklist shouldBypassTaskPermission(Landroid/content/Context;)Z

@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Riavvia</string>
     <string name="unica_menu_reboot_title">Opzioni riavvio</string>
     <string name="unica_native_blur_title">Abilita effetto sfocatura nativo</string>
-    <string name="unica_pif_attest_key_title">Blocca attestazione DroidGuard</string>
     <string name="unica_pif_custom_title">Importa configurazione PIF da file</string>
     <string name="unica_pif_summary">Consente di passare i controlli di attestazione di Google Play.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

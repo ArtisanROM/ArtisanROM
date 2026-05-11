@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Khởi động lại</string>
     <string name="unica_menu_reboot_title">Các tùy chọn khởi động lại</string>
     <string name="unica_native_blur_title">Bật hiệu ứng làm mờ trực tiếp</string>
-    <string name="unica_pif_attest_key_title">Chặn xác thực chứng chỉ DroidGuard</string>
     <string name="unica_pif_custom_title">Nhập thông tin PIF tùy chỉnh từ tệp</string>
     <string name="unica_pif_summary">Giả mạo thiết bị để vượt qua chứng thực Google Play.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

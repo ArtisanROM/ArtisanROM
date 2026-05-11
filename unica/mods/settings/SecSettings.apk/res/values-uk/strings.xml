@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Перезавантажити</string>
     <string name="unica_menu_reboot_title">Опції перезавантаження</string>
     <string name="unica_native_blur_title">Увімкнути ефект живого розмиття</string>
-    <string name="unica_pif_attest_key_title">Заблокувати атестацію ключів DroidGuard</string>
     <string name="unica_pif_custom_title">Імпортувати власні властивості PIF із файлу</string>
     <string name="unica_pif_summary">Підробити ваш пристрій, щоб пройти сертифікацію Google Play.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

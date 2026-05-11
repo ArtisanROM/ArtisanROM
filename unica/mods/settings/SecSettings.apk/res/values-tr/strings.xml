@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Yeniden başlat</string>
     <string name="unica_menu_reboot_title">Yeniden başlatma seçenekleri</string>
     <string name="unica_native_blur_title">Gerçek zamanlı bulanıklık efektini etkinleştir</string>
-    <string name="unica_pif_attest_key_title">DroidGuard anahtar doğrulamasını engelle</string>
     <string name="unica_pif_custom_title">PIF parametrelerini dosyadan içe aktar</string>
     <string name="unica_pif_summary">"Google Play kontrollerini geçmek için cihazınızı spoof'layın."</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

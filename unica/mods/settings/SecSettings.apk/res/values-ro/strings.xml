@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Repornire</string>
     <string name="unica_menu_reboot_title">Opțiuni de repornire</string>
     <string name="unica_native_blur_title">Activare efect de estompare în timp real</string>
-    <string name="unica_pif_attest_key_title">Blocați atestația de chei DroidGuard</string>
     <string name="unica_pif_custom_title">Importați proprietăți PIF din fișier</string>
     <string name="unica_pif_summary">Ascundeți dispozitivul dvs. pentru a trece verificarea Google Play.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

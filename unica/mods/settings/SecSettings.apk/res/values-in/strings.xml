@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Mulai ulang</string>
     <string name="unica_menu_reboot_title">Opsi mulai ulang</string>
     <string name="unica_native_blur_title">Aktifkan efek live blur</string>
-    <string name="unica_pif_attest_key_title">Blokir atestasi kunci DroidGuard</string>
     <string name="unica_pif_custom_title">Impor properti PIF khusus dari berkas</string>
     <string name="unica_pif_summary">Memalsukan perangkat Anda untuk lolos atestasi Google Play.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

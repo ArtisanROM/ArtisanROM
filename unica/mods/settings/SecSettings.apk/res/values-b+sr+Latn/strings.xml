@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Ponovo pokreni</string>
     <string name="unica_menu_reboot_title">Opcije za ponovno pokretanje</string>
     <string name="unica_native_blur_title">Omogućite efekat zamućenja uživo</string>
-    <string name="unica_pif_attest_key_title">Blokiraj atestaciju DroidGuard ključa</string>
     <string name="unica_pif_custom_title">Uvezi prilagođene PIF rekvizite iz datoteke</string>
     <string name="unica_pif_summary">Lažno prevarite svoj uređaj da biste prošli Google Play atestaciju.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>

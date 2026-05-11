@@ -4,8 +4,6 @@
 
 
 # instance fields
-.field public mBlockAttestKeyPreference:Landroidx/preference/SecSwitchPreference;
-
 .field public mCustomPreference:Landroidx/preference/SecPreference;
 
 .field public mTogglePreference:Landroidx/preference/SecSwitchPreference;
@@ -38,16 +36,6 @@
     check-cast v0, Landroidx/preference/SecSwitchPreference;
 
     iput-object v0, p0, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->mTogglePreference:Landroidx/preference/SecSwitchPreference;
-
-    const-string v0, "unica_pif_attest_key"
-
-    invoke-virtual {p1, v0}, Landroidx/preference/PreferenceGroup;->findPreference(Ljava/lang/CharSequence;)Landroidx/preference/Preference;
-
-    move-result-object v0
-
-    check-cast v0, Landroidx/preference/SecSwitchPreference;
-
-    iput-object v0, p0, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->mBlockAttestKeyPreference:Landroidx/preference/SecSwitchPreference;
 
     const-string v0, "unica_pif_update"
 
@@ -270,39 +258,20 @@
     invoke-virtual {p0, v0}, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->refreshSummary(Landroidx/preference/Preference;)V
 
     :cond_0
-    iget-object v0, p0, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->mBlockAttestKeyPreference:Landroidx/preference/SecSwitchPreference;
+    iget-object v0, p0, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->mUpdatePreference:Landroidx/preference/SecPreference;
+
+    if-eqz v0, :cond_1
+
+    invoke-virtual {v0, p1}, Landroidx/preference/Preference;->setVisible(Z)V
+
+    :cond_1
+    iget-object v0, p0, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->mCustomPreference:Landroidx/preference/SecPreference;
 
     if-eqz v0, :cond_2
 
-    if-eqz p1, :cond_1
-
-    invoke-static {}, Lio/mesalabs/unica/settings/keybox/KeyboxUtils;->isKeyboxInstallable()Z
-
-    move-result v1
-
-    invoke-virtual {v0, v1}, Landroidx/preference/Preference;->setVisible(Z)V
-
-    goto :goto_0
-
-    :cond_1
     invoke-virtual {v0, p1}, Landroidx/preference/Preference;->setVisible(Z)V
 
     :cond_2
-    :goto_0
-    iget-object v0, p0, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->mUpdatePreference:Landroidx/preference/SecPreference;
-
-    if-eqz v0, :cond_3
-
-    invoke-virtual {v0, p1}, Landroidx/preference/Preference;->setVisible(Z)V
-
-    :cond_3
-    iget-object v0, p0, Lio/mesalabs/unica/settings/pif/PIFPreferenceController;->mCustomPreference:Landroidx/preference/SecPreference;
-
-    if-eqz v0, :cond_4
-
-    invoke-virtual {v0, p1}, Landroidx/preference/Preference;->setVisible(Z)V
-
-    :cond_4
     const/4 p0, 0x1
 
     return p0

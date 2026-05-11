@@ -37,7 +37,6 @@
     <string name="unica_menu_item_reboot_title">Uruchom ponownie</string>
     <string name="unica_menu_reboot_title">Opcje ponownego uruchamiania</string>
     <string name="unica_native_blur_title">Włącz efekt rozmycia na żywo</string>
-    <string name="unica_pif_attest_key_title">Zablokuj poświadczenie klucza DroidGuarda</string>
     <string name="unica_pif_custom_title">Importuj własną konfigurację PIF z pliku</string>
     <string name="unica_pif_summary">Spoofuj urządzenie, aby przechodziło atest Google Play.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>
