@@ -1,0 +1,36 @@
+From 1bac1736ad8f9b72037a04a4ae44b288538820d5 Mon Sep 17 00:00:00 2001
+From: DanGLVK <switchtegra@gmail.com>
+Date: Wed, 15 Apr 2026 08:45:10 +0200
+Subject: [PATCH] Adjust stepX in MultiWaveAreaTrackRenderer
+
+---
+ .../track/auto/MultiWaveAreaTrackRenderer.smali        | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/smali_classes2/com/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer.smali b/smali_classes2/com/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer.smali
+index bf1c1b59e6..fd59150b77 100644
+--- a/smali_classes2/com/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer.smali
++++ b/smali_classes2/com/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer.smali
+@@ -51,13 +51,15 @@
+ 
+     iput p1, p0, Lcom/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer;->numWaves:I
+ 
+-    const/4 p2, 0x3
++    const/4 p1, 0x3
+ 
+-    iput p2, p0, Lcom/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer;->cycleCount:I
++    iput p1, p0, Lcom/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer;->cycleCount:I
+ 
+-    const p2, -0x43333333    # -0.025f
++    const p1, -0x43333333    # -0.025f
+ 
+-    iput p2, p0, Lcom/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer;->phaseShift:F
++    iput p1, p0, Lcom/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer;->phaseShift:F
++
++    const/16 p1, 0xa
+ 
+     iput p1, p0, Lcom/android/systemui/media/audiovisseekbar/renderer/track/auto/MultiWaveAreaTrackRenderer;->stepX:I
+ 
+-- 
+2.54.0
+
