@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Deaktiviere Bildschirmaufnahme Erkennung</string>
     <string name="unica_spoof_settings_title">Spoofing-Einstellungen</string>
     <string name="unica_ui_settings_title">UI-Einstellungen</string>
-    <string name="unica_updates_title">UN1CA Updates</string>
+    <string name="unica_updates_title">ArtisanROM Updates</string>
     <string name="unica_vulkan_summary">Das ist instabil und könnte Probleme verursachen!</string>
     <string name="unica_vulkan_title">Vulkan Renderer aktivieren</string>
 </resources>

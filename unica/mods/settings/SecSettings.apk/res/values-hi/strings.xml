@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">स्क्रीन कैप्चर पहचान अक्षम करें</string>
     <string name="unica_spoof_settings_title">स्पूफ सेटिंग</string>
     <string name="unica_ui_settings_title">यूआई सेटिंग</string>
-    <string name="unica_updates_title">UN1CA अपडेट</string>
+    <string name="unica_updates_title">ArtisanROM अपडेट</string>
     <string name="unica_vulkan_summary">यह अस्थिर है और इससे समस्याएं उत्पन्न हो सकती हैं!</string>
     <string name="unica_vulkan_title">वल्कन रेंडरर सक्षम करें</string>
 </resources>

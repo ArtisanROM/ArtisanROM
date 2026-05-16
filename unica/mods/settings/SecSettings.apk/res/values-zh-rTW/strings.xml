@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">關閉螢幕擷取偵測</string>
     <string name="unica_spoof_settings_title">偽裝設定</string>
     <string name="unica_ui_settings_title">UI 設定</string>
-    <string name="unica_updates_title">UN1CA 更新</string>
+    <string name="unica_updates_title">ArtisanROM 更新</string>
     <string name="unica_vulkan_summary">這不穩定，可能會出現問題！</string>
     <string name="unica_vulkan_title">啟用 Vulkan 著色器</string>
 </resources>

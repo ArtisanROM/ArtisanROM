@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Απενεργοποίηση ανίχνευσης στιγμιότυπου οθόνης</string>
     <string name="unica_spoof_settings_title">Ρυθμίσεις πλαστογράφησης</string>
     <string name="unica_ui_settings_title">Ρυθμίσεις διεπαφής</string>
-    <string name="unica_updates_title">Ενημερώσεις UN1CA</string>
+    <string name="unica_updates_title">Ενημερώσεις ArtisanROM</string>
     <string name="unica_vulkan_summary">Αυτή η επιλογή είναι ασταθής και μπορεί να προκαλέσει προβλήματα!</string>
     <string name="unica_vulkan_title">Ενεργοποίηση Vulkan renderer</string>
 </resources>

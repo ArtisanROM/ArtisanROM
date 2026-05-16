@@ -1,0 +1,6 @@
+/sec_ic_settings_user_manual/i
+    <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_software_update" android:layout="@layout/sec_homepage_software_update_preference" android:title="@string/sec_software_update_title" android:key="top_level_choidujour" android:summary="@string/summary_placeholder" android:order="330000" settings:controller="io.mesalabs.unica.settings.ChoiDujourPreferenceController" settings:highlightableMenuKey="@string/menu_key_choidujour" settings:keywords="@string/keywords_software_update_settings">
+        <intent android:targetPackage="com.artisan.updater" android:targetClass="com.artisan.updater.MainActivity">
+            <extra android:name="from_settings" android:value="true" />
+        </intent>
+    </com.android.settings.widget.HomepagePreference>

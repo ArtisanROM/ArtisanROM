@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Отключить обнаружение захвата экрана</string>
     <string name="unica_spoof_settings_title">Настройки подмены</string>
     <string name="unica_ui_settings_title">Настройки пользовательского интерфейса</string>
-    <string name="unica_updates_title">Обновления UN1CA</string>
+    <string name="unica_updates_title">Обновления ArtisanROM</string>
     <string name="unica_vulkan_summary">Это нестабильно и может вызвать проблемы!</string>
     <string name="unica_vulkan_title">Включить рендерер Vulkan</string>
 </resources>

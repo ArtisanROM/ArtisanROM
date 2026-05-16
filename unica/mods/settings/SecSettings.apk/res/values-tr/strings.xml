@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Ekran yakalama tespitini devre dışı bırak</string>
     <string name="unica_spoof_settings_title">Sistem aldatma ayarları</string>
     <string name="unica_ui_settings_title">Arayüz Ayarları</string>
-    <string name="unica_updates_title">UN1CA Güncellemeleri</string>
+    <string name="unica_updates_title">ArtisanROM Güncellemeleri</string>
     <string name="unica_vulkan_summary">Stabil değildir ve sorunlara sebep olabilir!</string>
     <string name="unica_vulkan_title">Vulkan işleyicisini etkinleştir</string>
 </resources>

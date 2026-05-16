@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Matikan deteksi tangkapan layar</string>
     <string name="unica_spoof_settings_title">Pengaturan spoof</string>
     <string name="unica_ui_settings_title">Pengaturan UI</string>
-    <string name="unica_updates_title">Pembaruan UN1CA</string>
+    <string name="unica_updates_title">Pembaruan ArtisanROM</string>
     <string name="unica_vulkan_summary">Ini tidak stabil dan mungkin menyebabkan masalah!</string>
     <string name="unica_vulkan_title">Aktifkan perender Vulkan</string>
 </resources>

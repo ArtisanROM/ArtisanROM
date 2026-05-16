@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Онемогући откривање снимања екрана</string>
     <string name="unica_spoof_settings_title">Корисна подешавања</string>
     <string name="unica_ui_settings_title">UI подешавања</string>
-    <string name="unica_updates_title">UN1CA ажурирања</string>
+    <string name="unica_updates_title">ArtisanROM ажурирања</string>
     <string name="unica_vulkan_summary">Ово је нестабилно и може да изазове проблеме!</string>
     <string name="unica_vulkan_title">Укључи Vulkan рендерер</string>
 </resources>

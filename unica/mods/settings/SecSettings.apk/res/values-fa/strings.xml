@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">غیرفعال کردن تشخیص ضبط صفحه از دیگر برنامه‌ها</string>
     <string name="unica_spoof_settings_title">تنظیمات جعل‌‌کردن</string>
     <string name="unica_ui_settings_title">تنظیمات یوآی</string>
-    <string name="unica_updates_title">به‌روزرسانی‌ها UN1CA</string>
+    <string name="unica_updates_title">به‌روزرسانی‌ها ArtisanROM</string>
     <string name="unica_vulkan_summary">این گزینه پایدار نیست و ممکن است باعث مشکل شود!</string>
     <string name="unica_vulkan_title">فعال کردن پردازش Vulkan</string>
 </resources>

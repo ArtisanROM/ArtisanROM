@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Wyłącz wykrywanie przechwytywania ekranu</string>
     <string name="unica_spoof_settings_title">Ustawienia spoofingu</string>
     <string name="unica_ui_settings_title">Ustawienia interfejsu</string>
-    <string name="unica_updates_title">Aktualizacje UN1CA</string>
+    <string name="unica_updates_title">Aktualizacje ArtisanROM</string>
     <string name="unica_vulkan_summary">Niestabilne i może powodować problemy!</string>
     <string name="unica_vulkan_title">Włącz renderowanie Vulkan</string>
 </resources>

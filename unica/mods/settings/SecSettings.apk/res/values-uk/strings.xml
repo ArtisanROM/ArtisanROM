@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Вимкнути виявлення захоплення екрана</string>
     <string name="unica_spoof_settings_title">Налаштування виявлення</string>
     <string name="unica_ui_settings_title">Налаштування інтерфейсу</string>
-    <string name="unica_updates_title">Оновлення UN1CA</string>
+    <string name="unica_updates_title">Оновлення ArtisanROM</string>
     <string name="unica_vulkan_summary">Це нестабільно і може спричинити проблеми!</string>
     <string name="unica_vulkan_title">Увімкнути графічний api Vulkan</string>
 </resources>

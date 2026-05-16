@@ -9,6 +9,7 @@ VERSION_PATCH=7
 # The below variables will be generated automatically
 #
 # Version name
+UPDATER_VERSION="${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
 ROM_VERSION="${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
 # Append "+" to version name if commits have been added since the last tag
 LATEST_TAG="$(git describe --tags --abbrev=0 2> /dev/null)"

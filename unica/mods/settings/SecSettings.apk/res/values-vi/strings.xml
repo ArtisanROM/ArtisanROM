@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Vô hiệu hóa phát hiện chụp màn hình</string>
     <string name="unica_spoof_settings_title">Cài đặt làm giả</string>
     <string name="unica_ui_settings_title">Cài đặt giao diện người dùng</string>
-    <string name="unica_updates_title">Cập nhật UN1CA</string>
+    <string name="unica_updates_title">Cập nhật ArtisanROM</string>
     <string name="unica_vulkan_summary">Không ổn định và có thể gây ra vấn đề!</string>
     <string name="unica_vulkan_title">Bật trình hiển thị Vulkan</string>
 </resources>

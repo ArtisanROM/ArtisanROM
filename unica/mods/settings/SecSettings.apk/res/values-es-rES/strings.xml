@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Desactivar detección de capturas y grabaciones de pantalla</string>
     <string name="unica_spoof_settings_title">Ajustes de spoofing</string>
     <string name="unica_ui_settings_title">Ajustes de interfaz</string>
-    <string name="unica_updates_title">Actualizaciones de UN1CA</string>
+    <string name="unica_updates_title">Actualizaciones de ArtisanROM</string>
     <string name="unica_vulkan_summary">¡Esto es inestable y puede causar problemas!</string>
     <string name="unica_vulkan_title">Activar renderizador Vulkan</string>
 </resources>

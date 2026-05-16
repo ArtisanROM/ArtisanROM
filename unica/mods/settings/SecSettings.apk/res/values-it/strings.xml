@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Disattiva rilevamento cattura schermo</string>
     <string name="unica_spoof_settings_title">Opzioni spoofing</string>
     <string name="unica_ui_settings_title">Opzioni interfaccia</string>
-    <string name="unica_updates_title">Aggiornamenti UN1CA</string>
+    <string name="unica_updates_title">Aggiornamenti ArtisanROM</string>
     <string name="unica_vulkan_summary">Potrebbe causare problemi!</string>
     <string name="unica_vulkan_title">Abilita renderer Vulkan</string>
 </resources>

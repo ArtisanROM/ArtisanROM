@@ -53,7 +53,7 @@
     <string name="unica_ss_detection_title">Çaktivizo zbulimin e kapjes së ekranit</string>
     <string name="unica_spoof_settings_title">Cilësimet e maskimit</string>
     <string name="unica_ui_settings_title">Cilësimet e UI</string>
-    <string name="unica_updates_title">Përditësimet e UN1CA</string>
+    <string name="unica_updates_title">Përditësimet e ArtisanROM</string>
     <string name="unica_vulkan_summary">Kjo është e paqëndrueshme dhe mund të shkaktojë probleme!</string>
     <string name="unica_vulkan_title">Aktivizo renderer-in Vulkan</string>
 </resources>
