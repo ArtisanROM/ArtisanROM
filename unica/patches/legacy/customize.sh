@@ -327,6 +327,16 @@ if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "36" ]; then
     unset VBOOT_MISSING KERNEL_MISSING
 fi
 
+# Support legacy LED Cover level
+# - Replace deprecated 'android.nfc.NfcAdapter' APIs with 'com.samsung.android.nfc.adapter.ISamsungNfcAdapter'
+if [ -f "$WORK_DIR/system/system/priv-app/LedCoverService/LedCoverService.apk" ]; then
+    if [ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")" -ge "30" ] && \
+            [ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")" -lt "100" ]; then
+        APPLY_PATCH "system" "system/priv-app/LedCoverService/LedCoverService.apk" \
+            "$MODPATH/ledcover/LedCoverService.apk/0001-Switch-to-ISamsungNfcAdapter-interface.patch"
+    fi
+fi
+
 if ! $PATCHED; then
     LOG "\033[0;33m! Nothing to do\033[0m"
 fi

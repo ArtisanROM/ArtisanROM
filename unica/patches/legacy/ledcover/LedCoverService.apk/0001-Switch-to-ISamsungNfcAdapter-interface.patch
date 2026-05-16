@@ -1,0 +1,2420 @@
+From 2d7d8f4fe69a32b5e7689bdd6e2feafe437712b8 Mon Sep 17 00:00:00 2001
+From: nhglong <its.nhglong@gmail.com>
+Date: Sat, 16 May 2026 23:01:59 +0200
+Subject: [PATCH] Switch to ISamsungNfcAdapter interface
+
+---
+ .../com/sec/android/cover/ledback/a/a/j.smali | 154 ++++++++-------
+ .../com/sec/android/cover/ledback/a/b/j.smali | 144 +++++++-------
+ .../com/sec/android/cover/ledback/a/c/j.smali |  50 ++---
+ .../sec/android/cover/ledcover/a/a/k.smali    | 180 ++++++++++--------
+ .../sec/android/cover/ledcover/a/b/k.smali    | 100 +++++-----
+ .../sec/android/cover/ledcover/a/c/k.smali    |  74 +++----
+ .../sec/android/cover/ledcover/a/e/j.smali    | 102 +++++-----
+ 7 files changed, 432 insertions(+), 372 deletions(-)
+
+diff --git a/smali/com/sec/android/cover/ledback/a/a/j.smali b/smali/com/sec/android/cover/ledback/a/a/j.smali
+index 07ad093..398b13f 100644
+--- a/smali/com/sec/android/cover/ledback/a/a/j.smali
++++ b/smali/com/sec/android/cover/ledback/a/a/j.smali
+@@ -39,7 +39,7 @@
+ 
+ .field private e:Landroid/content/Context;
+ 
+-.field private f:Landroid/nfc/NfcAdapter;
++.field private f:La/a/a/a/a/b;
+ 
+ .field private g:Landroid/os/HandlerThread;
+ 
+@@ -230,11 +230,11 @@
+ 
+     invoke-virtual {p2, v0}, Landroid/os/PowerManager$WakeLock;->setReferenceCounted(Z)V
+ 
+-    invoke-static {p1}, Landroid/nfc/NfcAdapter;->getDefaultAdapter(Landroid/content/Context;)Landroid/nfc/NfcAdapter;
++    invoke-static {p1}, La/a/a/a/a/b;->a(Landroid/content/Context;)La/a/a/a/a/b;
+ 
+     move-result-object p2
+ 
+-    iput-object p2, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iput-object p2, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+     new-instance p2, Landroid/os/Handler;
+ 
+@@ -792,9 +792,9 @@
+     :try_start_0
+     invoke-direct {p0}, Lcom/sec/android/cover/ledback/a/a/j;->p()V
+ 
+-    iget-object v5, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v5, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v5, v0}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v5, v0}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v4
+ 
+@@ -1334,13 +1334,13 @@
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_7
++    if-nez v0, :cond_8
+ 
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->A:Z
+ 
+     if-eqz v0, :cond_0
+ 
+-    goto/16 :goto_0
++    goto/16 :goto_1
+ 
+     :cond_0
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->m:Ljava/lang/String;
+@@ -1385,12 +1385,20 @@
+     return-void
+ 
+     :cond_2
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
++
++    if-eqz v0, :cond_3
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_0
++
++    :cond_3
++    const/4 v0, 0x0
++
++    :goto_0
+     sget-object v1, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+     new-instance v2, Ljava/lang/StringBuilder;
+@@ -1419,27 +1427,27 @@
+ 
+     const/4 v2, 0x0
+ 
+-    if-nez v1, :cond_5
++    if-nez v1, :cond_6
+ 
+-    iget-object v1, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v1, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v1}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v1}, La/a/a/a/a/b;->b()Z
+ 
+     array-length v1, v0
+ 
+-    if-lez v1, :cond_4
++    if-lez v1, :cond_5
+ 
+     iget v1, p0, Lcom/sec/android/cover/ledback/a/a/j;->u:I
+ 
+     const/4 v3, 0x5
+ 
+-    if-ge v1, v3, :cond_4
++    if-ge v1, v3, :cond_5
+ 
+     aget-byte v0, v0, v2
+ 
+     const/16 v1, -0xd
+ 
+-    if-ne v0, v1, :cond_4
++    if-ne v0, v1, :cond_5
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->h:Landroid/os/Handler;
+ 
+@@ -1449,7 +1457,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_3
++    if-eqz v0, :cond_4
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->h:Landroid/os/Handler;
+ 
+@@ -1459,7 +1467,7 @@
+ 
+     invoke-static {v0}, La/b/a/a/f;->b(Landroid/os/PowerManager$WakeLock;)V
+ 
+-    :cond_3
++    :cond_4
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->r:Landroid/os/PowerManager$WakeLock;
+ 
+     invoke-static {v0}, La/b/a/a/f;->a(Landroid/os/PowerManager$WakeLock;)V
+@@ -1496,15 +1504,15 @@
+ 
+     invoke-static {v0, p0}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :cond_4
++    :cond_5
+     return-void
+ 
+-    :cond_5
++    :cond_6
+     invoke-direct {p0}, Lcom/sec/android/cover/ledback/a/a/j;->v()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_6
++    if-eqz v0, :cond_7
+ 
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+@@ -1540,15 +1548,15 @@
+ 
+     iput v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->u:I
+ 
+-    :cond_6
+-    iget-object p0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    :cond_7
++    iget-object p0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {p0}, La/a/a/a/a/b;->b()Z
+ 
+     return-void
+ 
+-    :cond_7
+-    :goto_0
++    :cond_8
++    :goto_1
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+     new-instance v1, Ljava/lang/StringBuilder;
+@@ -1611,11 +1619,11 @@
+ 
+     const/4 v1, 0x1
+ 
+-    if-eq v0, v1, :cond_7
++    if-eq v0, v1, :cond_8
+ 
+     const/4 v2, 0x2
+ 
+-    if-eq v0, v2, :cond_7
++    if-eq v0, v2, :cond_8
+ 
+     const/4 v2, 0x3
+ 
+@@ -1625,7 +1633,7 @@
+ 
+     if-eq v0, v2, :cond_1
+ 
+-    goto/16 :goto_1
++    goto/16 :goto_2
+ 
+     :cond_0
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j$b;->b:Lcom/sec/android/cover/ledback/a/a/j$b;
+@@ -1639,12 +1647,20 @@
+     iput-wide v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->l:J
+ 
+     :cond_1
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
++
++    if-eqz v0, :cond_2
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_0
++
++    :cond_2
++    const/4 v0, 0x0
++
++    :goto_0
+     sget-object v2, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+     new-instance v3, Ljava/lang/StringBuilder;
+@@ -1673,13 +1689,13 @@
+ 
+     const/4 v3, 0x0
+ 
+-    if-eqz v2, :cond_2
++    if-eqz v2, :cond_3
+ 
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+     const-string v1, "Started NFC LED Cover"
+ 
+-    :goto_0
++    :goto_1
+     invoke-static {v0, v1}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+     iput v3, p0, Lcom/sec/android/cover/ledback/a/a/j;->s:I
+@@ -1688,14 +1704,14 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->n:Lcom/sec/android/cover/ledback/a/a/j$b;
+ 
+-    goto/16 :goto_1
++    goto/16 :goto_2
+ 
+-    :cond_2
++    :cond_3
+     iget v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->s:I
+ 
+     const/16 v4, 0xd
+ 
+-    if-ge v2, v4, :cond_6
++    if-ge v2, v4, :cond_7
+ 
+     sget-object v2, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+@@ -1705,11 +1721,11 @@
+ 
+     iget-boolean v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->y:Z
+ 
+-    if-eqz v2, :cond_3
++    if-eqz v2, :cond_4
+ 
+     iget-object v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->z:Lcom/sec/android/cover/ledback/a/a/l;
+ 
+-    if-eqz v2, :cond_3
++    if-eqz v2, :cond_4
+ 
+     invoke-interface {v2}, Lcom/sec/android/cover/ledback/a/a/l;->d()B
+ 
+@@ -1717,7 +1733,7 @@
+ 
+     const/16 v4, 0x74
+ 
+-    if-ne v2, v4, :cond_3
++    if-ne v2, v4, :cond_4
+ 
+     iget-object v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->e:Landroid/content/Context;
+ 
+@@ -1731,27 +1747,27 @@
+ 
+     invoke-static {v2, v5, v4}, Landroid/provider/Settings$Secure;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+ 
+-    :cond_3
++    :cond_4
+     invoke-direct {p0}, Lcom/sec/android/cover/ledback/a/a/j;->o()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_4
++    if-eqz v2, :cond_5
+ 
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+     const-string v1, "Test mode enabled, so ignore failed start"
+ 
+-    goto :goto_0
++    goto :goto_1
+ 
+-    :cond_4
+-    if-eqz v0, :cond_5
++    :cond_5
++    if-eqz v0, :cond_6
+ 
+     aget-byte v2, v0, v3
+ 
+     const/4 v3, -0x5
+ 
+-    if-ne v2, v3, :cond_5
++    if-ne v2, v3, :cond_6
+ 
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+@@ -1763,9 +1779,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->n:Lcom/sec/android/cover/ledback/a/a/j$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -1803,7 +1819,7 @@
+ 
+     return-void
+ 
+-    :cond_5
++    :cond_6
+     iget v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->s:I
+ 
+     add-int/2addr v2, v1
+@@ -1816,7 +1832,7 @@
+ 
+     return-void
+ 
+-    :cond_6
++    :cond_7
+     sget-object v2, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+     const-string v4, "Failed to start NFC LED Cover"
+@@ -1825,9 +1841,9 @@
+ 
+     iput v3, p0, Lcom/sec/android/cover/ledback/a/a/j;->s:I
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v2}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v2
+ 
+@@ -1875,21 +1891,21 @@
+ 
+     return-void
+ 
+-    :cond_7
++    :cond_8
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+     const-string v1, "NFC LED Cover already started"
+ 
+     invoke-static {v0, v1}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :goto_1
++    :goto_2
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->y:Z
+ 
+-    if-eqz v0, :cond_8
++    if-eqz v0, :cond_9
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->z:Lcom/sec/android/cover/ledback/a/a/l;
+ 
+-    if-nez v0, :cond_9
++    if-nez v0, :cond_a
+ 
+     sget-object v0, Lcom/sec/android/cover/ledback/a/a/j;->a:Ljava/lang/String;
+ 
+@@ -1901,14 +1917,14 @@
+ 
+     return-void
+ 
+-    :cond_8
++    :cond_9
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->o:Lcom/sec/android/cover/ledback/a/a/m;
+ 
+     invoke-virtual {v0}, Lcom/sec/android/cover/ledback/a/a/m;->a()Lcom/sec/android/cover/ledback/a/a/k;
+ 
+     move-result-object v0
+ 
+-    :cond_9
++    :cond_a
+     invoke-direct {p0, v0}, Lcom/sec/android/cover/ledback/a/a/j;->b(Lcom/sec/android/cover/ledback/a/a/l;)V
+ 
+     return-void
+@@ -1984,11 +2000,11 @@
+     if-eqz v0, :cond_2
+ 
+     :try_start_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+     sget-object v2, Lcom/sec/android/cover/ledback/a/a/j;->b:[B
+ 
+-    invoke-virtual {v0, v2}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v2}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -2031,9 +2047,9 @@
+ 
+     :cond_2
+     :goto_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2082,7 +2098,7 @@
+ 
+     move-result v0
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+     const/4 v2, 0x3
+ 
+@@ -2247,9 +2263,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->n:Lcom/sec/android/cover/ledback/a/a/j$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2468,11 +2484,11 @@
+ .method private v()Z
+     .locals 7
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledback/a/a/j;->c:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -3244,13 +3260,9 @@
+ 
+     invoke-static {v0, v1}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
+-
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semEnableReaderMode()Z
+-
+-    iget-object p0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/a/j;->f:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0}, Landroid/nfc/NfcAdapter;->semEnableNdefPush()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->semEnableReaderMode()Z
+ 
+     return-void
+ .end method
+diff --git a/smali/com/sec/android/cover/ledback/a/b/j.smali b/smali/com/sec/android/cover/ledback/a/b/j.smali
+index a4f745a..49fb8aa 100644
+--- a/smali/com/sec/android/cover/ledback/a/b/j.smali
++++ b/smali/com/sec/android/cover/ledback/a/b/j.smali
+@@ -35,7 +35,7 @@
+ 
+ .field private d:Landroid/content/Context;
+ 
+-.field private e:Landroid/nfc/NfcAdapter;
++.field private e:La/a/a/a/a/b;
+ 
+ .field private f:Landroid/os/HandlerThread;
+ 
+@@ -228,11 +228,11 @@
+ 
+     invoke-virtual {p2, v0}, Landroid/os/PowerManager$WakeLock;->setReferenceCounted(Z)V
+ 
+-    invoke-static {p1}, Landroid/nfc/NfcAdapter;->getDefaultAdapter(Landroid/content/Context;)Landroid/nfc/NfcAdapter;
++    invoke-static {p1}, La/a/a/a/a/b;->a(Landroid/content/Context;)La/a/a/a/a/b;
+ 
+     move-result-object p2
+ 
+-    iput-object p2, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iput-object p2, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+     new-instance p2, Landroid/os/Handler;
+ 
+@@ -772,9 +772,9 @@
+     :try_start_0
+     invoke-direct {p0}, Lcom/sec/android/cover/ledback/a/b/j;->n()V
+ 
+-    iget-object v6, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v6, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v6, v0}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v6, v0}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v5
+ 
+@@ -1282,13 +1282,13 @@
+ 
+     const-string v1, "LedBackPowerOnOffStateController"
+ 
+-    if-nez v0, :cond_7
++    if-nez v0, :cond_8
+ 
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->z:Z
+ 
+     if-eqz v0, :cond_0
+ 
+-    goto/16 :goto_0
++    goto/16 :goto_1
+ 
+     :cond_0
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->l:Ljava/lang/String;
+@@ -1329,12 +1329,20 @@
+     return-void
+ 
+     :cond_2
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
++
++    if-eqz v0, :cond_3
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_0
++
++    :cond_3
++    const/4 v0, 0x0
++
++    :goto_0
+     new-instance v2, Ljava/lang/StringBuilder;
+ 
+     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+@@ -1361,27 +1369,27 @@
+ 
+     const/4 v3, 0x0
+ 
+-    if-nez v2, :cond_5
++    if-nez v2, :cond_6
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v2}, La/a/a/a/a/b;->b()Z
+ 
+     array-length v2, v0
+ 
+-    if-lez v2, :cond_4
++    if-lez v2, :cond_5
+ 
+     iget v2, p0, Lcom/sec/android/cover/ledback/a/b/j;->t:I
+ 
+     const/4 v4, 0x5
+ 
+-    if-ge v2, v4, :cond_4
++    if-ge v2, v4, :cond_5
+ 
+     aget-byte v0, v0, v3
+ 
+     const/16 v2, -0xd
+ 
+-    if-ne v0, v2, :cond_4
++    if-ne v0, v2, :cond_5
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->g:Landroid/os/Handler;
+ 
+@@ -1391,7 +1399,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_3
++    if-eqz v0, :cond_4
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->g:Landroid/os/Handler;
+ 
+@@ -1401,7 +1409,7 @@
+ 
+     invoke-static {v0}, La/b/a/a/f;->b(Landroid/os/PowerManager$WakeLock;)V
+ 
+-    :cond_3
++    :cond_4
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->q:Landroid/os/PowerManager$WakeLock;
+ 
+     invoke-static {v0}, La/b/a/a/f;->a(Landroid/os/PowerManager$WakeLock;)V
+@@ -1436,15 +1444,15 @@
+ 
+     invoke-static {v1, p0}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :cond_4
++    :cond_5
+     return-void
+ 
+-    :cond_5
++    :cond_6
+     invoke-direct {p0}, Lcom/sec/android/cover/ledback/a/b/j;->t()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_6
++    if-eqz v0, :cond_7
+ 
+     new-instance v0, Ljava/lang/StringBuilder;
+ 
+@@ -1478,15 +1486,15 @@
+ 
+     iput v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->t:I
+ 
+-    :cond_6
+-    iget-object p0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    :cond_7
++    iget-object p0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {p0}, La/a/a/a/a/b;->b()Z
+ 
+     return-void
+ 
+-    :cond_7
+-    :goto_0
++    :cond_8
++    :goto_1
+     new-instance v0, Ljava/lang/StringBuilder;
+ 
+     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+@@ -1555,11 +1563,11 @@
+ 
+     const/4 v2, 0x1
+ 
+-    if-eq v0, v2, :cond_7
++    if-eq v0, v2, :cond_8
+ 
+     const/4 v3, 0x2
+ 
+-    if-eq v0, v3, :cond_7
++    if-eq v0, v3, :cond_8
+ 
+     const/4 v3, 0x3
+ 
+@@ -1569,7 +1577,7 @@
+ 
+     if-eq v0, v3, :cond_1
+ 
+-    goto/16 :goto_1
++    goto/16 :goto_2
+ 
+     :cond_0
+     sget-object v0, Lcom/sec/android/cover/ledback/a/b/j$b;->b:Lcom/sec/android/cover/ledback/a/b/j$b;
+@@ -1583,12 +1591,20 @@
+     iput-wide v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->k:J
+ 
+     :cond_1
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
++
++    if-eqz v0, :cond_2
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_0
++
++    :cond_2
++    const/4 v0, 0x0
++
++    :goto_0
+     new-instance v3, Ljava/lang/StringBuilder;
+ 
+     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+@@ -1615,11 +1631,11 @@
+ 
+     const/4 v4, 0x0
+ 
+-    if-eqz v3, :cond_2
++    if-eqz v3, :cond_3
+ 
+     const-string v0, "Started NFC LED Cover"
+ 
+-    :goto_0
++    :goto_1
+     invoke-static {v1, v0}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+     iput v4, p0, Lcom/sec/android/cover/ledback/a/b/j;->r:I
+@@ -1628,14 +1644,14 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->m:Lcom/sec/android/cover/ledback/a/b/j$b;
+ 
+-    goto/16 :goto_1
++    goto/16 :goto_2
+ 
+-    :cond_2
++    :cond_3
+     iget v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->r:I
+ 
+     const/16 v5, 0xd
+ 
+-    if-ge v3, v5, :cond_6
++    if-ge v3, v5, :cond_7
+ 
+     const-string v3, "Failed to start NFC LED Cover, retry after some time"
+ 
+@@ -1643,11 +1659,11 @@
+ 
+     iget-boolean v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->x:Z
+ 
+-    if-eqz v3, :cond_3
++    if-eqz v3, :cond_4
+ 
+     iget-object v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->y:Lcom/sec/android/cover/ledback/a/b/l;
+ 
+-    if-eqz v3, :cond_3
++    if-eqz v3, :cond_4
+ 
+     invoke-interface {v3}, Lcom/sec/android/cover/ledback/a/b/l;->d()B
+ 
+@@ -1655,7 +1671,7 @@
+ 
+     const/16 v5, 0x74
+ 
+-    if-ne v3, v5, :cond_3
++    if-ne v3, v5, :cond_4
+ 
+     iget-object v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->d:Landroid/content/Context;
+ 
+@@ -1669,25 +1685,25 @@
+ 
+     invoke-static {v3, v6, v5}, Landroid/provider/Settings$Secure;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+ 
+-    :cond_3
++    :cond_4
+     invoke-direct {p0}, Lcom/sec/android/cover/ledback/a/b/j;->m()Z
+ 
+     move-result v3
+ 
+-    if-eqz v3, :cond_4
++    if-eqz v3, :cond_5
+ 
+     const-string v0, "Test mode enabled, so ignore failed start"
+ 
+-    goto :goto_0
++    goto :goto_1
+ 
+-    :cond_4
+-    if-eqz v0, :cond_5
++    :cond_5
++    if-eqz v0, :cond_6
+ 
+     aget-byte v3, v0, v4
+ 
+     const/4 v4, -0x5
+ 
+-    if-ne v3, v4, :cond_5
++    if-ne v3, v4, :cond_6
+ 
+     const-string v0, "Felica lock enable - disable retrying"
+ 
+@@ -1697,9 +1713,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->m:Lcom/sec/android/cover/ledback/a/b/j$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -1733,7 +1749,7 @@
+ 
+     return-void
+ 
+-    :cond_5
++    :cond_6
+     iget v1, p0, Lcom/sec/android/cover/ledback/a/b/j;->r:I
+ 
+     add-int/2addr v1, v2
+@@ -1746,16 +1762,16 @@
+ 
+     return-void
+ 
+-    :cond_6
++    :cond_7
+     const-string v3, "Failed to start NFC LED Cover"
+ 
+     invoke-static {v1, v3}, La/b/a/a/c/a;->b(Ljava/lang/String;Ljava/lang/String;)V
+ 
+     iput v4, p0, Lcom/sec/android/cover/ledback/a/b/j;->r:I
+ 
+-    iget-object v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v3, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v3}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v3}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v3
+ 
+@@ -1801,19 +1817,19 @@
+ 
+     return-void
+ 
+-    :cond_7
++    :cond_8
+     const-string v0, "NFC LED Cover already started"
+ 
+     invoke-static {v1, v0}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :goto_1
++    :goto_2
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->x:Z
+ 
+-    if-eqz v0, :cond_8
++    if-eqz v0, :cond_9
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->y:Lcom/sec/android/cover/ledback/a/b/l;
+ 
+-    if-nez v0, :cond_9
++    if-nez v0, :cond_a
+ 
+     const-string v0, "handleStartLedCover: factory test state is null"
+ 
+@@ -1823,14 +1839,14 @@
+ 
+     return-void
+ 
+-    :cond_8
++    :cond_9
+     iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->n:Lcom/sec/android/cover/ledback/a/b/m;
+ 
+     invoke-virtual {v0}, Lcom/sec/android/cover/ledback/a/b/m;->a()Lcom/sec/android/cover/ledback/a/b/k;
+ 
+     move-result-object v0
+ 
+-    :cond_9
++    :cond_a
+     invoke-direct {p0, v0}, Lcom/sec/android/cover/ledback/a/b/j;->b(Lcom/sec/android/cover/ledback/a/b/l;)V
+ 
+     return-void
+@@ -1906,11 +1922,11 @@
+     if-eqz v0, :cond_2
+ 
+     :try_start_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+     sget-object v3, Lcom/sec/android/cover/ledback/a/b/j;->a:[B
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -1949,9 +1965,9 @@
+ 
+     :cond_2
+     :goto_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2107,9 +2123,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->m:Lcom/sec/android/cover/ledback/a/b/j$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2324,11 +2340,11 @@
+ .method private t()Z
+     .locals 7
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/b/j;->e:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledback/a/b/j;->b:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+diff --git a/smali/com/sec/android/cover/ledback/a/c/j.smali b/smali/com/sec/android/cover/ledback/a/c/j.smali
+index ea3c3bf..f8eabd3 100644
+--- a/smali/com/sec/android/cover/ledback/a/c/j.smali
++++ b/smali/com/sec/android/cover/ledback/a/c/j.smali
+@@ -39,7 +39,7 @@
+ 
+ .field private d:Landroid/content/Context;
+ 
+-.field private e:Landroid/nfc/NfcAdapter;
++.field private e:La/a/a/a/a/b;
+ 
+ .field private f:Landroid/os/HandlerThread;
+ 
+@@ -238,11 +238,11 @@
+ 
+     invoke-virtual {p2, v0}, Landroid/os/PowerManager$WakeLock;->setReferenceCounted(Z)V
+ 
+-    invoke-static {p1}, Landroid/nfc/NfcAdapter;->getDefaultAdapter(Landroid/content/Context;)Landroid/nfc/NfcAdapter;
++    invoke-static {p1}, La/a/a/a/a/b;->a(Landroid/content/Context;)La/a/a/a/a/b;
+ 
+     move-result-object p2
+ 
+-    iput-object p2, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iput-object p2, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+     new-instance p2, Landroid/os/Handler;
+ 
+@@ -782,9 +782,9 @@
+     :try_start_0
+     invoke-direct {p0}, Lcom/sec/android/cover/ledback/a/c/j;->n()V
+ 
+-    iget-object v6, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v6, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v6, v0}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v6, v0}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v5
+ 
+@@ -1339,11 +1339,11 @@
+     return-void
+ 
+     :cond_2
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+     if-eqz v0, :cond_3
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
+@@ -1381,9 +1381,9 @@
+ 
+     if-nez v2, :cond_6
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v2}, La/a/a/a/a/b;->b()Z
+ 
+     array-length v2, v0
+ 
+@@ -1497,9 +1497,9 @@
+     iput v3, p0, Lcom/sec/android/cover/ledback/a/c/j;->v:I
+ 
+     :cond_7
+-    iget-object p0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object p0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {p0}, La/a/a/a/a/b;->b()Z
+ 
+     return-void
+ 
+@@ -1601,9 +1601,9 @@
+     iput-wide v3, p0, Lcom/sec/android/cover/ledback/a/c/j;->k:J
+ 
+     :cond_1
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
+@@ -1715,9 +1715,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->m:Lcom/sec/android/cover/ledback/a/c/j$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -1771,9 +1771,9 @@
+ 
+     iput v4, p0, Lcom/sec/android/cover/ledback/a/c/j;->r:I
+ 
+-    iget-object v3, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v3, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v3}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v3}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v3
+ 
+@@ -1930,11 +1930,11 @@
+     if-eqz v0, :cond_2
+ 
+     :try_start_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+     sget-object v3, Lcom/sec/android/cover/ledback/a/c/j;->a:[B
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -1973,9 +1973,9 @@
+ 
+     :cond_2
+     :goto_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2131,9 +2131,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->m:Lcom/sec/android/cover/ledback/a/c/j$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2375,11 +2375,11 @@
+ .method private t()Z
+     .locals 7
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledback/a/c/j;->e:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledback/a/c/j;->b:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+diff --git a/smali/com/sec/android/cover/ledcover/a/a/k.smali b/smali/com/sec/android/cover/ledcover/a/a/k.smali
+index 2134598..725d891 100644
+--- a/smali/com/sec/android/cover/ledcover/a/a/k.smali
++++ b/smali/com/sec/android/cover/ledcover/a/a/k.smali
+@@ -65,7 +65,7 @@
+ 
+ .field private h:Landroid/content/Context;
+ 
+-.field private i:Landroid/nfc/NfcAdapter;
++.field private i:La/a/a/a/a/b;
+ 
+ .field private j:Landroid/os/HandlerThread;
+ 
+@@ -306,11 +306,11 @@
+ 
+     invoke-virtual {p2, v0}, Landroid/os/PowerManager$WakeLock;->setReferenceCounted(Z)V
+ 
+-    invoke-static {p1}, Landroid/nfc/NfcAdapter;->getDefaultAdapter(Landroid/content/Context;)Landroid/nfc/NfcAdapter;
++    invoke-static {p1}, La/a/a/a/a/b;->a(Landroid/content/Context;)La/a/a/a/a/b;
+ 
+     move-result-object p2
+ 
+-    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+     new-instance p2, Landroid/os/Handler;
+ 
+@@ -436,11 +436,11 @@
+ 
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/a/k;->q()V
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+     sget-object v3, Lcom/sec/android/cover/ledcover/a/a/k;->f:[B
+ 
+-    invoke-virtual {v2, v3}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v2, v3}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+     :try_end_0
+@@ -1351,9 +1351,9 @@
+     :try_start_0
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/a/k;->q()V
+ 
+-    iget-object v5, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v5, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v5, v0}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v5, v0}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v4
+ 
+@@ -2029,13 +2029,13 @@
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_b
++    if-nez v0, :cond_c
+ 
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->H:Z
+ 
+     if-eqz v0, :cond_0
+ 
+-    goto/16 :goto_1
++    goto/16 :goto_2
+ 
+     :cond_0
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->p:Ljava/lang/String;
+@@ -2131,12 +2131,20 @@
+     return-void
+ 
+     :cond_3
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
++
++    if-eqz v0, :cond_4
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_1
++
++    :cond_4
++    const/4 v0, 0x0
++
++    :goto_1
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+     new-instance v2, Ljava/lang/StringBuilder;
+@@ -2167,38 +2175,38 @@
+ 
+     const/4 v3, 0x1
+ 
+-    if-nez v1, :cond_7
++    if-nez v1, :cond_8
+ 
+-    iget-object v1, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v1, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v1}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v1}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v1, p0, Lcom/sec/android/cover/ledcover/a/a/k;->r:Lcom/sec/android/cover/ledcover/a/a/k$b;
+ 
+     sget-object v4, Lcom/sec/android/cover/ledcover/a/a/k$b;->c:Lcom/sec/android/cover/ledcover/a/a/k$b;
+ 
+-    if-ne v1, v4, :cond_4
++    if-ne v1, v4, :cond_5
+ 
+-    iget-object v1, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v1, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v1, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v1, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+-    :cond_4
++    :cond_5
+     array-length v1, v0
+ 
+-    if-lez v1, :cond_6
++    if-lez v1, :cond_7
+ 
+     iget v1, p0, Lcom/sec/android/cover/ledcover/a/a/k;->y:I
+ 
+     const/4 v4, 0x5
+ 
+-    if-ge v1, v4, :cond_6
++    if-ge v1, v4, :cond_7
+ 
+     aget-byte v0, v0, v2
+ 
+     const/16 v1, -0xd
+ 
+-    if-ne v0, v1, :cond_6
++    if-ne v0, v1, :cond_7
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->k:Landroid/os/Handler;
+ 
+@@ -2208,7 +2216,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_5
++    if-eqz v0, :cond_6
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->k:Landroid/os/Handler;
+ 
+@@ -2218,7 +2226,7 @@
+ 
+     invoke-static {v0}, La/b/a/a/f;->b(Landroid/os/PowerManager$WakeLock;)V
+ 
+-    :cond_5
++    :cond_6
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->v:Landroid/os/PowerManager$WakeLock;
+ 
+     invoke-static {v0}, La/b/a/a/f;->a(Landroid/os/PowerManager$WakeLock;)V
+@@ -2255,21 +2263,21 @@
+ 
+     invoke-static {v0, p0}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :cond_6
++    :cond_7
+     return-void
+ 
+-    :cond_7
++    :cond_8
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/a/k;->w()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_9
++    if-eqz v0, :cond_a
+ 
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->N:Z
+ 
+     const-string v1, "led_cover_firmware_version"
+ 
+-    if-eqz v0, :cond_8
++    if-eqz v0, :cond_9
+ 
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+@@ -2327,7 +2335,7 @@
+ 
+     goto :goto_0
+ 
+-    :cond_8
++    :cond_9
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+     new-instance v4, Ljava/lang/StringBuilder;
+@@ -2389,26 +2397,26 @@
+ 
+     iput v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->y:I
+ 
+-    :cond_9
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    :cond_a
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->r:Lcom/sec/android/cover/ledcover/a/a/k$b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/a/k$b;->c:Lcom/sec/android/cover/ledcover/a/a/k$b;
+ 
+-    if-ne v0, v1, :cond_a
++    if-ne v0, v1, :cond_b
+ 
+-    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {p0, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+-    :cond_a
++    :cond_b
+     return-void
+ 
+-    :cond_b
+-    :goto_1
++    :cond_c
++    :goto_2
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+     new-instance v1, Ljava/lang/StringBuilder;
+@@ -2471,11 +2479,11 @@
+ 
+     const/4 v1, 0x1
+ 
+-    if-eq v0, v1, :cond_7
++    if-eq v0, v1, :cond_8
+ 
+     const/4 v2, 0x2
+ 
+-    if-eq v0, v2, :cond_7
++    if-eq v0, v2, :cond_8
+ 
+     const/4 v2, 0x3
+ 
+@@ -2487,7 +2495,7 @@
+ 
+     if-eq v0, v2, :cond_1
+ 
+-    goto/16 :goto_1
++    goto/16 :goto_2
+ 
+     :cond_0
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k$b;->b:Lcom/sec/android/cover/ledcover/a/a/k$b;
+@@ -2506,17 +2514,25 @@
+ 
+     iput-wide v4, p0, Lcom/sec/android/cover/ledcover/a/a/k;->o:J
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :cond_1
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
++
++    if-eqz v0, :cond_2
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_1
++
++    :cond_2
++    const/4 v0, 0x0
++
++    :goto_1
+     sget-object v2, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+     new-instance v4, Ljava/lang/StringBuilder;
+@@ -2543,7 +2559,7 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_2
++    if-eqz v2, :cond_3
+ 
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+@@ -2558,14 +2574,14 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->r:Lcom/sec/android/cover/ledcover/a/a/k$b;
+ 
+-    goto/16 :goto_1
++    goto/16 :goto_2
+ 
+-    :cond_2
++    :cond_3
+     iget v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->w:I
+ 
+     const/16 v4, 0xd
+ 
+-    if-ge v2, v4, :cond_6
++    if-ge v2, v4, :cond_7
+ 
+     sget-object v2, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+@@ -2575,11 +2591,11 @@
+ 
+     iget-boolean v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->D:Z
+ 
+-    if-eqz v2, :cond_3
++    if-eqz v2, :cond_4
+ 
+     iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->E:Lcom/sec/android/cover/ledcover/a/a/m;
+ 
+-    if-eqz v2, :cond_3
++    if-eqz v2, :cond_4
+ 
+     invoke-interface {v2}, Lcom/sec/android/cover/ledcover/a/a/m;->d()B
+ 
+@@ -2587,7 +2603,7 @@
+ 
+     const/16 v4, 0x74
+ 
+-    if-ne v2, v4, :cond_3
++    if-ne v2, v4, :cond_4
+ 
+     iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->h:Landroid/content/Context;
+ 
+@@ -2601,12 +2617,12 @@
+ 
+     invoke-static {v2, v5, v4}, Landroid/provider/Settings$Secure;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+ 
+-    :cond_3
++    :cond_4
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/a/k;->p()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_4
++    if-eqz v2, :cond_5
+ 
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+@@ -2614,14 +2630,14 @@
+ 
+     goto :goto_0
+ 
+-    :cond_4
+-    if-eqz v0, :cond_5
++    :cond_5
++    if-eqz v0, :cond_6
+ 
+     aget-byte v2, v0, v3
+ 
+     const/4 v3, -0x5
+ 
+-    if-ne v2, v3, :cond_5
++    if-ne v2, v3, :cond_6
+ 
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+@@ -2633,9 +2649,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->r:Lcom/sec/android/cover/ledcover/a/a/k$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2673,7 +2689,7 @@
+ 
+     return-void
+ 
+-    :cond_5
++    :cond_6
+     iget v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->w:I
+ 
+     add-int/2addr v2, v1
+@@ -2686,7 +2702,7 @@
+ 
+     return-void
+ 
+-    :cond_6
++    :cond_7
+     sget-object v2, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+     const-string v4, "Failed to start NFC LED Cover"
+@@ -2695,9 +2711,9 @@
+ 
+     iput v3, p0, Lcom/sec/android/cover/ledcover/a/a/k;->w:I
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v2}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v2
+ 
+@@ -2745,21 +2761,21 @@
+ 
+     return-void
+ 
+-    :cond_7
++    :cond_8
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+     const-string v1, "NFC LED Cover already started"
+ 
+     invoke-static {v0, v1}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :goto_1
++    :goto_2
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->D:Z
+ 
+-    if-eqz v0, :cond_8
++    if-eqz v0, :cond_9
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->E:Lcom/sec/android/cover/ledcover/a/a/m;
+ 
+-    if-nez v0, :cond_9
++    if-nez v0, :cond_a
+ 
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/a/k;->a:Ljava/lang/String;
+ 
+@@ -2771,14 +2787,14 @@
+ 
+     return-void
+ 
+-    :cond_8
++    :cond_9
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->s:Lcom/sec/android/cover/ledcover/a/a/o;
+ 
+     invoke-virtual {v0}, Lcom/sec/android/cover/ledcover/a/a/o;->a()Lcom/sec/android/cover/ledcover/a/a/l;
+ 
+     move-result-object v0
+ 
+-    :cond_9
++    :cond_a
+     invoke-direct {p0, v0}, Lcom/sec/android/cover/ledcover/a/a/k;->b(Lcom/sec/android/cover/ledcover/a/a/m;)V
+ 
+     return-void
+@@ -2856,11 +2872,11 @@
+     if-eqz v0, :cond_2
+ 
+     :try_start_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+     sget-object v4, Lcom/sec/android/cover/ledcover/a/a/k;->b:[B
+ 
+-    invoke-virtual {v0, v4}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v4}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -2903,9 +2919,9 @@
+ 
+     :cond_2
+     :goto_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2938,9 +2954,9 @@
+ 
+     invoke-static {v0, v4}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :goto_1
+     iput v1, p0, Lcom/sec/android/cover/ledcover/a/a/k;->w:I
+@@ -3112,11 +3128,11 @@
+ 
+     if-lez v2, :cond_0
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+     const/4 v3, 0x0
+ 
+-    invoke-virtual {v2, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v2, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     iput-wide v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->o:J
+ 
+@@ -3131,9 +3147,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->r:Lcom/sec/android/cover/ledcover/a/a/k$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -3347,11 +3363,11 @@
+ 
+     if-nez v0, :cond_5
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/a/k;->c:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -3505,11 +3521,11 @@
+ .method private x()Z
+     .locals 7
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/a/k;->i:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/a/k;->d:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+diff --git a/smali/com/sec/android/cover/ledcover/a/b/k.smali b/smali/com/sec/android/cover/ledcover/a/b/k.smali
+index 93d022f..d48d74d 100644
+--- a/smali/com/sec/android/cover/ledcover/a/b/k.smali
++++ b/smali/com/sec/android/cover/ledcover/a/b/k.smali
+@@ -49,7 +49,7 @@
+ 
+ .field private g:Landroid/content/Context;
+ 
+-.field private h:Landroid/nfc/NfcAdapter;
++.field private h:La/a/a/a/a/b;
+ 
+ .field private i:Landroid/os/HandlerThread;
+ 
+@@ -269,11 +269,11 @@
+ 
+     invoke-virtual {p2, v0}, Landroid/os/PowerManager$WakeLock;->setReferenceCounted(Z)V
+ 
+-    invoke-static {p1}, Landroid/nfc/NfcAdapter;->getDefaultAdapter(Landroid/content/Context;)Landroid/nfc/NfcAdapter;
++    invoke-static {p1}, La/a/a/a/a/b;->a(Landroid/content/Context;)La/a/a/a/a/b;
+ 
+     move-result-object p2
+ 
+-    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+     new-instance p2, Landroid/os/Handler;
+ 
+@@ -368,11 +368,11 @@
+ 
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/b/k;->q()V
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+     sget-object v3, Lcom/sec/android/cover/ledcover/a/b/k;->e:[B
+ 
+-    invoke-virtual {v2, v3}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v2, v3}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+     :try_end_0
+@@ -1298,9 +1298,9 @@
+     :try_start_0
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/b/k;->q()V
+ 
+-    iget-object v5, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v5, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v5, v0}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v5, v0}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v4
+ 
+@@ -1905,13 +1905,13 @@
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_6
++    if-nez v0, :cond_7
+ 
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->D:Z
+ 
+     if-eqz v0, :cond_0
+ 
+-    goto/16 :goto_0
++    goto/16 :goto_1
+ 
+     :cond_0
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->o:Ljava/lang/String;
+@@ -1956,12 +1956,20 @@
+     return-void
+ 
+     :cond_2
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    if-eqz v0, :cond_3
++
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_0
++
++    :cond_3
++    const/4 v0, 0x0
++
++    :goto_0
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/b/k;->a:Ljava/lang/String;
+ 
+     new-instance v2, Ljava/lang/StringBuilder;
+@@ -1990,31 +1998,31 @@
+ 
+     const/4 v1, 0x1
+ 
+-    if-nez v0, :cond_4
++    if-nez v0, :cond_5
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->p:Lcom/sec/android/cover/ledcover/a/b/k$b;
+ 
+     sget-object v2, Lcom/sec/android/cover/ledcover/a/b/k$b;->c:Lcom/sec/android/cover/ledcover/a/b/k$b;
+ 
+-    if-ne v0, v2, :cond_3
++    if-ne v0, v2, :cond_4
+ 
+-    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0, v1}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {p0, v1}, La/a/a/a/a/b;->a(Z)Z
+ 
+-    :cond_3
++    :cond_4
+     return-void
+ 
+-    :cond_4
++    :cond_5
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/b/k;->w()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_5
++    if-eqz v0, :cond_6
+ 
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/b/k;->a:Ljava/lang/String;
+ 
+@@ -2048,23 +2056,23 @@
+ 
+     invoke-static {v0, v3, v2}, Landroid/provider/Settings$Secure;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
+ 
+-    :cond_5
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    :cond_6
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->p:Lcom/sec/android/cover/ledcover/a/b/k$b;
+ 
+     sget-object v2, Lcom/sec/android/cover/ledcover/a/b/k$b;->c:Lcom/sec/android/cover/ledcover/a/b/k$b;
+ 
+-    if-ne v0, v2, :cond_6
++    if-ne v0, v2, :cond_7
+ 
+-    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0, v1}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {p0, v1}, La/a/a/a/a/b;->a(Z)Z
+ 
+-    :cond_6
+-    :goto_0
++    :cond_7
++    :goto_1
+     return-void
+ .end method
+ 
+@@ -2142,14 +2150,14 @@
+ 
+     iput-wide v4, p0, Lcom/sec/android/cover/ledcover/a/b/k;->n:J
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :cond_1
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
+@@ -2272,9 +2280,9 @@
+ 
+     iput v3, p0, Lcom/sec/android/cover/ledcover/a/b/k;->u:I
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v2}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v2
+ 
+@@ -2433,11 +2441,11 @@
+     if-eqz v0, :cond_2
+ 
+     :try_start_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+     sget-object v4, Lcom/sec/android/cover/ledcover/a/b/k;->b:[B
+ 
+-    invoke-virtual {v0, v4}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v4}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -2480,9 +2488,9 @@
+ 
+     :cond_2
+     :goto_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2515,9 +2523,9 @@
+ 
+     invoke-static {v0, v4}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :goto_1
+     iput v1, p0, Lcom/sec/android/cover/ledcover/a/b/k;->u:I
+@@ -2680,11 +2688,11 @@
+ 
+     if-lez v2, :cond_0
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+     const/4 v3, 0x0
+ 
+-    invoke-virtual {v2, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v2, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     iput-wide v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->n:J
+ 
+@@ -2699,9 +2707,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->p:Lcom/sec/android/cover/ledcover/a/b/k$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2898,11 +2906,11 @@
+ .method private w()Z
+     .locals 7
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/b/k;->h:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/b/k;->c:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+diff --git a/smali/com/sec/android/cover/ledcover/a/c/k.smali b/smali/com/sec/android/cover/ledcover/a/c/k.smali
+index 8b2b2d4..d073084 100644
+--- a/smali/com/sec/android/cover/ledcover/a/c/k.smali
++++ b/smali/com/sec/android/cover/ledcover/a/c/k.smali
+@@ -53,7 +53,7 @@
+ 
+ .field private f:Landroid/content/Context;
+ 
+-.field private g:Landroid/nfc/NfcAdapter;
++.field private g:La/a/a/a/a/b;
+ 
+ .field private h:Landroid/os/HandlerThread;
+ 
+@@ -277,11 +277,11 @@
+ 
+     invoke-virtual {p2, v0}, Landroid/os/PowerManager$WakeLock;->setReferenceCounted(Z)V
+ 
+-    invoke-static {p1}, Landroid/nfc/NfcAdapter;->getDefaultAdapter(Landroid/content/Context;)Landroid/nfc/NfcAdapter;
++    invoke-static {p1}, La/a/a/a/a/b;->a(Landroid/content/Context;)La/a/a/a/a/b;
+ 
+     move-result-object p2
+ 
+-    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+     new-instance p2, Landroid/os/Handler;
+ 
+@@ -382,11 +382,11 @@
+ 
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/c/k;->p()V
+ 
+-    iget-object v3, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v3, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+     sget-object v4, Lcom/sec/android/cover/ledcover/a/c/k;->d:[B
+ 
+-    invoke-virtual {v3, v4}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v3, v4}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v1
+     :try_end_0
+@@ -1249,9 +1249,9 @@
+     :try_start_0
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/c/k;->p()V
+ 
+-    iget-object v6, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v6, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v6, v0}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v6, v0}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v5
+ 
+@@ -1954,11 +1954,11 @@
+     return-void
+ 
+     :cond_2
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+     if-eqz v0, :cond_3
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
+@@ -1998,9 +1998,9 @@
+ 
+     if-nez v2, :cond_7
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v2}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->o:Lcom/sec/android/cover/ledcover/a/c/k$b;
+ 
+@@ -2008,9 +2008,9 @@
+ 
+     if-ne v2, v5, :cond_4
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2, v4}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v2, v4}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :cond_4
+     array-length v2, v0
+@@ -2151,9 +2151,9 @@
+     iput v3, p0, Lcom/sec/android/cover/ledcover/a/c/k;->v:I
+ 
+     :cond_8
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->o:Lcom/sec/android/cover/ledcover/a/c/k$b;
+ 
+@@ -2161,9 +2161,9 @@
+ 
+     if-ne v0, v1, :cond_9
+ 
+-    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0, v4}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {p0, v4}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :cond_9
+     return-void
+@@ -2263,14 +2263,14 @@
+ 
+     iput-wide v5, p0, Lcom/sec/android/cover/ledcover/a/c/k;->m:J
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v4}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v4}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :cond_1
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
+@@ -2380,9 +2380,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->o:Lcom/sec/android/cover/ledcover/a/c/k$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2436,9 +2436,9 @@
+ 
+     iput v4, p0, Lcom/sec/android/cover/ledcover/a/c/k;->t:I
+ 
+-    iget-object v3, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v3, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v3}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v3}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v3
+ 
+@@ -2599,11 +2599,11 @@
+     if-eqz v0, :cond_2
+ 
+     :try_start_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+     sget-object v5, Lcom/sec/android/cover/ledcover/a/c/k;->a:[B
+ 
+-    invoke-virtual {v0, v5}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v5}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -2642,9 +2642,9 @@
+ 
+     :cond_2
+     :goto_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2673,9 +2673,9 @@
+ 
+     invoke-static {v1, v0}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v4}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v4}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :goto_1
+     iput v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->t:I
+@@ -2832,11 +2832,11 @@
+ 
+     if-lez v2, :cond_0
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+     const/4 v3, 0x0
+ 
+-    invoke-virtual {v2, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v2, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     iput-wide v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->m:J
+ 
+@@ -2851,9 +2851,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->o:Lcom/sec/android/cover/ledcover/a/c/k$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -3059,11 +3059,11 @@
+ .method private v()Z
+     .locals 7
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/c/k;->g:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/c/k;->b:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+diff --git a/smali/com/sec/android/cover/ledcover/a/e/j.smali b/smali/com/sec/android/cover/ledcover/a/e/j.smali
+index 97b5a50..d9c1b92 100644
+--- a/smali/com/sec/android/cover/ledcover/a/e/j.smali
++++ b/smali/com/sec/android/cover/ledcover/a/e/j.smali
+@@ -49,7 +49,7 @@
+ 
+ .field private g:Landroid/content/Context;
+ 
+-.field private h:Landroid/nfc/NfcAdapter;
++.field private h:La/a/a/a/a/b;
+ 
+ .field private i:Landroid/os/HandlerThread;
+ 
+@@ -269,11 +269,11 @@
+ 
+     invoke-virtual {p2, v0}, Landroid/os/PowerManager$WakeLock;->setReferenceCounted(Z)V
+ 
+-    invoke-static {p1}, Landroid/nfc/NfcAdapter;->getDefaultAdapter(Landroid/content/Context;)Landroid/nfc/NfcAdapter;
++    invoke-static {p1}, La/a/a/a/a/b;->a(Landroid/content/Context;)La/a/a/a/a/b;
+ 
+     move-result-object p2
+ 
+-    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iput-object p2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+     new-instance p2, Landroid/os/Handler;
+ 
+@@ -368,11 +368,11 @@
+ 
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/e/j;->q()V
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+     sget-object v3, Lcom/sec/android/cover/ledcover/a/e/j;->e:[B
+ 
+-    invoke-virtual {v2, v3}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v2, v3}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+     :try_end_0
+@@ -1314,9 +1314,9 @@
+     :try_start_0
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/e/j;->q()V
+ 
+-    iget-object v5, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v5, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v5, v0}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v5, v0}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v4
+ 
+@@ -1921,13 +1921,13 @@
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_7
++    if-nez v0, :cond_8
+ 
+     iget-boolean v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->D:Z
+ 
+     if-eqz v0, :cond_0
+ 
+-    goto/16 :goto_0
++    goto/16 :goto_1
+ 
+     :cond_0
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->o:Ljava/lang/String;
+@@ -1972,12 +1972,20 @@
+     return-void
+ 
+     :cond_2
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    if-eqz v0, :cond_3
++
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
++    goto :goto_0
++
++    :cond_3
++    const/4 v0, 0x0
++
++    :goto_0
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/e/j;->a:Ljava/lang/String;
+ 
+     new-instance v2, Ljava/lang/StringBuilder;
+@@ -2006,31 +2014,31 @@
+ 
+     const/4 v1, 0x1
+ 
+-    if-nez v0, :cond_4
++    if-nez v0, :cond_5
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->p:Lcom/sec/android/cover/ledcover/a/e/j$b;
+ 
+     sget-object v2, Lcom/sec/android/cover/ledcover/a/e/j$b;->c:Lcom/sec/android/cover/ledcover/a/e/j$b;
+ 
+-    if-ne v0, v2, :cond_3
++    if-ne v0, v2, :cond_4
+ 
+-    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0, v1}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {p0, v1}, La/a/a/a/a/b;->a(Z)Z
+ 
+-    :cond_3
++    :cond_4
+     return-void
+ 
+-    :cond_4
++    :cond_5
+     invoke-direct {p0}, Lcom/sec/android/cover/ledcover/a/e/j;->w()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_5
++    if-eqz v0, :cond_6
+ 
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/e/j;->a:Ljava/lang/String;
+ 
+@@ -2064,26 +2072,26 @@
+ 
+     invoke-static {v0, v3, v2}, Landroid/provider/Settings$Secure;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
+ 
+-    :cond_5
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    :cond_6
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->p:Lcom/sec/android/cover/ledcover/a/e/j$b;
+ 
+     sget-object v2, Lcom/sec/android/cover/ledcover/a/e/j$b;->c:Lcom/sec/android/cover/ledcover/a/e/j$b;
+ 
+-    if-ne v0, v2, :cond_6
++    if-ne v0, v2, :cond_7
+ 
+-    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object p0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {p0, v1}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {p0, v1}, La/a/a/a/a/b;->a(Z)Z
+ 
+-    :cond_6
++    :cond_7
+     return-void
+ 
+-    :cond_7
+-    :goto_0
++    :cond_8
++    :goto_1
+     sget-object v0, Lcom/sec/android/cover/ledcover/a/e/j;->a:Ljava/lang/String;
+ 
+     new-instance v1, Ljava/lang/StringBuilder;
+@@ -2181,14 +2189,14 @@
+ 
+     iput-wide v4, p0, Lcom/sec/android/cover/ledcover/a/e/j;->n:J
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :cond_1
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStartLedCoverMode()[B
++    invoke-virtual {v0}, La/a/a/a/a/b;->a()[B
+ 
+     move-result-object v0
+ 
+@@ -2311,9 +2319,9 @@
+ 
+     iput v3, p0, Lcom/sec/android/cover/ledcover/a/e/j;->u:I
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v2}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v2}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v2
+ 
+@@ -2472,11 +2480,11 @@
+     if-eqz v0, :cond_2
+ 
+     :try_start_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+     sget-object v4, Lcom/sec/android/cover/ledcover/a/e/j;->b:[B
+ 
+-    invoke-virtual {v0, v4}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v4}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+@@ -2519,9 +2527,9 @@
+ 
+     :cond_2
+     :goto_0
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2554,9 +2562,9 @@
+ 
+     invoke-static {v0, v4}, La/b/a/a/c/a;->a(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v0, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     :goto_1
+     iput v1, p0, Lcom/sec/android/cover/ledcover/a/e/j;->u:I
+@@ -2719,11 +2727,11 @@
+ 
+     if-lez v2, :cond_0
+ 
+-    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v2, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+     const/4 v3, 0x0
+ 
+-    invoke-virtual {v2, v3}, Landroid/nfc/NfcAdapter;->semSetWirelessChargeEnabled(Z)Z
++    invoke-virtual {v2, v3}, La/a/a/a/a/b;->a(Z)Z
+ 
+     iput-wide v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->n:J
+ 
+@@ -2738,9 +2746,9 @@
+ 
+     iput-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->p:Lcom/sec/android/cover/ledcover/a/e/j$b;
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+-    invoke-virtual {v0}, Landroid/nfc/NfcAdapter;->semStopLedCoverMode()Z
++    invoke-virtual {v0}, La/a/a/a/a/b;->b()Z
+ 
+     move-result v0
+ 
+@@ -2937,11 +2945,11 @@
+ .method private w()Z
+     .locals 7
+ 
+-    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:Landroid/nfc/NfcAdapter;
++    iget-object v0, p0, Lcom/sec/android/cover/ledcover/a/e/j;->h:La/a/a/a/a/b;
+ 
+     sget-object v1, Lcom/sec/android/cover/ledcover/a/e/j;->c:[B
+ 
+-    invoke-virtual {v0, v1}, Landroid/nfc/NfcAdapter;->semTransceiveDataWithLedCover([B)[B
++    invoke-virtual {v0, v1}, La/a/a/a/a/b;->a([B)[B
+ 
+     move-result-object v0
+ 
+-- 
+2.54.0
+
