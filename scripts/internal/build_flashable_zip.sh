@@ -464,12 +464,14 @@ PRINT_HEADER()
     fi
 
     echo    'ui_print(" ");'
-    echo    'ui_print("****************************************");'
+    echo    'ui_print("****************************************************");'
     echo -n 'ui_print("'
-    echo -n "UN1CA $ROM_VERSION for $TARGET_NAME"
+    echo -n "Welcome to ArtisanROM $ROM_CODENAME $ROM_VERSION for $TARGET_NAME!"
     echo    '");'
-    echo    'ui_print("Coded by salvo_giangri @XDAforums");'
-    echo    'ui_print("****************************************");'
+    echo    'ui_print("ArtisanROM developed by Android Artisan @XDAforums");'
+    echo    'ui_print("UN1CA build system coded by salvo_giangri @XDAforums");'
+    echo    'ui_print("Special thanks to all ArtisanROM Maintainers, Contribuitors and Testers");'
+    echo    'ui_print("****************************************************");'
     echo -n 'ui_print("'
     echo -n "One UI version: $ONEUI_VERSION"
     echo    '");'
@@ -479,7 +481,7 @@ PRINT_HEADER()
     echo -n 'ui_print("'
     echo -n "Target: $TARGET_FINGERPRINT"
     echo    '");'
-    echo    'ui_print("****************************************");'
+    echo    'ui_print("****************************************************");'
 }
 
 SIGN_IMAGE_WITH_AVB()
