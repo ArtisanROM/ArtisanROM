@@ -46,11 +46,6 @@ elif [[ "$TARGET_CODENAME" == "c2s" ]]; then
 fi
 LOG_STEP_OUT
 
-LOG_STEP_IN "- Enabling Vulkan"
-SET_PROP "vendor" "ro.hwui.use_vulkan" "true"
-SET_PROP "vendor" "debug.hwui.use_hint_manager" "true"
-LOG_STEP_OUT
-
 LOG "- Disabling encryption"
 LINE=$(sed -n "/^\/dev\/block\/by-name\/userdata/=" "$WORK_DIR/vendor/etc/fstab.exynos990")
 sed -i "${LINE}s/,fileencryption=ice//g" "$WORK_DIR/vendor/etc/fstab.exynos990"
