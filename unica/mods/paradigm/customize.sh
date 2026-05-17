@@ -1,9 +1,4 @@
-if [ ! "$(GET_PROP "system" "ro.unica.codename")" ]; then
-    # Match latest Samsung's flagship device codename
-    ROM_CODENAME="$(basename "$MODPATH")"
-    SET_PROP "system" "ro.unica.codename" "${ROM_CODENAME^}"
-    unset ROM_CODENAME
-fi
+SET_PROP "system" "ro.unica.codename" "$ROM_CODENAME"
 
 # 2025 Audio Pack
 LOG_STEP_IN "- Adding 2025 Audio Pack"
