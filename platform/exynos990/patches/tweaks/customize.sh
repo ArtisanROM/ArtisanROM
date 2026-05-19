@@ -101,8 +101,6 @@ SET_PROP "product" "bluetooth.profile.vcp.controller.enabled" "false"
 
 if [[ "$TARGET_CODENAME" == "r8s" ]]; then
     ADD_TO_WORK_DIR "r11sxxx" "system" "system/apex/com.android.bt.apex" 0 0 644 "u:object_r:system_file:s0"
-else
-    ADD_TO_WORK_DIR "b0sxxx" "system" "system/apex/com.android.bt.apex" 0 0 644 "u:object_r:system_file:s0"
 fi
 LOG_STEP_OUT
 
