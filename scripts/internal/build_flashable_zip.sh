@@ -420,7 +420,7 @@ GENERATE_UPDATER_SCRIPT()
         if $HAS_UP_PARAM; then
             echo    'ui_print("Installing up_param image...");'
             echo -n 'package_extract_file("up_param.bin", "'
-            echo -n "$TARGET_BOOT_DEVICE_PATH"
+            echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
             echo    '/up_param");'
         fi
 
