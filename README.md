@@ -94,7 +94,6 @@ This project is licensed under the terms of the [GNU General Public License v3.0
 - **[ricci205GTI](https://github.com/ricci205GTI)** for fixing motion photo and help with the x1s.
 - **[immohammeeed](https://github.com/immohammeeed)** for creating the website for this project.
 - **[3q5i](https://github.com/3q5i)** for support and ideas for the ROM.
-- **[Majaahh](https://github.com/Majaahh)** for help and support.
 - **[irvinhaha](https://github.com/irvinhaha)** for designing many banners and logos
 - **[CiprianDinca](https://github.com/CiprianDinca9)** for custom ExtremeROM ringtones
 - **[Dupazlasu/Milxnaq](https://github.com/milxnaq)** for fixing bluetooth on the S10x
