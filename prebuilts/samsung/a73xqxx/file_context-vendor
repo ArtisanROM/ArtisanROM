@@ -2,7 +2,6 @@
 /vendor/bin u:object_r:vendor_file:s0
 /vendor/bin/hw u:object_r:vendor_file:s0
 /vendor/bin/hw/wpa_supplicant u:object_r:hal_wifi_supplicant_default_exec:s0
-/vendor/bin/hw/vendor\.samsung\.hardware\.light-service u:object_r:hal_light_default_exec:s0
 /vendor/etc u:object_r:vendor_configs_file:s0
 /vendor/etc/midas u:object_r:vendor_configs_file:s0
 /vendor/etc/midas/deflare u:object_r:vendor_configs_file:s0
@@ -18,11 +17,3 @@
 /vendor/etc/midas/SRIBMidas_aiUPSCALER_3X_LITE_V100_INT8\.tflite u:object_r:vendor_configs_file:s0
 /vendor/etc/midas/SRIBMidas_aiUPSCALER_4X_LITE_V100_INT8\.tflite u:object_r:vendor_configs_file:s0
 /vendor/etc/midas/midas_config\.json u:object_r:vendor_configs_file:s0
-/vendor/etc/singletake u:object_r:vendor_configs_file:s0
-/vendor/etc/singletake/ClarityScorer u:object_r:vendor_configs_file:s0
-/vendor/etc/singletake/ClarityScorer/ClarityScorer\.tflite u:object_r:vendor_configs_file:s0
-/vendor/etc/singletake/SmartCrop u:object_r:vendor_configs_file:s0
-/vendor/etc/singletake/SmartCrop/SmartCrop\.tflite u:object_r:vendor_configs_file:s0
-/vendor/lib64 u:object_r:vendor_file:s0
-/vendor/lib64/android\.hardware\.light-V1-ndk_platform\.so u:object_r:vendor_file:s0
-/vendor/lib64/vendor\.samsung\.hardware\.light-V1-ndk_platform\.so u:object_r:vendor_file:s0
