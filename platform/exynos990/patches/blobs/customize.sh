@@ -18,7 +18,9 @@ DELETE_FROM_WORK_DIR "vendor" "lib/liboemcrypto.so"
 
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.biometrics.face@3.0-service"
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.vibrator-service"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64"
+ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64/vendor.samsung.hardware.biometrics.face@2.0.so"
+ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64/vendor.samsung.hardware.biometrics.face@3.0.so"
+ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64/vendor.samsung.hardware.vibrator-V3-ndk_platform.so"
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "etc/init"
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "etc/vintf"
 
