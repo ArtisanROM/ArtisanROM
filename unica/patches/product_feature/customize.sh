@@ -128,16 +128,16 @@ if ! $SOURCE_HAS_QHD_DISPLAY; then
         DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
 
         ADD_TO_WORK_DIR "$MODPATH/resolution/system" "system" "."
-        ADD_TO_WORK_DIR "r9sxxx" "system" "media"
+        ADD_TO_WORK_DIR "e2sxxx" "system" "media"
         APPLY_PATCH "system" "system/framework/framework.jar" "$SRC_DIR/unica/patches/product_feature/resolution/framework.jar/0001-Enable-FW_DYNAMIC_RESOLUTION_CONTROL.patch"
         APPLY_PATCH "system" "system/framework/gamemanager.jar" "$SRC_DIR/unica/patches/product_feature/resolution/gamemanager.jar/0001-Enable-dynamic-resolution-control.patch"
         SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_COMMON_CONFIG_DYN_RESOLUTION_CONTROL" "WQHD,FHD,HD"
         LOG_STEP_OUT
-        LOG_STEP_IN "- Applying Boot Animation patches"
-        ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/bootsamsung.qmg"
-        ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/bootsamsungloop.qmg"
-        ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/shutdown.qmg"
-        LOG_STEP_OUT
+        # LOG_STEP_IN "- Applying Boot Animation patches"
+        # ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/bootsamsung.qmg"
+        # ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/bootsamsungloop.qmg"
+        # ADD_TO_WORK_DIR "e2sxxx" "system" "system/media/shutdown.qmg"
+        # LOG_STEP_OUT
     fi
 fi
 
