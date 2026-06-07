@@ -254,6 +254,7 @@ GENERATE_UPDATER_SCRIPT()
 
     local PARTITION_COUNT=0
     local HAS_UP_PARAM=false
+    local HAS_LK3RD=false
     local HAS_BOOT=false
     local HAS_DTBO=false
     local HAS_INIT_BOOT=false
@@ -269,6 +270,7 @@ GENERATE_UPDATER_SCRIPT()
     local HAS_SYSTEM_DLKM=false
 
     [ -f "$TMP_DIR/up_param.bin" ] && HAS_UP_PARAM=true
+    [ -f "$TMP_DIR/lk3rd.img" ] && HAS_LK3RD=true
     [ -f "$TMP_DIR/boot.img" ] && HAS_BOOT=true
     [ -f "$TMP_DIR/dtbo.img" ] && HAS_DTBO=true
     [ -f "$TMP_DIR/init_boot.img" ] && HAS_INIT_BOOT=true
@@ -411,7 +413,21 @@ GENERATE_UPDATER_SCRIPT()
             echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
             echo    '/vendor_boot");'
         fi
-        if $HAS_BOOT; then
+        if $HAS_LK3RD; then
+            cp -a "$SRC_DIR/prebuilts/extras/setup-boot.sh" "$TMP_DIR/setup-boot.sh"
+
+            echo -e "\n"
+            echo    'ui_print("Extracting boot image...");'
+            echo    'package_extract_file("boot.img", "/tmp/boot.img");'
+            echo    'ui_print("Extracting lk3rd image...");'
+            echo    'package_extract_file("lk3rd.img", "/tmp/lk3rd.img");'
+            echo    'ui_print("Installing boot image...");'
+            echo    'ui_print("Installing lk3rd image...");'
+            echo    'package_extract_file("setup-boot.sh", "/tmp/setup-boot.sh");'
+            echo    'set_metadata("/tmp/setup-boot.sh", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);'
+            echo    'run_program("/tmp/setup-boot.sh");'
+        fi
+        if ! $HAS_LK3RD && $HAS_BOOT; then
             echo    'ui_print("Installing boot image...");'
             echo -n 'package_extract_file("boot.img", "'
             echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
@@ -487,6 +503,12 @@ PRINT_HEADER()
 SIGN_IMAGE_WITH_AVB()
 {
     local FILE="$1"
+
+    # Skip signing lk3rd
+    if [[ "$(basename "$FILE")" == "lk3rd.img" ]]; then
+        LOG "- Skipping AVB signing for lk3rd"
+        return 0
+    fi
 
     if ! avbtool info_image --image "$FILE" &> /dev/null; then
         local PARTITION_NAME
