@@ -8,10 +8,10 @@ Signed-off-by: Ocin4ever <85343782+Ocin4ever@users.noreply.github.com>
  .../SecuritySoftwareVersionPreferenceController.smali           | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali b/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
+diff --git a/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali b/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
 index 37008266..31573bcf 100644
---- a/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
-+++ b/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
+--- a/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
++++ b/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
 @@ -609,6 +609,8 @@
  
      move-result-object v0

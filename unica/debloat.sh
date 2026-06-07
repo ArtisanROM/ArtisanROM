@@ -46,15 +46,21 @@ VENDOR_DEBLOAT+="
 etc/init/vendor_flash_recovery.rc
 "
 
-# Apps debloat
+# Apps debloat - EXTREME REDUCTION
 PRODUCT_DEBLOAT+="
 app/Chrome64
 app/Duo
 app/Gmail2
 app/Maps
 app/YouTube
+app/Photos
+app/Drive
+app/Music2
+app/Videos
+app/GoogleTTS
 overlay/GmsConfigOverlaySearchSelector.apk
 priv-app/SearchSelector
+priv-app/Velvet
 "
 
 SYSTEM_DEBLOAT+="
@@ -91,6 +97,25 @@ system/app/SimAppDialog
 system/app/Traceur
 system/app/UniversalMDMClient
 system/app/WifiGuider
+system/app/BixbyWakeup
+system/app/ARDrawing
+system/app/SamsungCloud
+system/app/SamsungHealth
+system/app/SamsungMembers
+system/app/Upday
+system/app/VisionIntelligence
+system/priv-app/Bixby
+system/priv-app/BixbyVision
+system/priv-app/ARZone
+system/priv-app/AREmoji
+system/priv-app/AREmojiEditor
+system/priv-app/SmartThings
+system/priv-app/GameHome
+system/priv-app/GameTools
+system/priv-app/SVoiceIME
+system/hidden
+system/tts
+system/preload
 system/etc/default-permissions/default-permissions-com.sec.spp.push.xml
 system/etc/init/digitalkey_init_ble_tss2.rc
 system/etc/init/samsung_pass_authenticator_service.rc
@@ -125,12 +150,7 @@ system/etc/sysconfig/preinstalled-packages-com.samsung.android.spayfw.xml
 system/etc/sysconfig/samsungauthframework.xml
 system/etc/sysconfig/samsungpassapp.xml
 system/etc/sysconfig/samsungpushservice.xml
-system/hidden/SmartTutor
-system/preload/Facebook_stub_preload
-system/preload/Instagram_stub_preload
 system/priv-app/AppUpdateCenter
-system/priv-app/AREmoji
-system/priv-app/AREmojiEditor
 system/priv-app/AuthFramework
 system/priv-app/BCService
 system/priv-app/CpAgent
@@ -154,9 +174,6 @@ system/priv-app/SOAgent76
 system/priv-app/SPPPushClient
 system/priv-app/StickerFaceARAvatar
 system/priv-app/YourPhone_P1_5
-system/app/BixbyWakeup
-system/priv-app/Bixby
-system/priv-app/SVoiceIME
 "
 
 PRISM_DEBLOAT+="

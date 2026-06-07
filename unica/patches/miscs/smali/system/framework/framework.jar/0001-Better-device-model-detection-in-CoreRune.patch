@@ -1,36 +1,20 @@
-From 38f30ac21df1de283e3cb9cd7840cb5096853e80 Mon Sep 17 00:00:00 2001
 From: Salvo Giangreco <giangrecosalvo9@gmail.com>
-Date: Fri, 12 Sep 2025 15:33:10 +0300
 Subject: [PATCH] Better device/model detection in CoreRune
 
-Change-Id: I8b701ae2778dba740bed168a69e963aa99caea97
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 ---
- smali_classes6/com/samsung/android/rune/CoreRune.smali | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
 diff --git a/smali_classes6/com/samsung/android/rune/CoreRune.smali b/smali_classes6/com/samsung/android/rune/CoreRune.smali
-index 6af0829b..e17bed3c 100644
 --- a/smali_classes6/com/samsung/android/rune/CoreRune.smali
 +++ b/smali_classes6/com/samsung/android/rune/CoreRune.smali
-@@ -2622,7 +2622,7 @@
-     :goto_a
-     sput-boolean v0, Lcom/samsung/android/rune/CoreRune;->FW_WORKAROUND_RESPONSE_SPEED_LOW:Z
+@@ -2585,4 +2585,4 @@
  
--    const-string/jumbo v0, "ro.product.device"
-+    const-string/jumbo v0, "ro.product.vendor.device"
+-    const-string/jumbo v1, "ro.product.device"
++    const-string/jumbo v1, "ro.product.vendor.device"
  
-     invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+     invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+@@ -3825,5 +3825,5 @@
+     const-string v11, "None"
  
-@@ -4446,7 +4446,7 @@
+-    const-string/jumbo v13, "ro.product.model"
++    const-string/jumbo v13, "ro.product.vendor.model"
  
-     if-eqz v0, :cond_3b
- 
--    const-string/jumbo v0, "ro.product.model"
-+    const-string/jumbo v0, "ro.product.vendor.model"
- 
-     invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
- 
--- 
-2.51.0
-
+     invoke-static {v13, v11}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;

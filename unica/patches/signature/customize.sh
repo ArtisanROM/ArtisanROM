@@ -1,4 +1,5 @@
-APPLY_PATCH "system" "system/framework/services.jar" "$MODPATH/0001-Allow-custom-platform-signature.patch"
+# APPLY_PATCH "system" "system/framework/services.jar" "$MODPATH/0001-Allow-custom-platform-signature.patch"
+    true
 
 CERT_PREFIX="aosp"
 $ROM_IS_OFFICIAL && CERT_PREFIX="extremerom"

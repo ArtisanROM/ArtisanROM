@@ -1,0 +1,32 @@
+From d3da4b611f301cc66c29f31fcff67bec239c7ca7 Mon Sep 17 00:00:00 2001
+From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
+Date: Sat, 12 Apr 2025 21:36:49 +0300
+Subject: [PATCH] Enable Outdoor mode support
+
+Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
+---
+ .../controller/SecOutDoorModePreferenceController.smali   | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali b/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
+index 1a10f3c..43eaefa 100644
+--- a/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
++++ b/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
+@@ -61,13 +61,7 @@
+ .method public final isAvailable()Z
+     .locals 0
+ 
+-    iget-object p0, p0, Lcom/android/settingslib/core/AbstractPreferenceController;->mContext:Landroid/content/Context;
+-
+-    invoke-static {p0}, Lcom/samsung/android/settings/Rune;->supportAutoBrightness(Landroid/content/Context;)Z
+-
+-    move-result p0
+-
+-    xor-int/lit8 p0, p0, 0x1
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+-- 
+2.45.2
+

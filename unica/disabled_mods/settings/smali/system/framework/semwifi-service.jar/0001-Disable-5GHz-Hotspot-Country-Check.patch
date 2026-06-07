@@ -1,0 +1,126 @@
+diff --git a/smali/com/samsung/android/server/wifi/ap/SemWifiApServiceImpl.smali b/smali/com/samsung/android/server/wifi/ap/SemWifiApServiceImpl.smali
+index 9487825..8650104 100644
+--- a/smali/com/samsung/android/server/wifi/ap/SemWifiApServiceImpl.smali
++++ b/smali/com/samsung/android/server/wifi/ap/SemWifiApServiceImpl.smali
+@@ -13785,118 +13785,9 @@
+ .end method
+ 
+ .method public supportWifiAp5GBasedOnCountry()Z
+-    .locals 8
+-
+-    invoke-virtual {p0}, Lcom/samsung/android/server/wifi/ap/SemWifiApServiceImpl;->enforceAccessPermission()V
+-
+-    sget-boolean v0, Lcom/samsung/android/wifi/SemWifiManager;->MHSDBG:Z
+-
+-    const/4 v1, 0x1
+-
+-    const/4 v2, 0x0
+-
+-    if-eqz v0, :cond_0
+-
+-    iget-object v0, p0, Lcom/samsung/android/server/wifi/ap/SemWifiApServiceImpl;->mFacade:Lcom/samsung/android/server/wifi/SemFrameworkFacade;
+-
+-    const-string v3, "vendor.wifiap.5gbandcountry"
+-
+-    invoke-virtual {v0, v3, v2}, Lcom/samsung/android/server/wifi/SemFrameworkFacade;->getSystemProperties(Ljava/lang/String;I)I
+-
+-    move-result v0
+-
+-    if-ne v0, v1, :cond_0
+-
+-    const-string p0, "SemWifiApServiceImpl"
+-
+-    const-string v0, "MHS vendor.wifiap.5gbandcountry is true"
+-
+-    invoke-static {p0, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    return v1
+-
+-    :cond_0
+-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+-
+-    move-result-wide v3
+-
+-    :try_start_0
+-    iget-object v0, p0, Lcom/samsung/android/server/wifi/ap/SemWifiApServiceImpl;->mFacade:Lcom/samsung/android/server/wifi/SemFrameworkFacade;
+-
+-    iget-object v5, p0, Lcom/samsung/android/server/wifi/ap/SemWifiApServiceImpl;->mContext:Landroid/content/Context;
+-
+-    const-string v6, "wifi_ap_chip_support5g_baseon_country"
+-
+-    invoke-virtual {v0, v5, v6}, Lcom/samsung/android/server/wifi/SemFrameworkFacade;->getSecureStringSetting(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    iget-object v5, p0, Lcom/samsung/android/server/wifi/ap/SemWifiApServiceImpl;->mFacade:Lcom/samsung/android/server/wifi/SemFrameworkFacade;
+-
+-    iget-object v6, p0, Lcom/samsung/android/server/wifi/ap/SemWifiApServiceImpl;->mContext:Landroid/content/Context;
+-
+-    const-string v7, "wifi_ap_chip_support5g"
+-
+-    invoke-virtual {v5, v6, v7}, Lcom/samsung/android/server/wifi/SemFrameworkFacade;->getSecureStringSetting(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v5
+-
+-    if-eqz v0, :cond_3
+-
+-    const-string v6, "na"
+-
+-    invoke-virtual {v6, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+-
+-    move-result v6
+-
+-    if-eqz v6, :cond_1
+-
+-    goto :goto_1
+-
+-    :cond_1
+-    invoke-static {v0}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
+-
+-    move-result v0
+-
+-    invoke-static {v5}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
+-
+-    move-result v5
+-
+-    if-eqz v5, :cond_2
+-
+-    if-eqz v0, :cond_2
+-
+-    invoke-virtual {p0}, Lcom/samsung/android/server/wifi/ap/SemWifiApServiceImpl;->isRegionFor5GCountry()Z
+-
+-    move-result p0
+-    :try_end_0
+-    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+-
+-    if-eqz p0, :cond_2
+-
+-    goto :goto_0
+-
+-    :catchall_0
+-    move-exception p0
+-
+-    goto :goto_2
+-
+-    :cond_2
+-    move v1, v2
+-
+-    :goto_0
+-    move v2, v1
+-
+-    :cond_3
+-    :goto_1
+-    invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+-
+-    return v2
+-
+-    :goto_2
+-    invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+-
+-    throw p0
++    .locals 1
++    const/4 v0, 0x1
++    return v0
+ .end method
+ 
+ .method public supportWifiAp6GBasedOnCountry()Z

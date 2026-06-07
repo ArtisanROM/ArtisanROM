@@ -46,7 +46,7 @@ if [[ "$SOURCE_AUTO_BRIGHTNESS_TYPE" != "$TARGET_AUTO_BRIGHTNESS_TYPE" && "$TARG
     FTP="
     system/framework/services.jar/smali_classes2/com/android/server/power/PowerManagerUtil.smali
     system/framework/ssrm.jar/smali/com/android/server/ssrm/PreMonitor.smali
-    system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/Rune.smali
+    system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/Rune.smali
     "
     for f in $FTP; do
         sed -i "s/\"$SOURCE_AUTO_BRIGHTNESS_TYPE\"/\"$TARGET_AUTO_BRIGHTNESS_TYPE\"/g" "$APKTOOL_DIR/$f"
@@ -55,7 +55,8 @@ if [[ "$SOURCE_AUTO_BRIGHTNESS_TYPE" != "$TARGET_AUTO_BRIGHTNESS_TYPE" && "$TARG
     # WORKAROUND: Skip failure on CALIBRATEDLUX
     # mov this,0x1 -> mov this,0x0
     if [[ "$TARGET_AUTO_BRIGHTNESS_TYPE" == "3" ]]; then
-        HEX_PATCH "$WORK_DIR/system/system/lib64/libsensorservice.so" "074B009420008052" "074B009400008052"
+#         HEX_PATCH "$WORK_DIR/system/system/lib64/libsensorservice.so" "074B009420008052" "074B009400008052"
+    true
     fi
     LOG_STEP_OUT
 fi
@@ -74,9 +75,9 @@ if [[ "$SOURCE_FP_SENSOR_CONFIG" != "$TARGET_FP_SENSOR_CONFIG" ]]; then
     system/framework/framework.jar/smali_classes6/com/samsung/android/bio/fingerprint/SemFingerprintManager.smali
     system/framework/framework.jar/smali_classes6/com/samsung/android/bio/fingerprint/SemFingerprintManager\$Characteristics.smali
     system/framework/framework.jar/smali_classes6/com/samsung/android/rune/InputRune.smali
-    system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/biometrics/fingerprint/FingerprintEntry.smali
-    system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/biometrics/fingerprint/FingerprintLockSettings.smali
-    system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/biometrics/fingerprint/FingerprintSettingsUtils.smali
+    system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/biometrics/fingerprint/FingerprintEntry.smali
+    system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/biometrics/fingerprint/FingerprintLockSettings.smali
+    system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/biometrics/fingerprint/FingerprintSettingsUtils.smali
     "
     for f in $FTP; do
         sed -i "s/$SOURCE_FP_SENSOR_CONFIG/$TARGET_FP_SENSOR_CONFIG/g" "$APKTOOL_DIR/$f"
@@ -190,7 +191,8 @@ fi
 DECODE_APK "system" "system/framework/framework.jar"
 
 if [[ "$TARGET_HFR_SEAMLESS_BRT" == "none" && "$TARGET_HFR_SEAMLESS_LUX" == "none" ]]; then
-     APPLY_PATCH "system" "system/framework/framework.jar" "$SRC_DIR/unica/patches/product_feature/hfr/framework.jar/0001-Remove-brightness-threshold-values.patch"
+#      APPLY_PATCH "system" "system/framework/framework.jar" "$SRC_DIR/unica/patches/product_feature/hfr/framework.jar/0001-Remove-brightness-threshold-values.patch"
+    true
 else
 
 FTP="
@@ -306,8 +308,10 @@ DECODE_APK "system" "system/framework/semwifi-service.jar"
 if $SOURCE_SUPPORT_HOTSPOT_DUALAP; then
     if ! $TARGET_SUPPORT_HOTSPOT_DUALAP; then
         LOG_STEP_IN "- Applying Hotspot DualAP patches"
-        APPLY_PATCH "system" "system/framework/semwifi-service.jar" "$SRC_DIR/unica/patches/product_feature/wifi/semwifi-service.jar/0001-Disable-DualAP-support.patch"
-        APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" "$SRC_DIR/unica/patches/product_feature/wifi/SecSettings.apk/0001-Disable-DualAP-support.patch"
+#         APPLY_PATCH "system" "system/framework/semwifi-service.jar" "$SRC_DIR/unica/patches/product_feature/wifi/semwifi-service.jar/0001-Disable-DualAP-support.patch"
+    true
+#         APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" "$SRC_DIR/unica/patches/product_feature/wifi/SecSettings.apk/0001-Disable-DualAP-support.patch"
+    true
         LOG_STEP_OUT
     fi
 fi

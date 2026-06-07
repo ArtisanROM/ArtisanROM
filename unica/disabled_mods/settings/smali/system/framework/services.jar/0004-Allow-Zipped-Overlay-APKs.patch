@@ -1,0 +1,32 @@
+diff --git a/smali_classes2/com/android/server/pm/InstallPackageHelper.smali b/smali_classes2/com/android/server/pm/InstallPackageHelper.smali
+index 98376b9..1b376d3 100644
+--- a/smali_classes2/com/android/server/pm/InstallPackageHelper.smali
++++ b/smali_classes2/com/android/server/pm/InstallPackageHelper.smali
+@@ -262,25 +262,8 @@
+ 
+ .method public static hasZippedOverlays(Lcom/android/internal/pm/parsing/pkg/ParsedPackage;)Z
+     .locals 1
+-
+-    invoke-interface {p0}, Lcom/android/internal/pm/parsing/pkg/ParsedPackage;->getMetaData()Landroid/os/Bundle;
+-
+-    move-result-object p0
+-
+-    if-nez p0, :cond_0
+-
+-    const/4 p0, 0x0
+-
+-    return p0
+-
+-    :cond_0
+-    const-string/jumbo v0, "com.samsung.android.hasZippedOverlays"
+-
+-    invoke-virtual {p0, v0}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
+-
+-    move-result p0
+-
+-    return p0
++    const/4 v0, 0x0
++    return v0
+ .end method
+ 
+ .method public static isAdminApplication(Lcom/android/server/pm/pkg/AndroidPackage;)Z

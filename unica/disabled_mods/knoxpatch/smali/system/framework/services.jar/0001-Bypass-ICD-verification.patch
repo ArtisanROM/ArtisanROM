@@ -1,0 +1,23 @@
+From 18176a248194ec772efcf1c7596da59c7ff96b88 Mon Sep 17 00:00:00 2001
+From: Salvo Giangreco <giangrecosalvo9@gmail.com>
+Date: Sat, 21 Jun 2025 19:54:44 +0200
+Subject: [PATCH] Bypass ICD verification
+
+---
+ .../security/keystore/AttestParameterSpec$Builder.smali       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec$Builder.smali b/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec$Builder.smali
+--- a/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec$Builder.smali
++++ b/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec$Builder.smali
+@@ -131,9 +131,9 @@
+     :goto_1
+     iput-object p0, v0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mChallenge:[B
+ 
+     iput-boolean v1, v0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mVerifiableIntegrity:Z
+ 
+-    const/4 p0, 0x0
++    const/4 p0, 0x1
+ 
+     iput-boolean p0, v0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mSAKUidRequired:Z
+ 

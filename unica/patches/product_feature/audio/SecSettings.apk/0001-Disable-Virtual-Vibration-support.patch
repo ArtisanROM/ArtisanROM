@@ -9,10 +9,10 @@ Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
  .../settings/asbase/utils/VibUtils.smali      | 32 +------------------
  1 file changed, 1 insertion(+), 31 deletions(-)
 
-diff --git a/smali_classes4/com/samsung/android/settings/asbase/utils/VibUtils.smali b/smali_classes4/com/samsung/android/settings/asbase/utils/VibUtils.smali
+diff --git a/smali_classes5/com/samsung/android/settings/asbase/utils/VibUtils.smali b/smali_classes5/com/samsung/android/settings/asbase/utils/VibUtils.smali
 index 941253cf..736e56a9 100644
---- a/smali_classes4/com/samsung/android/settings/asbase/utils/VibUtils.smali
-+++ b/smali_classes4/com/samsung/android/settings/asbase/utils/VibUtils.smali
+--- a/smali_classes5/com/samsung/android/settings/asbase/utils/VibUtils.smali
++++ b/smali_classes5/com/samsung/android/settings/asbase/utils/VibUtils.smali
 @@ -137,38 +137,8 @@
  .end method
  

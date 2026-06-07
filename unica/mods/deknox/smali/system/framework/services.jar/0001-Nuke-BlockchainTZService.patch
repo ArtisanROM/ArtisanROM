@@ -14,42 +14,42 @@ index 0a9b9f42..286dd393 100644
 +++ b/smali/com/android/server/SystemServer$$ExternalSyntheticLambda10.smali
 @@ -69,37 +69,6 @@
      :goto_0
-     invoke-virtual {v2}, Landroid/util/TimingsTraceLog;->traceEnd()V
+     invoke-virtual {v1}, Landroid/util/TimingsTraceLog;->traceEnd()V
  
--    const-string v3, "Blockchain Service"
+-    const-string v2, "Blockchain Service"
 -
--    invoke-virtual {v2, v3}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
+-    invoke-virtual {v1, v2}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
 -
 -    :try_start_1
--    invoke-static {v1, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+-    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 -
--    const-string/jumbo v3, "blockchain"
+-    const-string/jumbo v2, "blockchain"
 -
--    new-instance v4, Lcom/android/server/SystemServer$5;
+-    new-instance v3, Lcom/android/server/SystemServer$5;
 -
--    const/4 v5, 0x5
+-    const/4 v4, 0x5
 -
--    invoke-direct {v4, v5}, Lcom/android/server/SystemServer$5;-><init>(I)V
+-    invoke-direct {v3, v4}, Lcom/android/server/SystemServer$5;-><init>(I)V
 -
--    invoke-static {v3, v4}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Landroid/os/IServiceCreator;)V
+-    invoke-static {v2, v3}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Landroid/os/IServiceCreator;)V
 -    :try_end_1
 -    .catchall {:try_start_1 .. :try_end_1} :catchall_1
 -
 -    goto :goto_1
 -
 -    :catchall_1
--    move-exception v3
+-    move-exception v2
 -
--    const-string v4, "Failure starting Blockchain TZ Service"
+-    const-string v3, "Failure starting Blockchain TZ Service"
 -
--    invoke-static {v1, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+-    invoke-static {v0, v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 -
 -    :goto_1
--    invoke-virtual {v2}, Landroid/util/TimingsTraceLog;->traceEnd()V
+-    invoke-virtual {v1}, Landroid/util/TimingsTraceLog;->traceEnd()V
 -
-     const-string/jumbo v3, "SemAuthnrService"
+     const-string/jumbo v2, "SemAuthnrService"
  
-     invoke-virtual {v2, v3}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
--- 
+     invoke-virtual {v1, v2}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
+ 
 2.49.1
 

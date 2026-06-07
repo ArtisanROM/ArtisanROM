@@ -32,9 +32,9 @@ index cb136bf..b927ff6 100644
 --- a/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali
 +++ b/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali
 @@ -1885,7 +1885,7 @@
-     invoke-virtual {v2, v7, v4}, Landroid/media/MediaFormat;->setInteger(Ljava/lang/String;I)V
+     invoke-virtual {v2, v5, v4}, Landroid/media/MediaFormat;->setInteger(Ljava/lang/String;I)V
  
-     :cond_11
+     :cond_12
 -    const v4, 0x7f420888
 +    const v4, 0x7f000789
  

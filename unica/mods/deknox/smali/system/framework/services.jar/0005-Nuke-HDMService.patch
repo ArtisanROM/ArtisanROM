@@ -1,34 +1,275 @@
-From 1150c3bd4bdad7115a1c84f8fa07a64b5f502c76 Mon Sep 17 00:00:00 2001
-From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
-Date: Sat, 21 Jun 2025 20:27:42 +0200
-Subject: [PATCH] Nuke HDMService
-
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
----
- .../EnterpriseDeviceManagerServiceImpl.smali           | 10 ----------
- 1 file changed, 10 deletions(-)
-
 diff --git a/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali b/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali
-index 824aba9a..8a19b16d 100644
+index b9fb862..6bd462e 100644
 --- a/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali
 +++ b/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali
-@@ -2156,16 +2156,6 @@
+@@ -3471,270 +3471,6 @@
  
-     invoke-static {v1, p1}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Landroid/os/IBinder;)V
+     invoke-static {v0, v3}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Landroid/os/IBinder;)V
  
--    new-instance p1, Lcom/android/server/enterprise/hdm/HdmService;
+-    const-string/jumbo v3, "hdm_service"
 -
--    iget-object v0, v0, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl$Injector;->mContext:Landroid/content/Context;
+-    new-instance v4, Lcom/android/server/enterprise/hdm/HdmService;
 -
--    invoke-direct {p1, v0}, Lcom/android/server/enterprise/hdm/HdmService;-><init>(Landroid/content/Context;)V
+-    iget-object v0, v2, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl$Injector;->mContext:Landroid/content/Context;
 -
--    const-string/jumbo v0, "hdm_service"
+-    invoke-direct {v4}, Lcom/samsung/android/knox/hdm/IHdmManager$Stub;-><init>()V
 -
--    invoke-static {p1, v0}, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl$Injector;->addLazySystemService(Lcom/android/server/enterprise/EnterpriseServiceCallback;Ljava/lang/String;)V
+-    iput-object v7, v4, Lcom/android/server/enterprise/hdm/HdmService;->mEDM:Lcom/samsung/android/knox/EnterpriseDeviceManager;
 -
-     iget-object p1, p0, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl;->mContext:Landroid/content/Context;
+-    const/4 v6, 0x0
+-
+-    iput-boolean v6, v4, Lcom/android/server/enterprise/hdm/HdmService;->syncSwBlockByBoot:Z
+-
+-    iput-object v0, v4, Lcom/android/server/enterprise/hdm/HdmService;->mContext:Landroid/content/Context;
+-
+-    iput-object v7, v4, Lcom/android/server/enterprise/hdm/HdmService;->mSerialNumber:[B
+-
+-    const-string v2, ""
+-
+-    iput-object v2, v4, Lcom/android/server/enterprise/hdm/HdmService;->mImei0:Ljava/lang/String;
+-
+-    iput-object v7, v4, Lcom/android/server/enterprise/hdm/HdmService;->mHashImei:[B
+-
+-    iput-object v2, v4, Lcom/android/server/enterprise/hdm/HdmService;->mMacAddress:Ljava/lang/String;
+-
+-    new-instance v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;
+-
+-    const-string v6, "HDM - HdmSoftwareBlock"
+-
+-    invoke-direct {v2}, Ljava/lang/Object;-><init>()V
+-
+-    :try_start_b
+-    new-instance v8, Ljava/io/File;
+-
+-    const-string v9, "/data/misc/hdm"
+-
+-    invoke-direct {v8, v9}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v8}, Ljava/io/File;->exists()Z
+-
+-    move-result v9
+-
+-    if-nez v9, :cond_15
+-
+-    invoke-virtual {v8}, Ljava/io/File;->mkdir()Z
+-
+-    :cond_15
+-    iput-object v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->context:Landroid/content/Context;
+-
+-    invoke-static {v0}, Lcom/samsung/android/knox/EnterpriseDeviceManager;->getInstance(Landroid/content/Context;)Lcom/samsung/android/knox/EnterpriseDeviceManager;
+-
+-    move-result-object v0
+-
+-    iput-object v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->edm:Lcom/samsung/android/knox/EnterpriseDeviceManager;
+-
+-    invoke-virtual {v0}, Lcom/samsung/android/knox/EnterpriseDeviceManager;->getRestrictionPolicy()Lcom/samsung/android/knox/restriction/RestrictionPolicy;
+-
+-    move-result-object v0
+-
+-    iput-object v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->restrictionPolicy:Lcom/samsung/android/knox/restriction/RestrictionPolicy;
+-
+-    invoke-virtual {v2}, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->initControlMap()Ljava/util/Map;
+-
+-    move-result-object v0
+-
+-    iput-object v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->supportedFunctionMap:Ljava/util/Map;
+-
+-    new-instance v0, Ljava/util/ArrayList;
+-
+-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+-
+-    const/16 v8, 0x10
+-
+-    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v9
+-
+-    invoke-virtual {v0, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v9
+-
+-    invoke-virtual {v0, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    const/16 v9, 0x40
+-
+-    invoke-static {v9}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v9
+-
+-    invoke-virtual {v0, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    iput-object v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->swBlockBeforeList:Ljava/util/List;
+-
+-    new-instance v0, Ljava/util/ArrayList;
+-
+-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+-
+-    const/16 v9, 0x100
+-
+-    invoke-static {v9}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v9
+-
+-    invoke-virtual {v0, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    iput-object v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->swRebootList:Ljava/util/List;
+-
+-    invoke-static {}, Lcom/samsung/android/knox/hdm/HdmManager;->getHdmVersion()Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string v9, " - "
+-
+-    invoke-virtual {v0, v9}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    invoke-static {v0}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v9
+-
+-    invoke-static {v6, v9}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    aget-object v0, v0, v5
+-
+-    invoke-static {v0, v8}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;I)I
+-
+-    move-result v0
+-
+-    iput v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->hdmSubSystem:I
+-
+-    invoke-virtual {v2, v0}, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->initTargetSubSystems(I)I
+-
+-    move-result v0
+-
+-    iput v0, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->targetSubSystems:I
+-
+-    invoke-virtual {v2}, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->isSwBlockEnabled()Z
+-
+-    move-result v8
+-
+-    iput-boolean v8, v2, Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;->swBlockEnabled:Z
+-
+-    const-string/jumbo v8, "sys.hdm.double.protection.subsystem"
+-
+-    invoke-static {v0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    invoke-static {v8, v0}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+-    :try_end_b
+-    .catch Ljava/lang/Exception; {:try_start_b .. :try_end_b} :catch_8
+-
+-    goto :goto_16
+-
+-    :catch_8
+-    move-exception v0
+-
+-    const-string v8, "HdmSoftwareBlock failed: "
+-
+-    invoke-static {v0, v8, v6}, Lcom/android/server/DirEncryptServiceHelper$$ExternalSyntheticOutline0;->m(Ljava/lang/Exception;Ljava/lang/String;Ljava/lang/String;)V
+-
+-    :goto_16
+-    iput-object v2, v4, Lcom/android/server/enterprise/hdm/HdmService;->hdmSoftwareBlock:Lcom/android/server/enterprise/hdm/HdmSoftwareBlock;
+-
+-    new-instance v2, Lcom/android/server/enterprise/hdm/HdmVendorController;
+-
+-    invoke-direct {v2}, Ljava/lang/Object;-><init>()V
+-
+-    iput-object v7, v2, Lcom/android/server/enterprise/hdm/HdmVendorController;->mISehKhdm:Lvendor/samsung/hardware/khdm/ISehKhdm;
+-
+-    const-string v0, "36"
+-
+-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+-
+-    move-result v6
+-
+-    const-string v8, "Hdm - VendorInterface"
+-
+-    const-string/jumbo v0, "isAidlServiceDeclared: "
+-
+-    :try_start_c
+-    const-string/jumbo v9, "vendor.samsung.hardware.khdm.ISehKhdm/default"
+-
+-    invoke-static {v9}, Landroid/os/ServiceManager;->isDeclared(Ljava/lang/String;)Z
+-
+-    move-result v9
+-
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v10, v0}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    invoke-static {v8, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+-    :try_end_c
+-    .catch Ljava/lang/Exception; {:try_start_c .. :try_end_c} :catch_9
+-
+-    goto :goto_17
+-
+-    :catch_9
+-    move-exception v0
+-
+-    new-instance v9, Ljava/lang/StringBuilder;
+-
+-    const-string/jumbo v10, "isAidlServiceDeclared failed: "
+-
+-    invoke-direct {v9, v10}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v9, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    invoke-static {v8, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    const/4 v9, 0x0
+-
+-    :goto_17
+-    xor-int/lit8 v0, v9, 0x1
+-
+-    iput-boolean v0, v2, Lcom/android/server/enterprise/hdm/HdmVendorController;->hidlSupport:Z
+-
+-    new-instance v5, Ljava/lang/StringBuilder;
+-
+-    const-string/jumbo v9, "apiLevel: "
+-
+-    invoke-direct {v5, v9}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    const-string v6, ", hidlSupport: "
+-
+-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    invoke-static {v8, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    invoke-static {}, Ljava/lang/invoke/VarHandle;->storeStoreFence()V
+-
+-    iput-object v2, v4, Lcom/android/server/enterprise/hdm/HdmService;->vendorController:Lcom/android/server/enterprise/hdm/HdmVendorController;
+-
+-    const-string v0, "HDM - HdmService"
+-
+-    const-string v2, "HdmService.java instantiated"
+-
+-    invoke-static {v0, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    invoke-static {}, Ljava/lang/invoke/VarHandle;->storeStoreFence()V
+-
+-    invoke-static {v4, v3}, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl$Injector;->addLazySystemService(Lcom/android/server/enterprise/EnterpriseServiceCallback;Ljava/lang/String;)V
  
-     sget v0, Lcom/android/server/enterprise/appconfig/ApplicationRestrictionsService;->$r8$clinit:I
--- 
-2.49.1
-
+     iget-object v0, v1, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl;->mContext:Landroid/content/Context;
+ 

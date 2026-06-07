@@ -66,9 +66,9 @@ DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
 DECODE_APK "system_ext" "priv-app/SystemUI/SystemUI.apk"
 
 FTP="
-system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
-system/priv-app/SecSettings/SecSettings.apk/smali_classes3/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings\$1.smali
-system/priv-app/SecSettings/SecSettings.apk/smali_classes3/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
+system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
+system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings\$1.smali
+system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
 system_ext/priv-app/SystemUI/SystemUI.apk/smali/com/android/systemui/Rune.smali
 system_ext/priv-app/SystemUI/SystemUI.apk/smali/com/android/systemui/QpRune.smali
 "

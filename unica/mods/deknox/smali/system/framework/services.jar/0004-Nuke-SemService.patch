@@ -15,34 +15,34 @@ index da140fff..6806656b 100644
 @@ -45,30 +45,6 @@
      invoke-static {}, Lcom/android/server/utils/TimingsTraceAndSlog;->newAsyncLog()Lcom/android/server/utils/TimingsTraceAndSlog;
  
-     move-result-object v2
+     move-result-object v1
 -
--    const-string/jumbo v3, "SemService"
+-    const-string/jumbo v2, "SemService"
 -
--    invoke-virtual {v2, v3}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
+-    invoke-virtual {v1, v2}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
 -
 -    :try_start_0
--    const-class v4, Lcom/android/server/SemService;
+-    const-class v3, Lcom/android/server/SemService;
 -
--    invoke-static {v3, v4}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Ljava/lang/Class;)V
+-    invoke-static {v2, v3}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Ljava/lang/Class;)V
 -    :try_end_0
 -    .catchall {:try_start_0 .. :try_end_0} :catchall_0
 -
 -    goto :goto_0
 -
 -    :catchall_0
--    move-exception v3
+-    move-exception v2
 -
--    const-string v4, "Failure starting SemService"
+-    const-string v3, "Failure starting SemService"
 -
--    invoke-static {v4, v3}, Lcom/android/server/SystemServer;->reportWtf(Ljava/lang/String;Ljava/lang/Throwable;)V
+-    invoke-static {v3, v2}, Lcom/android/server/SystemServer;->reportWtf(Ljava/lang/String;Ljava/lang/Throwable;)V
 -
 -    :goto_0
--    invoke-virtual {v2}, Landroid/util/TimingsTraceLog;->traceEnd()V
+-    invoke-virtual {v1}, Landroid/util/TimingsTraceLog;->traceEnd()V
 -
-     const-string/jumbo v3, "SemAuthnrService"
+     const-string/jumbo v2, "SemAuthnrService"
  
-     invoke-virtual {v2, v3}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
+     invoke-virtual {v1, v2}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
 -- 
 2.49.1
 
