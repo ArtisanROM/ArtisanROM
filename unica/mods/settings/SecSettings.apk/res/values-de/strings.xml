@@ -32,6 +32,7 @@
     <string name="unica_launcher_anim_type_title">Launcher Animationstyp</string>
     <string name="unica_max_refresh_rate_title">Maximale Bildwiederholfrequenz erzwingen</string>
     <string name="unica_menu_item_reboot_download_title">Neustart zum Download-Modus</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Neustart zu lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Neustart zum Fastboot-Modus</string>
     <string name="unica_menu_item_reboot_recovery_title">Neustart zum Recovery-Modus</string>
     <string name="unica_menu_item_reboot_title">Neustart</string>

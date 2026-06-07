@@ -32,6 +32,7 @@
     <string name="unica_launcher_anim_type_title">Тип на анимација на стартувачот</string>
     <string name="unica_max_refresh_rate_title">Присили врвна стапка на освежување</string>
     <string name="unica_menu_item_reboot_download_title">Рестартирај до Преземање</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Рестартирај до lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Рестартирај до Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Рестартирај до Recovery</string>
     <string name="unica_menu_item_reboot_title">Рестартирај</string>

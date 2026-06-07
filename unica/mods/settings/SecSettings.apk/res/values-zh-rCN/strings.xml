@@ -32,6 +32,7 @@
     <string name="unica_launcher_anim_type_title">桌面动画类型</string>
     <string name="unica_max_refresh_rate_title">强制使用高刷新率</string>
     <string name="unica_menu_item_reboot_download_title">重启到Download</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">重启到lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">重启到Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">重启到Recovery</string>
     <string name="unica_menu_item_reboot_title">重启</string>

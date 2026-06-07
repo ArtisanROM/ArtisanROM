@@ -32,6 +32,7 @@
     <string name="unica_launcher_anim_type_title">Тип анимация на лаунчера</string>
     <string name="unica_max_refresh_rate_title">Заключване на най-високата честота на опресняване</string>
     <string name="unica_menu_item_reboot_download_title">Рестартиране в режим Download</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Рестартиране в lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Рестартиране в режим Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Рестартиране в режим Recovery</string>
     <string name="unica_menu_item_reboot_title">Рестартиране</string>

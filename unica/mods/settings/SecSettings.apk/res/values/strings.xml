@@ -34,6 +34,7 @@
     <string name="unica_launcher_anim_type_title">Launcher animation type</string>
     <string name="unica_max_refresh_rate_title">Force peak refresh rate</string>
     <string name="unica_menu_item_reboot_download_title">Reboot to Download</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Reboot to lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Reboot to Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Reboot to Recovery</string>
     <string name="unica_menu_item_reboot_title">Reboot</string>

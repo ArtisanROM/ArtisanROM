@@ -32,6 +32,7 @@
     <string name="unica_launcher_anim_type_title">Kiểu hoạt ảnh của trình khởi chạy</string>
     <string name="unica_max_refresh_rate_title">Buộc tốc độ làm mới cao nhất</string>
     <string name="unica_menu_item_reboot_download_title">Khởi động lại vào Download</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Khởi động lại vào lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Khởi động lại vào Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Khởi động lại vào Recovery</string>
     <string name="unica_menu_item_reboot_title">Khởi động lại</string>

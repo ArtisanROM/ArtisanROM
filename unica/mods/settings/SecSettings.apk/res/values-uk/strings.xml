@@ -32,6 +32,7 @@
     <string name="unica_launcher_anim_type_title">Тип анімації Головного екрану</string>
     <string name="unica_max_refresh_rate_title">Примусова максимальна частота оновлення екрану</string>
     <string name="unica_menu_item_reboot_download_title">Перезавантажити у Download</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Перезавантажити у lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Перезавантажити у Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Перезавантажити у Recovery</string>
     <string name="unica_menu_item_reboot_title">Перезавантажити</string>

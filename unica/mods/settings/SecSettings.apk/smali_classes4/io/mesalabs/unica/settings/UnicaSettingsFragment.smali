@@ -186,6 +186,18 @@
 
     invoke-interface {p1, v3, v2, v3, v1}, Landroid/view/Menu;->add(IIII)Landroid/view/MenuItem;
 
+    const-string v1, "unica_menu_item_reboot_lk3rd_title"
+
+    const-string v2, "string"
+
+    invoke-static {v2, v1}, Lio/mesalabs/unica/utils/Utils;->getResourceId(Ljava/lang/String;Ljava/lang/String;)I
+
+    move-result v1
+
+    const/4 v2, 0x4
+
+    invoke-interface {p1, v3, v2, v3, v1}, Landroid/view/Menu;->add(IIII)Landroid/view/MenuItem;
+
     iget-object p1, p0, Lio/mesalabs/unica/settings/UnicaSettingsFragment;->mPopupMenu:Landroidx/appcompat/widget/PopupMenu;
 
     new-instance v1, Lio/mesalabs/unica/settings/UnicaSettingsFragment$1;

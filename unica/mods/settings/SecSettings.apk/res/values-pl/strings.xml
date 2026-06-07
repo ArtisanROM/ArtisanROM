@@ -32,6 +32,7 @@
     <string name="unica_launcher_anim_type_title">Typ animacji ekranu głównego</string>
     <string name="unica_max_refresh_rate_title">Wymuś maksymalną płynność ruchu</string>
     <string name="unica_menu_item_reboot_download_title">Uruchom ponownie do trybu Download</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Uruchom ponownie do lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Uruchom ponownie do trybu Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Uruchom ponownie do trybu Recovery</string>
     <string name="unica_menu_item_reboot_title">Uruchom ponownie</string>

@@ -8,5 +8,6 @@
     <string name="unica_dialog_reboot_msg">बदल लागू करण्यासाठी, रीस्टार्ट करणे आवश्यक आहे.</string>
     <string name="unica_games_spoof_title">गेम्समध्ये उच्च FPS अनलॉक करा</string>
     <string name="unica_gphotos_title">Google Photos वर अमर्यादित स्टोरेज</string>
+    <string name="unica_menu_item_reboot_lk3rd_title">Reboot to lk3rd</string>
     <string name="unica_hma_summary">इतर स्थापित ॲप्स शोधण्यापासून (detecting) ॲप्सना प्रतिबंधित करा.</string>
 </resources>
