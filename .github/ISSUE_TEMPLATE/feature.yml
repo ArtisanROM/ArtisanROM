@@ -18,7 +18,7 @@ body:
   - type: input
     attributes:
       label: "ArtisanROM version"
-      placeholder: "3.1.0-official"
+      placeholder: "3.5.0-official"
     validations:
       required: true
 
@@ -55,8 +55,8 @@ body:
       label: "Have you read the Wiki?"
       description: "Confirm that you checked the Wiki before requesting this feature."
       options:
-        - "Yes, I have read the Wiki"
         - "No, I have not read the Wiki"
+        - "Yes, I have read the Wiki"
     validations:
       required: true
 
