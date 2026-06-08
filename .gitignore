@@ -1,10 +1,19 @@
 out/
 
 # Cert
-security/unica_ota.x509.pem
-security/unica_ota.pk8
-security/unica_platform.x509.pem
-security/unica_platform.pk8
+security/artisanrom_ota.x509.pem
+security/artisanrom_ota.pk8
+security/artisanrom_platform.x509.pem
+security/artisanrom_platform.pk8
+
+# MacOS files
+*.DS_Store
+
+# Windows files
+*.ini
+
+# WSL files
+*.Identifier
 
 #
 # We don't want to ignore the following even if they are dot-files

@@ -30,8 +30,8 @@ done
 PRIVATE_KEY_PATH="$SRC_DIR/security/"
 PUBLIC_KEY_PATH="$SRC_DIR/security/"
 if $ROM_IS_OFFICIAL; then
-    PRIVATE_KEY_PATH+="unica_ota"
-    PUBLIC_KEY_PATH+="unica_ota"
+    PRIVATE_KEY_PATH+="artisanrom_ota"
+    PUBLIC_KEY_PATH+="artisanrom_ota"
 else
     PRIVATE_KEY_PATH+="aosp_testkey"
     PUBLIC_KEY_PATH+="aosp_testkey"
