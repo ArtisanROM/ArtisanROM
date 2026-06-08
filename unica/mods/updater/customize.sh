@@ -1,8 +1,17 @@
 SKIPUNZIP=1
 
+if ! $ROM_IS_OFFICIAL; then
+    LOG "\033[0;33m! Build is not official. Skipping\033[0m"
+    return 0
+fi
+
 ADD_TO_WORK_DIR "$MODPATH" "system" "."
 
 DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
+
+LOG "- Patching /system/system/etc/security/otacerts.zip"
+EVAL "rm \"$WORK_DIR/system/system/etc/security/otacerts.zip\""
+EVAL "cd \"$SRC_DIR\"; zip -q \"$WORK_DIR/system/system/etc/security/otacerts.zip\" \"./security/artisanrom_ota.x509.pem\""
 
 SET_PROP "system" "ro.artisanrom.version" "$ROM_VERSION"
 SET_PROP "system" "ro.artisanrom.target" "$TARGET_CODENAME"
