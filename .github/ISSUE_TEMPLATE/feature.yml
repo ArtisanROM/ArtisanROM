@@ -1,0 +1,66 @@
+name: "Feature Request"
+description: "Suggest a new feature or improvement for ArtisanROM"
+title: "[Feature Request] "
+labels: ["enhancement"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for your interest in improving ArtisanROM!
+
+        Please fill out the fields below to help us understand your suggestion.
+        Before submitting, make sure your idea has not already been proposed:
+        https://github.com/ArtisanROM/ArtisanROM/issues/
+
+        Also ensure you have checked the **Wiki** to verify that the feature doesn't already exist.
+
+  - type: input
+    attributes:
+      label: "ArtisanROM version"
+      placeholder: "3.1.0-official"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Feature description"
+      placeholder: "Clearly describe the feature you want to be added."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Why is this feature needed?"
+      placeholder: |
+        Explain the problem the feature solves, the use case, or why it would improve the ROM.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Proposed implementation"
+      placeholder: |
+        Describe how you imagine the feature could work, look, or be integrated.
+        (Optional if you don't have a technical proposal.)
+  
+  - type: textarea
+    attributes:
+      label: "Alternatives considered"
+      placeholder: |
+        If you considered different solutions or workarounds, describe them here.
+
+  - type: dropdown
+    attributes:
+      label: "Have you read the Wiki?"
+      description: "Confirm that you checked the Wiki before requesting this feature."
+      options:
+        - "Yes, I have read the Wiki"
+        - "No, I have not read the Wiki"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Additional context"
+      placeholder: "Add any extra information, references, or screenshots."
