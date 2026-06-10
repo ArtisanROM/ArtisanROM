@@ -139,6 +139,11 @@ system/priv-app/FactoryTestProvider
 # Language packs
 SYSTEM_DEBLOAT+="$(find "$WORK_DIR/system" -type d -name "*TTSVoice*" | sed "s|$WORK_DIR/system/||g")"
 
+# Main TTS app
+SYSTEM_DEBLOAT+="
+system/app/SamsungTTS
+"
+
 # LED Cover Service
 [ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")" -lt "30" ] && SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.sec.android.cover.ledcover.xml

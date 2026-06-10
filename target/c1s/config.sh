@@ -3,7 +3,7 @@
 
 # Device configuration file for Galaxy Note 20 (Exynos) (c1s)
 TARGET_NAME="Galaxy Note 20 (Exynos)"
-TARGET_CODENAME="c2s"
+TARGET_CODENAME="c1s"
 TARGET_ASSERT_MODEL=("SM-N980F" "SM-N981B")
 TARGET_PLATFORM="exynos990"
 TARGET_FIRMWARE="SM-N981B/AUT/357879701502888"
