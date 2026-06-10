@@ -344,13 +344,14 @@ fi
 if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
     if [ ! -d "$WORK_DIR/vendor/etc/singletake/ClarityScorer" ]; then
         PATCHED=true
-        DELETE_FROM_WORK_DIR "vendor" "etc/singletake"
-        ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" \
-            "etc/singletake/ClarityScorer/ClarityScorer.tflite" 0 0 644 "u:object_r:vendor_configs_file:s0"
-        if ! grep -q "SUPPORT_SMART_CROP.*false" "$WORK_DIR/system/system/cameradata/singletake/service-feature.xml" 2>/dev/null; then
-            ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" \
-                "etc/singletake/SmartCrop/SmartCrop.tflite" 0 0 644 "u:object_r:vendor_configs_file:s0"
+        if [ -d "$WORK_DIR/vendor/etc/singletake/aifilter" ]; then
+            DELETE_FROM_WORK_DIR "vendor" "etc/singletake/aifilter"
         fi
+        if [ -d "$WORK_DIR/vendor/etc/singletake/bestmoment" ]; then
+            DELETE_FROM_WORK_DIR "vendor" "etc/singletake/bestmoment"
+        fi
+        ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" \
+            "etc/singletake/ClarityScorer" 0 2000 755 "u:object_r:vendor_configs_file:s0"
     fi
 fi
 
