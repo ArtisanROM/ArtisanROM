@@ -1,9 +1,3 @@
-# Samsung Internet Browser
-# https://play.google.com/store/apps/details?id=com.sec.android.app.sbrowser
-LOG "- Downloading Samsung Internet app"
-DOWNLOAD_FILE "$(GET_GALAXY_STORE_DOWNLOAD_URL "com.sec.android.app.sbrowser")" \
-    "$WORK_DIR/system/system/preload/SBrowser/SBrowser.apk"
-
 # KernelSU Next
 KERNELSU_MANAGER_APK="https://github.com/KernelSU-Next/KernelSU-Next/releases/download/v3.2.0/KernelSU_Next_v3.2.0_33129-release.apk"
 # https://github.com/tiann/KernelSU/issues/886
