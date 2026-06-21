@@ -10,6 +10,8 @@
 *.so binary
 *.jar binary
 *.pk8 binary
+*.pem binary
+*.x509.pem binary
 *.ogg binary
 *.ico binary
 *.jpg binary
