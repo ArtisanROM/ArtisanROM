@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
   <rom channel="stable">
-    <version>3.1.1</version>
-    <date>2026-04-28</date>
-    <filename>ArtisanROM_OFFICIAL_3.1.1_20260428_c1s-sign.zip</filename>
-    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-c1s/ArtisanROM_OFFICIAL_3.1.1_20260428_c1s-sign.zip.part_00</part1>
-    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-c1s/ArtisanROM_OFFICIAL_3.1.1_20260428_c1s-sign.zip.part_01</part2>
-    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-c1s/ArtisanROM_OFFICIAL_3.1.1_20260428_c1s-sign.zip.part_02</part3>
-    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-c1s/ArtisanROM_OFFICIAL_3.1.1_20260428_c1s-sign.zip.part_03</part4>
-    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-c1s/ArtisanROM_OFFICIAL_3.1.1_20260428_c1s-sign.zip.part_04</part5>
-    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.1.1-c1s/ArtisanROM_OFFICIAL_3.1.1_20260428_c1s-sign.zip.part_05</part6>
-    <md5>c39feaae0d7663e578694d81036a96d3</md5>
-    <size>5402012973</size>
+    <version>3.5.0</version>
+    <date>2026-06-21</date>
+    <filename>ArtisanROM_OFFICIAL_3.5.0_20260621_c1s-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.0-c1s/ArtisanROM_OFFICIAL_3.5.0_20260621_c1s-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.0-c1s/ArtisanROM_OFFICIAL_3.5.0_20260621_c1s-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.0-c1s/ArtisanROM_OFFICIAL_3.5.0_20260621_c1s-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.0-c1s/ArtisanROM_OFFICIAL_3.5.0_20260621_c1s-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.0-c1s/ArtisanROM_OFFICIAL_3.5.0_20260621_c1s-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.0-c1s/ArtisanROM_OFFICIAL_3.5.0_20260621_c1s-sign.zip.part_05</part6>
+    <md5>406f4935dbd0af339c38cb9aa011551f</md5>
+    <size>5985734155</size>
   </rom>
 </roms>
