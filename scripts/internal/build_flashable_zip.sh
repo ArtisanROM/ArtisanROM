@@ -417,12 +417,11 @@ GENERATE_UPDATER_SCRIPT()
             cp -a "$SRC_DIR/prebuilts/extras/setup-boot.sh" "$TMP_DIR/setup-boot.sh"
 
             echo -e "\n"
-            echo    'ui_print("Extracting boot image...");'
             echo    'package_extract_file("boot.img", "/tmp/boot.img");'
-            echo    'ui_print("Extracting lk3rd image...");'
             echo    'package_extract_file("lk3rd.img", "/tmp/lk3rd.img");'
             echo    'ui_print("Installing boot image...");'
             echo    'ui_print("Installing lk3rd image...");'
+            echo    'ui_print("Note: During boot you may get a warning, This is absolutely normal");'
             echo    'package_extract_file("setup-boot.sh", "/tmp/setup-boot.sh");'
             echo    'set_metadata("/tmp/setup-boot.sh", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);'
             echo    'run_program("/tmp/setup-boot.sh");'
