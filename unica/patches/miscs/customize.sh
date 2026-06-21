@@ -3,6 +3,10 @@ SET_PROP "system" "ro.build.display.id" "ArtisanROM $ROM_CODENAME $ROM_VERSION -
 
 SET_PROP_IF_DIFF "vendor" "ro.oem_unlock_supported" "0"
 
+# Disable FRP
+SET_PROP "vendor" "ro.frp.pst" ""
+SET_PROP "product" "ro.frp.pst" ""
+
 # Better device/model detection in CoreRune
 SMALI_PATCH "system" "system/framework/framework.jar" \
     "smali_classes6/com/samsung/android/rune/CoreRune.smali" "replace" \
