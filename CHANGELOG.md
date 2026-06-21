@@ -1,5 +1,31 @@
 # ArtisanROM changelog
 
+# 3.5.0
+- Switch to UN1CA build system (thx @xfwdrev).
+- Switch to S22 firmware.
+- Updated base firmware to S22 May Security Patch.
+- Fix Screen Recording.
+- Fix Dynamic Resolution.
+- Fix Adaptive color tone.
+- Add SUSFS to Kernel (thx @miguelito).
+- Revamp Updater app.
+- Fix issue where some settings would not be saved after reboot.
+- Remove custom ringtones due to the S22 not supporting OTF Audio (On The Fly).
+- Fix LED Cover Case.
+- Enforce EROFS.
+- Fix issue where download would be deleted if app is closed.
+- Add incremental updates support (starting next release, updates will be lighter).
+- Remove S10 support
+- Add lk3rd Bootloader to ROM
+- Add Option to reboot to lk3rd in UN1CA settings
+- Improve CPU scheduler (longer battery life).
+- Fix FRP
+- Fix Modes and Routines crash
+- Fix editing Motion photos causes crash
+- Fix Fingerprint Icon on lock screen
+- Fix monotype fonts not working
+- Reduce Boot Time by 12 seconds
+
 # 3.1.1
 - Fix Bluetooth on 9820 (thx @dupazlasu/@milxnaq)
 - Update kernels to KSU Next v3.2.0
