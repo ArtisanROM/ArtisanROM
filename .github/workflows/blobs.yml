@@ -17,45 +17,30 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - module: "Galaxy A17 5G (a17xxx)"
-            device: "a17xxx"
-            firmware: "SM-A176B/INS/350042791234568"
-          - module: "Galaxy A54 5G (a54xnsxx)"
-            device: "a54xnsxx"
-            firmware: "SM-A546E/EGY/350090711234564"
-          - module: "Galaxy A56 5G (a56xnaxx)"
-            device: "a56xnaxx"
-            firmware: "SM-A566B/EUX/352371191234565"
+          - module: "Galaxy A53 5G (a53xtfn)"
+            device: "a53xtfn"
+            firmware: "SM-S536DL/TFA/352574701234567"
           - module: "Galaxy A73 5G (a73xqxx)"
             device: "a73xqxx"
             firmware: "SM-A736B/XME/352828291234563"
           - module: "Galaxy S22 Ultra (Snapdragon) (b0qxxx)"
             device: "b0qxxx"
-            firmware: "SM-S908E/INS/350280381234560"
+            firmware: "SM-S908E/TUR/350280381234560"
           - module: "Galaxy S22 Ultra (Exynos) (b0sxxx)"
             device: "b0sxxx"
             firmware: "SM-S908B/EUX/353074281234565"
           - module: "Galaxy Z Flip4 (b4qxxx)"
             device: "b4qxxx"
             firmware: "SM-F721B/BTE/350525851234569"
-          - module: "Galaxy S23 (dm1qxxx)"
-            device: "dm1qxxx"
-            firmware: "SM-S911B/EUX/352404911234563"
-          - module: "Galaxy Tab S11 5G (gts11xx)"
-            device: "gts11xx"
-            firmware: "SM-X736B/EUX/R52Y8065XJM"
-          - module: "Galaxy S25+ (pa2qxxx)"
-            device: "pa2qxxx"
-            firmware: "SM-S936B/EUX/350634601234562"
+          - module: "Galaxy Tab A9+ 5G (gta9pxxx)"
+            device: "gta9pxxx"
+            firmware: "SM-X216B/EUX/352862571234563"
           - module: "Galaxy S21 FE 5G (Snapdragon) (r9qxxx)"
             device: "r9qxxx"
             firmware: "SM-G990B/EUX/353718681234563"
           - module: "Galaxy S21 FE 5G (Exynos) (r9sxxx)"
             device: "r9sxxx"
             firmware: "SM-G990E/THL/355798871234563"
-          - module: "Galaxy S23 FE (r11sxxx)"
-            device: "r11sxxx"
-            firmware: "SM-S711B/EUX/358615311234564"
 
     steps:
       - name: Checkout repo
@@ -89,8 +74,10 @@ jobs:
           sudo modprobe erofs f2fs
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
-echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
+          echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
+          echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
+          echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
+          echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
 
       - name: Set up JDK 17
         uses: actions/setup-java@v5
