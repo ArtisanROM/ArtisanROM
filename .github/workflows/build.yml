@@ -178,11 +178,11 @@ jobs:
             # Generate OTA XML for release only
             if [ "$BUILD_TYPE" = "release" ]; then
               echo "Generating OTA XML..."
-              git clone --branch main https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }} updater_repo
+              git clone --single-branch --branch main https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }} updater_repo
               cd updater_repo
               git checkout main
               mkdir -p updater
-              XML_FILE="updater/${{ matrix.target }}.xml"
+              XML_FILE="updater/v2/${{ matrix.target }}.xml"
 
               {
                 echo '<?xml version="1.0" encoding="UTF-8"?>'
@@ -207,7 +207,7 @@ jobs:
               } >> $XML_FILE
 
               git add $XML_FILE
-              git commit -m "updater: ${{ matrix.target }}.xml: Update to $VERSION" || true
+              git commit -m "updater: v2: ${{ matrix.target }}.xml: Update to $VERSION" || true
               git pull --rebase origin main
               git push origin main
               cd ..
