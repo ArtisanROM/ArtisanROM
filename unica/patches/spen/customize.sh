@@ -13,7 +13,7 @@ if [ -d "$FW_DIR/${MODEL}_${REGION}/system/system/media/audio/pensounds" ]; then
     ADD_TO_WORK_DIR "dm3qxxx" "system" "system/etc/sysconfig/airviewdictionaryservice.xml"
     ADD_TO_WORK_DIR "dm3qxxx" "system" "system/lib64/libsmpsft.smps.samsung.so"
     ADD_TO_WORK_DIR "dm3qxxx" "system" "system/media/audio/pensounds"
-    ADD_TO_WORK_DIR "dm3qxxx" "system" "system/priv-app/AirCommand"
+    ADD_TO_WORK_DIR "$SRC_DIR/prebuilts/extras" "system" "system/priv-app/AirCommand"
     ADD_TO_WORK_DIR "dm3qxxx" "system" "system/priv-app/AirReadingGlass"
     ADD_TO_WORK_DIR "dm3qxxx" "system" "system/priv-app/SmartEye"
     LOG_STEP_OUT
