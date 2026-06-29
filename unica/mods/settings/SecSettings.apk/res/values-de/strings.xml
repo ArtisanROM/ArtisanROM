@@ -57,4 +57,8 @@
     <string name="unica_updates_title">ArtisanROM Updates</string>
     <string name="unica_vulkan_summary">Das ist instabil und könnte Probleme verursachen!</string>
     <string name="unica_vulkan_title">Vulkan Renderer aktivieren</string>
+    <string name="artisanrom_version_title">ArtisanROM-Version</string>
+    <string name="artisanrom_version_toast_counting">Nein, tipp weiter... (%d)</string>
+    <string name="artisanrom_version_toast_final">Was suchst du? Entwickleroptionen gibt es hier nicht!</string>
+    <string name="artisanrom_version_toast_done">"Immer noch hier? Ich hab's dir gesagt, Entwickleroptionen gibt es hier nicht!"</string>
 </resources>

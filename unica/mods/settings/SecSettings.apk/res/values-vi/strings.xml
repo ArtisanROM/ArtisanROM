@@ -57,4 +57,8 @@
     <string name="unica_updates_title">Cập nhật ArtisanROM</string>
     <string name="unica_vulkan_summary">Không ổn định và có thể gây ra vấn đề!</string>
     <string name="unica_vulkan_title">Bật trình hiển thị Vulkan</string>
+    <string name="artisanrom_version_title">Phiên bản ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Không, tiếp tục chạm... (%d)</string>
+    <string name="artisanrom_version_toast_final">Bạn đang tìm gì? Cài đặt nhà phát triển không có ở đây!</string>
+    <string name="artisanrom_version_toast_done">Vẫn còn ở đây? Tôi đã nói rồi, cài đặt nhà phát triển không có ở đây!</string>
 </resources>

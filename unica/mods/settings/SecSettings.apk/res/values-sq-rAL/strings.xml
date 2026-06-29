@@ -57,4 +57,8 @@
     <string name="unica_updates_title">Përditësimet e ArtisanROM</string>
     <string name="unica_vulkan_summary">Kjo është e paqëndrueshme dhe mund të shkaktojë probleme!</string>
     <string name="unica_vulkan_title">Aktivizo renderer-in Vulkan</string>
+    <string name="artisanrom_version_title">Versioni ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Jo, vazhdo të prekësh... (%d)</string>
+    <string name="artisanrom_version_toast_final">Çfarë kërkon? Cilësimet e zhvilluesit nuk janë këtu!</string>
+    <string name="artisanrom_version_toast_done">Ende këtu? Të thashë, cilësimet e zhvilluesit nuk janë këtu!</string>
 </resources>

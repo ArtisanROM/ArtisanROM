@@ -57,4 +57,8 @@
     <string name="unica_updates_title">Actualizări ArtisanROM</string>
     <string name="unica_vulkan_summary">Acesta este instabil și poate cauza probleme!</string>
     <string name="unica_vulkan_title">Activați randarea prin Vulkan</string>
+    <string name="artisanrom_version_title">Versiunea ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Nu, continuă să apeși... (%d)</string>
+    <string name="artisanrom_version_toast_final">Ce cauți? Setările de dezvoltator nu sunt aici!</string>
+    <string name="artisanrom_version_toast_done">Încă aici? Ți-am spus, setările de dezvoltator nu sunt aici!</string>
 </resources>

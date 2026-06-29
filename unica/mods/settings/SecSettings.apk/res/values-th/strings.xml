@@ -24,4 +24,8 @@
     <string name="unica_spoof_settings_title">การตั้งค่าสปูฟ</string>
     <string name="unica_ui_settings_title">การตั้งค่า UI</string>
     <string name="unica_updates_title">อัพเดท ArtisanROM</string>
+    <string name="artisanrom_version_title">เวอร์ชัน ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">ไม่ แตะต่อไป... (%d)</string>
+    <string name="artisanrom_version_toast_final">กำลังหาอะไร? การตั้งค่าสำหรับนักพัฒนาไม่ได้อยู่ที่นี่!</string>
+    <string name="artisanrom_version_toast_done">ยังอยู่ที่นี่อีกเหรอ? บอกแล้วไง การตั้งค่าสำหรับนักพัฒนาไม่ได้อยู่ที่นี่!</string>
 </resources>

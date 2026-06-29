@@ -57,4 +57,8 @@
     <string name="unica_updates_title">Pembaruan ArtisanROM</string>
     <string name="unica_vulkan_summary">Ini tidak stabil dan mungkin menyebabkan masalah!</string>
     <string name="unica_vulkan_title">Aktifkan perender Vulkan</string>
+    <string name="artisanrom_version_title">Versi ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Nggak, terus tap... (%d)</string>
+    <string name="artisanrom_version_toast_final">Cari apa? Pengaturan developer tidak ada di sini!</string>
+    <string name="artisanrom_version_toast_done">Masih di sini? Udah bilang, pengaturan developer tidak ada di sini!</string>
 </resources>

@@ -57,4 +57,8 @@
     <string name="unica_updates_title">Обновления ArtisanROM</string>
     <string name="unica_vulkan_summary">Это нестабильно и может вызвать проблемы!</string>
     <string name="unica_vulkan_title">Включить рендерер Vulkan</string>
+    <string name="artisanrom_version_title">Версия ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Нет, продолжай нажимать... (%d)</string>
+    <string name="artisanrom_version_toast_final">Что ты ищешь? Настроек разработчика здесь нет!</string>
+    <string name="artisanrom_version_toast_done">Всё ещё здесь? Я же сказал, настроек разработчика здесь нет!</string>
 </resources>

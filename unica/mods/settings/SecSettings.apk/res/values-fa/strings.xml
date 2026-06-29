@@ -57,4 +57,8 @@
     <string name="unica_updates_title">به‌روزرسانی‌ها ArtisanROM</string>
     <string name="unica_vulkan_summary">این گزینه پایدار نیست و ممکن است باعث مشکل شود!</string>
     <string name="unica_vulkan_title">فعال کردن پردازش Vulkan</string>
+    <string name="artisanrom_version_title">نسخه ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">نه، به ضربه زدن ادامه بده... (%d)</string>
+    <string name="artisanrom_version_toast_final">دنبال چه می‌گردی؟ تنظیمات توسعه‌دهنده اینجا نیست!</string>
+    <string name="artisanrom_version_toast_done">هنوز اینجایی؟ بهت گفتم، تنظیمات توسعه‌دهنده اینجا نیست!</string>
 </resources>

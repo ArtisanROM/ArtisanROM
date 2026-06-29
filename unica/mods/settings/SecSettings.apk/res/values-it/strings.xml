@@ -57,4 +57,8 @@
     <string name="unica_updates_title">Aggiornamenti ArtisanROM</string>
     <string name="unica_vulkan_summary">Potrebbe causare problemi!</string>
     <string name="unica_vulkan_title">Abilita renderer Vulkan</string>
+    <string name="artisanrom_version_title">Versione ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">No, continua a toccare... (%d)</string>
+    <string name="artisanrom_version_toast_final">Cosa cerchi? Le impostazioni sviluppatore non sono qui!</string>
+    <string name="artisanrom_version_toast_done">"Ancora qui? Te l'ho detto, le impostazioni sviluppatore non sono qui!"</string>
 </resources>

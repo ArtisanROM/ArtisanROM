@@ -57,4 +57,8 @@
     <string name="unica_updates_title">ArtisanROM अपडेट</string>
     <string name="unica_vulkan_summary">यह अस्थिर है और इससे समस्याएं उत्पन्न हो सकती हैं!</string>
     <string name="unica_vulkan_title">वल्कन रेंडरर सक्षम करें</string>
+    <string name="artisanrom_version_title">ArtisanROM संस्करण</string>
+    <string name="artisanrom_version_toast_counting">नहीं, टैप करते रहें... (%d)</string>
+    <string name="artisanrom_version_toast_final">आप क्या ढूंढ रहे हैं? डेवलपर सेटिंग्स यहाँ नहीं हैं!</string>
+    <string name="artisanrom_version_toast_done">अभी भी यहाँ? मैंने कहा था, डेवलपर सेटिंग्स यहाँ नहीं हैं!</string>
 </resources>

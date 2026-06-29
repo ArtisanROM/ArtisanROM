@@ -35,4 +35,8 @@
     <string name="unica_spoof_settings_title">Configurações de spoof</string>
     <string name="unica_ui_settings_title">Configurações da interface</string>
     <string name="unica_updates_title">Atualizações da UN1CA</string>
+    <string name="artisanrom_version_title">Versão do ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Não, continua a tocar... (%d)</string>
+    <string name="artisanrom_version_toast_final">O que procuras? As definições de programador não estão aqui!</string>
+    <string name="artisanrom_version_toast_done">Ainda aqui? Eu disse-te, as definições de programador não estão aqui!</string>
 </resources>

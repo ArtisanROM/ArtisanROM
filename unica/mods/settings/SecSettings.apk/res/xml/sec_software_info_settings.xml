@@ -1,0 +1,2 @@
+/android_firmware_version/a
+    <Preference android:title="@string/artisanrom_version_title" android:key="artisanrom_version" android:summary="@string/summary_placeholder" settings:controller="com.samsung.android.settings.deviceinfo.softwareinfo.ArtisanROMVersionPreferenceController" />

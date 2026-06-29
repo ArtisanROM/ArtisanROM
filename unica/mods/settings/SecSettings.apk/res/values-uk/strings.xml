@@ -57,4 +57,8 @@
     <string name="unica_updates_title">Оновлення ArtisanROM</string>
     <string name="unica_vulkan_summary">Це нестабільно і може спричинити проблеми!</string>
     <string name="unica_vulkan_title">Увімкнути графічний api Vulkan</string>
+    <string name="artisanrom_version_title">Версія ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Ні, продовжуй натискати... (%d)</string>
+    <string name="artisanrom_version_toast_final">Що ти шукаєш? Налаштувань розробника тут немає!</string>
+    <string name="artisanrom_version_toast_done">Все ще тут? Я ж сказав, налаштувань розробника тут немає!</string>
 </resources>

@@ -57,4 +57,8 @@
     <string name="unica_updates_title">تحديثات ArtisanROM</string>
     <string name="unica_vulkan_summary">هذا غير مستقر وقد يسبب مشاكل!</string>
     <string name="unica_vulkan_title">تمكين عرض Vulkan</string>
+    <string name="artisanrom_version_title">إصدار ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">لا، استمر في النقر... (%d)</string>
+    <string name="artisanrom_version_toast_final">عم تبحث؟ إعدادات المطور ليست هنا!</string>
+    <string name="artisanrom_version_toast_done">ما زلت هنا؟ أخبرتك، إعدادات المطور ليست هنا!</string>
 </resources>

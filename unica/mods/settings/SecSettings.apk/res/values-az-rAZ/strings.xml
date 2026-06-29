@@ -57,4 +57,8 @@
     <string name="unica_updates_title">ArtisanROM Yeniləmələri</string>
     <string name="unica_vulkan_summary">Bu stabil deyil və problemlərə səbəb ola bilər!</string>
     <string name="unica_vulkan_title">Vulkan renderini aktiv et</string>
+    <string name="artisanrom_version_title">ArtisanROM versiyası</string>
+    <string name="artisanrom_version_toast_counting">Xeyr, toxunmağa davam et... (%d)</string>
+    <string name="artisanrom_version_toast_final">Nə axtarırsan? Tərtibatçı parametrləri burada deyil!</string>
+    <string name="artisanrom_version_toast_done">Hələ buradasansan? Dedim sənə, tərtibatçı parametrləri burada deyil!</string>
 </resources>

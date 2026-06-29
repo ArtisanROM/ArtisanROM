@@ -57,4 +57,8 @@
     <string name="unica_updates_title">ArtisanROM 更新</string>
     <string name="unica_vulkan_summary">這不穩定，可能會出現問題！</string>
     <string name="unica_vulkan_title">啟用 Vulkan 著色器</string>
+    <string name="artisanrom_version_title">ArtisanROM 版本</string>
+    <string name="artisanrom_version_toast_counting">不，繼續點擊... (%d)</string>
+    <string name="artisanrom_version_toast_final">你在找什麼？開發者設定不在這裡！</string>
+    <string name="artisanrom_version_toast_done">還在這裡？告訴過你了，開發者設定不在這裡！</string>
 </resources>

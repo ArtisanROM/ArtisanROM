@@ -29,15 +29,12 @@ diff --git a/res/xml/sec_software_info_settings.xml b/res/xml/sec_software_info_
 index b85d60ec..1e02bc03 100644
 --- a/res/xml/sec_software_info_settings.xml
 +++ b/res/xml/sec_software_info_settings.xml
-@@ -1,6 +1,8 @@
+@@ -1,4 +1,6 @@
  <?xml version="1.0" encoding="utf-8"?>
  <PreferenceScreen android:title="@string/device_info_software_title" settings:hierarchicalParentFragment="com.samsung.android.settings.deviceinfo.aboutphone.SecMyDeviceInfoFragment" settings:topLevelPreferenceKey="top_level_about_phone"
    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res-auto">
 +    <com.android.settingslib.widget.LayoutPreference android:layout="@layout/logo" android:selectable="false" android:key="rom_logo" />
 +    <com.samsung.android.settings.widget.SecInsetCategoryPreference />
      <Preference android:enabled="false" android:title="@string/one_ui_version_title" android:key="one_ui_version" android:summary="@string/summary_placeholder" android:shouldDisableView="false" settings:controller="com.samsung.android.settings.deviceinfo.softwareinfo.OneUIVersionPreferenceController" />
-     <Preference android:title="@string/firmware_version" android:key="android_firmware_version" android:summary="@string/summary_placeholder" settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionDetailPreferenceController" />
-     <Preference android:title="@string/module_version" android:key="module_version" android:summary="@string/summary_placeholder" settings:controller="com.android.settings.deviceinfo.firmwareversion.MainlineModuleVersionPreferenceController" />
 -- 
 2.50.1
-
