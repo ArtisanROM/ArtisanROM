@@ -1,6 +1,3 @@
-VALUE="$(GET_PROP "$WORK_DIR/system/system/build.prop" "ro.build.display.id")"
-SET_PROP "system" "ro.build.display.id" "ArtisanROM $ROM_CODENAME $ROM_VERSION - $TARGET_CODENAME ($VALUE)"
-
 SET_PROP_IF_DIFF "vendor" "ro.oem_unlock_supported" "0"
 
 # Disable FRP
@@ -31,3 +28,17 @@ SMALI_PATCH "system" "system/framework/services.jar" \
     '<clinit>()V' \
     'ro.product.model' \
     'ro.product.vendor.model'
+    
+
+LOG_STEP_IN "- Enabling BSOH in SecSettings"
+
+DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
+
+FTP="
+system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/deviceinfo/batteryinfo/BatteryRegulatoryPreferenceController.smali
+system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/deviceinfo/batteryinfo/SecBatteryInfoFragment.smali
+"
+for f in $FTP; do
+    sed -i "s/SM-A236B/SM-S901B/g" "$APKTOOL_DIR/$f"
+done
+LOG_STEP_OUT
