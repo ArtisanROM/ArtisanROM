@@ -28,9 +28,9 @@ SMALI_PATCH "system" "system/framework/services.jar" \
     '<clinit>()V' \
     'ro.product.model' \
     'ro.product.vendor.model'
-    
 
-LOG_STEP_IN "- Enabling BSOH in SecSettings"
+LOG_STEP_IN "- Enabling BSOH in deviceinfo"
+VALUE=${SOURCE_FIRMWARE:0:8}
 
 DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
 
@@ -38,7 +38,8 @@ FTP="
 system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/deviceinfo/batteryinfo/BatteryRegulatoryPreferenceController.smali
 system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/deviceinfo/batteryinfo/SecBatteryInfoFragment.smali
 "
-for f in $FTP; do
-    sed -i "s/SM-A236B/SM-S901B/g" "$APKTOOL_DIR/$f"
+
+for i in $FTP; do
+    sed -i "s/SM-A236B/$VALUE/g" "$APKTOOL_DIR/$i"
 done
 LOG_STEP_OUT
