@@ -1,0 +1,34 @@
+service irsc_util_oem /vendor/bin/irsc_util "/vendor/etc/sec_config_oem"
+    class core
+    user root
+    oneshot
+
+# Avoid running ril-daemon services on qualcomm model
+service vendor.ril-daemon /vendor/bin/hw/rild-dummy
+    override
+
+service vendor.ril-daemon1 /vendor/bin/hw/rild-dummy
+    override
+
+service vendor.ril-daemon2 /vendor/bin/hw/rild-dummy
+    override
+
+service vendor.ril-daemon3 /vendor/bin/hw/rild-dummy
+    override
+
+# Disable vendor.embmsslServer to fix VTS failure
+# as vendor.embmsslServer is not running even though it has interface
+service vendor.embmsslServer /vendor/bin/embmsslServer
+    override
+
+on property:init.svc.vendor.netmgrd=running && property:ro.vendor.use_data_netmgrd=false
+    stop vendor.netmgrd
+
+# To enable QMS logs
+on post-fs-data
+    mkdir /data/vendor/qms_logs 0775 radio system
+    mkdir /data/vendor/qms_logs/main 0775 radio system
+    mkdir /data/vendor/qms_logs/other 0775 radio system
+    mkdir /data/vendor/qms_logs/config 0775 radio system
+    copy /vendor/etc/qms_log_config /data/vendor/qms_logs/config/qms_log_config
+    chmod 0666 /data/vendor/qms_logs/config/qms_log_config

@@ -1,0 +1,112 @@
+<manifest version="1.0" type="device">
+    <!-- << QCOM HAL RELATED RIL -->
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.am</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.ims</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.qcrilhook</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.uim_remote_client</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.uim_remote_server</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.lpa</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.uim</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.qtiradio</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.radio.internal.deviceinfo</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.embmssl</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <!-- >> QCOM HAL RELATED RIL -->
+
+    <!-- << QCOM HAL RELATED IMS -->
+    <hal override="true" format="hidl">
+        <name>vendor.qti.imsrtpservice</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+       <name>vendor.qti.ims.callinfo</name>
+       <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+       <name>com.qualcomm.qti.imscmservice</name>
+       <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+       <name>com.qualcomm.qti.uceservice</name>
+       <transport>hwbinder</transport>
+    </hal>
+    <!-- >> QCOM HAL RELATED IMS -->
+
+    <!-- << QCOM HAL RELATED DATA -->
+    <hal override="true" format="hidl">
+        <name>com.qualcomm.qti.dpm.api</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.data.latency</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.data.factory</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.data.connection</name>
+        <transport>hwbinder</transport>
+    </hal>
+    
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.mwqemadapter</name>
+        <transport>hwbinder</transport>
+    </hal>
+    
+    <hal override="true" format="hidl">
+        <name>vendor.qti.hardware.dpmservice</name>
+        <transport>hwbinder</transport>
+    </hal>
+
+    <hal override="true" format="aidl">
+        <name>vendor.qti.data.dmapconsent</name>
+    </hal>
+    <!-- >> QCOM HAL RELATED DATA -->
+</manifest>

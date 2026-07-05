@@ -1,0 +1,39 @@
+<!--
+/******************************************************************************
+  @file    VideoOptimizationFeature.xml
+  @brief   Video Optimization feature xml
+
+  DESCRIPTION
+      Each feature has an xml file to define the feature components
+
+  ===========================================================================
+  Copyright (c) 2020-21 Qualcomm Technologies, Inc.
+  All Rights Reserved.
+  Confidential and Proprietary - Qualcomm Technologies, Inc.
+  ===========================================================================
+******************************************************************************/
+-->
+<Feature>
+   <Name>VideoPowerOptFeature</Name>
+   <Libname>libvideooptfeature.so</Libname>
+   <Configs>
+        <MAX_CONTENT_FPS>30</MAX_CONTENT_FPS>
+        <MAX_PANEL_FPS>120</MAX_PANEL_FPS>
+    </Configs>
+    <Profiles>
+        <Profile>
+            <!-- PREDECITIVE_LOAD BIG CORE resource opcode -->
+            <!-- PREDECITIVE_LOAD LITTLE Core resource opcode -->
+            <!-- CPU CORE 4 SCHED LOAD BOOST -->
+            <!-- CPU CORE 5 SCHED LOAD BOOST -->
+            <!-- CPU CORE 6 SCHED LOAD BOOST -->
+            <!-- Disable Colocation  -->
+            <DEFAULT>0x41444000, 0, 0x41444100, 0, 0x40C68140, 0xFFFFFFF6, 0x40C68150, 0xFFFFFFF6, 0x40C68160, 0xFFFFFFF6, 0x40C54000, 999999, 0x40C58000, 999990</DEFAULT>
+        </Profile>
+    </Profiles>
+    <IgnoredApps>
+        <App>com.google.android.gms</App>
+        <App>com.android.vending</App>
+        <App>com.google.android.projection.gearhead</App>
+    </IgnoredApps>
+</Feature>

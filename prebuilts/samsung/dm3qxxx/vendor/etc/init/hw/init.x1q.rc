@@ -1,0 +1,271 @@
+
+# Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above
+#       copyright notice, this list of conditions and the following
+#       disclaimer in the documentation and/or other materials provided
+#       with the distribution.
+#     * Neither the name of The Linux Foundation nor the names of its
+#       contributors may be used to endorse or promote products derived
+#       from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+# BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+# IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Create carrier folder for HiddenMenu
+on post-fs
+    mkdir /efs/carrier 0755 radio system
+    chown radio system /efs/carrier
+    chown radio system /efs/carrier/HiddenMenu
+
+on post-fs-data
+    chown cameraserver system /sys/class/camera/flash/rear_flash
+    
+#mDNIe
+	mkdir /efs/afc 0750 system system
+	chmod 750 /efs/afc
+	chown system system /dev/mafpc
+	chmod 0660 /dev/mafpc
+    exec - system system -- /system/bin/mafpc_write
+
+on post-fs-data
+    # Samsung Pay
+    mkdir /efs/pfw_data 0760 vendor_spay vendor_spay
+
+    # MST/NFC Switch
+    chown vendor_spay system /dev/mst_ctrl
+    chmod 0660 /dev/mst_ctrl
+
+# Cirrus Amp Calibration
+    chown system audio /sys/class/cirrus/cirrus_cal/status
+    chown system audio /sys/class/cirrus/cirrus_cal/rdc
+    chown system audio /sys/class/cirrus/cirrus_cal/rdc_r
+    chown system audio /sys/class/cirrus/cirrus_cal/temp
+    chown system audio /sys/class/cirrus/cirrus_cal/temp_r
+    chown system audio /sys/class/cirrus/cirrus_cal/v_status
+    chown system audio /sys/class/cirrus/cirrus_cal/v_validation
+    chown system audio /sys/class/cirrus/cirrus_cal/v_validation_r
+    chown system audio /sys/class/cirrus/cirrus_cal/vsc
+    chown system audio /sys/class/cirrus/cirrus_cal/vsc_r
+    chown system audio /sys/class/cirrus/cirrus_cal/isc
+    chown system audio /sys/class/cirrus/cirrus_cal/isc_r
+    mkdir /efs/cirrus 0770 audioserver audio
+    chown audioserver audio /efs/cirrus/temp_cal
+    chown audioserver audio /efs/cirrus/rdc_cal
+    chown audioserver audio /efs/cirrus/rdc_cal_r
+    chown audioserver audio /efs/cirrus/vsc_cal
+    chown audioserver audio /efs/cirrus/vsc_cal_r
+    chown audioserver audio /efs/cirrus/isc_cal
+    chown audioserver audio /efs/cirrus/isc_cal_r
+    chmod 0660 /efs/cirrus/temp_cal
+    chmod 0660 /efs/cirrus/rdc_cal
+    chmod 0660 /efs/cirrus/rdc_cal_r
+    chmod 0660 /efs/cirrus/vsc_cal
+    chmod 0660 /efs/cirrus/vsc_cal_r
+    chmod 0660 /efs/cirrus/isc_cal
+    chmod 0660 /efs/cirrus/isc_cal_r
+
+# Cirrus Amp power
+    chown system audio /sys/class/cirrus/cirrus_pwr/status
+    chown system audio /sys/class/cirrus/cirrus_pwr/value
+    chown system audio /sys/class/cirrus/cirrus_pwr/value_r
+    chown system audio /sys/class/cirrus/cirrus_pwr/spk_t
+    chown system audio /sys/class/cirrus/cirrus_pwr/spk_t_r
+    chown system audio /sys/class/cirrus/cirrus_pwr/env_temp
+    chown system audio /sys/class/cirrus/cirrus_pwr/env_temp_r
+
+# Cirrus Amp Bigdata
+    chown system audio /sys/class/audio/amp/temperature_max_0
+    chown system audio /sys/class/audio/amp/temperature_keep_max_0
+    chown system audio /sys/class/audio/amp/temperature_overcount_0
+    chown system audio /sys/class/audio/amp/excursion_max_0
+    chown system audio /sys/class/audio/amp/excursion_overcount_0
+    chown system audio /sys/class/audio/amp/temperature_max_1
+    chown system audio /sys/class/audio/amp/temperature_keep_max_1
+    chown system audio /sys/class/audio/amp/temperature_overcount_1
+    chown system audio /sys/class/audio/amp/excursion_max_1
+    chown system audio /sys/class/audio/amp/excursion_overcount_1
+
+# SSU (Samsung SIM Unlock)
+on property:ro.boot.carrierid=TMB
+    setprop ssu.support 1
+on property:ro.boot.carrierid=TMK
+    setprop ssu.support 1
+on property:ro.boot.carrierid=VZW
+    setprop ssu.support 1
+
+on init
+# setup cgroup freezer for freecess
+    mkdir /dev/freezer
+    mount cgroup none /dev/freezer freezer
+    mkdir /dev/freezer/frozen
+    mkdir /dev/freezer/thaw
+    write /dev/freezer/frozen/freezer.state FROZEN
+    write /dev/freezer/thaw/freezer.state THAWED
+    write /dev/freezer/frozen/freezer.killable 1
+
+# MARs for freecess
+    chown system system /dev/freezer
+    chown system system /dev/freezer/frozen
+    chown system system /dev/freezer/frozen/tasks
+    chown system system /dev/freezer/frozen/cgroup.procs
+    chown system system /dev/freezer/frozen/freezer.state
+    chown system system /dev/freezer/thaw
+    chown system system /dev/freezer/thaw/tasks
+    chown system system /dev/freezer/thaw/cgroup.procs
+
+# MARs for freecess
+    chmod 0644 /dev/freezer/frozen/tasks
+    chmod 0644 /dev/freezer/frozen/cgroup.procs
+    chmod 0644 /dev/freezer/frozen/freezer.state
+    chmod 0644 /dev/freezer/thaw/tasks
+    chmod 0644 /dev/freezer/thaw/cgroup.procs
+
+# SDHMS Slowdown : Freezer
+    mkdir /dev/freezer/abnormal
+    write /dev/freezer/abnormal/freezer.state THAWED
+    chown system system /dev/freezer/abnormal
+    chown system system /dev/freezer/abnormal/tasks
+    chown system system /dev/freezer/abnormal/cgroup.procs
+    chown system system /dev/freezer/abnormal/freezer.state
+    chmod 0644 /dev/freezer/abnormal/tasks
+    chmod 0644 /dev/freezer/abnormal/cgroup.procs
+    chmod 0644 /dev/freezer/abnormal/freezer.state
+
+on boot
+# SSWAP
+    write /proc/sys/vm/swappiness 130
+
+# SDHMS Slowdown : Cpuset
+    mkdir /dev/cpuset/abnormal
+    write /dev/cpuset/abnormal/cpus 0-3
+    copy /dev/cpuset/mems /dev/cpuset/abnormal/mems
+
+    chown system system /dev/cpuset/abnormal
+    chown system system /dev/cpuset/abnormal/tasks
+    chown system system /dev/cpuset/abnormal/cpus
+    chmod 0664 /dev/cpuset/abnormal/tasks
+    chmod 0664 /dev/cpuset/abnormal/cpus
+
+    mkdir /dev/cpuset/moderate
+    write /dev/cpuset/moderate/cpus 0-2
+    copy /dev/cpuset/mems /dev/cpuset/moderate/mems
+
+    chown system system /dev/cpuset/moderate
+    chown system system /dev/cpuset/moderate/tasks
+    chown system system /dev/cpuset/moderate/cpus
+    chmod 0664 /dev/cpuset/moderate/tasks
+    chmod 0664 /dev/cpuset/moderate/cpus
+
+# Pageboostd
+on property:sys.boot_completed=1
+    start pageboostd
+
+service pageboostd /system/bin/pageboostd
+    class main
+    user system
+    group system mount radio net_bt sdcard_rw shell media media_rw
+    socket pageboostd seqpacket 0660 system system
+    disabled
+
+# HEIMDALL
+on early-init
+    chmod 0777 /dev/memcg
+    chown system system /dev/memcg
+    chown system system /dev/memcg/cgroup.procs
+
+service heimdalld /system/bin/heimdalld
+    class core
+    user system
+    group system readproc
+    capabilities NET_ADMIN SYS_NICE KILL CHOWN
+    oneshot
+	
+# some priv-apps of SPR bind mount to TMB priv-apps
+on post-fs-data && property:ro.csc.sales_code=TMB
+    umount /system/carrier
+    mkdir /mnt/temp
+    mount none /system/carrier/SPR /mnt/temp bind
+    mount none /system/carrier/TMB /system/carrier bind
+    mount none /mnt/temp/priv-app/MobileID /system/carrier/priv-app/MobileID bind
+    mount none /mnt/temp/priv-app/CarrierDeviceManager /system/carrier/priv-app/CarrierDeviceManager bind
+    mount none /mnt/temp/priv-app/MobileInstaller /system/carrier/priv-app/MobileInstaller bind
+    mount none /mnt/temp/priv-app/SprintAndroidExtension2 /system/carrier/priv-app/SprintAndroidExtension2 bind
+    mount none /mnt/temp/priv-app/SprintHub /system/carrier/priv-app/SprintHub bind
+    umount /mnt/temp
+    rmdir /mnt/temp
+
+# DCK properties based on target
+# DigitalKey (Supported Country) : KR,US,GB,DE,FR,IT,ES,AE,CH,KZ,SE,VN,ZA,AU,BR,CA,HK,IN,MY,SG,TW
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=KR
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=US
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=GB
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=GB && property:ro.oem.key2=MET
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=GB && property:ro.oem.key2=VDI
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=GB && property:ro.oem.key2=TSI
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=GB && property:ro.oem.key2=3IE
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=DE
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=FR
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=IT
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=ES
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=AE
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=AE && property:ro.oem.key2=AFR
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=CH
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=KZ
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=SE
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=SE && property:ro.oem.key2=TEN
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=VN
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=VN && property:ro.oem.key2=XEV
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=ZA
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=ZA && property:ro.oem.key2=XFE
+    setprop ro.gms.dck.eligible_wcc 0
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=AU
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=BR
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=CA
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=HK
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=IN
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=MY
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=SG
+    setprop ro.gms.dck.eligible_wcc 1
+on property:sys.boot_completed=1 && property:ro.csc.countryiso_code=TW
+    setprop ro.gms.dck.eligible_wcc 1

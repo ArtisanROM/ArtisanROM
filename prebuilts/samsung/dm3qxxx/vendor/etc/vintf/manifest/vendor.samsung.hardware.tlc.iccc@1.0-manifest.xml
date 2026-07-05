@@ -1,0 +1,11 @@
+<manifest version="1.0" type="device">
+    <hal format="hidl">
+    <name>vendor.samsung.hardware.tlc.iccc</name>
+    <transport>hwbinder</transport>
+    <version>1.0</version>
+    <interface>
+        <name>ISehIccc</name>
+        <instance>default</instance>
+    </interface>
+    </hal>
+</manifest>

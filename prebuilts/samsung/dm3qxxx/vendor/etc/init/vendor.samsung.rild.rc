@@ -1,0 +1,14 @@
+# Increase the number of service supplementary group (NR_SVC_SUPP_GIDS) from 12 to 32 from V os
+# AID_VENDOR_QTI_DIAG(oem_2901), drmrpc for Qcom
+# restart cpboot-daemon, DIAG-daemon for LSI
+# restart cpboot-daemon5g for LSI beyondx, d1x, d2x, it could be removed.
+
+service ril-daemon /vendor/bin/hw/rild
+    class main
+    user radio
+    group radio cache inet misc audio log oem_2901 system drmrpc vpn readproc wakelock net_admin
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW SYS_ADMIN CHOWN SYS_TIME
+    onrestart restart cpboot-daemon
+    onrestart restart cpboot-daemon5g
+    onrestart restart DIAG-daemon
+    override

@@ -1,0 +1,7 @@
+on init
+    exec u:r:vendor_init-qti-keymaster-sh:s0 -- /vendor/bin/init.qti.keymaster.sh
+
+service vendor.keymaster-sb-4-0 /vendor/bin/hw/android.hardware.keymaster@4.0-strongbox-service-qti
+    class early_hal
+    user system
+    group system drmrpc
