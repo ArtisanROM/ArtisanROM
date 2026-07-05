@@ -1,0 +1,6 @@
+# Adaptive Refresh Rate
+ro.surface_flinger.enable_frame_rate_override=false
+ro.surface_flinger.use_content_detection=true
+ro.surface_flinger.set_idle_timer_ms=3000
+ro.surface_flinger.set_touch_timer_ms=500
+ro.surface_flinger.set_display_power_timer_ms=1000
