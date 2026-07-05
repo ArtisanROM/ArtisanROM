@@ -66,17 +66,6 @@ done
 # shellcheck disable=SC2046
 wait $(jobs -p) || exit 1
 
-
-BLOBS_LIST="
-system/lib64/libMultiFrameProcessing30.camera.samsung.so
-system/lib64/libMultiFrameProcessing30.snapwrapper.camera.samsung.so
-system/lib64/libMultiFrameProcessing30Tuning.camera.samsung.so
-"
-for blob in $BLOBS_LIST
-do
-    ADD_TO_WORK_DIR "a73xxx" "system" "$blob" 0 0 644 "u:object_r:system_lib_file:s0" &
-done
-
 BLOBS_LIST="
 system/lib64/libhigh_dynamic_range.arcsoft.so
 system/lib64/liblow_light_hdr.arcsoft.so
@@ -86,6 +75,9 @@ system/lib64/libsuperresolution.arcsoft.so
 system/lib64/libsuperresolution_raw.arcsoft.so
 system/lib64/libsuperresolution_wrapper_v2.camera.samsung.so
 system/lib64/libsuperresolutionraw_wrapper_v2.camera.samsung.so
+system/lib64/libMultiFrameProcessing30.camera.samsung.so
+system/lib64/libMultiFrameProcessing30.snapwrapper.camera.samsung.so
+system/lib64/libMultiFrameProcessing30Tuning.camera.samsung.so
 "
 for blob in $BLOBS_LIST
 do
