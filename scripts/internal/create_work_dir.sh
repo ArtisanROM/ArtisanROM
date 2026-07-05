@@ -64,8 +64,14 @@ COPY_SOURCE_FIRMWARE()
             sed "s/^\/system_ext/\/system\/system_ext/g" "$FW_DIR/$SOURCE_FIRMWARE_PATH/file_context-system_ext" >> "$WORK_DIR/configs/file_context-system"
             sed "s/^system_ext/system\/system_ext/g" "$FW_DIR/$SOURCE_FIRMWARE_PATH/fs_config-system_ext" >> "$WORK_DIR/configs/fs_config-system"
 
-            ADD_TO_WORK_DIR "b0sxxx" "system_ext" "etc/build_flags.json" 0 0 644 "u:object_r:system_file:s0" || exit 1
+         # Add build_flags.json only for ESSI target
+   if [ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" = "essi" ]; then
+    ADD_TO_WORK_DIR "b0sxxx" "system_ext" "etc/build_flags.json" \
+        0 0 644 "u:object_r:system_file:s0" || exit 1
+   fi
             DELETE_FROM_WORK_DIR "system" "system/system_ext/etc/NOTICE.xml.gz"
+            DELETE_FROM_WORK_DIR "system" "system/system_ext/etc/fs_config_dirs"
+            DELETE_FROM_WORK_DIR "system" "system/system_ext/etc/fs_config_files"
 
             LOG_STEP_OUT
         fi

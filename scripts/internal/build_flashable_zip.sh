@@ -442,6 +442,10 @@ GENERATE_UPDATER_SCRIPT()
         if [ -f "$SRC_DIR/target/$TARGET_CODENAME/installer/install-end.edify" ]; then
             cat "$SRC_DIR/target/$TARGET_CODENAME/installer/install-end.edify"
         fi
+        
+        if $HAS_POST_INSTALL; then
+            cat "$SRC_DIR/target/$TARGET_CODENAME/postinstall.edify"
+        fi
 
         echo    'set_progress(1.000000);'
         echo    'ui_print("****************************************");'
@@ -535,7 +539,21 @@ SIGN_IMAGE_WITH_AVB()
 
 [ -d "$TMP_DIR" ] && rm -rf "$TMP_DIR"
 mkdir -p "$TMP_DIR/META-INF/com/google/android"
-cp -a "$SRC_DIR/prebuilts/bootable/deprecated-ota/updater" "$TMP_DIR/META-INF/com/google/android/update-binary"
+
+# Conditional injection of update-binary based on TARGET_OS_SINGLE_SYSTEM_IMAGE
+if [ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" = "qssi" ]; then
+    echo "Detected qssi → using custom update-binary-good..."
+    cp -a "$SRC_DIR/prebuilts/update-binary-good/update-binary" \
+          "$TMP_DIR/META-INF/com/google/android/update-binary"
+elif [ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" = "essi" ]; then
+    echo "Detected essi → using default deprecated-ota updater..."
+    cp -a "$SRC_DIR/prebuilts/bootable/deprecated-ota/updater" \
+          "$TMP_DIR/META-INF/com/google/android/update-binary"
+else
+    echo "Unknown TARGET_OS_SINGLE_SYSTEM_IMAGE → falling back to default updater..."
+    cp -a "$SRC_DIR/prebuilts/bootable/deprecated-ota/updater" \
+          "$TMP_DIR/META-INF/com/google/android/update-binary"
+fi
 
 LOG_STEP_IN "- Building OS partitions"
 while IFS= read -r f; do
@@ -623,7 +641,7 @@ EVAL "rm -f \"$TMP_DIR/rom.zip\"" || exit 1
 EVAL "cd \"$TMP_DIR\" && 7z a -tzip -mx=0 -mmt=$(nproc) $TMP_DIR/rom.zip -r *.patch.dat -ir!META-INF/com/android/* -i!*.new.dat.br" || exit 1
 EVAL "cd \"$TMP_DIR\" && 7z a -tzip -mx=3 -mmt=$(nproc) $TMP_DIR/rom.zip -r * -xr!META-INF/com/android/* -x!*.new.dat.br -x!*.patch.dat -x!rom.zip" || exit 1
 
-if ! $DEBUG || $ROM_IS_OFFICIAL; then
+if $ROM_IS_OFFICIAL; then
     LOG "- Signing zip"
     EVAL "signapk -w \"$PUBLIC_KEY_PATH\" \"$PRIVATE_KEY_PATH\" \"$TMP_DIR/rom.zip\" \"$OUT_DIR/$ZIP_FILE_NAME\"" || exit 1
     rm -f "$TMP_DIR/rom.zip"
