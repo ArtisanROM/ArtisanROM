@@ -1,0 +1,118 @@
+name: Build ArtisanROM For SM8250
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Choose device codename to build'
+        type: choice
+        options:
+          - x1q
+          - y2q
+          - z3q
+          - c1q
+          - c2q
+          - r8q
+        default: y2q
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+        with:
+          submodules: 'recursive'
+
+      - name: Free disk space (1/3)
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force
+          sudo docker builder prune -a
+
+      - name: Free disk space (2/3)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+
+      - name: Free disk space (3/3)
+        uses: rokibhasansagar/slimhub_actions@main
+        with:
+          retain: 'compiler_cmake'
+
+      - name: Set up build environment
+        run: |
+          sudo apt update
+          DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
+            7zip attr ccache clang ffmpeg \
+            libbrotli-dev libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
+            libzstd-dev linux-modules-extra-$(uname -r) lld protobuf-compiler webp \
+            build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu python-is-python3 python3 wget jq
+          wget https://raw.githubusercontent.com/kdrag0n/kramflash/refs/heads/master/mkbootimg.py && sudo ln -sf $(pwd)/mkbootimg.py /usr/bin/mkbootimg && chmod +x /usr/bin/mkbootimg
+          sudo modprobe erofs f2fs
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
+          echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
+          echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
+          echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Build dependencies
+        run: |
+          source ./buildenv.sh ${{ github.event.inputs.target }}
+          ./scripts/build_dependencies.sh
+
+      - name: Download stock firmwares
+        run: |
+          source ./buildenv.sh ${{ github.event.inputs.target }}
+          ./scripts/download_fw.sh
+
+      - name: Extract stock firmwares
+        run: |
+          source ./buildenv.sh ${{ github.event.inputs.target }}
+          ./scripts/extract_fw.sh
+
+      - name: Add swapspace
+        uses: thejerrybao/setup-swap-space@v1
+        with:
+          swap-space-path: /swapfile
+          swap-size-gb: 12
+          remove-existing-swap-files: true
+      
+      - name: Build ROM
+        run: |
+          source ./buildenv.sh ${{ github.event.inputs.target }}
+          ./scripts/make_rom.sh 
+
+      - name: Download PixelDrain CLI (pd)
+        run: |
+          curl -L https://github.com/jkawamoto/go-pixeldrain/releases/download/v0.7.6/pd_0.7.6_linux_amd64.tar.gz -o pd.tar.gz
+          tar -xvf pd.tar.gz
+          chmod +x pd
+          sudo mv pd /usr/local/bin/pd
+          
+      - name: Upload ROM to PixelDrain
+        env:
+          PIXELDRAIN_API_KEY: ${{ secrets.PIXELDRAIN_API_KEY }}
+        run: |
+          cd out
+          for ROM_FILE in *.zip; do
+            if [ ! -f "$ROM_FILE" ]; then
+              echo "No ROM zip found!"
+              exit 1
+            fi
+            echo "Uploading $ROM_FILE to Pixeldrain..."
+            pd --api-key "$PIXELDRAIN_API_KEY" upload "$ROM_FILE" | sed 's|api/file|u|g'
+          done
