@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Jenis animasi peluncur</string>
     <string name="unica_max_refresh_rate_title">Paksa penyegaran layar tinggi</string>
     <string name="unica_menu_item_reboot_download_title">Mulai ulang ke Download</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Mulai ulang ke lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Mulai ulang ke Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Mulai ulang ke Recovery</string>
     <string name="unica_menu_item_reboot_title">Mulai ulang</string>

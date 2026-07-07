@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">"Type d'animation du lanceur"</string>
     <string name="unica_max_refresh_rate_title">Forcer le taux de rafraîchissement maximal</string>
     <string name="unica_menu_item_reboot_download_title">Redémarrer en mode Download</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Redémarrer en mode lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Redémarrer en mode Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Redémarrer en mode Recovery</string>
     <string name="unica_menu_item_reboot_title">Redémarrer</string>

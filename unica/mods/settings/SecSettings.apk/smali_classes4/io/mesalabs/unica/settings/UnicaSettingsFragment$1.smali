@@ -56,10 +56,6 @@
 
     if-eq p1, v1, :cond_0
 
-    const/4 v1, 0x4
-
-    if-eq p1, v1, :cond_3
-
     const/4 p1, 0x0
 
     goto :goto_0
@@ -76,11 +72,6 @@
 
     :cond_2
     const-string p1, "recovery"
-
-    goto :goto_0
-
-    :cond_3
-    const-string p1, "bootloader"
 
     :goto_0
     invoke-virtual {p0, p1}, Landroid/os/PowerManager;->reboot(Ljava/lang/String;)V

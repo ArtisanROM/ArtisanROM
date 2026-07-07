@@ -30,7 +30,6 @@
     <string name="unica_pif_toast_updated">Atualização concluída.</string>
     <string name="unica_rom_version_title">Versão da ROM</string>
     <string name="unica_secure_ss_title">Permitir captura de tela segura</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Reboot to lk3rd</string>
     <string name="unica_settings_title">Configurações da ArtisanROM</string>
     <string name="unica_spoof_settings_title">Configurações de spoof</string>
     <string name="unica_ui_settings_title">Configurações da interface</string>

@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Lloji i animacionit të launcher-it</string>
     <string name="unica_max_refresh_rate_title">Forco rrjedhshmërin maksimale</string>
     <string name="unica_menu_item_reboot_download_title">Rinis në Download</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Rinis në lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Rinis në Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Rinis në Recovery</string>
     <string name="unica_menu_item_reboot_title">Rinis</string>

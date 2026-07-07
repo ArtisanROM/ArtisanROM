@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Launcher animáció stílusa</string>
     <string name="unica_max_refresh_rate_title">Nem adaptív képfrissítés kényszerítése</string>
     <string name="unica_menu_item_reboot_download_title">Újraindítás Download-ba</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Újraindítás lk3rd-ba</string>
     <string name="unica_menu_item_reboot_fastboot_title">Újraindítás Fastboot-ba</string>
     <string name="unica_menu_item_reboot_recovery_title">Újraindítás Recovery-be</string>
     <string name="unica_menu_item_reboot_title">Újraindítás</string>

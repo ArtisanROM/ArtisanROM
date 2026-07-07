@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Tipo de animação do launcher</string>
     <string name="unica_max_refresh_rate_title">Forçar taxa de atualização máxima</string>
     <string name="unica_menu_item_reboot_download_title">Reniciar em modo Download</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Reiniciar em lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Reiniciar em modo Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Reniciar em modo Recovery</string>
     <string name="unica_menu_item_reboot_title">Reiniciar</string>

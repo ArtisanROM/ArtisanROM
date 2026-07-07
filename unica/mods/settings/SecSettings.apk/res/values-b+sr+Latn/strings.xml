@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Tip animacije pokretača</string>
     <string name="unica_max_refresh_rate_title">Forsiraj najvišu brzinu osvežavanja</string>
     <string name="unica_menu_item_reboot_download_title">Ponovo pokreni u Download</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Ponovo pokreni u lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Ponovo pokreni u Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Ponovo pokreni u Recovery</string>
     <string name="unica_menu_item_reboot_title">Ponovo pokreni</string>

@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Тип анимации лаунчера</string>
     <string name="unica_max_refresh_rate_title">Пиковая частота обновления экрана</string>
     <string name="unica_menu_item_reboot_download_title">Перезагрузка в режим загрузки</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Перезагрузка в lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Перезагрузка в Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Перезагрузка в режим восстановления</string>
     <string name="unica_menu_item_reboot_title">Перезагрузка</string>

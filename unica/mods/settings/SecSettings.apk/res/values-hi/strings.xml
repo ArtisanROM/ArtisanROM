@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">लॉन्चर एनीमेशन टाइप</string>
     <string name="unica_max_refresh_rate_title">रीफ़्रेश दर को सबसे ज़्यादा पर सेट करें</string>
     <string name="unica_menu_item_reboot_download_title">डाउनलोड में रीस्टार्ट करें</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">lk3rd में रीस्टार्ट करें</string>
     <string name="unica_menu_item_reboot_fastboot_title">फास्टबूट में रीस्टार्ट करें</string>
     <string name="unica_menu_item_reboot_recovery_title">रिकवरी में रीस्टार्ट करें</string>
     <string name="unica_menu_item_reboot_title">रीस्टार्ट</string>

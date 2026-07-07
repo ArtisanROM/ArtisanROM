@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Stile animazioni schermata Home</string>
     <string name="unica_max_refresh_rate_title">Forza frequenza di aggiornamento massima</string>
     <string name="unica_menu_item_reboot_download_title">Riavvia in Download</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Riavvia in lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Riavvia in Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Riavvia in Recovery</string>
     <string name="unica_menu_item_reboot_title">Riavvia</string>

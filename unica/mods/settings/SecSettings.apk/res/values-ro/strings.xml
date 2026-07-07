@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">Tipul de animație în lansator</string>
     <string name="unica_max_refresh_rate_title">Forțare rată de reîmprospătare maximă</string>
     <string name="unica_menu_item_reboot_download_title">Repornește în modul Download</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">Repornește în modul lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">Repornește în modul Fastboot</string>
     <string name="unica_menu_item_reboot_recovery_title">Repornește în modul Recovery</string>
     <string name="unica_menu_item_reboot_title">Repornire</string>

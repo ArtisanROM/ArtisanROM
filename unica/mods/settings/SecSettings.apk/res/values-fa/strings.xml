@@ -32,7 +32,6 @@
     <string name="unica_launcher_anim_type_title">حالت انیمیشن لانچر</string>
     <string name="unica_max_refresh_rate_title">به اوج رساندن نرخ تازه سازی</string>
     <string name="unica_menu_item_reboot_download_title">ریبوت به دانلود</string>
-    <string name="unica_menu_item_reboot_lk3rd_title">ریبوت به lk3rd</string>
     <string name="unica_menu_item_reboot_fastboot_title">ریبوت به فست‌بوت</string>
     <string name="unica_menu_item_reboot_recovery_title">ریبوت به ریکاوری</string>
     <string name="unica_menu_item_reboot_title">راه‌اندازی مجدد</string>
