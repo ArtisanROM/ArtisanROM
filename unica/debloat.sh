@@ -130,10 +130,11 @@ system/app/PlayAutoInstallConfig
 # Language packs
 SYSTEM_DEBLOAT+="$(find "$WORK_DIR/system" -type d -name "*TTSVoice*" | sed "s|$WORK_DIR/system/||g")"
 
-# Main TTS app
-SYSTEM_DEBLOAT+="
-system/app/SamsungTTS
-"
+# Main TTS app (kept for SMT.LanguageProvider content provider,
+# needed by Galaxy AI language pack downloads)
+# SYSTEM_DEBLOAT+="
+# system/app/SamsungTTS
+# "
 
 # Samsung Kids
 SYSTEM_DEBLOAT+="
@@ -213,7 +214,7 @@ system/etc/permissions/privapp-permissions-com.sec.android.mimage.avatarstickers
 system/etc/permissions/signature-permissions-com.sec.android.mimage.avatarstickers.xml
 system/priv-app/AREmojiEditor
 system/priv-app/AvatarEmojiSticker
-system/priv-app/DressRoo
+system/priv-app/DressRoom
 system/priv-app/StickerFaceARAvatar
 "
 
