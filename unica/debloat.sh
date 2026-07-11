@@ -65,6 +65,11 @@ SYSTEM_DEBLOAT+="
 system/app/MAPSAgent
 "
 
+# Samsung Weather
+SYSTEM_DEBLOAT+="
+system/app/SamsungWeather
+"
+
 # AppUpdateCenter
 SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.samsung.android.app.updatecenter.xml
@@ -140,7 +145,6 @@ system/app/KidsHome_Installer
 SYSTEM_DEBLOAT+="
 system/priv-app/Bixby
 system/app/BixbyWakeup
-system/priv-app/BixbyInterpreter
 system/etc/preferred-apps/com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.wakeup.xml
@@ -209,6 +213,8 @@ system/etc/permissions/privapp-permissions-com.sec.android.mimage.avatarstickers
 system/etc/permissions/signature-permissions-com.sec.android.mimage.avatarstickers.xml
 system/priv-app/AREmojiEditor
 system/priv-app/AvatarEmojiSticker
+system/priv-app/DressRoo
+system/priv-app/StickerFaceARAvatar
 "
 
 # Samsung Calendar
@@ -233,8 +239,8 @@ system/priv-app/OfflineLanguageModel_stub
 "
 
 # Google Messages
-SYSTEM_DEBLOAT+="
-product/priv-app/Messages
+PRODUCT_DEBLOAT+="
+priv-app/Messages
 "
 
 # Samsung Pass
