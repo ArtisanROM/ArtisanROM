@@ -1,0 +1,34 @@
+From 6ecf372ee0e231188dd8316de04c05f15bcf6eea Mon Sep 17 00:00:00 2001
+From: Android-Artisan <romartisan2025@gmail.com>
+Date: Sun, 12 Jul 2026 10:09:43 +0200
+Subject: [PATCH] Move Galaxy AI to top in its own card
+
+---
+ res/xml/sec_top_level_settings.xml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/res/xml/sec_top_level_settings.xml b/res/xml/sec_top_level_settings.xml
+index a0d4934..4594257 100644
+--- a/res/xml/sec_top_level_settings.xml
++++ b/res/xml/sec_top_level_settings.xml
+@@ -14,6 +14,9 @@
+     <com.android.settings.widget.HomepagePreference android:icon="@drawable/ic_buds_unite_manager" android:layout="@layout/sec_top_level_buds_unite_manager_preference" android:title="@string/app_name_buds_unite" android:key="top_level_buds_unite" android:summary="@string/summary_placeholder" android:order="-660000" settings:controller="com.samsung.android.settings.homepage.TopLevelBudsUniteManagerPreferenceController" settings:highlightableMenuKey="top_level_buds_unite" />
+     <com.android.settings.widget.HomepagePreference android:icon="@drawable/ic_buds_unite_manager" android:layout="@layout/sec_top_level_buds_unite_manager_preference" android:title="@string/app_name_buds_unite" android:key="top_level_buds_unite2" android:summary="@string/summary_placeholder" android:order="-650000" settings:controller="com.samsung.android.settings.homepage.TopLevelBudsUniteManagerPreferenceController" settings:highlightableMenuKey="top_level_buds_unite2" />
+     <com.samsung.android.settings.widget.SecInsetCategoryPreference android:order="-640000" />
++    <com.samsung.android.settings.widget.SecInsetCategoryPreference android:order="-630000" />
++    <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_galaxy_ai" android:layout="@layout/sec_homepage_software_update_preference" android:title="@string/sec_intelligence_service_title" android:key="top_level_galaxy_ai" android:summary="@string/summary_placeholder" android:order="-620000" android:fragment="com.samsung.android.settings.usefulfeature.intelligenceservice.IntelligenceServiceSettings" settings:controller="com.samsung.android.settings.homepage.TopLevelGalaxyAIPreferenceController" settings:highlightableMenuKey="@string/menu_key_galaxy_ai" />
++    <com.samsung.android.settings.widget.SecInsetCategoryPreference android:order="-610000" />
+     <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_connections" android:title="@string/tab_category_connections" android:key="top_level_connections" android:summary="@string/summary_placeholder" android:order="-500000" android:fragment="com.samsung.android.settings.connection.ConnectionsSettings" settings:controller="com.samsung.android.settings.homepage.TopLevelConnectionsPreferenceController" settings:highlightableMenuKey="@string/menu_key_connections" settings:keywords="@string/keywords_connections_settings" />
+     <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_multi_devices" android:title="@string/sec_multi_devices_menu_name" android:key="top_level_multi_devices" android:summary="@string/summary_placeholder" android:order="-490000" android:fragment="com.samsung.android.settings.multidevices.MultiDevicesFragment" settings:controller="com.samsung.android.settings.homepage.TopLevelMultiDevicesPreferenceController" settings:highlightableMenuKey="@string/menu_key_multi_devices" />
+     <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_t_roaming" android:title="@string/troaming_activity_name" android:key="top_level_t_roaming" android:summary="@string/summary_placeholder" android:order="-480000" settings:controller="com.samsung.android.settings.homepage.TopLevelTRoamingPreferenceController" settings:highlightableMenuKey="@string/menu_key_t_roaming">
+@@ -24,7 +27,6 @@
+     </com.android.settings.widget.HomepagePreference>
+     <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_service_provider_kt" android:title="@string/olleh_setting" android:key="top_level_olleh_setting" android:summary="@string/summary_placeholder" android:order="-480000" android:fragment="com.samsung.android.settings.DomesticSettings" settings:controller="com.samsung.android.settings.homepage.TopLevelOllehSettingsPreferenceController" settings:highlightableMenuKey="@string/menu_key_olleh_roaming" />
+     <com.samsung.android.settings.widget.SecInsetCategoryPreference android:order="-400000" />
+-    <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_galaxy_ai" android:layout="@layout/sec_homepage_software_update_preference" android:title="@string/sec_intelligence_service_title" android:key="top_level_galaxy_ai" android:summary="@string/summary_placeholder" android:order="-390000" android:fragment="com.samsung.android.settings.usefulfeature.intelligenceservice.IntelligenceServiceSettings" settings:controller="com.samsung.android.settings.homepage.TopLevelGalaxyAIPreferenceController" settings:highlightableMenuKey="@string/menu_key_galaxy_ai" />
+     <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_modes" android:title="@string/sec_modes_and_routines" android:key="top_level_modes" android:summary="@string/summary_placeholder" android:order="-380000" settings:controller="com.samsung.android.settings.homepage.TopLevelModesPreferenceController" settings:highlightableMenuKey="@string/menu_key_modes">
+         <intent android:targetPackage="com.samsung.android.app.routines" android:targetClass="com.samsung.android.app.routines.ui.main.DynamicSettingsMenuLaunchActivity">
+             <extra android:name="from_settings" android:value="true" />
+-- 
+2.53.0
+

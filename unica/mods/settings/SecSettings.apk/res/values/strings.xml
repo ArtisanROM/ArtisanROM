@@ -62,4 +62,10 @@
     <string name="artisanrom_version_toast_final">"What are you looking for? Developer settings ain't here!"</string>
     <string name="artisanrom_version_toast_done">"Still here? I told you, dev settings ain't here!"</string>
     <string name="unica_updates_title">ArtisanROM Updates</string>
+    <string name="unica_about_artisanrom_title">About ArtisanROM</string>
+    <string name="keywords_about_artisanrom">About ArtisanROM</string>
+    <string name="artisanrom_about_title">About the ROM</string>
+    <string name="artisanrom_people_title">People behind the ROM</string>
+    <string name="artisanrom_no_browser">No web browser available</string>
+    <string name="artisanrom_no_github">User does not have a GitHub account</string>
 </resources>

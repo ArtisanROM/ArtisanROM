@@ -151,6 +151,17 @@
 
     sget-object v0, Lcom/android/settings/overlay/FeatureFactoryImpl;->_appContext:Lcom/android/settings/SettingsApplication;
 
+    if-nez v0, :cond_appctx_ok
+
+    new-instance v0, Ljava/lang/NullPointerException;
+
+    const-string v1, "FeatureFactoryImpl._appContext is null"
+
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+
+    throw v0
+
+    :cond_appctx_ok
     invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
     move-result-object v0
