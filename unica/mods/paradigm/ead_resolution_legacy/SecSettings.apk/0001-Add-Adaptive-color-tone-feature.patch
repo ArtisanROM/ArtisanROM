@@ -21,25 +21,28 @@ diff --git a/smali_classes2/com/android/settings/DisplaySettings$4.smali b/smali
 index 7c1466399..e9e6516d3 100644
 --- a/smali_classes2/com/android/settings/DisplaySettings$4.smali
 +++ b/smali_classes2/com/android/settings/DisplaySettings$4.smali
-@@ -31,6 +31,18 @@
+@@ -30,9 +30,21 @@
+     const-string v8, "auto_adjust_touch"
  
-     invoke-static {v6, v7, v8}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+     const/4 v9, 0x0
  
-+    const-string v7, "ead_enabled"
-+
-+    invoke-static {v6, v7, v8}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+
-+    const-string v7, "notified_ead_camera_use"
-+
-+    invoke-static {v6, v7, v8}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+
-+    const-string v7, "notified_ead_camera_use_routine"
-+
-+    invoke-static {v6, v7, v8}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+
-     new-instance v7, Lcom/samsung/android/settings/display/ScreenModeSettingManager;
+     invoke-static {v7, v8, v9}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
  
-     invoke-direct {v7, v0}, Lcom/samsung/android/settings/display/ScreenModeSettingManager;-><init>(Landroid/content/Context;)V
++    const-string v8, "ead_enabled"
++
++    invoke-static {v7, v8, v9}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
++
++    const-string v8, "notified_ead_camera_use"
++
++    invoke-static {v7, v8, v9}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
++
++    const-string v8, "notified_ead_camera_use_routine"
++
++    invoke-static {v7, v8, v9}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
++
+     new-instance v8, Lcom/samsung/android/settings/display/ScreenModeSettingManager;
+ 
+     invoke-direct {v8, v0}, Lcom/samsung/android/settings/display/ScreenModeSettingManager;-><init>(Landroid/content/Context;)V
 diff --git a/smali_classes4/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali b/smali_classes4/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
 index c4359e7f0..c70ef3e60 100644
 --- a/smali_classes4/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
