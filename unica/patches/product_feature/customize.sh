@@ -445,8 +445,13 @@ if [[ "$SOURCE_LCD_CONFIG_SEAMLESS_BRT" != "$TARGET_LCD_CONFIG_SEAMLESS_BRT" ]] 
         [[ "$SOURCE_LCD_CONFIG_SEAMLESS_LUX" != "$TARGET_LCD_CONFIG_SEAMLESS_LUX" ]]; then
     if [[ "$SOURCE_LCD_CONFIG_SEAMLESS_BRT" != "none" ]] && [[ "$SOURCE_LCD_CONFIG_SEAMLESS_LUX" != "none" ]] && \
             [[ "$TARGET_LCD_CONFIG_SEAMLESS_BRT" == "none" ]] && [[ "$TARGET_LCD_CONFIG_SEAMLESS_LUX" == "none" ]]; then
-        APPLY_PATCH "system" "system/framework/framework.jar" \
-            "$MODPATH/hfr/framework.jar/0001-Remove-brightness-threshold-values.patch"
+        if [[ "$SOURCE_LCD_CONFIG_SEAMLESS_BRT" == "35" ]] && [[ "$SOURCE_LCD_CONFIG_SEAMLESS_LUX" == "40" ]]; then
+            APPLY_PATCH "system" "system/framework/framework.jar" \
+                "$MODPATH/hfr/framework.jar/0001-Remove-brightness-threshold-values-exynos.patch"
+        else
+            APPLY_PATCH "system" "system/framework/framework.jar" \
+                "$MODPATH/hfr/framework.jar/0001-Remove-brightness-threshold-values.patch"
+        fi
     elif [[ "$SOURCE_LCD_CONFIG_SEAMLESS_BRT" != "none" ]] && [[ "$SOURCE_LCD_CONFIG_SEAMLESS_LUX" != "none" ]] && \
             [[ "$TARGET_LCD_CONFIG_SEAMLESS_BRT" != "none" ]] && [[ "$TARGET_LCD_CONFIG_SEAMLESS_LUX" != "none" ]]; then
         SMALI_PATCH "system" "system/framework/framework.jar" \
