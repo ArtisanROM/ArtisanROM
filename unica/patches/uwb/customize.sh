@@ -46,7 +46,19 @@ if ! $SOURCE_HAS_UWB; then
     fi
 else
     if ! $TARGET_HAS_UWB; then
-        ABORT "Missing patch for condition (SOURCE_HAS_UWB: [$SOURCE_HAS_UWB], TARGET_HAS_UWB: [$TARGET_HAS_UWB]). Aborting"
+        LOG "- Removing UWB blobs for non-UWB target"
+        DELETE_FROM_WORK_DIR "system" "system/app/UwbTest"
+        DELETE_FROM_WORK_DIR "system" "system/etc/init/init.system.uwb.rc"
+        DELETE_FROM_WORK_DIR "system" "system/etc/permissions/com.samsung.android.uwb_extras.xml"
+        DELETE_FROM_WORK_DIR "system" "system/etc/permissions/privapp-permissions-com.sec.android.app.uwbtest.xml"
+        DELETE_FROM_WORK_DIR "system" "system/etc/libuwb-cal.conf"
+        DELETE_FROM_WORK_DIR "system" "system/etc/pp_model.tflite"
+        DELETE_FROM_WORK_DIR "system" "system/framework/com.samsung.android.uwb_extras.jar"
+        DELETE_FROM_WORK_DIR "system" "system/framework/semuwb-service.jar"
+        DELETE_FROM_WORK_DIR "system" "system/lib/libtflite_uwb_jni.so"
+        DELETE_FROM_WORK_DIR "system" "system/lib64/libtflite_uwb_jni.so"
+        DELETE_FROM_WORK_DIR "system_ext" "framework/org.carconnectivity.android.digitalkey.timesync.jar"
+        DELETE_FROM_WORK_DIR "system_ext" "priv-app/DckTimeSyncService"
     fi
 fi
 
