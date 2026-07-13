@@ -1,72 +1,43 @@
-From effca5806f78e4eadb904c26b8c43b7c1ef092b3 Mon Sep 17 00:00:00 2001
+From 888ceb39e37ffcc0ee4e22246cacfd0f1dd8a5b8 Mon Sep 17 00:00:00 2001
 From: Salvo Giangreco <giangrecosalvo9@gmail.com>
-Date: Sun, 31 Aug 2025 12:35:57 +0200
+Date: Sun, 12 Jul 2026 20:21:48 +0200
 Subject: [PATCH] Allow custom booster thresholds values
 
 UN1CA: this patch is not complete! Please check unica/patches/product_feature/customize.sh for more info.
 ---
- .../server/wifi/SemFrameworkFacade.smali      | 32 ++++++++++---------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ .../server/wifi/SemFrameworkFacade.smali      | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali b/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali
-index 9b20944..8768c27 100644
+index c275199..6b0c15f 100644
 --- a/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali
 +++ b/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali
-@@ -350,37 +350,39 @@
+@@ -350,7 +350,7 @@
  .method public getBoosterThresholds()[I
      .locals 3
  
--    const-string p0, "0"
+-    const-string p0, "150"
 +    const-string p0, "CONFIG_DATA_ACTIVITY_AFFINITY_BOOSTER_THRESHOLD"
  
      invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
  
--    move-result v0
-+    move-result p0
+@@ -362,7 +362,7 @@
  
--    const/high16 v1, 0x100000
-+    const/high16 v0, 0x100000
+     div-int/lit8 p0, p0, 0x8
  
--    mul-int/2addr v0, v1
-+    mul-int/2addr p0, v0
- 
--    div-int/lit8 v0, v0, 0x8
-+    div-int/lit8 p0, p0, 0x8
- 
--    const-string v2, "100"
+-    const-string v1, "100"
 +    const-string v1, "CONFIG_CPU_CSTATE_DISABLE_THRESHOLD"
  
--    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-+    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+     invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
  
--    move-result v2
-+    move-result v1
+@@ -372,7 +372,7 @@
  
--    mul-int/2addr v2, v1
-+    mul-int/2addr v1, v0
+     div-int/lit8 v1, v1, 0x8
  
--    div-int/lit8 v2, v2, 0x8
-+    div-int/lit8 v1, v1, 0x8
- 
--    invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+-    const-string v2, "50"
 +    const-string v2, "CONFIG_L1SS_DISABLE_THRESHOLD"
  
--    move-result p0
-+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
- 
--    mul-int/2addr p0, v1
-+    move-result v2
- 
--    div-int/lit8 p0, p0, 0x8
-+    mul-int/2addr v2, v0
-+
-+    div-int/lit8 v2, v2, 0x8
- 
--    filled-new-array {v0, v2, p0}, [I
-+    filled-new-array {p0, v1, v2}, [I
- 
-     move-result-object p0
+     invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
  
 -- 
-2.51.0
-
+2.53.0
