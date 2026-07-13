@@ -65,9 +65,39 @@ SYSTEM_DEBLOAT+="
 system/app/MAPSAgent
 "
 
+# Carrier / Enterprise / Debug bloat
+SYSTEM_DEBLOAT+="
+system/app/CarrierDefaultApp
+system/app/ccinfo
+system/app/Fast
+system/app/MDMApp
+system/app/MoccaMobile
+system/app/ParentalCare
+system/app/Rampart
+system/app/SilentLog
+system/app/UniversalMDMClient
+system/app/SimAppDialog
+system/priv-app/EnhancedAttestationAgent
+system/priv-app/ImsLogger
+system/priv-app/OdaService
+system/priv-app/OMCAgent5
+system/priv-app/SamsungPositioning
+system/priv-app/SKMSAgent
+system/etc/permissions/privapp-permissions-com.samsung.android.fast.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.app.omcagent.xml
+system/etc/permissions/privapp-permissions-com.samsung.oda.service.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.samsungpositioning.xml
+system/etc/permissions/privapp-permissions-com.sec.imslogger.xml
+system/etc/permissions/privapp-permissions-com.skms.android.agent.xml
+system/etc/permissions/signature-permissions-com.samsung.android.app.parentalcare.xml
+system/etc/sysconfig/config-com.samsung.android.app.parentalcare.xml
+"
+
 # Samsung Weather
 SYSTEM_DEBLOAT+="
 system/app/SamsungWeather
+system/etc/default-permissions/coarse-permissions-com.sec.android.daemonapp.xml
+system/etc/permissions/privapp-coarse-permissions-com.sec.android.daemonapp.xml
 "
 
 # AppUpdateCenter
@@ -142,14 +172,29 @@ system/etc/permissions/signature-permissions-com.sec.android.app.kidshome.xml
 system/app/KidsHome_Installer
 "
 
+# Samsung Notes
+SYSTEM_DEBLOAT+="
+system/app/Notes40
+"
+
 # Bixby
 SYSTEM_DEBLOAT+="
 system/priv-app/Bixby
 system/app/BixbyWakeup
+system/app/VisionIntelligence3.7
+system/app/VisualCloudCore
+system/priv-app/BixbyVisionFramework3.5
+system/priv-app/SamsungIntelliVoiceServices
 system/etc/preferred-apps/com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.wakeup.xml
 system/etc/permissions/signature-permissions-com.samsung.android.bixby.agent.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.visionintelligence_v3.7.xml
+system/etc/permissions/signature-permissions-com.samsung.android.visionintelligence_v3.7.xml
+system/etc/permissions/signature-permissions-com.samsung.android.visual.cloudcore.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.intellivoiceservice.xml
+system/etc/sysconfig/bixbyagent.xml
+system/etc/sysconfig/samsungintellivoiceservice.xml
 "
 
 # LED Cover Service
@@ -158,10 +203,28 @@ system/etc/permissions/privapp-permissions-com.sec.android.cover.ledcover.xml
 system/priv-app/LedCoverService
 "
 
+# Spen
+SYSTEM_DEBLOAT+="
+system/app/AirGlance
+system/app/LiveDrawing
+system/etc/default-permissions/default-permissions-com.samsung.android.service.aircommand.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.app.readingglass.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.service.aircommand.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.service.airviewdictionary.xml
+system/etc/public.libraries-smps.samsung.txt
+system/etc/sysconfig/airviewdictionaryservice.xml
+system/lib64/libsmpsft.smps.samsung.so
+system/media/audio/pensounds
+system/priv-app/AirCommand
+system/priv-app/AirReadingGlass
+system/priv-app/SmartEye
+"
+
 # Link to Windows
 # Replace full apk with stub apk to save space
 SYSTEM_DEBLOAT+="
 system/priv-app/YourPhone_P1_5
+system/priv-app/LinkToWindowsService
 "
 
 # Live Transcribe
@@ -212,25 +275,28 @@ system/etc/default-permissions/default-permissions-com.sec.android.mimage.avatar
 system/etc/permissions/privapp-permissions-com.samsung.android.aremojieditor.xml
 system/etc/permissions/privapp-permissions-com.sec.android.mimage.avatarstickers.xml
 system/etc/permissions/signature-permissions-com.sec.android.mimage.avatarstickers.xml
+system/priv-app/AREmoji
 system/priv-app/AREmojiEditor
 system/priv-app/AvatarEmojiSticker
-system/priv-app/DressRoom
 system/priv-app/StickerFaceARAvatar
 "
 
 # Samsung Calendar
 SYSTEM_DEBLOAT+="
 system/app/SamsungCalendar
+system/etc/permissions/signature-permissions-com.samsung.android.calendar.xml
 "
 
 # Samsung Clock
 SYSTEM_DEBLOAT+="
 system/app/ClockPackage
+system/etc/permissions/signature-permissions-com.sec.android.app.clockpackage.xml
 "
 
 # Samsung Free
 SYSTEM_DEBLOAT+="
 system/app/MinusOnePage
+system/etc/permissions/signature-permissions-com.samsung.android.app.spage.xml
 "
 
 # Samsung Language Core
@@ -262,6 +328,7 @@ system/priv-app/SamsungPass
 # Samsung Reminder
 SYSTEM_DEBLOAT+="
 system/app/SmartReminder
+system/etc/permissions/signature-permissions-com.samsung.android.app.reminder.xml
 "
 
 # Samsung Visit In
@@ -273,9 +340,12 @@ system/priv-app/IpsGeofence
 # Samsung Wallet
 SYSTEM_DEBLOAT+="
 system/etc/init/digitalkey_init_ble_tss2.rc
+system/etc/init/digitalkey_init_uwb_tss2.rc
 system/etc/permissions/org.carconnectivity.android.digitalkey.rangingintent.xml
 system/etc/permissions/org.carconnectivity.android.digitalkey.secureelement.xml
+system/etc/permissions/org.carconnectivity.android.digitalkey.timesync.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.carkey.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.dcktimesync.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.dkey.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.spayfw.xml
 system/etc/permissions/signature-permissions-com.samsung.android.spay.xml
