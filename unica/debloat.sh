@@ -93,13 +93,6 @@ system/etc/permissions/signature-permissions-com.samsung.android.app.parentalcar
 system/etc/sysconfig/config-com.samsung.android.app.parentalcare.xml
 "
 
-# Samsung Weather
-SYSTEM_DEBLOAT+="
-system/app/SamsungWeather
-system/etc/default-permissions/coarse-permissions-com.sec.android.daemonapp.xml
-system/etc/permissions/privapp-coarse-permissions-com.sec.android.daemonapp.xml
-"
-
 # AppUpdateCenter
 SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.samsung.android.app.updatecenter.xml
