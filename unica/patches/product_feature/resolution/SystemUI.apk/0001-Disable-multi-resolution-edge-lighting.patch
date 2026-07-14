@@ -1,0 +1,73 @@
+From 1549b1595bf97ed87c78f7418fa369649894e7d9 Mon Sep 17 00:00:00 2001
+From: Salvo Giangreco <giangrecosalvo9@gmail.com>
+Date: Tue, 14 Jul 2026 07:33:00 +0200
+Subject: [PATCH] Disable multi-resolution edge lighting support
+
+---
+ .../edgelighting/scheduler/EdgeLightingScheduler$1.smali       | 1 +
+ .../edgelighting/scheduler/EdgeLightingScheduler.smali         | 2 ++
+ .../edgelighting/settings/EdgeLightingStyleActivity.smali      | 3 ++-
+ .../internal/ActionDispatcher$$ExternalSyntheticLambda2.smali  | 1 +
+ 4 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler$1.smali b/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler$1.smali
+index 5f2bee69..e1807d4b 100644
+--- a/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler$1.smali
++++ b/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler$1.smali
+@@ -2177,6 +2177,7 @@
+ 
+     iput-wide v8, v6, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mLightingDuration:J
+ 
++    const/4 v3, 0x0
+     iput-boolean v3, v6, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mIsMultiResolutionSupoorted:Z
+ 
+     iput-object v10, v6, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mPackageName:Ljava/lang/String;
+diff --git a/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler.smali b/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler.smali
+index a5b1e2cd..c128019b 100644
+--- a/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler.smali
++++ b/smali_classes2/com/android/systemui/edgelighting/scheduler/EdgeLightingScheduler.smali
+@@ -830,6 +830,8 @@
+ 
+     move/from16 v1, v17
+ 
++    const/4 v1, 0x0
++
+     iput-boolean v1, v8, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mIsMultiResolutionSupoorted:Z
+ 
+     iget-object v1, v0, Lcom/android/systemui/edgelighting/scheduler/EdgeLightingScheduler;->mTurnOverEdgeLighting:Lcom/android/systemui/edgelighting/turnover/TurnOverEdgeLighting;
+diff --git a/smali_classes2/com/android/systemui/edgelighting/settings/EdgeLightingStyleActivity.smali b/smali_classes2/com/android/systemui/edgelighting/settings/EdgeLightingStyleActivity.smali
+index 54b8c019..7f9d52a8 100644
+--- a/smali_classes2/com/android/systemui/edgelighting/settings/EdgeLightingStyleActivity.smali
++++ b/smali_classes2/com/android/systemui/edgelighting/settings/EdgeLightingStyleActivity.smali
+@@ -211,7 +211,7 @@
+ 
+     iget-object v0, p0, Lcom/android/systemui/edgelighting/settings/EdgeLightingStyleActivity;->mPreviewEffectInfo:Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;
+ 
+-    const/4 v1, 0x1
++    const/4 v1, 0x0
+ 
+     iput-boolean v1, v0, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mIsMultiResolutionSupoorted:Z
+ 
+@@ -3614,6 +3614,7 @@
+ 
+     iget-object p1, p0, Lcom/android/systemui/edgelighting/settings/EdgeLightingStyleActivity;->mPreviewEffectInfo:Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;
+ 
++    const/4 v3, 0x0
+     iput-boolean v3, p1, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mIsMultiResolutionSupoorted:Z
+ 
+     iget-object p1, p0, Lcom/android/systemui/edgelighting/settings/EdgeLightingStyleActivity;->mLightingController:Lcom/android/systemui/edgelighting/effect/interfaces/IEdgeLightingController;
+diff --git a/smali_classes4/com/samsung/android/sdk/routines/v3/internal/ActionDispatcher$$ExternalSyntheticLambda2.smali b/smali_classes4/com/samsung/android/sdk/routines/v3/internal/ActionDispatcher$$ExternalSyntheticLambda2.smali
+index 30b28781..b6d68ea7 100644
+--- a/smali_classes4/com/samsung/android/sdk/routines/v3/internal/ActionDispatcher$$ExternalSyntheticLambda2.smali
++++ b/smali_classes4/com/samsung/android/sdk/routines/v3/internal/ActionDispatcher$$ExternalSyntheticLambda2.smali
+@@ -416,6 +416,7 @@
+ 
+     iput-wide v4, p0, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mLightingDuration:J
+ 
++    const/4 v0, 0x0
+     iput-boolean v0, p0, Lcom/android/systemui/edgelighting/effect/data/EdgeEffectInfo;->mIsMultiResolutionSupoorted:Z
+ 
+     iget-object p0, v3, Lcom/android/systemui/edgelighting/routine/EdgelightingRoutineActionHandler;->mHandler:Lcom/android/systemui/edgelighting/routine/EdgelightingRoutineActionHandler$1;
+-- 
+2.53.0
+
