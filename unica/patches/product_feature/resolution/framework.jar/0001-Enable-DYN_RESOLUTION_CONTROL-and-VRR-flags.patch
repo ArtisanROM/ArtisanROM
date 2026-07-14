@@ -1,0 +1,38 @@
+From 573280f7f680de65b7cef788872d6810e937339f Mon Sep 17 00:00:00 2001
+From: Salvo Giangreco <giangrecosalvo9@gmail.com>
+Date: Tue, 14 Jul 2026 07:23:00 +0200
+Subject: [PATCH] Enable FW_DYNAMIC_RESOLUTION_CONTROL and VRR resolution
+ policy flags
+
+---
+ smali_classes6/com/samsung/android/rune/CoreRune.smali | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/smali_classes6/com/samsung/android/rune/CoreRune.smali b/smali_classes6/com/samsung/android/rune/CoreRune.smali
+index 2a5ddb9c..405ed0f6 100644
+--- a/smali_classes6/com/samsung/android/rune/CoreRune.smali
++++ b/smali_classes6/com/samsung/android/rune/CoreRune.smali
+@@ -2839,7 +2839,7 @@
+ 
+     sput-boolean v4, Lcom/samsung/android/rune/CoreRune;->FW_MULTI_RESOLUTION_POLICY:Z
+ 
+-    sput-boolean v5, Lcom/samsung/android/rune/CoreRune;->FW_DYNAMIC_RESOLUTION_CONTROL:Z
++    sput-boolean v4, Lcom/samsung/android/rune/CoreRune;->FW_DYNAMIC_RESOLUTION_CONTROL:Z
+ 
+     const-string v2, "3"
+ 
+@@ -2915,9 +2915,9 @@
+ 
+     sput-boolean v3, Lcom/samsung/android/rune/CoreRune;->FW_VRR_REFRESH_RATE_MODE:Z
+ 
+-    sput-boolean v5, Lcom/samsung/android/rune/CoreRune;->FW_VRR_RESOLUTION_POLICY:Z
++    sput-boolean v3, Lcom/samsung/android/rune/CoreRune;->FW_VRR_RESOLUTION_POLICY:Z
+ 
+-    sput-boolean v5, Lcom/samsung/android/rune/CoreRune;->FW_VRR_RESOLUTION_POLICY_FOR_SHELL_TRANSITION:Z
++    sput-boolean v3, Lcom/samsung/android/rune/CoreRune;->FW_VRR_RESOLUTION_POLICY_FOR_SHELL_TRANSITION:Z
+ 
+     sput-boolean v3, Lcom/samsung/android/rune/CoreRune;->FW_VRR_FIXED_REFRESH_RATE_PACKAGE:Z
+ 
+-- 
+2.53.0
+
