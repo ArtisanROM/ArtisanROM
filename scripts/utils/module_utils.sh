@@ -76,7 +76,7 @@ GET_GALAXY_STORE_DOWNLOAD_URL()
 
     # Galaxy S25 Ultra EUR_OPENX
     # Galaxy S22 Ultra GBL_OPENX
-    DEVICES=("SM-S938B" "SM-S901E")
+    DEVICES=("SM-S938B" "SM-S908E")
 
     OS="$(GET_PROP "system" "ro.build.version.sdk")"
     ONEUI="$(GET_PROP "system" "ro.build.version.oneui")"
