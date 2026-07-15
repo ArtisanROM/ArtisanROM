@@ -70,23 +70,13 @@ SYSTEM_DEBLOAT+="
 system/app/CarrierDefaultApp
 system/app/ccinfo
 system/app/Fast
-system/app/MDMApp
-system/app/MoccaMobile
-system/app/ParentalCare
-system/app/Rampart
-system/app/SilentLog
-system/app/UniversalMDMClient
 system/app/SimAppDialog
-system/priv-app/EnhancedAttestationAgent
 system/priv-app/ImsLogger
 system/priv-app/OdaService
 system/priv-app/OMCAgent5
-system/priv-app/SamsungPositioning
-system/priv-app/SKMSAgent
 system/etc/permissions/privapp-permissions-com.samsung.android.fast.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.app.omcagent.xml
 system/etc/permissions/privapp-permissions-com.samsung.oda.service.xml
-system/etc/permissions/privapp-permissions-com.samsung.android.samsungpositioning.xml
 system/etc/permissions/privapp-permissions-com.sec.imslogger.xml
 system/etc/permissions/privapp-permissions-com.skms.android.agent.xml
 system/etc/permissions/signature-permissions-com.samsung.android.app.parentalcare.xml
@@ -174,20 +164,11 @@ system/app/Notes40
 SYSTEM_DEBLOAT+="
 system/priv-app/Bixby
 system/app/BixbyWakeup
-system/app/VisionIntelligence3.7
-system/app/VisualCloudCore
-system/priv-app/BixbyVisionFramework3.5
-system/priv-app/SamsungIntelliVoiceServices
 system/etc/preferred-apps/com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.wakeup.xml
 system/etc/permissions/signature-permissions-com.samsung.android.bixby.agent.xml
-system/etc/permissions/privapp-permissions-com.samsung.android.visionintelligence_v3.7.xml
-system/etc/permissions/signature-permissions-com.samsung.android.visionintelligence_v3.7.xml
-system/etc/permissions/signature-permissions-com.samsung.android.visual.cloudcore.xml
-system/etc/permissions/privapp-permissions-com.samsung.android.intellivoiceservice.xml
 system/etc/sysconfig/bixbyagent.xml
-system/etc/sysconfig/samsungintellivoiceservice.xml
 "
 
 # LED Cover Service
