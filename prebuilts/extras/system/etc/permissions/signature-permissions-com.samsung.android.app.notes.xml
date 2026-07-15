@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <signature-permissions package="com.samsung.android.app.notes">
+        <permission name="android.permission.MANAGE_ACTIVITY_TASKS"/>
+        <permission name="android.permission.MANAGE_ACTIVITY_STACKS"/>
+    </signature-permissions>
+</permissions>
