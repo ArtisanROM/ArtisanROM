@@ -193,12 +193,12 @@ if $TARGET_COMMON_SUPPORT_DYN_RESOLUTION_CONTROL; then
     ADD_TO_WORK_DIR "b0qxxx" "system" "system/media/temperature_limit_usb.spi" 0 0 644 "u:object_r:system_file:s0"
     ADD_TO_WORK_DIR "b0qxxx" "system" "system/media/water_protection_usb.spi" 0 0 644 "u:object_r:system_file:s0"
 
-    APPLY_PATCH "system" "system/framework/framework.jar" \
-        "$MODPATH/resolution/framework.jar/0001-Enable-DYN_RESOLUTION_CONTROL-and-VRR-flags.patch"
-    if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "36" ]; then
-        APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-            "$MODPATH/resolution/SecSettings.apk/0002-Backport-legacy-DYN_RESOLUTION_CONTROL-code.patch"
-    fi
+    # APPLY_PATCH "system" "system/framework/framework.jar" \
+    #     "$MODPATH/resolution/framework.jar/0001-Enable-DYN_RESOLUTION_CONTROL-and-VRR-flags.patch"
+    # if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "36" ]; then
+    #     APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
+    #         "$MODPATH/resolution/SecSettings.apk/0002-Backport-legacy-DYN_RESOLUTION_CONTROL-code.patch"
+    # fi
 else
     SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_COMMON_CONFIG_DYN_RESOLUTION_CONTROL" --delete
     APPLY_PATCH "system" "system/framework/framework.jar" \
