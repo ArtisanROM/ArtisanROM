@@ -171,6 +171,11 @@ LOG "- Downloading latest Game Booster app"
 DOWNLOAD_FILE "$(GET_GALAXY_STORE_DOWNLOAD_URL "com.samsung.android.game.gametools")" \
     "$WORK_DIR/system/system/priv-app/GameTools_Dream/GameTools_Dream.apk"
 
+# Notes40
+LOG_STEP_IN "- Adding permissions for Notes40"
+ADD_TO_WORK_DIR "$SRC_DIR/prebuilts/extras" "system" "system/etc/permissions/signature-permissions-com.samsung.android.app.notes.xml"
+LOG_STEP_OUT
+
 # Pet Detector in Galaxy AI
 LOG_STEP_IN "- Adding Pet Detector support in Galaxy AI features"
 if [ -d "$WORK_DIR/vendor/etc/petdetector/studio_pd" ]; then
