@@ -1,0 +1,95 @@
+From 4fa25a4847b04a864102ec97eb04ec1072087d67 Mon Sep 17 00:00:00 2001
+From: Android-Artisan <romartisan2025@gmail.com>
+Date: Sat, 18 Jul 2026 15:36:00 +0200
+Subject: [PATCH] Fix camera crash: make LlHdrNodeChainComposer.configure a
+ no-op
+
+Prevents crash on S20FE (Exynos 990) with S22U ROM by disabling
+the LLHDR node chain configuration that causes the camera to crash.
+---
+ .../composer/LlHdrNodeChainComposer.smali     | 69 +------------------
+ 1 file changed, 1 insertion(+), 68 deletions(-)
+
+diff --git a/smali_classes3/com/samsung/android/camera/core2/processor/nodeController/composer/LlHdrNodeChainComposer.smali b/smali_classes3/com/samsung/android/camera/core2/processor/nodeController/composer/LlHdrNodeChainComposer.smali
+index 7ca9167..74ed839 100644
+--- a/smali_classes3/com/samsung/android/camera/core2/processor/nodeController/composer/LlHdrNodeChainComposer.smali
++++ b/smali_classes3/com/samsung/android/camera/core2/processor/nodeController/composer/LlHdrNodeChainComposer.smali
+@@ -24,74 +24,7 @@
+ 
+ # virtual methods
+ .method public configure(Lcom/samsung/android/camera/core2/processor/nodeController/composer/NodeChainComposer$NodeChainCompositionBundle;)V
+-    .locals 5
+-
+-    invoke-virtual {p1}, Lcom/samsung/android/camera/core2/processor/nodeController/composer/NodeChainComposer$NodeChainCompositionBundle;->getNodeChain()Lcom/samsung/android/camera/core2/node/NodeChain;
+-
+-    move-result-object v0
+-
+-    invoke-virtual {p1}, Lcom/samsung/android/camera/core2/processor/nodeController/composer/NodeChainComposer$NodeChainCompositionBundle;->getCamCapability()Lcom/samsung/android/camera/core2/CamCapability;
+-
+-    move-result-object v1
+-
+-    invoke-virtual {p1}, Lcom/samsung/android/camera/core2/processor/nodeController/composer/NodeChainComposer$NodeChainCompositionBundle;->getNodeChainConfiguration()Lcom/samsung/android/camera/core2/processor/container/NodeChainConfiguration;
+-
+-    move-result-object v2
+-
+-    invoke-virtual {p1}, Lcom/samsung/android/camera/core2/processor/nodeController/composer/NodeChainComposer$NodeChainCompositionBundle;->getDsCondition()I
+-
+-    move-result p1
+-
+-    if-eqz v2, :cond_1
+-
+-    sget-object v3, Lcom/samsung/android/camera/core2/processor/container/NodeChainKeyContainer;->NODE_CHAIN_KEY_LL_HDR:Lcom/samsung/android/camera/core2/node/NodeChain$Key;
+-
+-    invoke-virtual {v2, v3}, Lcom/samsung/android/camera/core2/processor/container/NodeChainConfiguration;->isSupportNodeChainKey(Lcom/samsung/android/camera/core2/node/NodeChain$Key;)Z
+-
+-    move-result v2
+-
+-    if-nez v2, :cond_0
+-
+-    goto :goto_0
+-
+-    :cond_0
+-    const/4 v2, 0x0
+-
+-    const-class v3, Lcom/samsung/android/camera/core2/node/llhdr/LlHdrNodeBase;
+-
+-    invoke-virtual {v0, v3, v2}, Lcom/samsung/android/camera/core2/node/NodeChain;->g(Ljava/lang/Class;Ljava/lang/String;)Lcom/samsung/android/camera/core2/node/Node;
+-
+-    move-result-object v2
+-
+-    check-cast v2, Lcom/samsung/android/camera/core2/node/llhdr/LlHdrNodeBase;
+-
+-    const/4 v3, 0x1
+-
+-    invoke-virtual {v2, v3}, Lcom/samsung/android/camera/core2/node/Node;->initialize(Z)V
+-
+-    new-instance v4, Lcom/samsung/android/camera/core2/node/MultiFrameNodeBase$MultiFrameInitParam;
+-
+-    invoke-direct {v4, v1}, Lcom/samsung/android/camera/core2/node/MultiFrameNodeBase$MultiFrameInitParam;-><init>(Lcom/samsung/android/camera/core2/CamCapability;)V
+-
+-    invoke-virtual {v2, v4}, Lcom/samsung/android/camera/core2/node/MultiFrameNodeBase;->reconfigure(Ljava/lang/Object;)V
+-
+-    invoke-virtual {v2, p1}, Lcom/samsung/android/camera/core2/node/MultiFrameNodeBase;->prepareProcessCapture(I)V
+-
+-    invoke-virtual {v0, v3}, Lcom/samsung/android/camera/core2/node/NodeChain;->e(Z)V
+-
+-    iget-object p0, p0, Lcom/samsung/android/camera/core2/processor/nodeController/composer/LlHdrNodeChainComposer;->tag:Ljava/lang/String;
+-
+-    const-string p1, "configureLlHdrNodeChain: llHdrNode chain is enabled."
+-
+-    invoke-static {p0, p1}, Lcom/samsung/android/camera/core2/util/PLog;->i(Ljava/lang/String;Ljava/lang/String;)V
+-
+-    return-void
+-
+-    :cond_1
+-    :goto_0
+-    const/4 p0, 0x0
+-
+-    invoke-virtual {v0, p0}, Lcom/samsung/android/camera/core2/node/NodeChain;->e(Z)V
++    .locals 0
+ 
+     return-void
+ .end method
+-- 
+2.53.0
+
