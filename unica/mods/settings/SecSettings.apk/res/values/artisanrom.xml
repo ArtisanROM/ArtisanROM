@@ -50,7 +50,7 @@ Any form of contribution, suggestions, bug report or feature request for the pro
     <string name="maintainer_8_name">mecyanned</string>
     <string name="maintainer_8_role">Tester</string>
     <string name="maintainer_8_github">mecyanned</string>
-    <string name="maintainer_8_avatar">user_avatar</string>
+    <string name="maintainer_8_avatar">mecy_avatar</string>
     
     <string name="maintainer_9_name">Naaak</string>
     <string name="maintainer_9_role">Tester</string>
@@ -76,4 +76,39 @@ Any form of contribution, suggestions, bug report or feature request for the pro
     <string name="maintainer_13_role">Tester</string>
     <string name="maintainer_13_github">Jeykel55</string>
     <string name="maintainer_13_avatar">jeykel_avatar</string>
+
+    <string name="maintainer_14_name">CTVY970</string>
+    <string name="maintainer_14_role">Tester</string>
+    <string name="maintainer_14_github">caotuanvy970-dev</string>
+    <string name="maintainer_14_avatar">ctvy970_avatar</string>
+
+    <string name="maintainer_15_name">mrd83</string>
+    <string name="maintainer_15_role">Tester / Developer</string>
+    <string name="maintainer_15_github">mrd83</string>
+    <string name="maintainer_15_avatar">mrd83_avatar</string>
+
+    <string name="maintainer_16_name">Milena</string>
+    <string name="maintainer_16_role">Developer</string>
+    <string name="maintainer_16_github"></string>
+    <string name="maintainer_16_avatar">fishe_avatar</string>
+
+    <string name="maintainer_17_name">3q5i</string>
+    <string name="maintainer_17_role">Helper</string>
+    <string name="maintainer_17_github">3q5i</string>
+    <string name="maintainer_17_avatar">3q5i_avatar</string>
+
+    <string name="maintainer_18_name">Ohatlas0</string>
+    <string name="maintainer_18_role">Tester</string>
+    <string name="maintainer_18_github"></string>
+    <string name="maintainer_18_avatar">ohatlas0_avatar</string>
+
+    <string name="maintainer_19_name">ariebe9115</string>
+    <string name="maintainer_19_role">Tester</string>
+    <string name="maintainer_19_github">ariebe9115</string>
+    <string name="maintainer_19_avatar">ariebe9115_avatar</string>
+
+    <string name="maintainer_20_name">Pato G</string>
+    <string name="maintainer_20_role">Tester</string>
+    <string name="maintainer_20_github">PatoKuaKua2711</string>
+    <string name="maintainer_20_avatar">patokua_avatar</string>
 </resources>
