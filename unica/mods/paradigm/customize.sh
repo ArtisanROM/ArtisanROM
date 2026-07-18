@@ -56,9 +56,9 @@ if $TARGET_COMMON_SUPPORT_DYN_RESOLUTION_CONTROL; then
             "$MODPATH/ead_resolution_legacy/SecSettings.apk/0001-Add-Adaptive-color-tone-feature.patch"
     fi
 else
-    if [[ "$TARGET_CODENAME" == "r8s" ]]; then
+    if [[ "$TARGET_COMMON_SUPPORT_DYN_RESOLUTION_CONTROL" == "false" ]]; then
         APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-            "$MODPATH/ead/SecSettings.apk/0001-Add-Adaptive-color-tone-feature-r8s.patch"
+            "$MODPATH/ead/SecSettings.apk/0001-Add-Adaptive-color-tone-feature-non-DR.patch"
     else
         APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
             "$MODPATH/ead/SecSettings.apk/0001-Add-Adaptive-color-tone-feature.patch"
