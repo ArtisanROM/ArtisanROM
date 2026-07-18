@@ -6,6 +6,26 @@
 # - DO NOT add the partition name at the start of any entry (eg. "/system/dpolicy_system")
 # - DO NOT add a slash at the start of any entry (eg. "/dpolicy_system")
 
+# Modes and Routines
+SYSTEM_DEBLOAT+="
+system/priv-app/Routines
+"
+
+# SmartThings
+SYSTEM_DEBLOAT+="
+system/priv-app/SmartThingsKit
+"
+
+# Wi-Fi Tips
+SYSTEM_DEBLOAT+="
+system/app/WifiGuider
+"
+
+# Auto Blocker
+SYSTEM_DEBLOAT+="
+system/app/Rampart
+"
+
 # Samsung Defex policy
 SYSTEM_DEBLOAT+="
 dpolicy_system
@@ -130,6 +150,11 @@ PRODUCT_DEBLOAT+="
 app/DuoStub
 "
 
+# Google Speech Services
+PRODUCT_DEBLOAT+="
+app/SpeechServicesByGoogle
+"
+
 # Google Maps
 PRODUCT_DEBLOAT+="
 app/Maps
@@ -164,6 +189,8 @@ system/app/Notes40
 SYSTEM_DEBLOAT+="
 system/priv-app/Bixby
 system/app/BixbyWakeup
+system/app/VisionIntelligence3.7
+system/app/VisualCloudCore
 system/etc/preferred-apps/com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.wakeup.xml
