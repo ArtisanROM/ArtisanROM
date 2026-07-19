@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<!-- This XML file declares which platform signature permissions to grant to platform signed nonsystem apps. -->
+
+<permissions>
+    <signature-permissions package="com.sec.android.app.clockpackage">
+        <permission name="android.permission.INTERACT_ACROSS_USERS"/>
+		<permission name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+		<permission name="android.permission.INTERNAL_SYSTEM_WINDOW"/>
+		<permission name="android.permission.STATUS_BAR"/>
+		<permission name="android.permission.STATUS_BAR_SERVICE"/>
+		<permission name="android.permission.UPDATE_APP_OPS_STATS"/>
+		<permission name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"/>
+		<permission name="android.permission.READ_SEARCH_INDEXABLES"/>
+		<permission name="android.permission.REAL_GET_TASKS"/>
+		<permission name="android.permission.WRITE_SETTINGS"/>
+		<permission name="android.permission.CONTROL_KEYGUARD"/>
+		<permission name="android.permission.MANAGE_USERS"/>
+		<permission name="android.permission.STOP_APP_SWITCHES"/>
+		<permission name="android.permission.MANAGE_ACTIVITY_TASKS"/>
+		<permission name="android.permission.READ_PRIVILEGED_PHONE_STATE"/>
+		<permission name="android.permission.READ_PHONE_STATE"/>
+		<permission name="android.permission.READ_DREAM_STATE"/>
+		<permission name="android.permission.WRITE_DREAM_STATE"/>
+		<permission name="android.permission.SYSTEM_ALERT_WINDOW"/>
+		<permission name="android.permission.POST_NOTIFICATIONS"/>
+		<permission name="com.samsung.permission.PALM_MOTION"/>
+		<permission name="com.samsung.android.permission.SEM_APP_RESTRICTION"/>
+		<permission name="com.samsung.android.permission.SSRM_NOTIFICATION_PERMISSION"/>
+		<permission name="com.samsung.android.permission.CHANGE_DISPLAY_COLOR"/>
+		<permission name="android.permission.SCHEDULE_EXACT_ALARM"/>
+        <permission name="com.sec.android.diagmonagent.permission.DIAGMON"/>
+        <permission name="com.sec.android.diagmonagent.permission.PROVIDER"/>
+		<permission name="android.permission.SUBSTITUTE_NOTIFICATION_APP_NAME"/>
+		<permission name="android.permission.DEVICE_POWER"/>
+        <permission name="android.permission.MODIFY_AUDIO_SETTINGS_PRIVILEGED"/>	
+        <permission name="com.sec.android.app.clockpackage.permission.READ_WCCONTENT"/>	
+		<permission name="com.samsung.systemui.permission.KEYGUARD_IMAGE"/>
+    </signature-permissions>
+</permissions>
