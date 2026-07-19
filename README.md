@@ -131,5 +131,6 @@ A special thanks goes to the following for their invaluable contributions in no 
 - **[LineageOS Team](https://www.lineageos.org/)** for their original [OTA updater implementation](https://github.com/LineageOS/android_packages_apps_Updater)
 - *All the UN1CA project forks, contributors, testers and users ❤️*
 
-# Stargazers over time
-[![Stargazers over time](https://starchart.cc/ArtisanROM/ArtisanROM.svg)](https://starchart.cc/ArtisanROM/ArtisanROM)
+# ArtisanROM Archive
+- [ArtisanROM Archive Org](https://github.com/ArtisanROM-archive)
+- [Old Sixteen branch](https://github.com/ArtisanROM-archive/ArtisanROM_old)
