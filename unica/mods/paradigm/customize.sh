@@ -171,9 +171,9 @@ LOG "- Downloading latest Game Booster app"
 DOWNLOAD_FILE "$(GET_GALAXY_STORE_DOWNLOAD_URL "com.samsung.android.game.gametools")" \
     "$WORK_DIR/system/system/priv-app/GameTools_Dream/GameTools_Dream.apk"
 
-# Notes40
-LOG_STEP_IN "- Adding permissions for Notes40"
-ADD_TO_WORK_DIR "$SRC_DIR/prebuilts/extras" "system" "system/etc/permissions/signature-permissions-com.samsung.android.app.notes.xml"
+# Apps crashing due to debloat
+LOG_STEP_IN "- Fixing app crashes"
+ADD_TO_WORK_DIR "$SRC_DIR/prebuilts/extras" "system" "system/etc/permissions"
 LOG_STEP_OUT
 
 # Pet Detector in Galaxy AI
