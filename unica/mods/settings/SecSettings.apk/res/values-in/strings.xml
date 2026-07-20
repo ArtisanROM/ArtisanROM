@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Nggak, terus tap... (%d)</string>
     <string name="artisanrom_version_toast_final">Cari apa? Pengaturan developer tidak ada di sini!</string>
     <string name="artisanrom_version_toast_done">Masih di sini? Udah bilang, pengaturan developer tidak ada di sini!</string>
+    <string name="unica_oneui85_title">Aktifkan gaya OneUI 8.5 di aplikasi Pengaturan</string>
+    <string name="unica_oneui85_summary">Tampilkan desain OneUI 8.5 di Pengaturan - Eksperimental, dapat menyebabkan masalah</string>
+    <string name="unica_oneui85_system_title">Aktifkan gaya OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">Tampilkan desain OneUI 8.5 di seluruh sistem - Eksperimental, dapat menyebabkan masalah</string>
 </resources>

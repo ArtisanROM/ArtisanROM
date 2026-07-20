@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Nem, koppintson tovább... (%d)</string>
     <string name="artisanrom_version_toast_final">Mit keresel? A fejlesztői beállítások nincsenek itt!</string>
     <string name="artisanrom_version_toast_done">Még mindig itt? Mondtam, hogy a fejlesztői beállítások nincsenek itt!</string>
+    <string name="unica_oneui85_title">Engedélyezze a OneUI 8.5 stílust a Beállítások alkalmazásban</string>
+    <string name="unica_oneui85_summary">OneUI 8.5 megjelenítése a Beállításokban - Kísérleti, problémákat okozhat</string>
+    <string name="unica_oneui85_system_title">Engedélyezze a OneUI 8.5 stílust</string>
+    <string name="unica_oneui85_system_summary">OneUI 8.5 megjelenítése a rendszerben - Kísérleti, problémákat okozhat</string>
 </resources>

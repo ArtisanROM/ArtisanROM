@@ -38,4 +38,8 @@
     <string name="artisanrom_version_toast_counting">Não, continua a tocar... (%d)</string>
     <string name="artisanrom_version_toast_final">O que procuras? As definições de programador não estão aqui!</string>
     <string name="artisanrom_version_toast_done">Ainda aqui? Eu disse-te, as definições de programador não estão aqui!</string>
+    <string name="unica_oneui85_title">Habilite o estilo OneUI 8.5 na app Definições</string>
+    <string name="unica_oneui85_summary">Exibir o design do OneUI 8.5 nas Definições - Experimental, pode causar problemas</string>
+    <string name="unica_oneui85_system_title">Habilite o estilo OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">Exibir o design do OneUI 8.5 em todo o sistema - Experimental, pode causar problemas</string>
 </resources>

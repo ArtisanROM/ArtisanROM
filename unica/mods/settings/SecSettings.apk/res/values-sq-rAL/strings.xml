@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Jo, vazhdo të prekësh... (%d)</string>
     <string name="artisanrom_version_toast_final">Çfarë kërkon? Cilësimet e zhvilluesit nuk janë këtu!</string>
     <string name="artisanrom_version_toast_done">Ende këtu? Të thashë, cilësimet e zhvilluesit nuk janë këtu!</string>
+    <string name="unica_oneui85_title">Aktivizo stilin OneUI 8.5 në aplikacionin Cilësimet</string>
+    <string name="unica_oneui85_summary">Shfaq dizajnin OneUI 8.5 në Cilësimet - Eksperimentale, mund të shkaktojë probleme</string>
+    <string name="unica_oneui85_system_title">Aktivizo stilin OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">Shfaq dizajnin OneUI 8.5 në të gjithë sistemin - Eksperimentale, mund të shkaktojë probleme</string>
 </resources>

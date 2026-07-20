@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Xeyr, toxunmağa davam et... (%d)</string>
     <string name="artisanrom_version_toast_final">Nə axtarırsan? Tərtibatçı parametrləri burada deyil!</string>
     <string name="artisanrom_version_toast_done">Hələ buradasansan? Dedim sənə, tərtibatçı parametrləri burada deyil!</string>
+    <string name="unica_oneui85_title">OneUI 8.5 üslubunu Parametrlər tətbiqində aktivləşdirin</string>
+    <string name="unica_oneui85_summary">Parametrlər üzrə OneUI 8.5 dizaynını göstərin - Eksperimental, problemlərə səbəb ola bilər</string>
+    <string name="unica_oneui85_system_title">OneUI 8.5 üslubunu aktivləşdirin</string>
+    <string name="unica_oneui85_system_summary">Sistem üzrə OneUI 8.5 dizaynını göstərin - Eksperimental, problemlərə səbəb ola bilər</string>
 </resources>

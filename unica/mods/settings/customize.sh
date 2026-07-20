@@ -236,6 +236,14 @@ SMALI_PATCH "system" "system/priv-app/SecSettingsIntelligence/SecSettingsIntelli
     '    const-string v36, "top_level_unica"\n\n    filled-new-array/range {v1 .. v36}, [Ljava/lang/String;' \
     > /dev/null
 
+# Remove top-level settings section descriptions when OneUI 8.5 style is enabled
+SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
+    "smali_classes2/com/android/settings/Utils.smali" "replace" \
+    'buildSummaryString(Ljava/lang/String;Ljava/util/List;I)Ljava/lang/String;' \
+    '    new-instance v0, Ljava/lang/StringBuilder;' \
+    '    const-string v2, "persist.sys.unica.oneui85"\n\n    const/4 v3, 0x0\n\n    invoke-static {v2, v3}, Landroid/os/SemSystemProperties;->getBoolean(Ljava/lang/String;Z)Z\n\n    move-result v2\n\n    if-eqz v2, :cond_oneui85\n\n    const-string v2, ""\n\n    return-object v2\n\n    :cond_oneui85\n\n    new-instance v0, Ljava/lang/StringBuilder;' \
+    > /dev/null
+
 # Show Vulkan renderer toggle if required
 if [[ "$(GET_PROP "ro.hwui.use_vulkan")" != "true" ]]; then
     SET_PROP "system" "persist.sys.unica.vulkan" "false"

@@ -9,4 +9,6 @@
     <SecSwitchPreference android:title="@string/unica_max_refresh_rate_title" android:key="unica_max_refresh_rate" settings:controller="io.mesalabs.unica.settings.ui.ForceMaxRefreshRatePreferenceController" />
     <com.samsung.android.settings.widget.SecInsetCategoryPreference />
     <SecSwitchPreference android:title="@string/unica_boot_sound_title" android:key="unica_boot_sound" settings:controller="io.mesalabs.unica.settings.ui.BootSoundPreferenceController" />
+    <com.samsung.android.settings.widget.SecInsetCategoryPreference />
+    <SecSwitchPreference android:title="@string/unica_oneui85_title" android:key="unica_oneui85" android:summary="@string/unica_oneui85_summary" settings:controller="io.mesalabs.unica.settings.ui.OneUI85SettingsStylePreferenceController" />
 </PreferenceScreen>

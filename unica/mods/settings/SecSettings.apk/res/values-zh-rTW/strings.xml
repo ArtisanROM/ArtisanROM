@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">不，繼續點擊... (%d)</string>
     <string name="artisanrom_version_toast_final">你在找什麼？開發者設定不在這裡！</string>
     <string name="artisanrom_version_toast_done">還在這裡？告訴過你了，開發者設定不在這裡！</string>
+    <string name="unica_oneui85_title">在設定應用程式中啟用 OneUI 8.5 風格</string>
+    <string name="unica_oneui85_summary">在設定中顯示 OneUI 8.5 設計 - 實驗性，可能導致問題</string>
+    <string name="unica_oneui85_system_title">啟用 OneUI 8.5 風格</string>
+    <string name="unica_oneui85_system_summary">跨系統顯示 OneUI 8.5 設計 - 實驗性，可能導致問題</string>
 </resources>

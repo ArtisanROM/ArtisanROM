@@ -57,6 +57,10 @@
     <string name="unica_ui_settings_title">UI settings</string>
     <string name="unica_vulkan_summary">This is unstable and might cause issues!</string>
     <string name="unica_vulkan_title">Enable Vulkan renderer</string>
+    <string name="unica_oneui85_title">Enable OneUI 8.5 style settings app</string>
+    <string name="unica_oneui85_summary">Display OneUI 8.5 design across settings - Experimental, may cause issues</string>
+    <string name="unica_oneui85_system_title">Enable OneUI 8.5 style</string>
+    <string name="unica_oneui85_system_summary">Display OneUI 8.5 design across system - Experimental, may cause issues</string>
     <string name="artisanrom_version_title">ArtisanROM version</string>
     <string name="artisanrom_version_toast_counting">Nope, keep tapping... (%d)</string>
     <string name="artisanrom_version_toast_final">"What are you looking for? Developer settings ain't here!"</string>

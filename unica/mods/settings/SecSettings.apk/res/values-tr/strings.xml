@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Hayır, dokunmaya devam et... (%d)</string>
     <string name="artisanrom_version_toast_final">Ne arıyorsun? Geliştirici ayarları burada değil!</string>
     <string name="artisanrom_version_toast_done">Hâlâ burada mısın? Sana söylemiştim, geliştirici ayarları burada değil!</string>
+    <string name="unica_oneui85_title">OneUI 8.5 stilini Ayarlar uygulamasında etkinleştirin</string>
+    <string name="unica_oneui85_summary">OneUI 8.5 tasarımını Ayarlarda görüntüleyin - Deneysel, sorunlara neden olabilir</string>
+    <string name="unica_oneui85_system_title">OneUI 8.5 stilini etkinleştirin</string>
+    <string name="unica_oneui85_system_summary">OneUI 8.5 tasarımını sistem genelinde görüntüleyin - Deneysel, sorunlara neden olabilir</string>
 </resources>
