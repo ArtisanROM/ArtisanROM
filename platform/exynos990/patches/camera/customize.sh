@@ -94,14 +94,6 @@ LOG_STEP_IN "- Adding blobs from other devices"
 ADD_TO_WORK_DIR "e2sxxx" "system" "system/lib64/libc++_shared.so" 0 0 644 "u:object_r:system_lib_file:s0"
 LOG_STEP_OUT
 
-if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "36" ]; then
-    # Upgrade midas blobs
-    ADD_TO_WORK_DIR "r9sxxx" "vendor" "etc/midas/midas_config.json" 0 0 644 "u:object_r:vendor_configs_file:s0"
-fi
-
-LOG "- Fixing MIDAS model detection"
-EVAL "sed -i \"s/$TARGET_CODENAME/r0s/g\" \"$WORK_DIR/vendor/etc/midas/midas_config.json\""
-
 LOG_STEP_IN "- Adding S21 (p3sxxx) SingleTake models"
 DELETE_FROM_WORK_DIR "vendor" "etc/singletake"
 ADD_TO_WORK_DIR "p3sxxx" "system" "system/cameradata/singletake/service-feature.xml" 0 0 644 "u:object_r:system_file:s0"
