@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">لا، استمر في النقر... (%d)</string>
     <string name="artisanrom_version_toast_final">عم تبحث؟ إعدادات المطور ليست هنا!</string>
     <string name="artisanrom_version_toast_done">ما زلت هنا؟ أخبرتك، إعدادات المطور ليست هنا!</string>
+    <string name="unica_oneui85_title">تمكين نمط OneUI 8.5 لتطبيق الإعدادات</string>
+    <string name="unica_oneui85_summary">عرض تصميم OneUI 8.5 عبر الإعدادات - تجريبي، قد يسبب مشاكل</string>
+    <string name="unica_oneui85_system_title">تمكين نمط OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">عرض تصميم OneUI 8.5 عبر النظام - تجريبي، قد يسبب مشاكل</string>
 </resources>

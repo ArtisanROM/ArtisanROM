@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Không, tiếp tục chạm... (%d)</string>
     <string name="artisanrom_version_toast_final">Bạn đang tìm gì? Cài đặt nhà phát triển không có ở đây!</string>
     <string name="artisanrom_version_toast_done">Vẫn còn ở đây? Tôi đã nói rồi, cài đặt nhà phát triển không có ở đây!</string>
+    <string name="unica_oneui85_title">Kích hoạt kiểu OneUI 8.5 trong ứng dụng Cài đặt</string>
+    <string name="unica_oneui85_summary">Hiển thị thiết kế OneUI 8.5 trong Cài đặt - Thử nghiệm, có thể gây ra sự cố</string>
+    <string name="unica_oneui85_system_title">Kích hoạt kiểu OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">Hiển thị thiết kế OneUI 8.5 trên toàn hệ thống - Thử nghiệm, có thể gây ra sự cố</string>
 </resources>

@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Nie, stukaj dalej... (%d)</string>
     <string name="artisanrom_version_toast_final">Czego szukasz? Ustawień programisty tu nie ma!</string>
     <string name="artisanrom_version_toast_done">Nadal tu jesteś? Mówiłem ci, ustawień programisty tu nie ma!</string>
+    <string name="unica_oneui85_title">Włącz styl OneUI 8.5 w aplikacji Ustawienia</string>
+    <string name="unica_oneui85_summary">Wyświetl projekt OneUI 8.5 w Ustawieniach - Eksperymentalne, może powodować problemy</string>
+    <string name="unica_oneui85_system_title">Włącz styl OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">Wyświetl projekt OneUI 8.5 w całym systemie - Eksperymentalne, może powodować problemy</string>
 </resources>

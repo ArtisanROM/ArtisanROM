@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">नहीं, टैप करते रहें... (%d)</string>
     <string name="artisanrom_version_toast_final">आप क्या ढूंढ रहे हैं? डेवलपर सेटिंग्स यहाँ नहीं हैं!</string>
     <string name="artisanrom_version_toast_done">अभी भी यहाँ? मैंने कहा था, डेवलपर सेटिंग्स यहाँ नहीं हैं!</string>
+    <string name="unica_oneui85_title">सेटिंग ऐप में OneUI 8.5 स्टाइल सक्षम करें</string>
+    <string name="unica_oneui85_summary">सेटिंग में OneUI 8.5 डिज़ाइन प्रदर्शित करें - प्रायोगिक, समस्या पैदा कर सकता है</string>
+    <string name="unica_oneui85_system_title">OneUI 8.5 स्टाइल सक्षम करें</string>
+    <string name="unica_oneui85_system_summary">पूरे सिस्टम में OneUI 8.5 डिज़ाइन प्रदर्शित करें - प्रायोगिक, समस्या पैदा कर सकता है</string>
 </resources>

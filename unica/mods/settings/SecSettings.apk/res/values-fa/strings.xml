@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">نه، به ضربه زدن ادامه بده... (%d)</string>
     <string name="artisanrom_version_toast_final">دنبال چه می‌گردی؟ تنظیمات توسعه‌دهنده اینجا نیست!</string>
     <string name="artisanrom_version_toast_done">هنوز اینجایی؟ بهت گفتم، تنظیمات توسعه‌دهنده اینجا نیست!</string>
+    <string name="unica_oneui85_title">فعال کردن سبک OneUI 8.5 در برنامه تنظیمات</string>
+    <string name="unica_oneui85_summary">نمایش طراحی OneUI 8.5 در تنظیمات - آزمایشی، ممکن است باعث مشکلات شود</string>
+    <string name="unica_oneui85_system_title">سبک OneUI 8.5 را فعال کنید</string>
+    <string name="unica_oneui85_system_summary">نمایش طراحی OneUI 8.5 در سراسر سیستم - آزمایشی، ممکن است باعث مشکلات شود</string>
 </resources>

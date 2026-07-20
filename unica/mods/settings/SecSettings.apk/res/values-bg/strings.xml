@@ -60,4 +60,8 @@
     <string name="artisanrom_version_toast_counting">Не, продължавай да натискаш... (%d)</string>
     <string name="artisanrom_version_toast_final">Какво търсиш? Настройките за разработчици не са тук!</string>
     <string name="artisanrom_version_toast_done">Още си тук? Казах ти, настройките за разработчици не са тук!</string>
+    <string name="unica_oneui85_title">Активирайте стил OneUI 8.5 в приложението Настройки</string>
+    <string name="unica_oneui85_summary">Показване на OneUI 8.5 дизайн в Настройките - Експериментално, може да причини проблеми</string>
+    <string name="unica_oneui85_system_title">Активирайте стил OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">Показване на OneUI 8.5 дизайн в цялата система - Експериментално, може да причини проблеми</string>
 </resources>

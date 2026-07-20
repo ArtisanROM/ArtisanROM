@@ -27,4 +27,8 @@
     <string name="artisanrom_version_toast_counting">ไม่ แตะต่อไป... (%d)</string>
     <string name="artisanrom_version_toast_final">กำลังหาอะไร? การตั้งค่าสำหรับนักพัฒนาไม่ได้อยู่ที่นี่!</string>
     <string name="artisanrom_version_toast_done">ยังอยู่ที่นี่อีกเหรอ? บอกแล้วไง การตั้งค่าสำหรับนักพัฒนาไม่ได้อยู่ที่นี่!</string>
+    <string name="unica_oneui85_title">เปิดใช้งานสไตล์ OneUI 8.5 ในแอปการตั้งค่า</string>
+    <string name="unica_oneui85_summary">แสดงการออกแบบ OneUI 8.5 ในการตั้งค่า - ทดลอง อาจทำให้เกิดปัญหา</string>
+    <string name="unica_oneui85_system_title">เปิดใช้งานสไตล์ OneUI 8.5</string>
+    <string name="unica_oneui85_system_summary">แสดงการออกแบบ OneUI 8.5 ทั่วทั้งระบบ - ทดลอง อาจทำให้เกิดปัญหา</string>
 </resources>
