@@ -374,6 +374,9 @@ if ! grep -q "\"version\": \"4\." "$WORK_DIR/vendor/etc/midas/midas_config.json"
     fi
 fi
 
+LOG "- Fixing MIDAS model detection"
+EVAL "sed -i \"s/$TARGET_CODENAME/$SOURCE_CODENAME/g\" \"$WORK_DIR/vendor/etc/midas/midas_config.json\""
+
 # Upgrade Single Take models (pre-API 35)
 if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
     if [ ! -d "$WORK_DIR/vendor/etc/singletake/ClarityScorer" ]; then
