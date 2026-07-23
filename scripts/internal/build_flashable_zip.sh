@@ -56,28 +56,28 @@ BUILD_SUPER_EMPTY()
     CMD+=" --device \"super:$TARGET_SUPER_PARTITION_SIZE\""
     CMD+=" --group \"$TARGET_SUPER_GROUP_NAME:$(GET_SUPER_GROUP_SIZE)\""
     if [ -f "$TMP_DIR/system.img" ]; then
-        CMD+=" --partition \"system:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"system:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/system.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     if [ -f "$TMP_DIR/vendor.img" ]; then
-        CMD+=" --partition \"vendor:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"vendor:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/vendor.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     if [ -f "$TMP_DIR/product.img" ]; then
-        CMD+=" --partition \"product:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"product:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/product.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     if [ -f "$TMP_DIR/system_ext.img" ]; then
-        CMD+=" --partition \"system_ext:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"system_ext:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/system_ext.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     if [ -f "$TMP_DIR/odm.img" ]; then
-        CMD+=" --partition \"odm:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"odm:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/odm.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     if [ -f "$TMP_DIR/vendor_dlkm.img" ]; then
-        CMD+=" --partition \"vendor_dlkm:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"vendor_dlkm:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/vendor_dlkm.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     if [ -f "$TMP_DIR/odm_dlkm.img" ]; then
-        CMD+=" --partition \"odm_dlkm:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"odm_dlkm:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/odm_dlkm.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     if [ -f "$TMP_DIR/system_dlkm.img" ]; then
-        CMD+=" --partition \"system_dlkm:readonly:0:$TARGET_SUPER_GROUP_NAME\""
+        CMD+=" --partition \"system_dlkm:readonly:$(GET_IMAGE_SIZE "$TMP_DIR/system_dlkm.img"):$TARGET_SUPER_GROUP_NAME\""
     fi
     CMD+=" --output \"$TMP_DIR/unsparse_super_empty.img\""
 
