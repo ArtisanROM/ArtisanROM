@@ -73,7 +73,6 @@ Any form of contribution, suggestions, bug report or feature request for the pro
 
 ### ArtisanROM-exclusive features:
 - Integrated OTA updates app
-- Integrated lk3rd bootloader
 - Completely upstreamed kernels*
 
 \* Exynos990
