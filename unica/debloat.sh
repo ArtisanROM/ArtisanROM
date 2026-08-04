@@ -78,11 +78,6 @@ system/priv-app/FacAtFunction
 system/priv-app/FactoryTestProvider
 "
 
-# Samsung Weather
-SYSTEM_DEBLOAT+="
-system/app/SamsungWeather
-"
-
 # AppUpdateCenter
 SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.samsung.android.app.updatecenter.xml
