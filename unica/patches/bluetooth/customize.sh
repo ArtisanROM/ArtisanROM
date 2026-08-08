@@ -140,7 +140,7 @@ SIGN_APEX()
 
     local CERT_PREFIX="aosp"
     if $ROM_IS_OFFICIAL; then
-        CERT_PREFIX="unica"
+        CERT_PREFIX="artisanrom"
     fi
 
     # https://android.googlesource.com/platform/build/+/refs/tags/android-16.0.0_r4/tools/releasetools/apex_utils.py#394
