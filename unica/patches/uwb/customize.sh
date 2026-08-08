@@ -1,65 +1,14 @@
-SOURCE_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$SOURCE_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$SOURCE_FIRMWARE")"
-TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$TARGET_FIRMWARE")"
+MODEL=$(echo -n "$TARGET_FIRMWARE" | cut -d "/" -f 1)
+REGION=$(echo -n "$TARGET_FIRMWARE" | cut -d "/" -f 2)
 
-SOURCE_HAS_UWB="$(test -f "$FW_DIR/$SOURCE_FIRMWARE_PATH/vendor/etc/permissions/android.hardware.uwb.xml" && echo "true" || echo "false")"
-TARGET_HAS_UWB="$(test -f "$FW_DIR/$TARGET_FIRMWARE_PATH/vendor/etc/permissions/android.hardware.uwb.xml" && echo "true" || echo "false")"
-
-if ! $SOURCE_HAS_UWB; then
-    if $TARGET_HAS_UWB; then
-        LOG "- Adding \"ro.boot.uwbcountrycode\" prop with \"ff\" in /product/etc/build.prop"
-        EVAL "sed -i \"/usb.config/a ro.boot.uwbcountrycode=ff\" \"$WORK_DIR/product/etc/build.prop\""
-
-        ADD_TO_WORK_DIR "b0qxxx" "product" \
-            "overlay/UwbRROverlay.apk" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/app/UwbTest/UwbTest.apk" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "$([[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]] && echo "b0qxxx" || echo "b0sxxx")" \
-            "system" "system/etc/classpaths/bootclasspath.pb" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/etc/init/init.system.uwb.rc" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/etc/permissions/com.samsung.android.uwb_extras.xml" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/etc/permissions/org.carconnectivity.android.digitalkey.timesync.xml" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/etc/permissions/privapp-permissions-com.samsung.android.dcktimesync.xml" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/etc/permissions/privapp-permissions-com.sec.android.app.uwbtest.xml" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" \
-            "system/etc/libuwb-cal.conf" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" \
-            "system/etc/pp_model.tflite" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/framework/com.samsung.android.uwb_extras.jar" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/framework/semuwb-service.jar" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/lib/libtflite_uwb_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system" \
-            "system/lib64/libtflite_uwb_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system_ext" \
-            "framework/org.carconnectivity.android.digitalkey.timesync.jar" 0 0 644 "u:object_r:system_file:s0"
-        ADD_TO_WORK_DIR "b0qxxx" "system_ext" \
-            "priv-app/DckTimeSyncService/DckTimeSyncService.apk" 0 0 644 "u:object_r:system_file:s0"
-    else
-        LOG "\033[0;33m! Nothing to do\033[0m"
-    fi
+if [ -d "$FW_DIR/${MODEL}_${REGION}/vendor/firmware/uwb" ]; then
+    LOG_STEP_IN "- Adding S24+ (e2sxxx) UWB blobs"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/app/UwbTest"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/etc/init/init.system.uwb.rc"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/etc/permissions/com.samsung.android.uwb_extras.xml"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/framework/com.samsung.android.uwb_extras.jar"
+    ADD_TO_WORK_DIR "e2sxxx" "system" "system/lib64/libtflite_uwb_jni.so"
+    LOG_STEP_OUT
 else
-    if ! $TARGET_HAS_UWB; then
-        LOG "- Removing UWB blobs for non-UWB target"
-        DELETE_FROM_WORK_DIR "system" "system/app/UwbTest"
-        DELETE_FROM_WORK_DIR "system" "system/etc/init/init.system.uwb.rc"
-        DELETE_FROM_WORK_DIR "system" "system/etc/permissions/com.samsung.android.uwb_extras.xml"
-        DELETE_FROM_WORK_DIR "system" "system/etc/permissions/privapp-permissions-com.sec.android.app.uwbtest.xml"
-        DELETE_FROM_WORK_DIR "system" "system/etc/libuwb-cal.conf"
-        DELETE_FROM_WORK_DIR "system" "system/etc/pp_model.tflite"
-        DELETE_FROM_WORK_DIR "system" "system/framework/com.samsung.android.uwb_extras.jar"
-        DELETE_FROM_WORK_DIR "system" "system/framework/semuwb-service.jar"
-        DELETE_FROM_WORK_DIR "system" "system/lib/libtflite_uwb_jni.so"
-        DELETE_FROM_WORK_DIR "system" "system/lib64/libtflite_uwb_jni.so"
-        DELETE_FROM_WORK_DIR "system_ext" "framework/org.carconnectivity.android.digitalkey.timesync.jar"
-        DELETE_FROM_WORK_DIR "system_ext" "priv-app/DckTimeSyncService"
-    fi
+    LOG "- Target has no UWB. Ignoring."
 fi
-
-unset SOURCE_FIRMWARE_PATH TARGET_FIRMWARE_PATH SOURCE_HAS_UWB TARGET_HAS_UWB
