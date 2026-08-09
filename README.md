@@ -1,4 +1,5 @@
 <h1 align="center">
+  <img loading="lazy" src="readme-res/banner.png"/>
 </h1>
 <p align="center">
   <a href="https://github.com/ArtisanROM/ArtisanROM/blob/sixteen/LICENSE"><img loading="lazy" src="https://img.shields.io/github/license/ArtisanROM/ArtisanROM?style=for-the-badge&logo=github"/></a>
