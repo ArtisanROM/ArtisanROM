@@ -30,19 +30,19 @@ Any form of contribution, suggestions, bug report or feature request for the pro
 # Features
     
 Changelog:
-    Fixed 120hz Refresh Rate
-    Airplane mode and uwb SvstemUI crash
-    Spen fixed
-    Fix Lockscreen Video Aspect Ratio Distortion
-    Back to KernelSU-Next version 3.1.0
-    Removed updater app
-    Boot sound added
-    Removed lk3rd Bootloader
-    OneUi 8.5 Settings app, Pure Settings App like stock
-    Add UN1CA, Extreme patches to improve experience
-    Update debloat files
-    HEAVILY improved performance, general smoothness, battery and thermals
-    Update signature
+- Fixed 120hz Refresh Rate
+- Airplane mode and uwb SvstemUI crash
+- Spen fixed
+- Fix Lockscreen Video Aspect Ratio Distortion
+- Back to KernelSU-Next version 3.1.0
+- Removed updater app
+- Boot sound added, soft sound
+- Removed lk3rd Bootloader
+- OneUi 8.5 Settings app, Pure Settings App like stock
+- Add UN1CA, Extreme patches to improve experience
+- Update debloat files
+- HEAVILY improved performance, general smoothness, battery and thermals
+- Update signature
     
 ### Core features as ArtisanROM:
 - Based on the latest stable Galaxy S22 firmware
