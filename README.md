@@ -27,20 +27,7 @@ BenlyROM supports devices using the Exynos 990 SoC
 
 Any form of contribution, suggestions, bug report or feature request for the project will be welcome.
 
-Changelog:
-    Fixed 120hz Refresh Rate
-    Airplane mode and uwb SvstemUI crash
-    Spen fixed
-    Fix Lockscreen Video Aspect Ratio Distortion
-    Back to KernelSU-Next version 3.1.0
-    Removed updater app
-    Boot sound added
-    Removed lk3rd Bootloader
-    OneUi 8.5 Settings app, Pure Settings App like stock
-    Add UN1CA, Extreme patches to improve experience
-    Update debloat files
-    HEAVILY improved performance, general smoothness, battery and thermals
-    Update signature
+# Features
     
 Changelog:
     Fixed 120hz Refresh Rate
@@ -56,8 +43,7 @@ Changelog:
     Update debloat files
     HEAVILY improved performance, general smoothness, battery and thermals
     Update signature
-
-# Features
+    
 ### Core features as ArtisanROM:
 - Based on the latest stable Galaxy S22 firmware
 - EROFS powered
