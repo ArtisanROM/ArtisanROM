@@ -1,4 +1,20 @@
-# ArtisanROM changelog
+#   BenlyROM changelog
+
+# 3.5.0
+    Fixed 120hz Refresh Rate
+    Airplane mode and uwb SvstemUI crash
+    Spen fixed
+    Fix Lockscreen Video Aspect Ratio Distortion
+    Back to KernelSU-Next version 3.1.0
+    Removed updater app
+    Boot sound added
+    Removed lk3rd Bootloader
+    OneUi 8.5 Settings app, Pure Settings App like stock
+    Add UN1CA, Extreme patches to improve experience
+    Update debloat files
+    HEAVILY improved performance, general smoothness, battery and thermals
+    Update signature
+
 
 # 3.5.0
 - Switch to UN1CA build system (thx @xfwdrev).
