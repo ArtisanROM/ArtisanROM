@@ -17,7 +17,7 @@
 </p>
 
 # What is BenlyROM?
-ArtisanROM Quant is a work-in-progress custom firmware for Samsung Galaxy devices.
+BenlyROM is a work-in-progress custom firmware for Samsung Galaxy devices.
 
 It's based on the latest and greatest iteration of Samsung's UX and it also includes additional features and tweaks to ensure the best possible experience out of the box.
 
