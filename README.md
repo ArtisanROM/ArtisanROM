@@ -86,6 +86,8 @@ Changelog:
 \* DeX via HDMI not available for devices without USB-C DP support
 
 \* Exynos990
+Enable usb file transfer
+*#0808# USB Settings - by this menu, you can change the way your SAMSUNG Galaxy Note20 Ultra 5G will be recognized by PC/Laptop when you are connected with USB cable. Modes like Mass Storage, MPT, ADB, etc.
 
 ### UN1CA-exclusive features:
 - Native/live blur toggle
