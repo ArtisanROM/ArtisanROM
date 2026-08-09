@@ -125,12 +125,13 @@ This project is licensed under the terms of the [GNU General Public License v3.0
 - [platform_build](https://android.googlesource.com/platform/build/) (ext4_utils, f2fs_utils, signapk), licensed under the [Apache License 2.0](https://source.android.com/docs/setup/about/licenses)
 
 # Contributors
-<a href="https://github.com/ArtisanROM/ArtisanROM/graphs/contributors"><img loading="lazy" src="https://contrib.rocks/image?repo=ArtisanROM/ArtisanROM"/></a>
+<a href="https://github.com/benly-binh24/BenlyROM/graphs/contributors"><img loading="lazy" src="https://contrib.rocks/image?repo=salvogiangri/UN1CA"/></a>
 
 # Credits:
 - **[salvogiangri](https://github.com/salvogiangri)** for the UN1CA build system, OneUI patches, and general help and support while developing.
 - **[ExtremeXT](https://github.com/ExtremeXT)** for helping me fix bugs and giving me support.
 - **[GhasemzadehFard-Dev](https://github.com/GhasemzadehFard-Dev)** for helping fix many bugs I was not able to fix.
+- **[Binh24](https://github.com/binh24)** for helping fix bugs and build.
 - **[Mesazane](https://github.com/Mesazane)** for testing and helping with the updaters design, and for updating and fixing KernelSU-Next on the Kernels.
 - **[ricci205GTI](https://github.com/ricci205GTI)** for fixing motion photo and help with the x1s.
 - **[immohammeeed](https://github.com/immohammeeed)** for creating the website for this project.
