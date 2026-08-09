@@ -17,19 +17,34 @@
   <a href="https://github.com/ArtisanROM/ArtisanROM/blob/sixteen/MAINTAINERS">🧑‍💻 Maintainers</a>
 </p>
 
-# What is ArtisanROM Quant?
+# What is BenlyROM?
 ArtisanROM Quant is a work-in-progress custom firmware for Samsung Galaxy devices.
 
 It's based on the latest and greatest iteration of Samsung's UX and it also includes additional features and tweaks to ensure the best possible experience out of the box.
 
 It is based on the UN1CA build system which allows automatic downloading/extraction of the firmware, applying the required patches and generating a flashable zip package for the specified target device.
 
-ArtisanROM Quant supports devices using the Exynos 990 SoC
+BenlyROM supports devices using the Exynos 990 SoC
 
 Any form of contribution, suggestions, bug report or feature request for the project will be welcome.
 
+Changelog:
+    Fixed 120hz Refresh Rate
+    Airplane mode and uwb SvstemUI crash
+    Spen fixed
+    Fix Lockscreen Video Aspect Ratio Distortion
+    Back to KernelSU-Next version 3.1.0
+    Removed updater app
+    Boot sound added
+    Removed lk3rd Bootloader
+    OneUi 8.5 Settings app, Pure Settings App like stock
+    Add UN1CA, Extreme patches to improve experience
+    Update debloat files
+    HEAVILY improved performance, general smoothness, battery and thermals
+    Update signature
+
 # Features
-### Core features:
+### Core features as ArtisanROM:
 - Based on the latest stable Galaxy S22 firmware
 - EROFS powered
 - Galaxy S25 wallpapers/sounds included
@@ -67,10 +82,6 @@ Any form of contribution, suggestions, bug report or feature request for the pro
 - Extra CSC features enabled (Call recording, Hiya, Network speed in status bar, AltZLife)
 
 \* DeX via HDMI not available for devices without USB-C DP support
-
-### ArtisanROM-exclusive features:
-- Integrated OTA updates app
-- Completely upstreamed kernels*
 
 \* Exynos990
 
@@ -126,7 +137,3 @@ A special thanks goes to the following for their invaluable contributions in no 
 - **[iDrinkCoffee](https://github.com/iDrinkCoffee-TG)** and **[RisenID](https://github.com/RisenID)** for their support
 - **[LineageOS Team](https://www.lineageos.org/)** for their original [OTA updater implementation](https://github.com/LineageOS/android_packages_apps_Updater)
 - *All the UN1CA project forks, contributors, testers and users ❤️*
-
-# ArtisanROM Archive
-- [ArtisanROM Archive Org](https://github.com/ArtisanROM-archive)
-- [Old Sixteen branch](https://github.com/ArtisanROM-archive/ArtisanROM_old)
