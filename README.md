@@ -10,11 +10,9 @@
 <p align="center">
   <a href="https://github.com/benly-binh24/BenlyROM/issues">🚀 issues</a>
   •
-  <a  href="https://github.com/ArtisanROM/ArtisanROM/wiki">📖 Wiki</a>
+  <a  href="https://github.com/benly-binh24/BenlyROM/wiki">📖 Wiki</a>
   •
   <a href="https://github.com/benly-binh24/BenlyROM/blob/sixteen/CHANGELOG.md">📝 Changelog</a>
-  •
-  <a href="https://github.com/ArtisanROM/ArtisanROM/blob/sixteen/MAINTAINERS">🧑‍💻 Maintainers</a>
 </p>
 
 # What is BenlyROM?
