@@ -13,6 +13,8 @@
   •
   <a  href="https://github.com/benly-binh24/BenlyROM/wiki">📖 Wiki</a>
   •
+  <a  href="https://github.com/benly-binh24/BenlyROM/releases">*Releases</a>
+  •
   <a href="https://github.com/benly-binh24/BenlyROM/blob/sixteen/CHANGELOG.md">📝 Changelog</a>
 </p>
 
