@@ -1,6 +1,6 @@
 #   BenlyROM changelog
 
-# 3.5.0
+# 3.5.2
     Fixed 120hz Refresh Rate
     Airplane mode and uwb SvstemUI crash
     Spen fixed
