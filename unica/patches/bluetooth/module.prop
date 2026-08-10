@@ -1,4 +1,4 @@
 id=bluetooth
 name=Bluetooth patches
-author=salvogiangri, duhansysl
+author=salvogiangri, duhansysl, Erick-04
 description=Applies Bluetooth patches in work dir.
