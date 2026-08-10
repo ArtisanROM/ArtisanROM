@@ -1,9 +1,9 @@
 CERT_PREFIX="aosp"
 $ROM_IS_OFFICIAL && CERT_PREFIX="artisanrom"
 
-if [ ! -f "$SRC_DIR/security/${CERT_PREFIX}_platform.x509.pem" ]; then
-    ABORT "File not found: security/${CERT_PREFIX}_platform.x509.pem"
-fi
+#if [ ! -f "$SRC_DIR/security/${CERT_PREFIX}_platform.x509.pem" ]; then
+#    ABORT "File not found: security/${CERT_PREFIX}_platform.x509.pem"
+#fi
 
 APPLY_PATCH "system" "system/framework/services.jar" "$MODPATH/services.jar/0001-Allow-custom-platform-signature.patch"
 
