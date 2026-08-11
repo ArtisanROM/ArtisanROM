@@ -63,11 +63,11 @@ jobs:
           sudo modprobe erofs f2fs
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-  # Xóa hoặc comment các dòng này nếu key đã có sẵn trong repo Git:
-  # echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
-  # echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
-  # echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
-  # echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
+          mkdir -p security
+          echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
+          echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
+          echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
+          echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
           echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/_ota.pk8
           echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/_ota.x509.pem
 
@@ -102,7 +102,7 @@ jobs:
           swap-space-path: /swapfile
           swap-size-gb: 12
           remove-existing-swap-files: true
-      
+        
       - name: Build ROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
