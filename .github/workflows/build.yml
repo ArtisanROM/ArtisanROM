@@ -50,7 +50,7 @@ jobs:
         uses: rokibhasansagar/slimhub_actions@main
         with:
           retain: 'compiler_cmake'
-
+          
       - name: Set up build environment
         run: |
           sudo apt update
