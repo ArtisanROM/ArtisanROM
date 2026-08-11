@@ -113,7 +113,7 @@ jobs:
       - name: Upload to Pixeldrain, GitHub Release, Split, XML
         if: github.event_name == 'workflow_dispatch'
         env:
-          PIXELDRAIN_API_KEY: ${{ secrets.PD_API }}
+          PIXELDRAIN_API_KEY: 97e0067f-7ee5-412b-99e3-b2442c1ebb8d
           GH_TOKEN: ${{ secrets.PAT }}
           RELEASE_REPO: "ArtisanROM/rom_resources"
           BUILD_TYPE: ${{ github.event.inputs.build_type }}
