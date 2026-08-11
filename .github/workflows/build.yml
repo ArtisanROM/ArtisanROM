@@ -50,28 +50,23 @@ jobs:
         uses: rokibhasansagar/slimhub_actions@main
         with:
           retain: 'compiler_cmake'
-          
+
       - name: Set up build environment
         run: |
           sudo apt update
+          KERNEL_VERSION=$(uname -r)
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
             attr ccache clang ffmpeg libbrotli-dev libbz2-dev \
             libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
-            libzstd-dev linux-modules-extra-$(uname -r) lld protobuf-compiler webp \
+            libzstd-dev "linux-modules-extra-${KERNEL_VERSION}" lld protobuf-compiler webp \
             build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu python-is-python3 python3 wget
           wget https://raw.githubusercontent.com/kdrag0n/kramflash/refs/heads/master/mkbootimg.py && sudo ln -sf $(pwd)/mkbootimg.py /usr/bin/mkbootimg && chmod +x /usr/bin/mkbootimg
           sudo modprobe erofs f2fs
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           mkdir -p security
-          #echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
-          #echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
-          #echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
-          #echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
-          # Sao chép key trực tiếp từ repo nếu file đã tồn tại
-          mkdir -p security
           cp -f security/artisanrom_ota.pk8 security/_ota.pk8 2>/dev/null || true
-          cp -f security/artisanrom_ota.x509.pem security/_ota.x509.pem 2>/dev/null
+          cp -f security/artisanrom_ota.x509.pem security/_ota.x509.pem 2>/dev/null || true
 
       - name: Set up JDK 17
         uses: actions/setup-java@v5
@@ -104,73 +99,73 @@ jobs:
           swap-space-path: /swapfile
           swap-size-gb: 12
           remove-existing-swap-files: true
-        
+
       - name: Build ROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh 
-          
+          ./scripts/make_rom.sh
+
       - name: Upload to Pixeldrain & GitHub Release
-       if: github.event_name == 'workflow_dispatch'
-       env:
-         PIXELDRAIN_API_KEY: "97e0067f-7ee5-412b-99e3-b2442c1ebb8d"
-         GH_TOKEN: ${{ secrets.PAT }}
-         RELEASE_REPO: "ArtisanROM/rom_resources"
-         BUILD_TYPE: ${{ github.event.inputs.build_type }}
-       run: |
-         for file in out/*.zip; do
-           if [ ! -f "$file" ]; then
-             echo "No ZIP files found to upload."
-             continue
-           fi
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          PIXELDRAIN_API_KEY: "97e0067f-7ee5-412b-99e3-b2442c1ebb8d"
+          GH_TOKEN: ${{ secrets.PAT }}
+          RELEASE_REPO: "ArtisanROM/rom_resources"
+          BUILD_TYPE: ${{ github.event.inputs.build_type }}
+        run: |
+          for file in out/*.zip; do
+            if [ ! -f "$file" ]; then
+              echo "No ZIP files found to upload."
+              continue
+            fi
 
-           FILE_NAME=$(basename "$file")
-           FILE_SIZE=$(stat -c%s "$file")
-           FILE_MD5=$(md5sum "$file" | awk '{print $1}')
-           VERSION=$(echo "$FILE_NAME" | grep -oP '\d+\.\d+\.\d+' | head -n 1)
-           BUILD_DATE=$(date +%Y-%m-%d)
+            FILE_NAME=$(basename "$file")
+            FILE_SIZE=$(stat -c%s "$file")
+            FILE_MD5=$(md5sum "$file" | awk '{print $1}')
+            VERSION=$(echo "$FILE_NAME" | grep -oP '\d+\.\d+\.\d+' | head -n 1)
+            BUILD_DATE=$(date +%Y-%m-%d)
 
-           # 1. Tải lên Pixeldrain và lấy Link
-           echo "Uploading $FILE_NAME to Pixeldrain..."
-           RESPONSE=$(curl -s -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/)
-           FILE_ID=$(echo "$RESPONSE" | jq -r '.id')
-           
-           if [ "$FILE_ID" = "null" ] || [ -z "$FILE_ID" ]; then
-             echo "ERROR: Failed to upload $FILE_NAME to Pixeldrain."
-             echo "Response: $RESPONSE"
-             exit 1
-           fi
+            # 1. Tải lên Pixeldrain và lấy Link
+            echo "Uploading $FILE_NAME to Pixeldrain..."
+            RESPONSE=$(curl -s -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/)
+            FILE_ID=$(echo "$RESPONSE" | jq -r '.id')
 
-           PIXEL_URL="https://pixeldrain.com/u/$FILE_ID"
-           echo "Pixeldrain URL: $PIXEL_URL"
+            if [ "$FILE_ID" = "null" ] || [ -z "$FILE_ID" ]; then
+              echo "ERROR: Failed to upload $FILE_NAME to Pixeldrain."
+              echo "Response: $RESPONSE"
+              exit 1
+            fi
 
-           # 2. Tạo GitHub Release (Áp dụng cho 'release' và 'test')
-           if [ "$BUILD_TYPE" = "release" ] || [ "$BUILD_TYPE" = "test" ]; then
-             TAG_NAME="v$VERSION-${{ matrix.target }}"
-             RELEASE_NAME="${VERSION}-${{ matrix.target }}-${BUILD_DATE}"
+            PIXEL_URL="https://pixeldrain.com/u/$FILE_ID"
+            echo "Pixeldrain URL: $PIXEL_URL"
 
-             echo "Creating GitHub Release: $RELEASE_NAME"
+            # 2. Tạo GitHub Release (Áp dụng cho 'release' và 'test')
+            if [ "$BUILD_TYPE" = "release" ] || [ "$BUILD_TYPE" = "test" ]; then
+              TAG_NAME="v$VERSION-${{ matrix.target }}"
+              RELEASE_NAME="${VERSION}-${{ matrix.target }}-${BUILD_DATE}"
 
-             RELEASE_BODY="### Download Link\n- **Pixeldrain:** [$FILE_NAME]($PIXEL_URL)\n\n**MD5:** \`$FILE_MD5\`\n**Size:** $FILE_SIZE bytes"
+              echo "Creating GitHub Release: $RELEASE_NAME"
 
-             RELEASE_DATA=$(jq -n \
-               --arg tag "$TAG_NAME" \
-               --arg name "$RELEASE_NAME" \
-               --arg body "$RELEASE_BODY" \
-               '{ tag_name: $tag, name: $name, body: $body, draft: false, prerelease: false }')
+              RELEASE_BODY="### Download Link\n- **Pixeldrain:** [$FILE_NAME]($PIXEL_URL)\n\n**MD5:** \`$FILE_MD5\`\n**Size:** $FILE_SIZE bytes"
 
-             RELEASE_RESPONSE=$(curl -s -X POST \
-               -H "Authorization: token $GH_TOKEN" \
-               -H "Content-Type: application/json" \
-               -d "$RELEASE_DATA" \
-               "https://api.github.com/repos/$RELEASE_REPO/releases")
+              RELEASE_DATA=$(jq -n \
+                --arg tag "$TAG_NAME" \
+                --arg name "$RELEASE_NAME" \
+                --arg body "$RELEASE_BODY" \
+                '{ tag_name: $tag, name: $name, body: $body, draft: false, prerelease: false }')
 
-             RELEASE_ID=$(echo "$RELEASE_RESPONSE" | jq -r '.id')
-             if [ "$RELEASE_ID" = "null" ] || [ -z "$RELEASE_ID" ]; then
-               echo "ERROR: Release not created. Check GH_TOKEN and permissions."
-               echo "Response: $RELEASE_RESPONSE"
-               exit 1
-             fi
-             echo "Release created successfully. ID: $RELEASE_ID"
-           fi
-         done
+              RELEASE_RESPONSE=$(curl -s -X POST \
+                -H "Authorization: token $GH_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d "$RELEASE_DATA" \
+                "https://api.github.com/repos/$RELEASE_REPO/releases")
+
+              RELEASE_ID=$(echo "$RELEASE_RESPONSE" | jq -r '.id')
+              if [ "$RELEASE_ID" = "null" ] || [ -z "$RELEASE_ID" ]; then
+                echo "ERROR: Release not created. Check GH_TOKEN and permissions."
+                echo "Response: $RELEASE_RESPONSE"
+                exit 1
+              fi
+              echo "Release created successfully. ID: $RELEASE_ID"
+            fi
+          done
