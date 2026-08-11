@@ -68,8 +68,10 @@ jobs:
           #echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
           #echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
           #echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
-          echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/_ota.pk8
-          echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/_ota.x509.pem
+          # Sao chép key trực tiếp từ repo nếu file đã tồn tại
+          mkdir -p security
+          cp -f security/artisanrom_ota.pk8 security/_ota.pk8 2>/dev/null || true
+          cp -f security/artisanrom_ota.x509.pem security/_ota.x509.pem 2>/dev/null
 
       - name: Set up JDK 17
         uses: actions/setup-java@v5
