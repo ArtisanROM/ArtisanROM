@@ -100,6 +100,11 @@ jobs:
           swap-size-gb: 12
           remove-existing-swap-files: true
 
+      - name: Build ROM
+        run: |
+          source ./buildenv.sh ${{ matrix.target }}
+          ./scripts/make_rom.sh 
+          
       - name: Upload to Pixeldrain & GitHub Release
         # Cho phép chạy khi trigger thủ công HOẶC khi push code
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
