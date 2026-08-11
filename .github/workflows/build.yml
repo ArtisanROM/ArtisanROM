@@ -10,7 +10,7 @@ on:
           - debug
           - test
           - release
-        default: debug
+        default: test
   pull_request:
   push:
     branches:
@@ -100,29 +100,32 @@ jobs:
           swap-size-gb: 12
           remove-existing-swap-files: true
 
-      - name: Build ROM
-        run: |
-          source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh
-
       - name: Upload to Pixeldrain & GitHub Release
-        if: github.event_name == 'workflow_dispatch'
+        # Cho phép chạy khi trigger thủ công HOẶC khi push code
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
         env:
           PIXELDRAIN_API_KEY: "97e0067f-7ee5-412b-99e3-b2442c1ebb8d"
           GH_TOKEN: ${{ secrets.PAT }}
           RELEASE_REPO: "ArtisanROM/rom_resources"
-          BUILD_TYPE: ${{ github.event.inputs.build_type }}
+          # Nếu không phải workflow_dispatch thì mặc định lấy 'debug'
+          BUILD_TYPE: ${{ github.event.inputs.build_type || 'debug' }}
         run: |
-          for file in out/*.zip; do
-            if [ ! -f "$file" ]; then
-              echo "No ZIP files found to upload."
-              continue
-            fi
+          # Bật shopt nullglob để nếu không có file zip thì vòng lặp không bị chạy lỗi với chuỗi thô "out/*.zip"
+          shopt -s nullglob
+          
+          ZIP_FILES=(out/*.zip)
+          if [ ${#ZIP_FILES[@]} -eq 0 ]; then
+            echo "ERROR: No ZIP files found in out/ directory!"
+            ls -la out/ || echo "Directory out/ does not exist."
+            exit 1
+          fi
 
+          for file in "${ZIP_FILES[@]}"; do
             FILE_NAME=$(basename "$file")
             FILE_SIZE=$(stat -c%s "$file")
             FILE_MD5=$(md5sum "$file" | awk '{print $1}')
             VERSION=$(echo "$FILE_NAME" | grep -oP '\d+\.\d+\.\d+' | head -n 1)
+            [ -z "$VERSION" ] && VERSION="1.0.0" # Mặc định nếu không tìm thấy chuỗi version
             BUILD_DATE=$(date +%Y-%m-%d)
 
             # 1. Tải lên Pixeldrain và lấy Link
