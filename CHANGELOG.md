@@ -3,11 +3,14 @@
 # 3.5.1
 - Switch to S22 Ultra firmware
 - Fix 120hz
-- Fix UWB/Airplanemode crash
 - Fix Galaxy AI bugs
 - Stricter debloat
 - General QOL improvements
 - Upstream build system
+- Fix FOD bug on r8s
+- Add custom bootsound
+- Add OneUI8.5 settings style
+- Fixup updater app shenanigans
 
 # 3.5.0
 - Switch to UN1CA build system (thx @xfwdrev).
