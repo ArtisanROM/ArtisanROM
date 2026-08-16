@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roms>
+  <rom channel="stable">
+    <version>3.5.1</version>
+    <date>2026-08-16</date>
+    <filename>ArtisanROM_OFFICIAL_3.5.1_20260816_c2s-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.1-c2s/ArtisanROM_OFFICIAL_3.5.1_20260816_c2s-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.1-c2s/ArtisanROM_OFFICIAL_3.5.1_20260816_c2s-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.1-c2s/ArtisanROM_OFFICIAL_3.5.1_20260816_c2s-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.1-c2s/ArtisanROM_OFFICIAL_3.5.1_20260816_c2s-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.1-c2s/ArtisanROM_OFFICIAL_3.5.1_20260816_c2s-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v3.5.1-c2s/ArtisanROM_OFFICIAL_3.5.1_20260816_c2s-sign.zip.part_05</part6>
+    <md5>71127ebf7867c5a1b8b2c84e263046c4</md5>
+    <size>5947199533</size>
+  </rom>
+</roms>
