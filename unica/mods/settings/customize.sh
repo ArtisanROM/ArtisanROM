@@ -1,7 +1,3 @@
-if [ ! "$(GET_PROP "system" "ro.unica.version")" ]; then
-    SET_PROP "system" "ro.unica.version" "$ROM_VERSION"
-fi
-
 SMALI_PATCH "system" "system/framework/framework.jar" \
     "smali/android/app/Instrumentation.smali" "replace" \
     'newApplication(Ljava/lang/Class;Landroid/content/Context;)Landroid/app/Application;' \
