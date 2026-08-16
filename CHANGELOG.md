@@ -11,6 +11,7 @@
 - Add custom bootsound
 - Add OneUI8.5 settings style
 - Fixup updater app shenanigans
+- Fix AirCommand crash
 
 # 3.5.0
 - Switch to UN1CA build system (thx @xfwdrev).
