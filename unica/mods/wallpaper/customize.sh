@@ -57,7 +57,11 @@ ENCODE_MP4()
     CMD+=" -i \"$FILE_PATH/$FILE_NAME\""
     CMD+=" -c:v libx264 -c:a copy"
     CMD+=" -pix_fmt yuv420p -crf 18 -g 1"
-    CMD+=" -preset veryslow -tune zerolatency"
+    # These are short, all-intra 1440p/60 wallpapers. The veryslow preset
+    # makes each clean build spend several minutes per clip for negligible
+    # visual benefit. Keep CRF/GOP/output compatibility and use all CPU cores
+    # with x264's substantially faster preset.
+    CMD+=" -preset fast -tune zerolatency"
     CMD+=" -movflags use_metadata_tags -map_metadata 0"
     CMD+=" -vf \"fps=60,scale=$RES,setsar=1:1\""
     CMD+=" -video_track_timescale 360000 -movie_timescale 90000"

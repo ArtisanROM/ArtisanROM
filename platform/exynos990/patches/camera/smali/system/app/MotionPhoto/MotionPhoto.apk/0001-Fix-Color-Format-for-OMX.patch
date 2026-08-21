@@ -30,10 +30,10 @@ diff --git a/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali b/sma
 index d28633f..dc46749 100644
 --- a/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali
 +++ b/smali/com/samsung/android/sum/core/filter/EncoderFilter.smali
-@@ -1677,7 +1677,7 @@
-     invoke-virtual {v3, v5, v4}, Landroid/media/MediaFormat;->setInteger(Ljava/lang/String;I)V
- 
-     :cond_14
+@@ -1885,7 +1885,7 @@
+     invoke-virtual {v2, v7, v4}, Landroid/media/MediaFormat;->setInteger(Ljava/lang/String;I)V
+
+     :cond_11
 -    const v4, 0x7f420888
 +    const v4, 0x7f000789
  
@@ -41,4 +41,3 @@ index d28633f..dc46749 100644
  
 -- 
 2.45.2
-

@@ -461,12 +461,14 @@ fi
 # Support legacy LED Cover level
 # - Replace deprecated 'android.nfc.NfcAdapter' APIs with 'com.samsung.android.nfc.adapter.ISamsungNfcAdapter'
 if [ -f "$WORK_DIR/system/system/priv-app/LedCoverService/LedCoverService.apk" ]; then
-    if [ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")" -ge "30" ] && \
-            [ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")" -lt "100" ]; then
+    LED_COVER_LEVEL="$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")"
+    if [[ "$LED_COVER_LEVEL" =~ ^[0-9]+$ ]] && \
+            [ "$LED_COVER_LEVEL" -ge "30" ] && [ "$LED_COVER_LEVEL" -lt "100" ]; then
         PATCHED=true
         APPLY_PATCH "system" "system/priv-app/LedCoverService/LedCoverService.apk" \
             "$MODPATH/ledcover/LedCoverService.apk/0001-Switch-to-ISamsungNfcAdapter-interface.patch"
     fi
+    unset LED_COVER_LEVEL
 fi
 
 # Upgrade Segmentation models (pre-API 34)

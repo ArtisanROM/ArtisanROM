@@ -356,7 +356,11 @@ HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
 
 # Fix object capture
 if [[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "essi" ]]; then
-    if {
+    if [[ "$TARGET_PLATFORM" == "exynos990" ]] && \
+            cmp -s "$WORK_DIR/system/system/lib64/libobjectcapture_jni.arcsoft.so" \
+                "$SRC_DIR/platform/exynos990/patches/camera/system/lib64/libobjectcapture_jni.arcsoft.so"; then
+        LOG "- Object capture already uses the Exynos 990 target-compatible blob"
+    elif {
         [[ "$(GET_PROP "system" "ro.product.device")" =~ r0|g0|b0 ]] && \
             ! [[ "$(GET_PROP "vendor" "ro.product.vendor.device")" =~ r0|g0|b0 ]]
     } || {

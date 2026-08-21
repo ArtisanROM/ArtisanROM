@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Platform configuration file for Samsung Exynos 990 devices (exynos990)
-TARGET_BOARD_API_LEVEL=29
+# The S20 series launched on API 29, but its final vendor image uses VNDK 30.
+TARGET_BOARD_API_LEVEL=30
 TARGET_PRODUCT_SHIPPING_API_LEVEL=29
 
 # Partitions

@@ -1,6 +1,11 @@
 # [
 EXTREMEKRNL_REPO="https://github.com/At30c/SSM_990v2BYEXTREME/"
 
+KERNEL_MODEL="$TARGET_CODENAME"
+if [[ "$TARGET_MODEL" == "SM-G985F" ]]; then
+    KERNEL_MODEL="${TARGET_CODENAME}lte"
+fi
+
 GET_KERNEL_CACHE_KEY()
 {
     # Include the commit, local source changes, submodules, and build arguments.
@@ -10,8 +15,7 @@ GET_KERNEL_CACHE_KEY()
         git -C "$KERNEL_TMP_DIR" diff --no-ext-diff --binary
         git -C "$KERNEL_TMP_DIR" diff --cached --no-ext-diff --binary
         git -C "$KERNEL_TMP_DIR" submodule status --recursive
-        printf 'main: model=%s ksu=y recovery=n\n' "$TARGET_CODENAME"
-        printf 'lte: model=%slte ksu=n recovery=n dtbs=y\n' "$TARGET_CODENAME"
+        printf 'main: model=%s ksu=y recovery=n\n' "$KERNEL_MODEL"
     } | sha256sum | cut -d " " -f 1
 }
 
@@ -21,36 +25,31 @@ KERNEL_CACHE_IS_VALID()
 
     [ -f "$CACHE_FILE" ] || return 1
     [ "$(cat "$CACHE_FILE")" = "$KERNEL_CACHE_KEY" ] || return 1
-    [ -f "$KERNEL_TMP_DIR/build/out/$TARGET_CODENAME/boot.img" ] || return 1
-    [ -f "$KERNEL_TMP_DIR/build/out/$TARGET_CODENAME/dtbo.img" ] || return 1
-
-    if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
-        [ -f "$KERNEL_TMP_DIR/build/out/${TARGET_CODENAME}lte/dtbo.img" ] || return 1
-    fi
+    [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/boot.img" ] || return 1
+    [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" ] || return 1
 
     return 0
 }
 
 BUILD_KERNEL()
 {
-    local PARENT=$(pwd)
-    cd "$KERNEL_TMP_DIR"
+    local PARENT
+    PARENT="$(pwd)"
+    cd "$KERNEL_TMP_DIR" || return 1
 
-    EVAL "./build.sh -m ${TARGET_CODENAME} -k y -r n"
+    EVAL "./build.sh -m ${KERNEL_MODEL} -k y -r n"
 
-    # Fixup for LTE devices
-    EVAL "./build.sh -m ${TARGET_CODENAME}lte -k n -r n -d y"
-
-    cd $PARENT
+    cd "$PARENT" || return 1
 }
 
 SAFE_PULL_CHANGES()
 {
     set -eo pipefail
 
-    local PARENT=$(pwd)
+    local PARENT
+    PARENT="$(pwd)"
 
-    cd "$KERNEL_TMP_DIR"
+    cd "$KERNEL_TMP_DIR" || return 1
 
     EVAL "git fetch origin"
 
@@ -67,16 +66,16 @@ SAFE_PULL_CHANGES()
     elif [[ "$REMOTE" == "$BASE" ]]; then
         LOGW "- Local branch is ahead of remote. Not doing anything."
     else
-        cd "$PARENT"
+        cd "$PARENT" || return 1
         ABORT "Remote history has diverged (possible force-push)."
     fi
 
-    cd "$PARENT"
+    cd "$PARENT" || return 1
 }
 
 REPLACE_KERNEL_BINARIES()
 {
-    local KERNEL_TMP_DIR="$KERNEL_TMP_DIR-$TARGET_PLATFORM"
+    local KERNEL_TMP_DIR="$OUT_DIR/kernel_tmp-$TARGET_PLATFORM"
     local CACHE_FILE="$KERNEL_TMP_DIR/.unica-kernel-cache-${TARGET_CODENAME}"
     local KERNEL_COMMIT
     [[ ! -d "$KERNEL_TMP_DIR" ]] && mkdir -p "$KERNEL_TMP_DIR"
@@ -88,7 +87,7 @@ REPLACE_KERNEL_BINARIES()
         fi
     else
         LOG "- Cloning ExtremeKernel"
-        EVAL "git clone "$EXTREMEKRNL_REPO" --single-branch "$KERNEL_TMP_DIR" --recurse-submodules"
+        EVAL "git clone \"$EXTREMEKRNL_REPO\" --single-branch \"$KERNEL_TMP_DIR\" --recurse-submodules"
     fi
 
     KERNEL_CACHE_KEY="$(GET_KERNEL_CACHE_KEY)" || ABORT "Could not calculate the kernel cache key."
@@ -100,11 +99,8 @@ REPLACE_KERNEL_BINARIES()
         LOG "- Kernel cache is missing or outdated. Running the kernel build script."
         BUILD_KERNEL
 
-        [ -f "$KERNEL_TMP_DIR/build/out/$TARGET_CODENAME/boot.img" ] || ABORT "Kernel build did not produce boot.img."
-        [ -f "$KERNEL_TMP_DIR/build/out/$TARGET_CODENAME/dtbo.img" ] || ABORT "Kernel build did not produce dtbo.img."
-        if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
-            [ -f "$KERNEL_TMP_DIR/build/out/${TARGET_CODENAME}lte/dtbo.img" ] || ABORT "Kernel build did not produce the LTE dtbo.img."
-        fi
+        [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/boot.img" ] || ABORT "Kernel build did not produce boot.img."
+        [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" ] || ABORT "Kernel build did not produce dtbo.img."
 
         # Some kernel build scripts adjust their source tree while preparing
         # KernelSU. Record the post-build state used to create these images.
@@ -112,15 +108,12 @@ REPLACE_KERNEL_BINARIES()
         printf '%s' "$KERNEL_CACHE_KEY" > "$CACHE_FILE"
     fi
 
-    for i in "boot" "dtbo"; do
-        [[ -f "$WORK_DIR/kernel/$i.img" ]] && rm -f "$WORK_DIR/kernel/$i.img"
-        cp -a "$KERNEL_TMP_DIR/build/out/$TARGET_CODENAME/$i.img" "$WORK_DIR/kernel/$i.img"
-    done
-
-    # And now for the LTE DTBOs
-    if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
-        cp -a "$KERNEL_TMP_DIR/build/out/${TARGET_CODENAME}lte/dtbo.img" "$WORK_DIR/kernel/dtbo_lte.img"
-    fi
+    rm -f "$WORK_DIR/kernel/boot.img" "$WORK_DIR/kernel/dtbo.img" \
+        "$WORK_DIR/kernel/dtbo_lte.img"
+    cp -a "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/boot.img" \
+        "$WORK_DIR/kernel/boot.img"
+    cp -a "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" \
+        "$WORK_DIR/kernel/dtbo.img"
 }
 # ]
 

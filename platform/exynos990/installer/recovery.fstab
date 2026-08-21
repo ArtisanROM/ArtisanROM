@@ -1,0 +1,23 @@
+# Recovery/OTA partition map for Samsung Exynos 990 devices.
+# Dynamic partitions are mapped by the OTA installer; these entries also
+# document their mount points for recovery tooling.
+
+# <src>                         <mnt_point>     <type>  <mnt_flags>  <fs_mgr_flags>
+system                          /system         erofs   ro           logical,first_stage_mount
+vendor                          /vendor         erofs   ro           logical,first_stage_mount
+product                         /product        erofs   ro           logical,first_stage_mount
+odm                             /odm            erofs   ro           logical,first_stage_mount
+
+/dev/block/by-name/boot         /boot           emmc    defaults     recoveryonly
+/dev/block/by-name/recovery     /recovery       emmc    defaults     recoveryonly
+/dev/block/by-name/dtbo         /dtbo           emmc    defaults     recoveryonly
+/dev/block/by-name/vbmeta       /vbmeta         emmc    defaults     recoveryonly
+/dev/block/by-name/vbmeta_system /vbmeta_system emmc    defaults     recoveryonly
+/dev/block/by-name/cache        /cache          ext4    defaults     recoveryonly
+/dev/block/by-name/userdata     /data           f2fs    defaults     recoveryonly,length=-20480
+/dev/block/by-name/metadata     /metadata       ext4    defaults     recoveryonly
+/dev/block/by-name/efs          /efs            ext4    defaults     recoveryonly
+/dev/block/by-name/radio        /modem          emmc    defaults     recoveryonly
+/dev/block/by-name/misc         /misc           emmc    defaults     recoveryonly
+/dev/block/by-name/prism        /prism          ext4    ro           recoveryonly
+/dev/block/by-name/optics       /optics         ext4    ro           recoveryonly
