@@ -143,7 +143,7 @@ IMG2SDAT_EXEC=(
 )
 CHECK_TOOLS "${IMG2SDAT_EXEC[@]}" && IMG2SDAT=false
 SAMLOADER_EXEC=(
-    "../venv/bin/samloader"
+    "samloader"
 )
 CHECK_TOOLS "${SAMLOADER_EXEC[@]}" && SAMLOADER=false
 SIGNAPK_EXEC=(
@@ -219,12 +219,17 @@ if $IMG2SDAT; then
     BUILD "img2sdat" "$SRC_DIR/external/img2sdat" "${IMG2SDAT_CMDS[@]}"
 fi
 if $SAMLOADER; then
+    if ! command -v cargo &> /dev/null; then
+        echo "cargo is required to build samloader-rs. Install the Rust toolchain and try again." >&2
+        exit 1
+    fi
+
     SAMLOADER_CMDS=(
-        "python3 -m venv \"$TOOLS_DIR/venv\""
-        "source \"$TOOLS_DIR/venv/bin/activate\"; pip3 install ."
+        "cargo build --locked --release --package samloader"
+        "cp -a \"target/release/samloader\" \"$TOOLS_DIR/bin\""
     )
 
-    BUILD "samloader" "$SRC_DIR/external/samloader" "${SAMLOADER_CMDS[@]}"
+    BUILD "samloader" "$SRC_DIR/external/samloader-rs" "${SAMLOADER_CMDS[@]}"
 fi
 if $SIGNAPK; then
     SIGNAPK_CMDS=(

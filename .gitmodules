@@ -22,3 +22,6 @@
 	path = external/signapk
 	url = https://github.com/UN1CA/external_signapk.git
 	ignore = dirty
+[submodule "external/samloader-rs"]
+	path = external/samloader-rs
+	url = https://github.com/topjohnwu/samloader-rs.git
