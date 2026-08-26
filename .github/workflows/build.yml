@@ -94,11 +94,9 @@ jobs:
           ./scripts/extract_fw.sh
 
       - name: Add swapspace
-        uses: thejerrybao/setup-swap-space@v1
+        uses: pierotofy/set-swap-space@v1.0
         with:
-          swap-space-path: /swapfile
           swap-size-gb: 12
-          remove-existing-swap-files: true
       
       - name: Build ROM
         run: |
