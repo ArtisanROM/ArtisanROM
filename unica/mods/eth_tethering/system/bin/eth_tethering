@@ -1,0 +1,43 @@
+#!/system/bin/sh
+# ============================================================================
+# ArtisanROM Native Hardware-Checked Ethernet_Tethering CLI
+# ============================================================================
+
+ACTION=$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')
+
+case "$ACTION" in
+    on)
+        ETH_STATE=$(settings get system ethernet_state)
+        if [ "$ETH_STATE" = "Connected" ]; then
+            echo "[+] Ethernet_Hardware verifiziert (Connected)."
+            echo "[+] Starte EthTetherCmd..."
+            exec env CLASSPATH=/system/framework/framework.jar \
+                app_process /system/bin \
+                com.artisan.tether.EthTetherCmd on
+        else
+            echo "[-] ABBRUCH: Ethernet_Status ist '$ETH_STATE'. Schalter blockiert!"
+            exit 1
+        fi
+        ;;
+    off)
+        echo "[+] Starte EthTetherCmd fuer Beendigung..."
+        exec env CLASSPATH=/system/framework/framework.jar \
+            app_process /system/bin \
+            com.artisan.tether.EthTetherCmd off
+        ;;
+    help|h|-h|--help|"")
+        echo "=============================================================="
+        echo "ArtisanROM Advanced Ethernet_Tethering Control Center"
+        echo "Verwendung: eth_tethering [on|off|help]"
+        echo "=============================================================="
+        echo "  on    Schaltet Ethernet Tethering bei Status Connected ein."
+        echo "  off   Schaltet Ethernet Tethering aus."
+        echo "  help  Zeigt diese Hilfe-Anzeige an."
+        echo "=============================================================="
+        ;;
+    *)
+        echo "[-] Ungueltiger Parameter: '$1'"
+        echo "[-] Nutzen Sie 'eth_tethering help' fuer eine Uebersicht."
+        exit 1
+        ;;
+esac
