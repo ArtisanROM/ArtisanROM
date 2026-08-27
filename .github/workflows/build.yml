@@ -97,9 +97,22 @@ jobs:
           ./scripts/extract_fw.sh
 
       - name: Add swapspace
-        uses: pierotofy/set-swap-space@v1.0
-        with:
-          swap-size-gb: 12
+        shell: bash
+        run: |
+          set -euo pipefail
+          SWAP_FILE="/swapfile"
+          SWAP_SIZE_GB=12
+          echo "[+] Preparing ${SWAP_SIZE_GB}G swap at ${SWAP_FILE}..."
+          sudo swapoff -a 2>/dev/null || true
+          sudo rm -f "${SWAP_FILE}"
+          sudo fallocate -l "${SWAP_SIZE_GB}G" "${SWAP_FILE}" || \
+            sudo dd if=/dev/zero of="${SWAP_FILE}" bs=1M count=$((SWAP_SIZE_GB * 1024)) status=progress
+          sudo chmod 600 "${SWAP_FILE}"
+          sudo mkswap "${SWAP_FILE}"
+          sudo swapon "${SWAP_FILE}"
+          echo "[+] Active swap:"
+          swapon --show
+          free -h
       
       - name: Build ROM
         run: |
