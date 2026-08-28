@@ -2,7 +2,7 @@
 EXTREMEKRNL_REPO="https://github.com/At30c/SSM_990v2BYEXTREME/"
 
 KERNEL_MODEL="$TARGET_CODENAME"
-if [[ "$TARGET_MODEL" == "SM-G985F" ]]; then
+if [[ ":${TARGET_ASSERT_MODEL}:" == *":SM-G985F:"* ]]; then
     KERNEL_MODEL="${TARGET_CODENAME}lte"
 fi
 
@@ -34,16 +34,42 @@ KERNEL_CACHE_IS_VALID()
 BUILD_KERNEL()
 {
     local PARENT
+    local RESULT="0"
     PARENT="$(pwd)"
     cd "$KERNEL_TMP_DIR" || return 1
 
-    EVAL "./build.sh -m ${KERNEL_MODEL} -k y -r n"
+    # Kernel builds are long-running and their output is needed to diagnose
+    # compiler failures. Do not hide it inside EVAL's command substitution.
+    ./build.sh -m "$KERNEL_MODEL" -k y -r n || RESULT="$?"
 
     cd "$PARENT" || return 1
+    return "$RESULT"
+}
+
+INIT_KERNEL_SUBMODULES()
+{
+    # The upstream .gitmodules currently points to GitHub's /tree/legacy web
+    # page, which is not a cloneable Git URL. Override it locally while
+    # keeping the gitlink revision selected by the kernel repository.
+    EVAL "git -C \"$KERNEL_TMP_DIR\" config submodule.KernelSU-Next.url https://github.com/KernelSU-Next/KernelSU-Next.git"
+    EVAL "git -C \"$KERNEL_TMP_DIR\" submodule update --init --recursive"
+    EVAL "git -C \"$KERNEL_TMP_DIR/KernelSU-Next\" fetch origin legacy"
+    EVAL "git -C \"$KERNEL_TMP_DIR/KernelSU-Next\" checkout --detach a54e4fa46c6cc25bcaa055cf14d790194beffed8"
+
+    local BUILD_PATCH
+    for BUILD_PATCH in "$SRC_DIR/platform/exynos990/patches/extremekrnl"/000*.patch; do
+        if git -C "$KERNEL_TMP_DIR" apply --reverse --check "$BUILD_PATCH" &> /dev/null; then
+            LOG "- $(basename "$BUILD_PATCH") is already applied"
+        else
+            EVAL "git -C \"$KERNEL_TMP_DIR\" apply \"$BUILD_PATCH\""
+        fi
+    done
 }
 
 SAFE_PULL_CHANGES()
-{
+(
+    # Keep errexit/pipefail local to this subshell. Leaking errexit caused a
+    # later failed kernel command to terminate before EVAL could print it.
     set -eo pipefail
 
     local PARENT
@@ -71,7 +97,7 @@ SAFE_PULL_CHANGES()
     fi
 
     cd "$PARENT" || return 1
-}
+)
 
 REPLACE_KERNEL_BINARIES()
 {
@@ -87,8 +113,10 @@ REPLACE_KERNEL_BINARIES()
         fi
     else
         LOG "- Cloning ExtremeKernel"
-        EVAL "git clone \"$EXTREMEKRNL_REPO\" --single-branch \"$KERNEL_TMP_DIR\" --recurse-submodules"
+        EVAL "git clone \"$EXTREMEKRNL_REPO\" --single-branch \"$KERNEL_TMP_DIR\""
     fi
+
+    INIT_KERNEL_SUBMODULES
 
     KERNEL_CACHE_KEY="$(GET_KERNEL_CACHE_KEY)" || ABORT "Could not calculate the kernel cache key."
     KERNEL_COMMIT="$(git -C "$KERNEL_TMP_DIR" rev-parse --short=12 HEAD)" || ABORT "Could not determine the kernel commit."
