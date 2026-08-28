@@ -236,5 +236,18 @@ if [ -f "$SRC_DIR/target/$TARGET_CODENAME/sff.sh" ]; then
     LOG_STEP_OUT
 fi
 
+# Never package a corrupted feature table. Duplicate tags are invalid and can
+# make SystemUI derive contradictory BasicRune values during early startup.
+DUPLICATE_FEATURES="$(awk -F '[<>]' '
+    /<SEC_FLOATING_FEATURE_/ { count[$2]++ }
+    END { for (feature in count) if (count[feature] > 1) print feature }
+' "$WORK_DIR/system/system/etc/floating_feature.xml")"
+if [ "$DUPLICATE_FEATURES" ]; then
+    LOGE "Duplicate entries in /system/system/etc/floating_feature.xml:"
+    LOGE "$DUPLICATE_FEATURES"
+    ABORT "Refusing to package a corrupted floating feature configuration."
+fi
+
 unset DEPRECATED BLACKLIST FALLBACK
+unset DUPLICATE_FEATURES
 unset -f APPLY_TARGET_FEATURE APPLY_CUSTOM_FEATURE

@@ -211,13 +211,21 @@ SET_FLOATING_FEATURE_CONFIG()
         return 1
     fi
 
-    if grep -q "$CONFIG" "$FILE"; then
+    # Match the complete XML tag. A substring match confuses entries such as
+    # CAMERA_SUPPORT_AI_HIGH_RESOLUTION with
+    # CAMERA_SUPPORT_AI_HIGH_RESOLUTION_DRAFT_DOWNSCALE.
+    if grep -q "<${CONFIG}>" "$FILE"; then
         if [[ "$VALUE" == "-d" ]] || [[ "$VALUE" == "--delete" ]]; then
             LOG "- Deleting \"$CONFIG\" config in /system/system/etc/floating_feature.xml"
             sed -i "/<$CONFIG>/d" "$FILE"
         else
             LOG "- Replacing \"$CONFIG\" config with \"$VALUE\" in /system/system/etc/floating_feature.xml"
-            sed -i "$(sed -n "/<${CONFIG}>/=" "$FILE") c\ \ \ \ <${CONFIG}>${VALUE}</${CONFIG}>" "$FILE"
+            # Delete every existing copy first. The old line-number based sed
+            # expression became invalid as soon as a dirty/repeated build had
+            # duplicated an entry, multiplying it until floating_feature.xml
+            # was almost entirely replaced by a single feature.
+            sed -i "/<${CONFIG}>/d" "$FILE"
+            sed -i "/<\/SecFloatingFeatureSet>/i\ \ \ \ <${CONFIG}>${VALUE}</${CONFIG}>" "$FILE"
         fi
     elif [[ "$VALUE" != "-d" ]] && [[ "$VALUE" != "--delete" ]]; then
         LOG "- Adding \"$CONFIG\" config with \"$VALUE\" in /system/system/etc/floating_feature.xml"
