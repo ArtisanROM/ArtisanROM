@@ -79,7 +79,13 @@ BUILD_IMAGE_MKFS()
         "erofs")
             BUILD_CMD+="mkfs.erofs "
             # https://android.googlesource.com/platform/build/+/refs/tags/android-15.0.0_r1/core/Makefile#2084
-            BUILD_CMD+="-z \"lz4hc,9\" "
+            if $DEBUG; then
+                # Fast iteration profile. EROFS remains compressed and fully
+                # flashable, but avoids the expensive high-compression search.
+                BUILD_CMD+="-z \"lz4\" "
+            else
+                BUILD_CMD+="-z \"lz4hc,9\" "
+            fi
             BUILD_CMD+="-b \"4096\" "
             BUILD_CMD+="--mount-point \"$MOUNT_POINT\" "
             BUILD_CMD+="--fs-config-file \"$FS_CONFIG_FILE\" "
