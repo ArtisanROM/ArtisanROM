@@ -1,5 +1,27 @@
 # S24 FE OneUI 7 -> SoundBooster 2000
 # S20 Series -> SoundBooster 1050
+LOG_STEP_IN "- Porting the Audio HAL wrapper from HIDL 5.0 to 6.0"
+# Keep the Exynos 990 legacy audio.primary driver, DSP firmware, mixer paths
+# and policy files. Only replace the generic binder service and HIDL wrapper
+# with the Android 16 source firmware's 6.0 implementation.
+ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "bin/hw/android.hardware.audio.service" 0 2000 755 "u:object_r:hal_audio_default_exec:s0"
+for ARCH in lib lib64; do
+    for LIB in \
+        android.hardware.audio.common@6.0.so \
+        android.hardware.audio.common@6.0-util.so \
+        android.hardware.audio.effect@6.0.so \
+        android.hardware.audio.effect@6.0-util.so \
+        android.hardware.audio@6.0.so \
+        android.hardware.audio@6.0-util.so; do
+        ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "$ARCH/$LIB" 0 0 644 "u:object_r:vendor_file:s0"
+    done
+    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "$ARCH/hw/android.hardware.audio@6.0-impl.so" 0 0 644 "u:object_r:vendor_file:s0"
+    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "$ARCH/hw/android.hardware.audio.effect@6.0-impl.so" 0 0 644 "u:object_r:vendor_file:s0"
+    EVAL "patchelf --add-needed libaudio-hidl-vndk30-compat.so '$WORK_DIR/vendor/$ARCH/hw/android.hardware.audio@6.0-impl.so'"
+    EVAL "patchelf --add-needed libaudio-hidl-vndk30-compat.so '$WORK_DIR/vendor/$ARCH/hw/android.hardware.audio.effect@6.0-impl.so'"
+done
+LOG_STEP_OUT
+
 LOG_STEP_IN "- Replacing SoundBooster"
 DELETE_FROM_WORK_DIR "system" "system/lib64/lib_SoundBooster_ver2000.so"
 DELETE_FROM_WORK_DIR "system" "system/lib64/lib_SAG_EQ_ver2000.so"

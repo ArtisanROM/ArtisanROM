@@ -1,0 +1,2 @@
+/vendor/lib/libaudio-hidl-vndk30-compat\.so u:object_r:vendor_file:s0
+/vendor/lib64/libaudio-hidl-vndk30-compat\.so u:object_r:vendor_file:s0
