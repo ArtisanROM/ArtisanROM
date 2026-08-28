@@ -105,6 +105,15 @@ export OUT_DIR="$SRC_DIR/out"
 export ODIN_DIR="$OUT_DIR/odin"
 export FW_DIR="$OUT_DIR/fw"
 export TOOLS_DIR="$OUT_DIR/tools"
+
+# Gradle may otherwise select the system Java runtime, which does not
+# necessarily include javac (Ubuntu's OpenJDK 25 JRE is one such case).
+# UN1CA's Android tooling builds reliably with the installed JDK 17.
+if [ -x "/usr/lib/jvm/java-17-openjdk-amd64/bin/javac" ]; then
+    export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+    export PATH="$JAVA_HOME/bin:$PATH"
+fi
+
 if [[ ":$PATH:" != *":$TOOLS_DIR/bin:"* ]]; then
     export PATH="$TOOLS_DIR/bin:$PATH"
 fi
