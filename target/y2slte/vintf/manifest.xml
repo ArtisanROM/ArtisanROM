@@ -34,6 +34,13 @@
         </interface>
         <fqname>@1.0::ISensorManager/default</fqname>
     </hal>
+    <!-- Android 16 registers the framework SensorService through both the
+         legacy HIDL interface and its AIDL interface.  The service manager
+         rejects the AIDL registration unless it is declared here. -->
+    <hal format="aidl">
+        <name>android.frameworks.sensorservice</name>
+        <fqname>ISensorManager/default</fqname>
+    </hal>
     <hal format="hidl">
         <name>android.hidl.manager</name>
         <transport>hwbinder</transport>
