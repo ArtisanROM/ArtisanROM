@@ -1,0 +1,7 @@
+id=tethering_legacy
+name=Android 16 tethering compatibility for legacy kernels
+version=1.0
+versionCode=1
+author=UN1CA y2slte
+description=Allows Android 16 NetBpfLoad to use the backported BPF implementation on Exynos 990 Linux 4.19.
+
