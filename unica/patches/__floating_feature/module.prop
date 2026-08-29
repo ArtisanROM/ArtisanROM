@@ -1,4 +1,0 @@
-id=floating_feature
-name=floating_feature.xml patches
-author=salvogiangri
-description=Compares both source/target Floating Feature and applies patches if required.

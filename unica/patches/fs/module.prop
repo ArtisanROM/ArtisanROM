@@ -1,4 +1,0 @@
-id=fs
-name=Filesystem support
-author=salvogiangri, utkustnr, nhglong
-description=Adds custom filesystems support.

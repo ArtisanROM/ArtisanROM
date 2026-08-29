@@ -1,4 +1,0 @@
-id=nfc
-name=NFC patches
-author=salvogiangri
-description=Applies NFC patches in work dir.

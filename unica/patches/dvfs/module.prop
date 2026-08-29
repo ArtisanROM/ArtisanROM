@@ -1,4 +1,0 @@
-id=dvfs
-name=DVFS patches
-author=salvogiangri, ata-kaner
-description=Replaces DVFS policy with target one.

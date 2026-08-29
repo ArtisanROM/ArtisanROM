@@ -1,4 +1,0 @@
-id=signature
-name=Platform signature spoof
-author=salvogiangri, ata-kaner
-description=Allows the signing of system apps with a custom certificate.

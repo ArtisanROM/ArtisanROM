@@ -1,4 +1,0 @@
-/system u:object_r:system_file:s0
-/system/priv-app u:object_r:system_file:s0
-/system/priv-app/YourPhone_Stub u:object_r:system_file:s0
-/system/priv-app/YourPhone_Stub/YourPhone_Stub\.apk u:object_r:system_file:s0
