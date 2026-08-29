@@ -48,22 +48,10 @@ BUILD_KERNEL()
 
 INIT_KERNEL_SUBMODULES()
 {
-    # The upstream .gitmodules currently points to GitHub's /tree/legacy web
-    # page, which is not a cloneable Git URL. Override it locally while
-    # keeping the gitlink revision selected by the kernel repository.
-    EVAL "git -C \"$KERNEL_TMP_DIR\" config submodule.KernelSU-Next.url https://github.com/KernelSU-Next/KernelSU-Next.git"
+    # The kernel repository pins the tested KernelSU-Next legacy revision.
+    # Sync first so URL/branch changes from a kernel update are respected.
+    EVAL "git -C \"$KERNEL_TMP_DIR\" submodule sync --recursive"
     EVAL "git -C \"$KERNEL_TMP_DIR\" submodule update --init --recursive"
-    EVAL "git -C \"$KERNEL_TMP_DIR/KernelSU-Next\" fetch origin legacy"
-    EVAL "git -C \"$KERNEL_TMP_DIR/KernelSU-Next\" checkout --detach a54e4fa46c6cc25bcaa055cf14d790194beffed8"
-
-    local BUILD_PATCH
-    for BUILD_PATCH in "$SRC_DIR/platform/exynos990/patches/extremekrnl"/000*.patch; do
-        if git -C "$KERNEL_TMP_DIR" apply --reverse --check "$BUILD_PATCH" &> /dev/null; then
-            LOG "- $(basename "$BUILD_PATCH") is already applied"
-        else
-            EVAL "git -C \"$KERNEL_TMP_DIR\" apply \"$BUILD_PATCH\""
-        fi
-    done
 }
 
 SAFE_PULL_CHANGES()
