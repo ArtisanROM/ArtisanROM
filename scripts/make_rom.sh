@@ -108,9 +108,9 @@ if $BUILD_ROM; then
     "$SRC_DIR/scripts/internal/create_work_dir.sh" || exit 1
     LOG_STEP_OUT
 
-    if [ -d "$SRC_DIR/platform/$TARGET_PLATFORM/patches" ]; then
-        LOG_STEP_IN true "Applying platform patches"
-        "$SRC_DIR/scripts/internal/apply_modules.sh" "$SRC_DIR/platform/$TARGET_PLATFORM/patches" || exit 1
+    if [ -d "$SRC_DIR/platform/$TARGET_PLATFORM/mods" ]; then
+        LOG_STEP_IN true "Applying platform mods"
+        "$SRC_DIR/scripts/internal/apply_modules.sh" "$SRC_DIR/platform/$TARGET_PLATFORM/mods" || exit 1
         LOG_STEP_OUT
     fi
     if [ -d "$SRC_DIR/target/$TARGET_CODENAME/patches" ]; then
