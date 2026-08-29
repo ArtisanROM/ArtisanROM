@@ -1,25 +1,36 @@
-From 579fd2cf911d029bfc70d43b0d267dfffe8dc84e Mon Sep 17 00:00:00 2001
+From b2307c3ed5808ea027490cdfe8eafd1910d8c080 Mon Sep 17 00:00:00 2001
 From: Salvo Giangreco <giangrecosalvo9@gmail.com>
-Date: Fri, 17 Oct 2025 12:19:59 +0200
+Date: Sat, 29 Aug 2026 17:19:28 +0200
 Subject: [PATCH] Enable real time network speed in status bar
 
+UN1CA: Adapted for Android 13 (One UI 5.1).
+
+Co-authored-by: Android-Artisan <romartisan2025@gmail.com>
 ---
- smali/com/android/systemui/BasicRune.smali | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ smali/com/android/systemui/BasicRune.smali | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
 diff --git a/smali/com/android/systemui/BasicRune.smali b/smali/com/android/systemui/BasicRune.smali
-index 9daceaf36..ffa11b6c7 100644
+index 62ab058..105322f 100644
 --- a/smali/com/android/systemui/BasicRune.smali
 +++ b/smali/com/android/systemui/BasicRune.smali
-@@ -644,7 +644,7 @@
-     :goto_10
-     sput-boolean v0, Lcom/android/systemui/BasicRune;->STATUS_POP_OVER_PANEL_BAR:Z
+@@ -385,15 +385,7 @@
  
--    sget-boolean v0, Lcom/android/systemui/Rune;->SYSUI_CHINA_FEATURE:Z
+     sput-boolean v0, Lcom/android/systemui/BasicRune;->STATUS_NETWORK_WIFI_DISPLAY_AP_NAME:Z
+ 
+-    invoke-static {}, Lcom/samsung/android/feature/SemCscFeature;->getInstance()Lcom/samsung/android/feature/SemCscFeature;
+-
+-    move-result-object v0
+-
+-    const-string v7, "CscFeature_Setting_SupportRealTimeNetworkSpeed"
+-
+-    invoke-virtual {v0, v7, v6}, Lcom/samsung/android/feature/SemCscFeature;->getBoolean(Ljava/lang/String;Z)Z
+-
+-    move-result v0
 +    const/4 v0, 0x1
  
-     if-nez v0, :cond_15
+     sput-boolean v0, Lcom/android/systemui/BasicRune;->STATUS_REAL_TIME_NETWORK_SPEED:Z
  
 -- 
-2.51.0
+2.53.0
 
