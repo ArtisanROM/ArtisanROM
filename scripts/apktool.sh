@@ -67,6 +67,9 @@ BUILD()
 
 DECODE()
 {
+    local CACHE_KEY=""
+    local CACHE_PATH=""
+
     if [ ! -f "$INPUT_FILE" ]; then
         LOGE "File not found: ${INPUT_FILE//$WORK_DIR/}"
         exit 1
@@ -84,6 +87,25 @@ DECODE()
         exit 1
     fi
 
+    # Cache only the pristine apktool output. Patch modules run after this
+    # function returns, so cached trees never contain changes from an older
+    # build. The key ties the tree to both the input and framework version.
+    if [ -n "$APK_DECODE_CACHE_DIR" ]; then
+        CACHE_KEY="$({
+            sha256sum "$INPUT_FILE"
+            sha256sum "$FRAMEWORK_DIR/1-$FRAMEWORK_TAG.apk"
+            printf '%s\n' "$FRAMEWORK_TAG" "unica-apktool-decode-v1"
+        } | sha256sum | cut -d " " -f 1)"
+        CACHE_PATH="$APK_DECODE_CACHE_DIR/$CACHE_KEY"
+
+        if [ "$APK_DECODE_CACHE_MODE" = "reuse" ] && [ -f "$CACHE_PATH/.complete" ]; then
+            LOG "- Restoring decoded cache for ${INPUT_FILE//$WORK_DIR/}"
+            mkdir -p "$OUTPUT_PATH"
+            cp -a --reflink=auto "$CACHE_PATH/tree/." "$OUTPUT_PATH/" || exit 1
+            return 0
+        fi
+    fi
+
     LOG "- Decoding ${INPUT_FILE//$WORK_DIR/}"
 
     # Decode APK with --no-debug-info, which will disassemble DEX file with the following flags:
@@ -92,6 +114,16 @@ DECODE()
     # - Use .locals directive instead of the .registers one
     # - Use a sequential numbering scheme for labels
     EVAL "apktool -JXmx${HEAP_SIZE}m d --no-debug-info -j \"$THREAD_COUNT\" -o \"$OUTPUT_PATH\" -p \"$FRAMEWORK_DIR\" -t \"$FRAMEWORK_TAG\" \"$INPUT_FILE\"" || exit 1
+
+    if [ -n "$CACHE_PATH" ]; then
+        local CACHE_TMP="$CACHE_PATH.tmp.$$"
+        rm -rf "$CACHE_TMP"
+        mkdir -p "$CACHE_TMP/tree"
+        cp -a --reflink=auto "$OUTPUT_PATH/." "$CACHE_TMP/tree/" || exit 1
+        touch "$CACHE_TMP/.complete"
+        rm -rf "$CACHE_PATH"
+        mv "$CACHE_TMP" "$CACHE_PATH"
+    fi
 }
 
 PREPARE_SCRIPT()
