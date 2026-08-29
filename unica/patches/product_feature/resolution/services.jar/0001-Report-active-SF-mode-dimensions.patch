@@ -1,0 +1,82 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: UN1CA y2slte <un1ca-y2slte@localhost>
+Date: Sat, 29 Aug 2026 00:00:00 -0300
+Subject: [PATCH] LocalDisplayAdapter: report active SF mode dimensions
+
+Samsung's VRR resolution policy reports the default display mode dimensions
+for the internal display. On Exynos990 the physical modeset can already be at
+FHD/120 while DisplayManager keeps publishing QHD dimensions, producing a
+1440x3200 viewport for a 1080x2400 framebuffer and cropping the screen.
+
+Use mActiveSfDisplayMode for DisplayDeviceInfo geometry, matching the mode that
+SurfaceFlinger actually selected. Scale the logical density by the ratio between
+the active and default mode widths so cutouts and physical-size resources do not
+retain QHD scaling in FHD and HD modes.
+---
+ .../display/LocalDisplayAdapter$LocalDisplayDevice.smali | 42 +++++++++++++++---------------------------
+ 1 file changed, 15 insertions(+), 27 deletions(-)
+
+diff --git a/smali/com/android/server/display/LocalDisplayAdapter$LocalDisplayDevice.smali b/smali/com/android/server/display/LocalDisplayAdapter$LocalDisplayDevice.smali
+index 1111111..2222222 100644
+--- a/smali/com/android/server/display/LocalDisplayAdapter$LocalDisplayDevice.smali
++++ b/smali/com/android/server/display/LocalDisplayAdapter$LocalDisplayDevice.smali
+@@ -1938,33 +1938,6 @@
+ 
+     if-nez v1, :cond_20
+ 
+-    sget-boolean v1, Lcom/samsung/android/rune/CoreRune;->FW_VRR_RESOLUTION_POLICY:Z
+-
+-    if-eqz v1, :cond_0
+-
+-    iget-object v1, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mStaticDisplayInfo:Landroid/view/SurfaceControl$StaticDisplayInfo;
+-
+-    iget-boolean v1, v1, Landroid/view/SurfaceControl$StaticDisplayInfo;->isInternal:Z
+-
+-    if-eqz v1, :cond_0
+-
+-    iget-object v1, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mSfDisplayModes:[Landroid/view/SurfaceControl$DisplayMode;
+-
+-    iget v2, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mDefaultModeId:I
+-
+-    iget v3, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mDefaultModeGroup:I
+-
+-    invoke-virtual {v0, v2, v3}, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->findSfDisplayModeIdLocked(II)I
+-
+-    move-result v2
+-
+-    invoke-static {v1, v2}, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->getModeById([Landroid/view/SurfaceControl$DisplayMode;I)Landroid/view/SurfaceControl$DisplayMode;
+-
+-    move-result-object v1
+-
+-    goto :goto_0
+-
+-    :cond_0
+     iget-object v1, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mActiveSfDisplayMode:Landroid/view/SurfaceControl$DisplayMode;
+ 
+     :goto_0
+@@ -2496,2 +2469,23 @@
+     :goto_a
++    iget v4, v1, Landroid/view/SurfaceControl$DisplayMode;->width:I
++
++    iget-object v7, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mSfDisplayModes:[Landroid/view/SurfaceControl$DisplayMode;
++
++    iget v8, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mDefaultModeId:I
++
++    iget v9, v0, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->mDefaultModeGroup:I
++
++    invoke-virtual {v0, v8, v9}, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->findSfDisplayModeIdLocked(II)I
++
++    move-result v8
++
++    invoke-static {v7, v8}, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->getModeById([Landroid/view/SurfaceControl$DisplayMode;I)Landroid/view/SurfaceControl$DisplayMode;
++
++    move-result-object v7
++
++    iget v7, v7, Landroid/view/SurfaceControl$DisplayMode;->width:I
++
++    mul-int/2addr v6, v4
++
++    div-int/2addr v6, v7
+     iput v6, v3, Lcom/android/server/display/DisplayDeviceInfo;->densityDpi:I
+-- 
+2.51.0

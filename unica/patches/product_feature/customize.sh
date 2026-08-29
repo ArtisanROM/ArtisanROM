@@ -165,8 +165,28 @@ if ! $SOURCE_COMMON_SUPPORT_DYN_RESOLUTION_CONTROL; then
 
         ADD_TO_WORK_DIR "$([[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]] && echo "b0qxxx" || echo "b0sxxx")" \
             "system" "system/bin/bootanimation" 0 2000 755 "u:object_r:bootanim_exec:s0"
-        ADD_TO_WORK_DIR "$([[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]] && echo "b0qxxx" || echo "b0sxxx")" \
-            "system" "system/bin/surfaceflinger" 0 2000 755 "u:object_r:surfaceflinger_exec:s0"
+        if [[ "$TARGET_PLATFORM" == "exynos990" ]]; then
+            # Keep the Android 16 multi-resolution native stack together. This
+            # is the same e2sxxx set used by SSM_LTS for y2slte; mixing only a
+            # donor SurfaceFlinger with the source libgui/runtime leaves the
+            # framebuffer resize and physical modeset out of sync.
+            DISPLAY_BLOBS="$SRC_DIR/target/$TARGET_CODENAME/blobs/display"
+            ADD_TO_WORK_DIR "$DISPLAY_BLOBS" "system" "system/bin/surfaceflinger" \
+                0 2000 755 "u:object_r:surfaceflinger_exec:s0"
+            ADD_TO_WORK_DIR "$DISPLAY_BLOBS" "system" "system/lib64/libgui.so" \
+                0 0 644 "u:object_r:system_lib_file:s0"
+            ADD_TO_WORK_DIR "$DISPLAY_BLOBS" "system" "system/lib64/libui.so" \
+                0 0 644 "u:object_r:system_lib_file:s0"
+            ADD_TO_WORK_DIR "$DISPLAY_BLOBS" "system" "system/lib64/libandroid_runtime.so" \
+                0 0 644 "u:object_r:system_lib_file:s0"
+        else
+            ADD_TO_WORK_DIR "$([[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]] && echo "b0qxxx" || echo "b0sxxx")" \
+                "system" "system/bin/surfaceflinger" 0 2000 755 "u:object_r:surfaceflinger_exec:s0"
+            ADD_TO_WORK_DIR "$([[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]] && echo "b0qxxx" || echo "b0sxxx")" \
+                "system" "system/lib/libandroid_runtime.so" 0 0 644 "u:object_r:system_lib_file:s0"
+            ADD_TO_WORK_DIR "$([[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]] && echo "b0qxxx" || echo "b0sxxx")" \
+                "system" "system/lib64/libandroid_runtime.so" 0 0 644 "u:object_r:system_lib_file:s0"
+        fi
         ADD_TO_WORK_DIR "b0qxxx" "system" "system/media/battery_error.spi" 0 0 644 "u:object_r:system_file:s0"
         ADD_TO_WORK_DIR "b0qxxx" "system" "system/media/battery_low.spi" 0 0 644 "u:object_r:system_file:s0"
         ADD_TO_WORK_DIR "b0qxxx" "system" "system/media/battery_protection.spi" 0 0 644 "u:object_r:system_file:s0"
@@ -200,6 +220,14 @@ if ! $SOURCE_COMMON_SUPPORT_DYN_RESOLUTION_CONTROL; then
         else
             APPLY_PATCH "system" "system/framework/framework.jar" \
                 "$MODPATH/resolution/framework.jar/0001-Enable-FW_DYNAMIC_RESOLUTION_CONTROL.patch"
+        fi
+        if [[ "$TARGET_PLATFORM" == "exynos990" ]]; then
+            # FW_VRR_RESOLUTION_POLICY makes LocalDisplayAdapter publish the
+            # default (QHD) mode dimensions even while SurfaceFlinger is using
+            # an active FHD/120 mode. The resulting QHD physical viewport crops
+            # the FHD framebuffer. Always report the active SF mode on Exynos990.
+            APPLY_PATCH "system" "system/framework/services.jar" \
+                "$MODPATH/resolution/services.jar/0001-Report-active-SF-mode-dimensions.patch"
         fi
         APPLY_PATCH "system" "system/framework/gamemanager.jar" \
             "$MODPATH/resolution/gamemanager.jar/0001-Enable-dynamic-resolution-control.patch"
