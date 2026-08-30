@@ -1,2 +1,0 @@
-/TopLevelAdvancedFeatures/a
-    <com.android.settings.widget.HomepagePreference android:icon="@drawable/sec_ic_settings_unica" android:title="@string/unica_settings_title" android:key="top_level_unica" android:summary="@string/summary_placeholder" android:order="-39999" android:fragment="io.mesalabs.unica.settings.UnicaSettingsFragment" settings:controller="io.mesalabs.unica.settings.TopLevelUnicaSettingsPreferenceController" settings:highlightableMenuKey="@string/menu_key_unica_top_settings" settings:keywords="@string/keywords_unica_settings" />

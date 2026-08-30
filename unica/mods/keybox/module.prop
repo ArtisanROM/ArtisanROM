@@ -1,4 +1,0 @@
-id=keybox
-name=Key attestation spoof
-author=salvogiangri, HELLBOY017
-description=Allows key attestation spoofing with a custom keybox.

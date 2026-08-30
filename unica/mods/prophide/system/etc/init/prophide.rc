@@ -1,8 +1,0 @@
-service prophide /system/bin/prophide.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:service.bootanim.exit=1
-    start prophide

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.appcompat.widget.AppCompatImageView android:id="@id/logo_background_view" android:layout_width="match_parent" android:layout_height="150.0dp" android:scaleType="centerCrop" android:alpha="0.9" />
-    <androidx.appcompat.widget.AppCompatImageView android:layout_gravity="center" android:layout_width="match_parent" android:layout_height="200.0dp" android:src="@drawable/artisan_logo" android:scaleType="centerInside" />
-</FrameLayout>

@@ -1,2 +1,0 @@
-on zygote-start && property:persist.sys.unica.vulkan=true
-    setprop debug.hwui.renderer skiavk
