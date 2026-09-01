@@ -1,26 +1,150 @@
 From 97cb72ff46ce2e60ebd95ef57aac147fa9007737 Mon Sep 17 00:00:00 2001
 From: Android-Artisan <romartisan2025@gmail.com>
 Date: Thu, 16 Jul 2026 17:33:49 +0200
-Subject: [PATCH] Limit FOD overlay opacity to preserve 70 percent brightness
+Subject: [PATCH] Apply a dynamic FOD overlay brightness floor
 
 ---
- .../SemDisplaySolutionManagerService.smali     | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../SemDisplaySolutionManagerService.smali     | 120 +++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
 
 diff --git a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
 index 8dc01c0..7d7e3f1 100644
 --- a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
 +++ b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
-@@ -1922,6 +1922,12 @@
-     double-to-float p0, p2
+@@ -1787,4 +1787,4 @@
+ .method public final getAlphaMaskLevel(FFF)F
+-    .locals 7
++    .locals 10
  
-+    const v0, 0x3e99999a    # 0.3f (30% black opacity)
-+    cmpg-float v1, p0, v0
-+    if-gez v1, :fod_alpha_end
-+    move p0, v0
+     const/4 v5, 0x0
+@@ -1802,4 +1802,7 @@
+     mul-float/2addr p1, v5
+ 
+     :cond_0
++    # Preserve normalized screen brightness before it is converted to nits.
++    move v7, p1
++
+     new-instance v0, Ljava/lang/StringBuilder;
+@@ -1922,4 +1925,120 @@
+    double-to-float p0, p2
+ 
++    const/high16 v0, 0x437f0000    # 255.0f
++
++    div-float/2addr v7, v0
++
++    const/4 v0, 0x0
++
++    cmpl-float v1, v7, v0
++
++    if-gez v1, :fod_brightness_nonnegative
++
++    move v7, v0
++
++    :fod_brightness_nonnegative
++    const/high16 v0, 0x3f800000    # 1.0f
++
++    cmpg-float v1, v7, v0
++
++    if-lez v1, :fod_brightness_normalized
++
++    move v7, v0
++
++    :fod_brightness_normalized
++    invoke-static {}, Ljava/util/Calendar;->getInstance()Ljava/util/Calendar;
++
++    move-result-object v8
++
++    const/16 v9, 0xb
++
++    invoke-virtual {v8, v9}, Ljava/util/Calendar;->get(I)I
++
++    move-result v9
++
++    int-to-float v9, v9
++
++    const/16 v0, 0xc
++
++    invoke-virtual {v8, v0}, Ljava/util/Calendar;->get(I)I
++
++    move-result v0
++
++    int-to-float v0, v0
++
++    const/high16 v1, 0x42700000    # 60.0f
++
++    div-float/2addr v0, v1
++
++    add-float/2addr v9, v0
++
++    const v8, 0x3dcccccd    # 0.1f
++
++    const/high16 v0, 0x40c00000    # 6.0f
++
++    cmpg-float v1, v9, v0
++
++    if-ltz v1, :fod_time_floor_ready
++
++    const/high16 v0, 0x41400000    # 12.0f
++
++    cmpg-float v1, v9, v0
++
++    if-ltz v1, :fod_morning_floor
++
++    const v0, 0x41a00000    # 20.0f
++
++    cmpg-float v1, v9, v0
++
++    if-ltz v1, :fod_afternoon_floor
++
++    goto :fod_time_floor_ready
++
++    :fod_morning_floor
++    const/high16 v0, 0x40c00000    # 6.0f
++
++    sub-float/2addr v9, v0
++
++    const v0, 0x3daaaaab    # 0.083333336f
++
++    mul-float/2addr v9, v0
++
++    add-float/2addr v8, v9
++
++    goto :fod_time_floor_ready
++
++    :fod_afternoon_floor
++    const/high16 v0, 0x41400000    # 12.0f
++
++    sub-float/2addr v9, v0
++
++    const v0, 0x3d800000    # 0.0625f
++
++    mul-float/2addr v9, v0
++
++    const v0, 0x3f19999a    # 0.6f
++
++    sub-float v8, v0, v9
++
++    :fod_time_floor_ready
++    cmpg-float v0, v7, v8
++
++    if-gez v0, :fod_floor_ready
++
++    move v7, v8
++
++    :fod_floor_ready
++    const/high16 v0, 0x3f800000    # 1.0f
++
++    sub-float v7, v0, v7
++
++    cmpl-float v0, p0, v7
++
++    if-lez v0, :fod_alpha_end
++
++    move p0, v7
++
 +    :fod_alpha_end
 +
-     return p0
- .end method
+    return p0
+.end method
 -- 
 2.53.0
