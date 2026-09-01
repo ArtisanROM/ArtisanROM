@@ -1,17 +1,17 @@
 From 97cb72ff46ce2e60ebd95ef57aac147fa9007737 Mon Sep 17 00:00:00 2001
 From: Android-Artisan <romartisan2025@gmail.com>
 Date: Thu, 16 Jul 2026 17:33:49 +0200
-Subject: [PATCH] Lock FOD overlay brightness to 70 percent
+Subject: [PATCH] Clamp FOD overlay brightness to 70 percent minimum
 
 ---
- .../SemDisplaySolutionManagerService.smali     | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ .../SemDisplaySolutionManagerService.smali     | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
 index 8dc01c0..3ca8c12 100644
 --- a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
 +++ b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
-@@ -1787,6 +1787,26 @@
+@@ -1787,6 +1787,29 @@
  .method public final getAlphaMaskLevel(FFF)F
      .locals 7
  
@@ -33,8 +33,12 @@ index 8dc01c0..3ca8c12 100644
 +
 +    :fod_scale_end
 +
++    const v5, 0x43328000    # 178.5f (70% of 255)
++    cmpg-float v5, p1, v5
++    if-gez v5, :fod_brightness_end
 +    const p1, 0x43328000    # 178.5f (70% of 255)
-+
++    :fod_brightness_end
+
     new-instance v0, Ljava/lang/StringBuilder;
  
      const-string/jumbo v1, "getAlphaMaskLevel() CurrentPlatformBrightnessValue : "
