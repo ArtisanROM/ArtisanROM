@@ -76,7 +76,7 @@ index 8dc01c0..7d7e3f1 100644
 +
 +    add-float/2addr v9, v0
 +
-+    const v8, 0x3dcccccd    # 0.1f
++    const v8, 0x3eb33333    # 0.35f
 +
 +    const/high16 v0, 0x40c00000    # 6.0f
 +
@@ -103,7 +103,7 @@ index 8dc01c0..7d7e3f1 100644
 +
 +    sub-float/2addr v9, v0
 +
-+    const v0, 0x3daaaaab    # 0.083333336f
++    const v0, 0x3d2aaaab    # 0.041666668f
 +
 +    mul-float/2addr v9, v0
 +
@@ -116,7 +116,7 @@ index 8dc01c0..7d7e3f1 100644
 +
 +    sub-float/2addr v9, v0
 +
-+    const v0, 0x3d800000    # 0.0625f
++    const v0, 0x3d000000    # 0.03125f
 +
 +    mul-float/2addr v9, v0
 +
