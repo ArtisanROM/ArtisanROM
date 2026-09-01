@@ -4,8 +4,8 @@ Date: Thu, 16 Jul 2026 17:33:49 +0200
 Subject: [PATCH] Apply a dynamic FOD overlay brightness floor
 
 ---
- .../SemDisplaySolutionManagerService.smali     | 120 +++++++++++++++++++++++
- 1 file changed, 120 insertions(+)
+ .../SemDisplaySolutionManagerService.smali     | 94 +++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
 
 diff --git a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
 index 8dc01c0..7d7e3f1 100644
@@ -17,39 +17,9 @@ index 8dc01c0..7d7e3f1 100644
 +    .locals 10
  
      const/4 v5, 0x0
-@@ -1802,4 +1802,7 @@
-     mul-float/2addr p1, v5
- 
-     :cond_0
-+    # Preserve normalized screen brightness before it is converted to nits.
-+    move v7, p1
-+
-     new-instance v0, Ljava/lang/StringBuilder;
-@@ -1922,4 +1925,120 @@
+@@ -1922,4 +1922,94 @@
     double-to-float p0, p2
  
-+    const/high16 v0, 0x437f0000    # 255.0f
-+
-+    div-float/2addr v7, v0
-+
-+    const/4 v0, 0x0
-+
-+    cmpl-float v1, v7, v0
-+
-+    if-gez v1, :fod_brightness_nonnegative
-+
-+    move v7, v0
-+
-+    :fod_brightness_nonnegative
-+    const/high16 v0, 0x3f800000    # 1.0f
-+
-+    cmpg-float v1, v7, v0
-+
-+    if-lez v1, :fod_brightness_normalized
-+
-+    move v7, v0
-+
-+    :fod_brightness_normalized
 +    invoke-static {}, Ljava/util/Calendar;->getInstance()Ljava/util/Calendar;
 +
 +    move-result-object v8
@@ -125,10 +95,6 @@ index 8dc01c0..7d7e3f1 100644
 +    sub-float v8, v0, v9
 +
 +    :fod_time_floor_ready
-+    cmpg-float v0, v7, v8
-+
-+    if-gez v0, :fod_floor_ready
-+
 +    move v7, v8
 +
 +    :fod_floor_ready
