@@ -1,0 +1,26 @@
+From 97cb72ff46ce2e60ebd95ef57aac147fa9007737 Mon Sep 17 00:00:00 2001
+From: Android-Artisan <romartisan2025@gmail.com>
+Date: Thu, 16 Jul 2026 17:33:49 +0200
+Subject: [PATCH] Limit FOD overlay opacity to preserve 70 percent brightness
+
+---
+ .../SemDisplaySolutionManagerService.smali     | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
+index 8dc01c0..7d7e3f1 100644
+--- a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
++++ b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
+@@ -1922,6 +1922,12 @@
+     double-to-float p0, p2
+ 
++    const v0, 0x3e99999a    # 0.3f (30% black opacity)
++    cmpg-float v1, p0, v0
++    if-gez v1, :fod_alpha_end
++    move p0, v0
++    :fod_alpha_end
++
+     return p0
+ .end method
+-- 
+2.53.0
