@@ -1,116 +1,69 @@
 From 97cb72ff46ce2e60ebd95ef57aac147fa9007737 Mon Sep 17 00:00:00 2001
 From: Android-Artisan <romartisan2025@gmail.com>
-Date: Thu, 16 Jul 2026 17:33:49 +0200
-Subject: [PATCH] Apply a dynamic FOD overlay brightness floor
+Date: Wed, 2 Sep 2026 01:10:00 +0330
+Subject: [PATCH] Apply FOD floor from the user brightness slider
 
 ---
- .../SemDisplaySolutionManagerService.smali     | 94 +++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ .../SemDisplaySolutionManagerService.smali     | 44 +++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
-index 8dc01c0..7d7e3f1 100644
 --- a/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
 +++ b/smali_classes2/com/samsung/android/displaysolution/SemDisplaySolutionManagerService.smali
-@@ -1787,4 +1787,4 @@
+@@ -1787,4 +1787,6 @@
  .method public final getAlphaMaskLevel(FFF)F
 -    .locals 7
 +    .locals 10
  
++    iget-object v7, p0, Lcom/samsung/android/displaysolution/SemDisplaySolutionManagerService;->mContext:Landroid/content/Context;
++
      const/4 v5, 0x0
-@@ -1922,4 +1922,94 @@
-    double-to-float p0, p2
+@@ -1922,4 +1924,46 @@
+     double-to-float p0, p2
  
++    invoke-virtual {v7}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++    move-result-object v7
++    const-string/jumbo v8, "screen_brightness"
++    const/4 v9, 0x0
++    invoke-static {v7, v8, v9}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
++    move-result v7
++    int-to-float v7, v7
++    const/high16 v0, 0x437f0000    # 255.0f
++    div-float/2addr v7, v0
++    const/4 v0, 0x0
++    cmpl-float v1, v7, v0
++    if-gez v1, :fod_slider_nonnegative
++    move v7, v0
++    :fod_slider_nonnegative
++    const/high16 v0, 0x3f800000    # 1.0f
++    cmpg-float v1, v7, v0
++    if-lez v1, :fod_slider_ready
++    move v7, v0
++    :fod_slider_ready
 +    invoke-static {}, Ljava/util/Calendar;->getInstance()Ljava/util/Calendar;
-+
 +    move-result-object v8
-+
 +    const/16 v9, 0xb
-+
 +    invoke-virtual {v8, v9}, Ljava/util/Calendar;->get(I)I
-+
 +    move-result v9
-+
-+    int-to-float v9, v9
-+
-+    const/16 v0, 0xc
-+
-+    invoke-virtual {v8, v0}, Ljava/util/Calendar;->get(I)I
-+
-+    move-result v0
-+
-+    int-to-float v0, v0
-+
-+    const/high16 v1, 0x42700000    # 60.0f
-+
-+    div-float/2addr v0, v1
-+
-+    add-float/2addr v9, v0
-+
-+    const v8, 0x3eb33333    # 0.35f
-+
-+    const/high16 v0, 0x40c00000    # 6.0f
-+
-+    cmpg-float v1, v9, v0
-+
-+    if-ltz v1, :fod_time_floor_ready
-+
-+    const/high16 v0, 0x41400000    # 12.0f
-+
-+    cmpg-float v1, v9, v0
-+
-+    if-ltz v1, :fod_morning_floor
-+
-+    const v0, 0x41a00000    # 20.0f
-+
-+    cmpg-float v1, v9, v0
-+
-+    if-ltz v1, :fod_afternoon_floor
-+
++    const/4 v0, 0x6
++    if-lt v9, v0, :fod_night_floor
++    const/high16 v8, 0x3f000000    # 0.5f
 +    goto :fod_time_floor_ready
-+
-+    :fod_morning_floor
-+    const/high16 v0, 0x40c00000    # 6.0f
-+
-+    sub-float/2addr v9, v0
-+
-+    const v0, 0x3d2aaaab    # 0.041666668f
-+
-+    mul-float/2addr v9, v0
-+
-+    add-float/2addr v8, v9
-+
-+    goto :fod_time_floor_ready
-+
-+    :fod_afternoon_floor
-+    const/high16 v0, 0x41400000    # 12.0f
-+
-+    sub-float/2addr v9, v0
-+
-+    const v0, 0x3d000000    # 0.03125f
-+
-+    mul-float/2addr v9, v0
-+
-+    const v0, 0x3f19999a    # 0.6f
-+
-+    sub-float v8, v0, v9
-+
++    :fod_night_floor
++    const/high16 v8, 0x3e800000    # 0.25f
 +    :fod_time_floor_ready
++    cmpg-float v0, v7, v8
++    if-gez v0, :fod_floor_ready
 +    move v7, v8
-+
 +    :fod_floor_ready
 +    const/high16 v0, 0x3f800000    # 1.0f
-+
 +    sub-float v7, v0, v7
-+
 +    cmpl-float v0, p0, v7
-+
 +    if-lez v0, :fod_alpha_end
-+
 +    move p0, v7
-+
 +    :fod_alpha_end
 +
-    return p0
-.end method
+     return p0
+ .end method
 -- 
 2.53.0
