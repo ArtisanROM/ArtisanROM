@@ -13,15 +13,15 @@ index 5a7ae767c..e894586fe 100644
 +++ b/smali_classes2/com/android/server/wm/WindowManagerService$SettingsObserver.smali
 @@ -93,9 +93,9 @@
  
-     move-result-object v6
- 
--    const-string/jumbo v7, "disable_secure_windows"
-+    const-string/jumbo v7, "unica_secure_ss"
- 
--    invoke-static {v7}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
-+    invoke-static {v7}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
- 
      move-result-object v7
+ 
+-    const-string/jumbo v8, "disable_secure_windows"
++    const-string/jumbo v8, "unica_secure_ss"
+ 
+-    invoke-static {v8}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++    invoke-static {v8}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+ 
+     move-result-object v8
  
 @@ -847,20 +847,6 @@
  .method public final updateDisableSecureWindows()V
@@ -44,7 +44,7 @@ index 5a7ae767c..e894586fe 100644
      iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$SettingsObserver;->this$0:Lcom/android/server/wm/WindowManagerService;
  
      iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mContext:Landroid/content/Context;
-@@ -869,29 +855,28 @@
+@@ -869,30 +855,29 @@
  
      move-result-object v0
  
@@ -75,7 +75,8 @@ index 5a7ae767c..e894586fe 100644
 -    if-ne v0, v1, :cond_2
 +    if-ne v0, v1, :cond_1
  
-     goto :goto_0
+     :goto_0
+     return-void
  
 -    :cond_2
 +    :cond_1
@@ -118,4 +119,3 @@ index 5a7ae767c..e894586fe 100644
  
 -- 
 2.51.1
-

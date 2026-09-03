@@ -8,10 +8,10 @@ UN1CA: this patch is not complete! Please check unica/patches/product_feature/cu
  .../android/settings/wifi/develop/btm/BtmController.smali       | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/smali_classes3/com/samsung/android/settings/wifi/develop/btm/BtmController.smali b/smali_classes3/com/samsung/android/settings/wifi/develop/btm/BtmController.smali
+diff --git a/smali_classes2/com/samsung/android/settings/wifi/develop/compatibility/btm/BtmController.smali b/smali_classes2/com/samsung/android/settings/wifi/develop/compatibility/btm/BtmController.smali
 index 35f1f2740..3f9a8166d 100644
---- a/smali_classes3/com/samsung/android/settings/wifi/develop/btm/BtmController.smali
-+++ b/smali_classes3/com/samsung/android/settings/wifi/develop/btm/BtmController.smali
+--- a/smali_classes2/com/samsung/android/settings/wifi/develop/compatibility/btm/BtmController.smali
++++ b/smali_classes2/com/samsung/android/settings/wifi/develop/compatibility/btm/BtmController.smali
 @@ -17,7 +17,7 @@
  .method public getAvailabilityStatus()I
      .locals 1
@@ -23,4 +23,3 @@ index 35f1f2740..3f9a8166d 100644
  
 -- 
 2.51.1
-

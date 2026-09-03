@@ -13,7 +13,7 @@
 /system/media/audio/ringtones/SoundTheme/Retro/Jogging.ogg
 /system/media/audio/ringtones/SoundTheme/Calm/Mozart_Sonata.ogg
 /system/media/audio/ringtones/SoundTheme/Calm/Cappuccino_Foam.ogg
-/system/media/audio/ringtones/SoundTheme/Retro/Big_Tiime.ogg
+/system/media/audio/ringtones/SoundTheme/Retro/Big_Time.ogg
 /system/media/audio/ringtones/SoundTheme/Galaxy/Good_Groove.ogg
 /system/media/audio/ringtones/SoundTheme/Calm/Saint_Saens_Fossils.ogg
 /system/media/audio/ringtones/SoundTheme/Fun/After_School.ogg

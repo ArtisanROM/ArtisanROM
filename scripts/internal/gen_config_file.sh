@@ -468,6 +468,10 @@ fi
     GET_BUILD_VAR "SOURCE_PLATFORM_SDK_VERSION"
     GET_BUILD_VAR "SOURCE_PRODUCT_SHIPPING_API_LEVEL"
     GET_BUILD_VAR "SOURCE_BOARD_API_LEVEL"
+    # When the source device already implements the target display stack,
+    # keep its resolution/HFR framework and floating-feature values intact.
+    # This is opt-in so existing ports retain the historical behaviour.
+    GET_BUILD_VAR "SOURCE_USE_NATIVE_DISPLAY_STACK" "false"
     GET_BUILD_VAR "TARGET_NAME"
     GET_BUILD_VAR "TARGET_CODENAME"
     GET_BUILD_VAR "TARGET_PLATFORM" "none"

@@ -44,6 +44,17 @@ APPLY_PATCH()
     DECODE_APK "$PARTITION" "$FILE" || return 1
 
     LOG "- Applying \"$(grep "^Subject:" "$PATCH" | sed "s/.*PATCH] //")\" to /$PARTITION/$FILE"
+
+    # A decoded APK/JAR cache may already contain this patch from a previous
+    # build. Only treat it as applied when the complete patch can be cleanly
+    # reversed; incompatible or partially applied patches must still fail.
+    if LC_ALL=C git apply \
+        --directory="$APKTOOL_DIR/$PARTITION/${FILE//system\//}" \
+        --reverse --check --unsafe-paths "$PATCH" > /dev/null 2>&1; then
+        LOG "  - Patch is already applied; skipping"
+        return 0
+    fi
+
     EVAL "LC_ALL=C git apply --directory=\"$APKTOOL_DIR/$PARTITION/${FILE//system\//}\" --verbose --unsafe-paths \"$PATCH\"" || return 1
 }
 

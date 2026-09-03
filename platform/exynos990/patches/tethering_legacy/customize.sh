@@ -60,6 +60,10 @@ sed -i -e "s|$PATCH_TMP/mnt | |g" -e "s|$PATCH_TMP/mnt/||g" "$PATCH_TMP/fs_confi
 NETBPFLOAD="$PAYLOAD/bin/netbpfload"
 EXPECTED_SHA256="cad99f3ef16dfb940e2a29b0a5061d0c8d21063604ace33877023bc78a27ad13"
 PATCHED_SHA256="b4458f3107e66cff08e01de87586d2659578a4f16f09b13f846f047920eb0e61"
+EXPECTED_85_SHA256="7b77a7ac01d01b6787544f2a01a77f4fd929ec6da0625c6f413764e8622ff2a2"
+BROKEN_PATCHED_85_SHA256="d7b634fad672b400656f2dced2504b25090e54992d189133b3eaf1dab7c54813"
+Q2_ONLY_PATCHED_85_SHA256="8ee75c6fc3eaf73cd6d93cfd9d96b253e4297706921bd57bedf224a5df16468a"
+PATCHED_85_SHA256="13e9fedd343f603445b7094aa6d44266614bbd7e1962c10f56b87f445b219ad0"
 ACTUAL_SHA256="$(sha256sum "$NETBPFLOAD" | cut -d ' ' -f 1)"
 
 if [ "$ACTUAL_SHA256" = "$EXPECTED_SHA256" ]; then
@@ -74,15 +78,50 @@ if [ "$ACTUAL_SHA256" = "$EXPECTED_SHA256" ]; then
     HEX_PATCH "$NETBPFLOAD" \
         "1c070094c0160036680800f0" \
         "1c0700941f2003d5680800f0" > /dev/null
+    FINAL_SHA256="$PATCHED_SHA256"
 elif [ "$ACTUAL_SHA256" = "$PATCHED_SHA256" ]; then
     LOG "- NetBpfLoad Android 25Q2 kernel gate is already disabled"
+    FINAL_SHA256="$PATCHED_SHA256"
+elif [ "$ACTUAL_SHA256" = "$EXPECTED_85_SHA256" ]; then
+    # One UI 8.5 reaches the error block by falling through when the 25Q2
+    # compatibility flag is set. Jump over that block unconditionally while
+    # preserving the real kernel version for BPF program selection.
+    #
+    # Before: tbz w10, #0, <after Android 25Q2 kernel 5.4 error block>
+    # After:  b <after Android 25Q2 kernel 5.4 error block>
+    LOG "- Disabling NetBpfLoad One UI 8.5 kernel 5.4/5.10 version gates"
+    HEX_PATCH "$NETBPFLOAD" \
+        "5f01057168010054ea5244392a010036a1fffff0" \
+        "5f01057168010054ea52443909000014a1fffff0" > /dev/null
+    HEX_PATCH "$NETBPFLOAD" \
+        "1f110a71280200546808009008614439c8010036a1fffff0" \
+        "1f110a712802005468080090086144390e000014a1fffff0" > /dev/null
+    FINAL_SHA256="$PATCHED_85_SHA256"
+elif [ "$ACTUAL_SHA256" = "$BROKEN_PATCHED_85_SHA256" ]; then
+    LOG "- Repairing cached NetBpfLoad One UI 8.5 kernel gate patch"
+    HEX_PATCH "$NETBPFLOAD" \
+        "5f01057168010054ea5244391f2003d5a1fffff0" \
+        "5f01057168010054ea52443909000014a1fffff0" > /dev/null
+    HEX_PATCH "$NETBPFLOAD" \
+        "1f110a71280200546808009008614439c8010036a1fffff0" \
+        "1f110a712802005468080090086144390e000014a1fffff0" > /dev/null
+    FINAL_SHA256="$PATCHED_85_SHA256"
+elif [ "$ACTUAL_SHA256" = "$Q2_ONLY_PATCHED_85_SHA256" ]; then
+    LOG "- Disabling cached NetBpfLoad One UI 8.5 kernel 5.10 gate"
+    HEX_PATCH "$NETBPFLOAD" \
+        "1f110a71280200546808009008614439c8010036a1fffff0" \
+        "1f110a712802005468080090086144390e000014a1fffff0" > /dev/null
+    FINAL_SHA256="$PATCHED_85_SHA256"
+elif [ "$ACTUAL_SHA256" = "$PATCHED_85_SHA256" ]; then
+    LOG "- NetBpfLoad One UI 8.5 kernel gate is already disabled"
+    FINAL_SHA256="$PATCHED_85_SHA256"
 else
     LOGE "Unsupported netbpfload build: $ACTUAL_SHA256"
-    LOGE "Expected original/patched Android 16 build: $EXPECTED_SHA256 / $PATCHED_SHA256"
+    LOGE "Expected a supported One UI 8.0/8.5 original or patched build"
     return 1
 fi
 
-if [ "$(sha256sum "$NETBPFLOAD" | cut -d ' ' -f 1)" != "$PATCHED_SHA256" ]; then
+if [ "$(sha256sum "$NETBPFLOAD" | cut -d ' ' -f 1)" != "$FINAL_SHA256" ]; then
     LOGE "netbpfload patch validation failed"
     return 1
 fi
@@ -90,6 +129,9 @@ fi
 NETD_UPDATABLE="$PAYLOAD/lib64/libnetd_updatable.so"
 EXPECTED_NETD_SHA256="eda006b2bc421bb2581b2193c10444b7ee158bf728034e1e57ba8425e82a6386"
 PATCHED_NETD_SHA256="3ebd27e5f3a6f6c4efe04672c6b835701c8cf6cec584792e907e75d140bee67f"
+EXPECTED_NETD_85_SHA256="b15352158c8633d3a3b743331ce149daa29c6b7d656eed014392da082cf187cc"
+BROKEN_PATCHED_NETD_85_SHA256="4a6ba0362a869ee8e91b8317b57614cbd9d77872416543c413262e4c52b10aa2"
+PATCHED_NETD_85_SHA256="d62c8a9d351296e992f965e396c52cddc0db435ebd89b02d3c6834ade7b0c0d3"
 ACTUAL_NETD_SHA256="$(sha256sum "$NETD_UPDATABLE" | cut -d ' ' -f 1)"
 
 if [ "$ACTUAL_NETD_SHA256" = "$EXPECTED_NETD_SHA256" ]; then
@@ -103,15 +145,35 @@ if [ "$ACTUAL_NETD_SHA256" = "$EXPECTED_NETD_SHA256" ]; then
     HEX_PATCH "$NETD_UPDATABLE" \
         "1f01096be9430054e00301aa" \
         "1f01096b1f2003d5e00301aa" > /dev/null
+    FINAL_NETD_SHA256="$PATCHED_NETD_SHA256"
 elif [ "$ACTUAL_NETD_SHA256" = "$PATCHED_NETD_SHA256" ]; then
     LOG "- netd Android 25Q2 kernel gate is already disabled"
+    FINAL_NETD_SHA256="$PATCHED_NETD_SHA256"
+elif [ "$ACTUAL_NETD_SHA256" = "$EXPECTED_NETD_85_SHA256" ]; then
+    # Like NetBpfLoad above, this TBZ skips the unsupported-kernel error
+    # object. Replacing it with NOP would fall through into the error; branch
+    # unconditionally to the normal continuation instead.
+    LOG "- Disabling netd One UI 8.5 kernel 5.4 version gate"
+    HEX_PATCH "$NETD_UPDATABLE" \
+        "1f010571c805005448a341398805003600088052" \
+        "1f010571c805005448a341392c00001400088052" > /dev/null
+    FINAL_NETD_SHA256="$PATCHED_NETD_85_SHA256"
+elif [ "$ACTUAL_NETD_SHA256" = "$BROKEN_PATCHED_NETD_85_SHA256" ]; then
+    LOG "- Repairing cached netd One UI 8.5 kernel gate patch"
+    HEX_PATCH "$NETD_UPDATABLE" \
+        "1f010571c805005448a341391f2003d500088052" \
+        "1f010571c805005448a341392c00001400088052" > /dev/null
+    FINAL_NETD_SHA256="$PATCHED_NETD_85_SHA256"
+elif [ "$ACTUAL_NETD_SHA256" = "$PATCHED_NETD_85_SHA256" ]; then
+    LOG "- netd One UI 8.5 kernel gate is already disabled"
+    FINAL_NETD_SHA256="$PATCHED_NETD_85_SHA256"
 else
     LOGE "Unsupported libnetd_updatable build: $ACTUAL_NETD_SHA256"
-    LOGE "Expected original/patched Android 16 build: $EXPECTED_NETD_SHA256 / $PATCHED_NETD_SHA256"
+    LOGE "Expected a supported One UI 8.0/8.5 original or patched build"
     return 1
 fi
 
-if [ "$(sha256sum "$NETD_UPDATABLE" | cut -d ' ' -f 1)" != "$PATCHED_NETD_SHA256" ]; then
+if [ "$(sha256sum "$NETD_UPDATABLE" | cut -d ' ' -f 1)" != "$FINAL_NETD_SHA256" ]; then
     LOGE "libnetd_updatable patch validation failed"
     return 1
 fi
@@ -153,5 +215,9 @@ mv -f "$BUILT_APEX.signed" "$CAPEX"
 rm -rf "$PATCH_TMP"
 
 unset CAPEX PATCH_TMP DECODED PAYLOAD NETBPFLOAD EXPECTED_SHA256 PATCHED_SHA256 \
-    ACTUAL_SHA256 NETD_UPDATABLE EXPECTED_NETD_SHA256 PATCHED_NETD_SHA256 \
-    ACTUAL_NETD_SHA256 SALT BUILT_APEX CERT_PREFIX
+    EXPECTED_85_SHA256 BROKEN_PATCHED_85_SHA256 \
+    Q2_ONLY_PATCHED_85_SHA256 PATCHED_85_SHA256 ACTUAL_SHA256 FINAL_SHA256 \
+    NETD_UPDATABLE EXPECTED_NETD_SHA256 PATCHED_NETD_SHA256 \
+    EXPECTED_NETD_85_SHA256 BROKEN_PATCHED_NETD_85_SHA256 \
+    PATCHED_NETD_85_SHA256 ACTUAL_NETD_SHA256 FINAL_NETD_SHA256 SALT \
+    BUILT_APEX CERT_PREFIX

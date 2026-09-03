@@ -46,7 +46,12 @@ if ! $SOURCE_HAS_UWB; then
     fi
 else
     if ! $TARGET_HAS_UWB; then
-        ABORT "Missing patch for condition (SOURCE_HAS_UWB: [$SOURCE_HAS_UWB], TARGET_HAS_UWB: [$TARGET_HAS_UWB]). Aborting"
+        # The donor may support UWB even when the target device does not. In
+        # that case no UWB blobs should be imported: the target has no UWB
+        # controller/firmware to service them, and exposing the donor feature
+        # can leave stale framework and permission entries behind. Treat this
+        # as an expected hardware mismatch instead of aborting the build.
+        LOG "- Donor has UWB but target has no UWB hardware; skipping UWB blobs"
     fi
 fi
 

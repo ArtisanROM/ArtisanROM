@@ -8,10 +8,10 @@ Subject: [PATCH] Enable quick switch to Secure Folder feature
  .../usefulfeature/functionkey/FunctionKeyUtils.smali     | 4 +---
  2 files changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/smali_classes3/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali b/smali_classes3/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali
+diff --git a/smali_classes2/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali b/smali_classes2/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali
 index 979ecac3a..500a18679 100644
---- a/smali_classes3/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali
-+++ b/smali_classes3/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali
+--- a/smali_classes2/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali
++++ b/smali_classes2/com/samsung/android/settings/usefulfeature/Usefulfeature$1.smali
 @@ -250,14 +250,6 @@
  
      iput-object v1, v0, Lcom/android/settingslib/search/SearchIndexableRaw;->keywords:Ljava/lang/String;
@@ -35,21 +35,20 @@ index 979ecac3a..500a18679 100644
      const-string p1, "function_key_setting"
  
      iput-object p1, v0, Landroid/provider/SearchIndexableData;->key:Ljava/lang/String;
-diff --git a/smali_classes3/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali b/smali_classes3/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali
+diff --git a/smali_classes2/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali b/smali_classes2/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali
 index 833fde60a..0a5d87f52 100644
---- a/smali_classes3/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali
-+++ b/smali_classes3/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali
-@@ -589,9 +589,7 @@
+--- a/smali_classes2/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali
++++ b/smali_classes2/com/samsung/android/settings/usefulfeature/functionkey/FunctionKeyUtils.smali
+@@ -720,9 +720,7 @@
  
-     invoke-virtual {v12}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+     sget v30, Lcom/samsung/android/settings/usefulfeature/functionkey/item/SecureFolderAction;->pressType:I
  
 -    invoke-static {v1, v0}, Lcom/android/settings/Utils;->hasPackage(Landroid/content/Context;Ljava/lang/String;)Z
 -
 -    move-result v0
 +    const/4 v0, 0x1
  
-     if-nez v0, :cond_6
+     if-nez v0, :cond_9
  
 -- 
 2.51.2
-

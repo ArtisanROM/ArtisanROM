@@ -1,0 +1,3 @@
+Filesystem created:        Fri Dec 31 21:00:00 2021
+Filesystem UUID:           0ac2790c-9e06-58fd-adbd-01d958e9e247
+mkfs.erofs options:        -zlz4hc -T 1640995200 -U 0ac2790c-9e06-58fd-adbd-01d958e9e247 --mount-point=/vendor --fs-config-file=./config/vendor_fs_config --file-contexts=./config/vendor_file_contexts vendor_repack.img ./vendor

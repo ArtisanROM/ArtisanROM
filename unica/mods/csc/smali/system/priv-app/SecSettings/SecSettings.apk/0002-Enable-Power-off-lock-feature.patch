@@ -7,10 +7,10 @@ Subject: [PATCH] Enable Power off lock feature
  .../PowerOffLockPreferenceController.smali    | 20 ++-----------------
  1 file changed, 2 insertions(+), 18 deletions(-)
 
-diff --git a/smali_classes3/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali b/smali_classes3/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali
+diff --git a/smali_classes5/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali b/smali_classes5/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali
 index 26b74b598..7bc1621be 100644
---- a/smali_classes3/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali
-+++ b/smali_classes3/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali
+--- a/smali_classes5/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali
++++ b/smali_classes5/com/samsung/android/settings/security/PowerOffLockPreferenceController.smali
 @@ -41,29 +41,13 @@
  
      move-result p0
@@ -45,4 +45,3 @@ index 26b74b598..7bc1621be 100644
      return p0
 -- 
 2.51.0
-

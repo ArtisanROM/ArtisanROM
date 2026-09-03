@@ -1,0 +1,4 @@
+# odm may be copied from the target firmware during work-dir creation.
+ro.odm.product.cpu.abilist=arm64-v8a
+ro.odm.product.cpu.abilist32=
+ro.odm.product.cpu.abilist64=arm64-v8a

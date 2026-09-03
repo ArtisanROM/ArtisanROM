@@ -64,10 +64,20 @@ patchelf --add-needed "libc++_shared.so" "$WORK_DIR/system/system/lib64/libMulti
 LOG_STEP_OUT
 
 LOG_STEP_IN "- Removing HDR10+ check"
-ADD_TO_WORK_DIR "pa3qzcx" "system" "system/lib64/libstagefright.so" 0 0 644 "u:object_r:system_lib_file:s0"
-# One UI 8 keeps the HDR10+ gate in ACodec::setupVideoEncoder, but its
-# branch target changed from the previous implementation.
-HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" "010140f97069059420510034" "010140f91f2003d51f2003d5"
+if [[ "$SOURCE_PLATFORM_SDK_VERSION" -lt 36 ]]; then
+    ADD_TO_WORK_DIR "pa3qzcx" "system" "system/lib64/libstagefright.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
+        "010140f97069059420510034" \
+        "010140f91f2003d51f2003d5"
+else
+    # Android 16 changed the Camera::connect ABI. Replacing this library with
+    # the older pa3qzcx blob makes zygote, cameraserver and the media services
+    # fail at link time, so retain the source firmware's matched media stack.
+    LOG "Skipping legacy HDR10+ blob on Android 16"
+    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" \
+        "system/lib64/libstagefright.so" 0 0 644 \
+        "u:object_r:system_lib_file:s0"
+fi
 LOG_STEP_OUT
 
 LOG_STEP_IN "- Adding prebuilt libs from other devices"

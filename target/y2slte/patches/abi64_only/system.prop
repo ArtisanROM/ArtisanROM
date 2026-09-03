@@ -1,0 +1,4 @@
+# Keep the system-side ABI lists consistent with vendor.
+ro.system.product.cpu.abilist=arm64-v8a
+ro.system.product.cpu.abilist32=
+ro.system.product.cpu.abilist64=arm64-v8a

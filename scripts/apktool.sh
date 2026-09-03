@@ -69,6 +69,7 @@ DECODE()
 {
     local CACHE_KEY=""
     local CACHE_PATH=""
+    local EXPECTED_CLASS_COUNT="0"
 
     if [ ! -f "$INPUT_FILE" ]; then
         LOGE "File not found: ${INPUT_FILE//$WORK_DIR/}"
@@ -87,6 +88,45 @@ DECODE()
         exit 1
     fi
 
+    # Every DEX class definition must produce exactly one smali file. Besides
+    # detecting interrupted cache writes, this catches decoded trees that were
+    # accidentally cached while apktool was still processing another DEX.
+    while IFS= read -r dex; do
+        local DEX_TEMP
+        local DEX_VERSION
+        local DEX_OFFSET="0"
+        local DEX_FILE_SIZE
+        local DEX_CONTAINER_SIZE
+        local DEX_CLASS_COUNT
+
+        mkdir -p "$TMP_DIR"
+        DEX_TEMP="$(mktemp "$TMP_DIR/dex-header.XXXXXX")"
+        if ! unzip -p "$INPUT_FILE" "$dex" > "$DEX_TEMP"; then
+            rm -f "$DEX_TEMP"
+            LOGE "Failed to inspect $dex in ${INPUT_FILE//$WORK_DIR/}"
+            exit 1
+        fi
+
+        DEX_VERSION="$(dd if="$DEX_TEMP" status=none bs=1 skip=4 count=3)"
+        DEX_CONTAINER_SIZE="$(stat -c %s "$DEX_TEMP")"
+        while [ "$DEX_OFFSET" -lt "$DEX_CONTAINER_SIZE" ]; do
+            DEX_CLASS_COUNT="$(od -An -tu4 --endian=little \
+                -j $((DEX_OFFSET + 96)) -N 4 "$DEX_TEMP" | tr -d ' ')"
+            [ "$DEX_CLASS_COUNT" ] || DEX_CLASS_COUNT="0"
+            EXPECTED_CLASS_COUNT=$((EXPECTED_CLASS_COUNT + DEX_CLASS_COUNT))
+
+            # DEX 041 may store multiple logical dex files in one container.
+            # file_size points to the next embedded header; older versions
+            # contain only one logical dex per ZIP entry.
+            [ "$DEX_VERSION" = "041" ] || break
+            DEX_FILE_SIZE="$(od -An -tu4 --endian=little \
+                -j $((DEX_OFFSET + 32)) -N 4 "$DEX_TEMP" | tr -d ' ')"
+            [ "$DEX_FILE_SIZE" -gt "0" ] || break
+            DEX_OFFSET=$((DEX_OFFSET + DEX_FILE_SIZE))
+        done
+        rm -f "$DEX_TEMP"
+    done < <(zipinfo -1 "$INPUT_FILE" | grep -E '^classes([0-9]+)?\.dex$')
+
     # Cache only the pristine apktool output. Patch modules run after this
     # function returns, so cached trees never contain changes from an older
     # build. The key ties the tree to both the input and framework version.
@@ -98,11 +138,17 @@ DECODE()
         } | sha256sum | cut -d " " -f 1)"
         CACHE_PATH="$APK_DECODE_CACHE_DIR/$CACHE_KEY"
 
-        if [ "$APK_DECODE_CACHE_MODE" = "reuse" ] && [ -f "$CACHE_PATH/.complete" ]; then
-            LOG "- Restoring decoded cache for ${INPUT_FILE//$WORK_DIR/}"
-            mkdir -p "$OUTPUT_PATH"
-            cp -a --reflink=auto "$CACHE_PATH/tree/." "$OUTPUT_PATH/" || exit 1
-            return 0
+        if [ "$APK_DECODE_CACHE_MODE" = "reuse" ] && [ -f "$CACHE_PATH/.complete" ] && \
+                [ "$(cat "$CACHE_PATH/.class_count" 2> /dev/null)" = "$EXPECTED_CLASS_COUNT" ]; then
+            local CACHED_CLASS_COUNT
+            CACHED_CLASS_COUNT="$(find "$CACHE_PATH/tree" -type f -name '*.smali' | wc -l)"
+            if [ "$CACHED_CLASS_COUNT" = "$EXPECTED_CLASS_COUNT" ]; then
+                LOG "- Restoring decoded cache for ${INPUT_FILE//$WORK_DIR/}"
+                mkdir -p "$OUTPUT_PATH"
+                cp -a --reflink=auto "$CACHE_PATH/tree/." "$OUTPUT_PATH/" || exit 1
+                return 0
+            fi
+            LOGW "Decoded cache is incomplete for ${INPUT_FILE//$WORK_DIR/}; regenerating"
         fi
     fi
 
@@ -116,10 +162,18 @@ DECODE()
     EVAL "apktool -JXmx${HEAP_SIZE}m d --no-debug-info -j \"$THREAD_COUNT\" -o \"$OUTPUT_PATH\" -p \"$FRAMEWORK_DIR\" -t \"$FRAMEWORK_TAG\" \"$INPUT_FILE\"" || exit 1
 
     if [ -n "$CACHE_PATH" ]; then
+        local DECODED_CLASS_COUNT
+        DECODED_CLASS_COUNT="$(find "$OUTPUT_PATH" -type f -name '*.smali' | wc -l)"
+        if [ "$DECODED_CLASS_COUNT" != "$EXPECTED_CLASS_COUNT" ]; then
+            LOGE "Incomplete decode for ${INPUT_FILE//$WORK_DIR/}: expected $EXPECTED_CLASS_COUNT classes, found $DECODED_CLASS_COUNT"
+            exit 1
+        fi
+
         local CACHE_TMP="$CACHE_PATH.tmp.$$"
         rm -rf "$CACHE_TMP"
         mkdir -p "$CACHE_TMP/tree"
         cp -a --reflink=auto "$OUTPUT_PATH/." "$CACHE_TMP/tree/" || exit 1
+        printf '%s\n' "$EXPECTED_CLASS_COUNT" > "$CACHE_TMP/.class_count"
         touch "$CACHE_TMP/.complete"
         rm -rf "$CACHE_PATH"
         mv "$CACHE_TMP" "$CACHE_PATH"

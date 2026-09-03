@@ -1,26 +1,107 @@
 # S24 FE OneUI 7 -> SoundBooster 2000
 # S20 Series -> SoundBooster 1050
-LOG_STEP_IN "- Porting the Audio HAL wrapper from HIDL 5.0 to 6.0"
-# Keep the Exynos 990 legacy audio.primary driver, DSP firmware, mixer paths
-# and policy files. Only replace the generic binder service and HIDL wrapper
-# with the Android 16 source firmware's 6.0 implementation.
-ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "bin/hw/android.hardware.audio.service" 0 2000 755 "u:object_r:hal_audio_default_exec:s0"
-for ARCH in lib lib64; do
-    for LIB in \
-        android.hardware.audio.common@6.0.so \
-        android.hardware.audio.common@6.0-util.so \
-        android.hardware.audio.effect@6.0.so \
-        android.hardware.audio.effect@6.0-util.so \
-        android.hardware.audio@6.0.so \
-        android.hardware.audio@6.0-util.so; do
-        ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "$ARCH/$LIB" 0 0 644 "u:object_r:vendor_file:s0"
+#
+# The S926B Android 16 firmware exposes a 7.1 service. That service is linked
+# against symbols which are not available in the y2slte vendor namespace. Use
+# the tested HIDL 6.0 wrapper from the older Exynos donor instead. The old
+# donor is intentionally discovered by its extracted files so a build remains
+# safe when the optional firmware has not been downloaded yet.
+AUDIO_DONOR_SOURCE="${AUDIO_LEGACY_DONOR_DIR:-}"
+AUDIO_DONOR_LABEL="${AUDIO_LEGACY_DONOR_DIR:-}"
+if [ "$AUDIO_DONOR_SOURCE" ] && \
+        { [ ! -f "$AUDIO_DONOR_SOURCE/vendor/lib64/hw/android.hardware.audio@6.0-impl.so" ] || \
+            [ ! -f "$AUDIO_DONOR_SOURCE/vendor/bin/hw/android.hardware.audio.service" ]; }; then
+    LOGW "- AUDIO_LEGACY_DONOR_DIR does not contain a complete HIDL 6.0 HAL; ignoring override"
+    AUDIO_DONOR_SOURCE=""
+    AUDIO_DONOR_LABEL=""
+fi
+if [ ! "$AUDIO_DONOR_SOURCE" ]; then
+    for AUDIO_CANDIDATE in \
+            "$FW_DIR/SM-S901B_EUX" \
+            "$FW_DIR/SM-S711B_EUX" \
+            "$FW_DIR/SM-S926B_EUX"; do
+        [ -d "$AUDIO_CANDIDATE" ] || continue
+        if [ -f "$AUDIO_CANDIDATE/vendor/lib64/hw/android.hardware.audio@6.0-impl.so" ] && \
+                [ -f "$AUDIO_CANDIDATE/vendor/bin/hw/android.hardware.audio.service" ]; then
+            AUDIO_DONOR_SOURCE="$AUDIO_CANDIDATE"
+            AUDIO_DONOR_LABEL="${AUDIO_CANDIDATE#$FW_DIR/}"
+            break
+        fi
     done
-    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "$ARCH/hw/android.hardware.audio@6.0-impl.so" 0 0 644 "u:object_r:vendor_file:s0"
-    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "$ARCH/hw/android.hardware.audio.effect@6.0-impl.so" 0 0 644 "u:object_r:vendor_file:s0"
-    EVAL "patchelf --add-needed libaudio-hidl-vndk30-compat.so '$WORK_DIR/vendor/$ARCH/hw/android.hardware.audio@6.0-impl.so'"
-    EVAL "patchelf --add-needed libaudio-hidl-vndk30-compat.so '$WORK_DIR/vendor/$ARCH/hw/android.hardware.audio.effect@6.0-impl.so'"
-done
-LOG_STEP_OUT
+fi
+
+AUDIO_DEVICE_FACTORY_VERSION=""
+AUDIO_EFFECT_FACTORY_VERSION=""
+AUDIO_WRAPPER_LIBS=""
+if [ "$AUDIO_DONOR_SOURCE" ]; then
+    AUDIO_DEVICE_FACTORY_VERSION="6.0"
+    AUDIO_EFFECT_FACTORY_VERSION="6.0"
+    AUDIO_WRAPPER_LIBS="
+android.hardware.audio.common@6.0.so
+android.hardware.audio.common@6.0-util.so
+android.hardware.audio.effect@6.0.so
+android.hardware.audio.effect@6.0-util.so
+android.hardware.audio@6.0.so
+android.hardware.audio@6.0-util.so
+    "
+fi
+
+if [ ! "$AUDIO_DEVICE_FACTORY_VERSION" ]; then
+    LOG "- Legacy HIDL 6.0 donor is not extracted; keeping the target audio HAL"
+else
+    LOG_STEP_IN "- Porting the Audio HAL wrapper from $AUDIO_DONOR_LABEL (HIDL 6.0)"
+    # The base Exynos 990 manifest advertises the stock HIDL 5.0 factory.
+    # Promote only the two audio HAL entries when a complete 6.0 donor is
+    # actually present; this keeps the no-donor path internally consistent.
+    AUDIO_MANIFEST="$WORK_DIR/vendor/etc/vintf/manifest.xml"
+    if [ -f "$AUDIO_MANIFEST" ]; then
+        EVAL "sed -i -e '/<name>android.hardware.audio<\\/name>/,/<\\/hal>/ { s#<version>5.0</version>#<version>6.0</version>#; s#@5.0::IDevicesFactory/default#@6.0::IDevicesFactory/default#; }' -e '/<name>android.hardware.audio.effect<\\/name>/,/<\\/hal>/ { s#<version>5.0</version>#<version>6.0</version>#; s#@5.0::IEffectsFactory/default#@6.0::IEffectsFactory/default#; }' '$AUDIO_MANIFEST'"
+    fi
+    # Keep the Exynos 990 legacy audio.primary driver, DSP firmware, mixer
+    # paths and policy files. Only the generic service/wrapper is taken from
+    # the source firmware.
+    if [ -f "$AUDIO_DONOR_SOURCE/vendor/bin/hw/android.hardware.audio.service" ]; then
+        ADD_TO_WORK_DIR "$AUDIO_DONOR_SOURCE" "vendor" "bin/hw/android.hardware.audio.service" \
+            0 2000 755 "u:object_r:hal_audio_default_exec:s0"
+    fi
+
+    for ARCH in lib lib64; do
+        [ -d "$AUDIO_DONOR_SOURCE/vendor/$ARCH" ] || continue
+        while IFS= read -r LIB; do
+            [ -f "$AUDIO_DONOR_SOURCE/vendor/$ARCH/$LIB" ] || continue
+            ADD_TO_WORK_DIR "$AUDIO_DONOR_SOURCE" "vendor" "$ARCH/$LIB" \
+                0 0 644 "u:object_r:vendor_file:s0"
+        done < <(printf '%s\n' "$AUDIO_WRAPPER_LIBS" | sed '/^$/d')
+
+        AUDIO_IMPL="$ARCH/hw/android.hardware.audio@${AUDIO_DEVICE_FACTORY_VERSION}-impl.so"
+        if [ -f "$AUDIO_DONOR_SOURCE/vendor/$AUDIO_IMPL" ]; then
+            ADD_TO_WORK_DIR "$AUDIO_DONOR_SOURCE" "vendor" "$AUDIO_IMPL" \
+                0 0 644 "u:object_r:vendor_file:s0"
+            AUDIO_IMPL_PATH="$WORK_DIR/vendor/$AUDIO_IMPL"
+            if ! readelf -d "$AUDIO_IMPL_PATH" 2>/dev/null | grep -q \
+                    "libaudio-hidl-vndk30-compat.so"; then
+                EVAL "patchelf --add-needed libaudio-hidl-vndk30-compat.so '$AUDIO_IMPL_PATH'"
+            fi
+        fi
+
+        AUDIO_EFFECT_IMPL="$ARCH/hw/android.hardware.audio.effect@${AUDIO_EFFECT_FACTORY_VERSION}-impl.so"
+        if [ -f "$AUDIO_DONOR_SOURCE/vendor/$AUDIO_EFFECT_IMPL" ]; then
+            ADD_TO_WORK_DIR "$AUDIO_DONOR_SOURCE" "vendor" "$AUDIO_EFFECT_IMPL" \
+                0 0 644 "u:object_r:vendor_file:s0"
+            AUDIO_EFFECT_IMPL_PATH="$WORK_DIR/vendor/$AUDIO_EFFECT_IMPL"
+            if ! readelf -d "$AUDIO_EFFECT_IMPL_PATH" 2>/dev/null | grep -q \
+                    "libaudio-hidl-vndk30-compat.so"; then
+                EVAL "patchelf --add-needed libaudio-hidl-vndk30-compat.so '$AUDIO_EFFECT_IMPL_PATH'"
+            fi
+        fi
+    done
+
+    LOG_STEP_OUT
+fi
+
+unset AUDIO_DONOR_SOURCE AUDIO_DONOR_LABEL AUDIO_CANDIDATE AUDIO_MANIFEST AUDIO_DEVICE_FACTORY_VERSION \
+    AUDIO_EFFECT_FACTORY_VERSION AUDIO_WRAPPER_LIBS AUDIO_IMPL AUDIO_IMPL_PATH \
+    AUDIO_EFFECT_IMPL AUDIO_EFFECT_IMPL_PATH
 
 LOG_STEP_IN "- Replacing SoundBooster"
 DELETE_FROM_WORK_DIR "system" "system/lib64/lib_SoundBooster_ver2000.so"

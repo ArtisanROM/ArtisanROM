@@ -8,6 +8,21 @@ source "$SRC_DIR/scripts/utils/build_utils.sh" || exit 1
 SOURCE_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$SOURCE_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$SOURCE_FIRMWARE")"
 TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$TARGET_FIRMWARE")"
 
+# rsync's default quick check uses size and timestamp. Samsung firmware files
+# from different releases can retain both, so reusing a work dir after changing
+# the configured build may otherwise leave an undetected mixture of releases.
+# Reset it once when either extracted firmware identity changes; APK/JAR caches
+# live outside WORK_DIR and remain available to make_rom -c.
+FIRMWARE_IDENTITY="$(cat \
+    "$FW_DIR/$SOURCE_FIRMWARE_PATH/.extracted" \
+    "$FW_DIR/$TARGET_FIRMWARE_PATH/.extracted" 2> /dev/null | sha256sum | cut -d " " -f 1)"
+if [ -d "$WORK_DIR" ] && \
+        { [ ! -f "$WORK_DIR/.firmware_identity" ] || \
+            [ "$(cat "$WORK_DIR/.firmware_identity" 2> /dev/null)" != "$FIRMWARE_IDENTITY" ]; }; then
+    LOG "- Firmware identity changed; recreating work dir"
+    rm -rf "${WORK_DIR:?}"
+fi
+
 COPY_SOURCE_FIRMWARE()
 {
     local SOURCE_FOLDERS="product system"
@@ -153,5 +168,6 @@ mkdir -p "$WORK_DIR/configs"
 COPY_SOURCE_FIRMWARE
 COPY_TARGET_FIRMWARE
 COPY_TARGET_KERNEL
+printf '%s' "$FIRMWARE_IDENTITY" > "$WORK_DIR/.firmware_identity"
 
 exit 0

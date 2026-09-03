@@ -19,9 +19,25 @@ done
 
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.biometrics.face@3.0-service"
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.vibrator-service"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64"
+# Keep the existing non-audio p3s HAL support explicit.  Do not copy the
+# whole directory: p3sxxx also contains the experimental audio @6.0 blobs,
+# which are handled by target/y2slte/patches/p3s_audio_hal.
+P3S_VENDOR_LIBS="
+lib64/android.hardware.light-V1-ndk_platform.so
+lib64/vendor.samsung.hardware.light-V1-ndk_platform.so
+lib64/vendor.samsung.hardware.vibrator-V3-ndk_platform.so
+lib64/vendor.samsung.hardware.biometrics.face@2.0.so
+lib64/vendor.samsung.hardware.biometrics.face@3.0.so
+lib64/uwb_uci.hal.so
+"
+for blob in $P3S_VENDOR_LIBS; do
+    ADD_TO_WORK_DIR "p3sxxx" "vendor" "$blob" \
+        0 0 644 "u:object_r:vendor_file:s0"
+done
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "etc/init"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "etc/vintf"
+ADD_TO_WORK_DIR "p3sxxx" "vendor" \
+    "etc/vintf/manifest/vendor.samsung.hardware.vibrator-default.xml" \
+    0 0 644 "u:object_r:vendor_configs_file:s0"
 
 # WPA Supplicant HAL
 if [[ "$TARGET_CODENAME" != "r8s" ]]; then
@@ -39,3 +55,4 @@ else
     ADD_TO_WORK_DIR "a73xqxx" "vendor" "lib64/vendor.samsung.hardware.light-V1-ndk_platform.so"
 fi
 LOG_STEP_OUT
+unset BLOBS_LIST P3S_VENDOR_LIBS blob

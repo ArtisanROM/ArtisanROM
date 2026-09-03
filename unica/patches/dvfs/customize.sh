@@ -6,6 +6,18 @@ fi
 
 _LOG() { if $DEBUG; then LOGW "$1"; else ABORT "$1"; fi }
 
+# Samsung renames the obfuscated SDHMS classes between platform releases.
+# Keep the known One UI 8.0 paths as the default and select their 8.5
+# counterparts when building from the S23 FE source.
+DVFS_FEATURE_SMALI="smali/r1/c.smali"
+DVFS_PROPERTIES_SMALI="smali/z1/e.smali"
+SSRM_FEATURE_SMALI="smali/U1/w.smali"
+if [ "$SOURCE_PLATFORM_SDK_VERSION" -ge 36 ]; then
+    DVFS_FEATURE_SMALI="smali/c4/c.smali"
+    DVFS_PROPERTIES_SMALI="smali/k4/e.smali"
+    SSRM_FEATURE_SMALI="smali/o5/w.smali"
+fi
+
 # SEC_PRODUCT_FEATURE_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME
 if [[ "$SOURCE_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME" != "$TARGET_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME" ]]; then
     SMALI_PATCH "system" "system/framework/ssrm.jar" \
@@ -25,13 +37,13 @@ if [[ "$SOURCE_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME" != "$TARGET_DVFSAPP_CONFIG_D
 
     # com/sec/android/sdhms/performance/PerformanceFeature
     SMALI_PATCH "system" "system/priv-app/SamsungDeviceHealthManagerService/SamsungDeviceHealthManagerService.apk" \
-        "smali/r1/c.smali" "replace" \
+        "$DVFS_FEATURE_SMALI" "replace" \
         "<clinit>()V" \
         "$SOURCE_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME" \
         "$TARGET_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME"
     # com/sec/android/sdhms/performance/settings/PerformanceProperties
     SMALI_PATCH "system" "system/priv-app/SamsungDeviceHealthManagerService/SamsungDeviceHealthManagerService.apk" \
-        "smali/z1/e.smali" "replace" \
+        "$DVFS_PROPERTIES_SMALI" "replace" \
         "<init>(Landroid/content/Context;)V" \
         "$SOURCE_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME" \
         "$TARGET_DVFSAPP_CONFIG_DVFS_POLICY_FILENAME"
@@ -65,7 +77,7 @@ if [[ "$SOURCE_DVFSAPP_CONFIG_SSRM_POLICY_FILENAME" != "$TARGET_DVFSAPP_CONFIG_S
 
     # com/sec/android/sdhms/util/Feature
     SMALI_PATCH "system" "system/priv-app/SamsungDeviceHealthManagerService/SamsungDeviceHealthManagerService.apk" \
-        "smali/U1/w.smali" "replace" \
+        "$SSRM_FEATURE_SMALI" "replace" \
         "<clinit>()V" \
         "$SOURCE_DVFSAPP_CONFIG_SSRM_POLICY_FILENAME" \
         "$TARGET_DVFSAPP_CONFIG_SSRM_POLICY_FILENAME"
@@ -95,3 +107,4 @@ else
 fi
 
 unset -f _LOG
+unset DVFS_FEATURE_SMALI DVFS_PROPERTIES_SMALI SSRM_FEATURE_SMALI

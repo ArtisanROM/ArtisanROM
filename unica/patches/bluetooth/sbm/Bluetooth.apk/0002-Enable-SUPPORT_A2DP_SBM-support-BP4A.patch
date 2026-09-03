@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: UN1CA y2slte <unica-y2slte@localhost>
+Date: Mon, 31 Aug 2026 17:10:00 -0300
+Subject: [PATCH] Enable SUPPORT_A2DP_SBM support on BP4A Bluetooth
+
+---
+ .../android/bluetooth/a2dp/A2dpService.smali    | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/smali/com/android/bluetooth/a2dp/A2dpService.smali b/smali/com/android/bluetooth/a2dp/A2dpService.smali
+--- a/smali/com/android/bluetooth/a2dp/A2dpService.smali
++++ b/smali/com/android/bluetooth/a2dp/A2dpService.smali
+@@ -936,6 +936,8 @@
+ 
+     iget-object p3, p0, Lcom/android/bluetooth/btservice/ProfileService;->mAdapterService:Lcom/android/bluetooth/btservice/AdapterService;
+ 
++    const/4 v1, 0x1
++
+     invoke-direct {p1, v1, p2, p3}, Lcom/android/bluetooth/a2dp/A2dpSbmManager;-><init>(ZLandroid/media/AudioManager;Lcom/android/bluetooth/btservice/AdapterService;)V
+ 
+     iput-object p1, p0, Lcom/android/bluetooth/a2dp/A2dpService;->mA2dpSbmManager:Lcom/android/bluetooth/a2dp/A2dpSbmManager;
+-- 
+2.55.0

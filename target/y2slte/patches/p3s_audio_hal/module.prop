@@ -1,0 +1,6 @@
+id=p3s_audio_hal
+name=P3S audio HAL
+version=1.0
+versionCode=1
+author=UN1CA y2slte
+description=Imports only P3S audio HAL blobs from the complete prebuilt tree and switches generic audio VINTF declarations to HIDL 6.0.

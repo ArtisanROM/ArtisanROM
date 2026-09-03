@@ -134,6 +134,26 @@ SEC_FLOATING_FEATURE_LCD_CONFIG_VIVIDNESS=0
 SEC_FLOATING_FEATURE_LCD_CONFIG_VIVIDPLUS=0
 "
 
+# Keep display-related values from a donor that already has the target
+# resolution/HFR implementation. This covers both the normal target merge and
+# the explicit target/*.sff.sh overrides, which otherwise would reintroduce
+# the y2s 48/96-Hz policy after the smali patches were disabled.
+IS_NATIVE_DISPLAY_FEATURE()
+{
+    case "$1" in
+        SEC_FLOATING_FEATURE_COMMON_CONFIG_DYN_RESOLUTION_CONTROL|\
+        SEC_FLOATING_FEATURE_LCD_CONFIG_CONTROL_AUTO_BRIGHTNESS|\
+        SEC_FLOATING_FEATURE_LCD_CONFIG_DEFAULT_SCREEN_MODE|\
+        SEC_FLOATING_FEATURE_LCD_CONFIG_HFR_*|\
+        SEC_FLOATING_FEATURE_LCD_CONFIG_SEAMLESS_*)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+PRESERVE_NATIVE_DISPLAY_STACK="${SOURCE_USE_NATIVE_DISPLAY_STACK:-false}"
+
 # [
 # shellcheck disable=SC2094
 APPLY_TARGET_FEATURE()
@@ -159,6 +179,10 @@ APPLY_TARGET_FEATURE()
         fi
 
         FEATURE="$(awk -F '<|>' '{print $2}' <<< "$l")"
+
+        if $PRESERVE_NATIVE_DISPLAY_STACK && IS_NATIVE_DISPLAY_FEATURE "$FEATURE"; then
+            continue
+        fi
 
         if grep -q -w "$FEATURE" <<< "$BLACKLIST"; then
             continue
@@ -190,6 +214,10 @@ APPLY_TARGET_FEATURE()
 
         FEATURE="$(awk -F '<|>' '{print $2}' <<< "$l")"
 
+        if $PRESERVE_NATIVE_DISPLAY_STACK && IS_NATIVE_DISPLAY_FEATURE "$FEATURE"; then
+            continue
+        fi
+
         if grep -q -w "$FEATURE" <<< "$BLACKLIST"; then
             continue
         fi
@@ -208,10 +236,14 @@ APPLY_CUSTOM_FEATURE()
         fi
 
         if [[ "$l" == "SEC_FLOATING_FEATURE_"*"="* ]]; then
+            FEATURE="$(cut -d "=" -f 1 <<< "$l")"
+            if $PRESERVE_NATIVE_DISPLAY_STACK && IS_NATIVE_DISPLAY_FEATURE "$FEATURE"; then
+                continue
+            fi
             if [ ! "$(cut -d "=" -f 2- <<< "$l")" ]; then
-                SET_FLOATING_FEATURE_CONFIG "$(cut -d "=" -f 1 <<< "$l")" --delete
+                SET_FLOATING_FEATURE_CONFIG "$FEATURE" --delete
             else
-                SET_FLOATING_FEATURE_CONFIG "$(cut -d "=" -f 1 <<< "$l")" "$(cut -d "=" -f 2- <<< "$l")"
+                SET_FLOATING_FEATURE_CONFIG "$FEATURE" "$(cut -d "=" -f 2- <<< "$l")"
             fi
         else
             ABORT "Malformed string in ${1//$SRC_DIR\//}: \"$l\""

@@ -50,37 +50,56 @@ if [ -f "$WORK_DIR/system/system/priv-app/KmxService/KmxService.apk" ]; then
     LOG "- Downloading latest Knox Matrix app"
     DOWNLOAD_FILE "$(GET_GALAXY_STORE_DOWNLOAD_URL "com.samsung.android.kmxservice")" \
         "$WORK_DIR/system/system/priv-app/KmxService/KmxService.apk"
+    DECODE_APK "system" "system/priv-app/KmxService/KmxService.apk"
+    KMX_APK="$APKTOOL_DIR/system/priv-app/KmxService/KmxService.apk"
+    KMX_COMMON_ROT="$(find "$KMX_APK" -type f \
+        -path '*/com/samsung/android/kmxservice/common/util/RootOfTrust.smali' -printf '%P\n' -quit)"
+    KMX_FABRIC_ROT="$(find "$KMX_APK" -type f \
+        -path '*/com/samsung/android/kmxservice/fabrickeystore/keystore/cert/RootOfTrust.smali' -printf '%P\n' -quit)"
+    KMX_TRUSTCHAIN_ROT="$(find "$KMX_APK" -type f \
+        -path '*/com/samsung/android/kmxservice/sdk/trustchain/util/RootOfTrust.smali' -printf '%P\n' -quit)"
+    KMX_COMMON_STATUS="$(find "$KMX_APK" -type f \
+        -path '*/com/samsung/android/kmxservice/common/util/IntegrityStatus.smali' -printf '%P\n' -quit)"
+    KMX_FABRIC_STATUS="$(find "$KMX_APK" -type f \
+        -path '*/com/samsung/android/kmxservice/fabrickeystore/keystore/cert/IntegrityStatus.smali' -printf '%P\n' -quit)"
+    KMX_TRUSTCHAIN_STATUS="$(find "$KMX_APK" -type f \
+        -path '*/com/samsung/android/kmxservice/sdk/trustchain/util/IntegrityStatus.smali' -printf '%P\n' -quit)"
+    [ "$KMX_COMMON_ROT" ] && [ "$KMX_FABRIC_ROT" ] && [ "$KMX_TRUSTCHAIN_ROT" ] && \
+        [ "$KMX_COMMON_STATUS" ] && [ "$KMX_FABRIC_STATUS" ] && [ "$KMX_TRUSTCHAIN_STATUS" ] || \
+        ABORT "Knox Matrix integrity classes not found"
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/common/util/RootOfTrust.smali" "return" \
+        "$KMX_COMMON_ROT" "return" \
         'getVerifiedBootState()I' '0'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/common/util/RootOfTrust.smali" "return" \
+        "$KMX_COMMON_ROT" "return" \
         'isDeviceLocked()Z' 'true'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/fabrickeystore/keystore/cert/RootOfTrust.smali" "return" \
+        "$KMX_FABRIC_ROT" "return" \
         'getVerifiedBootState()I' '0'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/fabrickeystore/keystore/cert/RootOfTrust.smali" "return" \
+        "$KMX_FABRIC_ROT" "return" \
         'isDeviceLocked()Z' 'true'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/sdk/trustchain/util/RootOfTrust.smali" "return" \
+        "$KMX_TRUSTCHAIN_ROT" "return" \
         'getVerifiedBootState()I' '0'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/sdk/trustchain/util/RootOfTrust.smali" "return" \
+        "$KMX_TRUSTCHAIN_ROT" "return" \
         'isDeviceLocked()Z' 'true'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/common/util/IntegrityStatus.smali" "return" \
+        "$KMX_COMMON_STATUS" "return" \
         'getStatus()I' '0'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/common/util/IntegrityStatus.smali" "return" \
+        "$KMX_COMMON_STATUS" "return" \
         'isNormal()Z' 'true'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/fabrickeystore/keystore/cert/IntegrityStatus.smali" "return" \
+        "$KMX_FABRIC_STATUS" "return" \
         'isNormal()Z' 'true'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/sdk/trustchain/util/IntegrityStatus.smali" "return" \
+        "$KMX_TRUSTCHAIN_STATUS" "return" \
         'getStatus()I' '0'
     SMALI_PATCH "system" "system/priv-app/KmxService/KmxService.apk" \
-        "smali/com/samsung/android/kmxservice/sdk/trustchain/util/IntegrityStatus.smali" "return" \
+        "$KMX_TRUSTCHAIN_STATUS" "return" \
         'isNormal()Z' 'true'
+    unset KMX_APK KMX_COMMON_ROT KMX_FABRIC_ROT KMX_TRUSTCHAIN_ROT
+    unset KMX_COMMON_STATUS KMX_FABRIC_STATUS KMX_TRUSTCHAIN_STATUS
 fi

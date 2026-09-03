@@ -43,10 +43,18 @@ LOG_STEP_OUT
 
 # Adaptive colour tone
 LOG_STEP_IN "- Adding Adaptive colour tone feature"
+if [ "$SOURCE_PLATFORM_SDK_VERSION" -ge "36" ]; then
+    # Android 16 already ships its own EAD/mdnie integration. The legacy
+    # Paradigm port injects Kotlin SystemUI classes which no longer exist and
+    # would duplicate the brightness pipeline.
+    LOG "- Keeping native Android 16 adaptive display implementation"
+else
 ADD_TO_WORK_DIR "pa2qxxx" "system" \
     "system/etc/permissions/privapp-permissions-com.samsung.android.sead.xml" 0 0 644 "u:object_r:system_file:s0"
 ADD_TO_WORK_DIR "pa2qxxx" "system" \
     "system/priv-app/EnvironmentAdaptiveDisplay/EnvironmentAdaptiveDisplay.apk" 0 0 644 "u:object_r:system_file:s0"
+APPLY_PATCH "system" "system/priv-app/EnvironmentAdaptiveDisplay/EnvironmentAdaptiveDisplay.apk" \
+    "$MODPATH/ead_app/EnvironmentAdaptiveDisplay.apk/0001-Fix-resource-IDs-mismatch.patch"
 if $TARGET_LCD_SUPPORT_MDNIE_HW; then
     APPLY_PATCH "system" "system/framework/services.jar" \
         "$MODPATH/ead/services.jar/0001-Add-Adaptive-color-tone-feature.patch"
@@ -70,6 +78,7 @@ APPLY_PATCH "system" "system/priv-app/SettingsProvider/SettingsProvider.apk" \
     "$MODPATH/ead/SettingsProvider.apk/0001-Add-Adaptive-color-tone-feature.patch"
 APPLY_PATCH "system_ext" "priv-app/SystemUI/SystemUI.apk" \
     "$MODPATH/ead/SystemUI.apk/0001-Add-Adaptive-color-tone-toggle.patch"
+fi
 LOG_STEP_OUT
 
 # Set AI Version to 20253 (latest)
@@ -150,11 +159,22 @@ ADD_TO_WORK_DIR "pa2qxxx" "system" \
 DECODE_APK "system" "system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk"
 LOG "- Enabling Semantic search feature in /system/system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk"
 EVAL "cp -a \"$MODPATH/semanticsearch/SecSettingsIntelligence.apk/res/raw/\"* \"$APKTOOL_DIR/system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk/res/raw\""
-SMALI_PATCH "system" "system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk" \
-    "smali_classes2/com/samsung/android/settings/intelligence/Rune.smali" "replaceall" \
-    "const-string v1, \\\"\\\"" \
-    "const-string v1, \\\"400\\\"" \
-    > /dev/null
+SEMANTIC_SEARCH_RUNE="$APKTOOL_DIR/system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk/smali_classes2/com/samsung/android/settings/intelligence/Rune.smali"
+SEMANTIC_SEARCH_VERSION_METHOD="$(awk '
+    /^\.method public static getSemanticSearchVersion\(\)I$/ { inside=1 }
+    inside { print }
+    inside && /^\.end method$/ { exit }
+' "$SEMANTIC_SEARCH_RUNE")"
+if grep -Eq 'const-string v[0-9]+, "400"' <<< "$SEMANTIC_SEARCH_VERSION_METHOD"; then
+    LOG "- Source already exposes semantic-search version 400; retaining native implementation"
+else
+    SMALI_PATCH "system" "system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk" \
+        "smali_classes2/com/samsung/android/settings/intelligence/Rune.smali" "replaceall" \
+        "const-string v1, \\\"\\\"" \
+        "const-string v1, \\\"400\\\"" \
+        > /dev/null
+fi
+unset SEMANTIC_SEARCH_RUNE SEMANTIC_SEARCH_VERSION_METHOD
 SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_MSCH_SUPPORT_NLSEARCH" "TRUE"
 LOG_STEP_OUT
 

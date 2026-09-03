@@ -4,14 +4,13 @@ Date: Fri, 24 Oct 2025 14:45:06 +0200
 Subject: [PATCH] Allow app downgrade
 
 ---
- .../server/pm/PackageManagerService.smali        | 16 ++++++++++++++++
+ .../server/pm/PackageManagerService.smali     | 16 ++++++++++++++++
  1 file changed, 16 insertions(+)
 
 diff --git a/smali_classes2/com/android/server/pm/PackageManagerService.smali b/smali_classes2/com/android/server/pm/PackageManagerService.smali
-index 773266ffc..eb0880764 100644
 --- a/smali_classes2/com/android/server/pm/PackageManagerService.smali
 +++ b/smali_classes2/com/android/server/pm/PackageManagerService.smali
-@@ -22001,6 +22001,22 @@
+@@ -22733,5 +22733,21 @@
  
      if-nez v0, :cond_b
  
@@ -32,8 +31,6 @@ index 773266ffc..eb0880764 100644
 +    if-nez v0, :cond_b
 +
      :try_start_3
-     invoke-interface {v10}, Lcom/android/server/pm/pkg/AndroidPackage;->getLongVersionCode()J
- 
+     invoke-interface {v14}, Lcom/android/server/pm/pkg/AndroidPackage;->getLongVersionCode()J
 -- 
 2.51.1
-

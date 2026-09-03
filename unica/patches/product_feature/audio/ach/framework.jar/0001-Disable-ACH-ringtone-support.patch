@@ -12,14 +12,14 @@ diff --git a/smali_classes6/com/samsung/android/audio/Rune.smali b/smali_classes
 index da0fff18..67f0c356 100644
 --- a/smali_classes6/com/samsung/android/audio/Rune.smali
 +++ b/smali_classes6/com/samsung/android/audio/Rune.smali
-@@ -435,7 +435,7 @@
+@@ -453,7 +453,7 @@
  
-     sput-boolean v2, Lcom/samsung/android/audio/Rune;->SEC_AUDIO_SUPPORT_SOUND_THEME:Z
+     sput-boolean v0, Lcom/samsung/android/audio/Rune;->SEC_AUDIO_PERMISSION_UPDATE_DELAY_FOR_SEP_LITE:Z
  
 -    sput-boolean v2, Lcom/samsung/android/audio/Rune;->SEC_AUDIO_SUPPORT_ACH_RINGTONE:Z
 +    sput-boolean v1, Lcom/samsung/android/audio/Rune;->SEC_AUDIO_SUPPORT_ACH_RINGTONE:Z
  
-     invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
+     sput-boolean v1, Lcom/samsung/android/audio/Rune;->SEC_AUDIO_EXTRA_RINGTONES_ALGERIA:Z
  
 diff --git a/smali_classes6/com/samsung/android/vibrator/VibRune.smali b/smali_classes6/com/samsung/android/vibrator/VibRune.smali
 index 9c2b5121..cf1c264f 100644
@@ -36,4 +36,3 @@ index 9c2b5121..cf1c264f 100644
  
 -- 
 2.51.0
-

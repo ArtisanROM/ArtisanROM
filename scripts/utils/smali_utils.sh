@@ -65,7 +65,12 @@ SMALI_PATCH()
     fi
 
     if [[ "$OPERATION" == "replace" ]]; then
-        _CHECK_NON_EMPTY_PARAM "VALUE" "$6" || return 1
+        # An empty string is a valid smali literal (`const-string ..., ""`).
+        # Check that the argument was supplied instead of rejecting its value.
+        if [ "$#" -lt 7 ]; then
+            LOGE 'Parameter "VALUE" not supplied'
+            return 1
+        fi
         local VALUE="$6"
         local REPLACEMENT="$7"
     fi
@@ -361,7 +366,10 @@ SMALI_PATCH()
                     line = $0
                     gsub(/^[ \t]+|[ \t]+$/, "", line)
 
-                    if (line == STR) {
+                    # An empty STR is used to replace a literal such as
+                    # `const-string v0, ""`. It must never match formatting-only
+                    # blank lines in the method body.
+                    if (STR != "" && line == STR) {
                         match($0, /^[ \t]+/)
                         indent = substr($0, RSTART, RLENGTH)
                         $0 = indent REP

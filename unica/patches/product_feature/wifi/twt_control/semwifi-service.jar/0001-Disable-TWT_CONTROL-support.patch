@@ -1,51 +1,50 @@
-From 337d315c33332bc654cc007dd6e519640ccb2f0b Mon Sep 17 00:00:00 2001
-From: Salvo Giangreco <giangrecosalvo9@gmail.com>
-Date: Sun, 31 Aug 2025 16:40:58 +0200
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: UN1CA y2slte <un1ca-y2slte@localhost>
+Date: Sat, 30 Aug 2026 00:00:00 -0300
 Subject: [PATCH] Disable TWT_CONTROL support
 
+Remove feature ID 2 (TWT) from the Android 16 default driver feature map.
 ---
- .../driver/WifiDriverFeatureProvider.smali     | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+ .../server/wifi/driver/WifiDriverFeatureProvider.smali | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
 diff --git a/smali/com/samsung/android/server/wifi/driver/WifiDriverFeatureProvider.smali b/smali/com/samsung/android/server/wifi/driver/WifiDriverFeatureProvider.smali
-index 42f5e55..8cd05c9 100644
 --- a/smali/com/samsung/android/server/wifi/driver/WifiDriverFeatureProvider.smali
 +++ b/smali/com/samsung/android/server/wifi/driver/WifiDriverFeatureProvider.smali
-@@ -145,11 +145,11 @@
- .end method
- 
- .method private configDefaultFeatureSet()V
--    .locals 4
-+    .locals 3
- 
-     iget-object v0, p0, Lcom/samsung/android/server/wifi/driver/WifiDriverFeatureProvider;->mSwFeatureInteger:Ljava/util/HashMap;
- 
--    const/4 v1, 0x2
-+    const/4 v1, 0x3
- 
-     invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
- 
-@@ -159,20 +159,6 @@
- 
-     invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
- 
--    move-result-object v3
--
--    invoke-virtual {v0, v1, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
--
+@@ -131,22 +131,6 @@
+ .method public final configDefaultFeatureSet()V
+     .locals 3
+
 -    iget-object v0, p0, Lcom/samsung/android/server/wifi/driver/WifiDriverFeatureProvider;->mSwFeatureInteger:Ljava/util/HashMap;
 -
--    const/4 v1, 0x3
+-    const/4 v1, 0x2
 -
 -    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 -
 -    move-result-object v1
 -
+-    const/4 v2, 0x1
+-
 -    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 -
-     move-result-object v2
- 
-     invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
--- 
-2.51.0
+-    move-result-object v2
+-
+-    invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+-
+     iget-object v0, p0, Lcom/samsung/android/server/wifi/driver/WifiDriverFeatureProvider;->mSwFeatureInteger:Ljava/util/HashMap;
 
+     const/4 v1, 0x3
+@@ -154,5 +138,11 @@
+     invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+     move-result-object v1
+
++    const/4 v2, 0x1
++
++    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++
++    move-result-object v2
++
+     invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+--
+2.51.0

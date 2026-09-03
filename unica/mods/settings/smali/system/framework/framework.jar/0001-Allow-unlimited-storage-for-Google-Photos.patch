@@ -20,15 +20,6 @@ index b3b5a4dd..57833ded 100644
  .field private static final blacklist HAS_SYSTEM_FEATURE_API:Ljava/lang/String; = "has_system_feature"
  
  .field private static final blacklist LIVE_ICON_SUFFIX:Ljava/lang/String; = ".LiveIconLoader"
-@@ -209,7 +211,7 @@
- .end method
- 
- .method static constructor blacklist <clinit>()V
--    .locals 5
-+    .locals 7
- 
-     new-instance v0, Landroid/util/ArrayMap;
- 
 @@ -255,6 +257,22 @@
  
      sput-object v0, Landroid/app/ApplicationPackageManager;->mHasSystemFeatureCache:Landroid/app/PropertyInvalidatedCache;
@@ -155,4 +146,3 @@ index b3b5a4dd..57833ded 100644
      new-instance v0, Landroid/app/ApplicationPackageManager$HasSystemFeatureQuery;
 -- 
 2.51.1
-

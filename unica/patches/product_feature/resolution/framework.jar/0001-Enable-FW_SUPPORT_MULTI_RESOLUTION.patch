@@ -11,18 +11,17 @@ diff --git a/smali_classes6/com/samsung/android/rune/CoreRune.smali b/smali_clas
 index 3619eba0..89fb6764 100644
 --- a/smali_classes6/com/samsung/android/rune/CoreRune.smali
 +++ b/smali_classes6/com/samsung/android/rune/CoreRune.smali
-@@ -2835,9 +2835,9 @@
-     :goto_e
-     sput-boolean v2, Lcom/samsung/android/rune/CoreRune;->FW_TSP_DEADZONE_LARGE_FLIP_COVER:Z
+@@ -2783,9 +2783,9 @@
+     :goto_a
+     sput-boolean v0, Lcom/samsung/android/rune/CoreRune;->FW_TSP_DEADZONE_LARGE_FLIP_COVER:Z
  
--    sput-boolean v5, Lcom/samsung/android/rune/CoreRune;->FW_SUPPORT_MULTI_RESOLUTION:Z
-+    sput-boolean v4, Lcom/samsung/android/rune/CoreRune;->FW_SUPPORT_MULTI_RESOLUTION:Z
+-    sput-boolean v4, Lcom/samsung/android/rune/CoreRune;->FW_SUPPORT_MULTI_RESOLUTION:Z
++    sput-boolean v3, Lcom/samsung/android/rune/CoreRune;->FW_SUPPORT_MULTI_RESOLUTION:Z
  
--    sput-boolean v5, Lcom/samsung/android/rune/CoreRune;->FW_MULTI_RESOLUTION_POLICY:Z
-+    sput-boolean v4, Lcom/samsung/android/rune/CoreRune;->FW_MULTI_RESOLUTION_POLICY:Z
+-    sput-boolean v4, Lcom/samsung/android/rune/CoreRune;->FW_MULTI_RESOLUTION_POLICY:Z
++    sput-boolean v3, Lcom/samsung/android/rune/CoreRune;->FW_MULTI_RESOLUTION_POLICY:Z
  
-     sput-boolean v5, Lcom/samsung/android/rune/CoreRune;->FW_DYNAMIC_RESOLUTION_CONTROL:Z
+     sput-boolean v4, Lcom/samsung/android/rune/CoreRune;->FW_DYNAMIC_RESOLUTION_CONTROL:Z
  
 -- 
 2.52.0
-

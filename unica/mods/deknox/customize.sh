@@ -1,3 +1,31 @@
+if [ "$SOURCE_PLATFORM_SDK_VERSION" -ge "36" ]; then
+    # Android 16 moved Knox, DualDAR, SDP and HDM implementation details and
+    # several of their framework classes are shared by non-Knox services.
+    # Deleting the legacy class set leaves dangling references. Keep the
+    # platform implementation intact and disable only the externally visible
+    # services through stable feature gates; KnoxPatch handles integrity
+    # compatibility without changing framework ABIs.
+    LOG "- Using non-destructive Android 16 Knox compatibility mode"
+    SET_PROP_IF_DIFF "vendor" "ro.security.fips.ux" "Disabled"
+
+    APPLY_PATCH "system" "system/framework/services.jar" \
+        "$MODPATH/knoxguard/services.jar/0001-Disable-KnoxGuard.patch"
+
+    SET_FLOATING_FEATURE_CONFIG \
+        "SEC_FLOATING_FEATURE_FRAMEWORK_SUPPORT_BLOCKCHAIN_SERVICE" --delete
+    DECODE_APK "system" "system/framework/framework.jar"
+    PRODUCT_PACKAGES_RUNE="$(find "$APKTOOL_DIR/system/framework/framework.jar" \
+        -type f -path '*/com/samsung/android/ProductPackagesRune.smali' -printf '%P\n' -quit)"
+    if [ "$PRODUCT_PACKAGES_RUNE" ]; then
+        SMALI_PATCH "system" "system/framework/framework.jar" \
+            "$PRODUCT_PACKAGES_RUNE" "replaceall" \
+            "SERVICE_SAMSUNG_BLOCKCHAIN:Z = true" \
+            "SERVICE_SAMSUNG_BLOCKCHAIN:Z = false"
+    fi
+    unset PRODUCT_PACKAGES_RUNE
+    return 0
+fi
+
 SET_PROP_IF_DIFF "vendor" "ro.security.fips.ux" "Disabled"
 
 if [[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]]; then

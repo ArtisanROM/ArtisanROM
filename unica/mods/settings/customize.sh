@@ -19,25 +19,38 @@ SMALI_PATCH "system" "system/framework/framework.jar" \
     > /dev/null
 
 DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
+SECSETTINGS_APK="$APKTOOL_DIR/system/priv-app/SecSettings/SecSettings.apk"
 
 # Disable stock OTA references
 if [ ! -f "$WORK_DIR/system/system/priv-app/ChoiDujour/ChoiDujour.apk" ]; then
+    SOFTWARE_UPDATE_UTILS="$(find "$SECSETTINGS_APK" \
+        -type f -path '*/com/samsung/android/settings/softwareupdate/SoftwareUpdateUtils.smali' -printf '%P\n' -quit)"
+    [ "$SOFTWARE_UPDATE_UTILS" ] || ABORT "SoftwareUpdateUtils.smali not found"
     SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-        "smali_classes3/com/samsung/android/settings/softwareupdate/SoftwareUpdateUtils.smali" "return" \
+        "$SOFTWARE_UPDATE_UTILS" "return" \
         'isOTAUpgradeAllowed(Landroid/content/Context;)Z' \
         'false'
+    unset SOFTWARE_UPDATE_UTILS
 fi
 
 # Always show One UI minor version
+ONEUI_VERSION_CONTROLLER="$(find "$SECSETTINGS_APK" -type f \
+    -path '*/com/samsung/android/settings/deviceinfo/softwareinfo/OneUIVersionPreferenceController.smali' \
+    -printf '%P\n' -quit)"
+[ "$ONEUI_VERSION_CONTROLLER" ] || ABORT "OneUIVersionPreferenceController.smali not found"
 SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-    "smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/OneUIVersionPreferenceController.smali" "replace" \
+    "$ONEUI_VERSION_CONTROLLER" "replace" \
     'isDeviceWithMicroVersion()Z' \
     'move-result p0' \
     'const/4 p0, 0x1'
 
 # Show real device model number
+MODEL_NAME_GETTER="$(find "$SECSETTINGS_APK" -type f \
+    -path '*/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali' \
+    -printf '%P\n' -quit)"
+[ "$MODEL_NAME_GETTER" ] || ABORT "ModelNameGetter.smali not found"
 SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-    "smali_classes4/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali" "replace" \
+    "$MODEL_NAME_GETTER" "replace" \
     'getModelName()Ljava/lang/String;' \
     'ro.product.model' \
     'ro.boot.em.model'
@@ -73,36 +86,41 @@ while IFS= read -r f; do
 done < <(find "$MODPATH/SecSettings.apk" -type f)
 
 # Add UN1CA Settings SearchIndexableData registrations
-LOG "- Patching \"smali/com/android/settingslib/search/SearchIndexableResourcesMobile.smali\" in /system/system/priv-app/SecSettings.apk"
+SEARCH_INDEXABLE_RESOURCES="$(find "$SECSETTINGS_APK" -type f \
+    -path '*/com/android/settingslib/search/SearchIndexableResourcesMobile.smali' -printf '%P\n' -quit)"
+SEARCH_FEATURE_PROVIDER="$(find "$SECSETTINGS_APK" -type f \
+    -path '*/com/android/settings/search/SearchFeatureProviderImpl$$ExternalSyntheticLambda0.smali' \
+    -printf '%P\n' -quit)"
+[ "$SEARCH_INDEXABLE_RESOURCES" ] || ABORT "SearchIndexableResourcesMobile.smali not found"
+[ "$SEARCH_FEATURE_PROVIDER" ] || ABORT "SearchFeatureProviderImpl lambda not found"
+LOG "- Patching \"$SEARCH_INDEXABLE_RESOURCES\" in /system/system/priv-app/SecSettings.apk"
 SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-    "smali/com/android/settingslib/search/SearchIndexableResourcesMobile.smali" "replaceall" \
+    "$SEARCH_INDEXABLE_RESOURCES" "replaceall" \
     '.class public final Lcom/android/settingslib/search/SearchIndexableResourcesMobile;' \
     '.class public Lcom/android/settingslib/search/SearchIndexableResourcesMobile;' \
     > /dev/null
-LOG "- Patching \"smali/com/android/settings/search/SearchFeatureProviderImpl\$\$ExternalSyntheticLambda0.smali\" in /system/system/priv-app/SecSettings.apk"
+LOG "- Patching \"$SEARCH_FEATURE_PROVIDER\" in /system/system/priv-app/SecSettings.apk"
 SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-    "smali/com/android/settings/search/SearchFeatureProviderImpl\$\$ExternalSyntheticLambda0.smali" "replace" \
+    "$SEARCH_FEATURE_PROVIDER" "replace" \
     'invoke()Ljava/lang/Object;' \
-    'new-instance p0, Lcom/android/settingslib/search/SearchIndexableResourcesMobile;' \
-    'new-instance p0, Lio/mesalabs/unica/search/UnicaSearchIndexableResources;' \
-    > /dev/null
-SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-    "smali/com/android/settings/search/SearchFeatureProviderImpl\$\$ExternalSyntheticLambda0.smali" "replace" \
-    'invoke()Ljava/lang/Object;' \
-    'invoke-direct {p0}, Lcom/android/settingslib/search/SearchIndexableResourcesBase;-><init>()V' \
-    'invoke-direct {p0}, Lio/mesalabs/unica/search/UnicaSearchIndexableResources;-><init>()V' \
+    'return-object p0' \
+    '    invoke-static {p0}, Lio/mesalabs/unica/search/UnicaSearchIndexableResources;->addIndexes(Lcom/android/settingslib/search/SearchIndexableResourcesBase;)V\n\n    return-object p0' \
     > /dev/null
 
 DECODE_APK "system" "system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk"
-LOG "- Patching \"smali_classes2/com/samsung/android/settings/intelligence/search/categorizing/TopLevelKeysCollector.smali\" in /system/system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk"
+TOP_LEVEL_KEYS_COLLECTOR="$(find "$APKTOOL_DIR/system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk" \
+    -type f -path '*/com/samsung/android/settings/intelligence/search/categorizing/TopLevelKeysCollector.smali' \
+    -printf '%P\n' -quit)"
+[ "$TOP_LEVEL_KEYS_COLLECTOR" ] || ABORT "TopLevelKeysCollector.smali not found"
+LOG "- Patching \"$TOP_LEVEL_KEYS_COLLECTOR\" in /system/system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk"
 SMALI_PATCH "system" "system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk" \
-    "smali_classes2/com/samsung/android/settings/intelligence/search/categorizing/TopLevelKeysCollector.smali" "replace" \
+    "$TOP_LEVEL_KEYS_COLLECTOR" "replace" \
     '<init>(Landroid/content/Context;)V' \
     '.locals 36' \
     '.locals 37' \
     > /dev/null
 SMALI_PATCH "system" "system/priv-app/SecSettingsIntelligence/SecSettingsIntelligence.apk" \
-    "smali_classes2/com/samsung/android/settings/intelligence/search/categorizing/TopLevelKeysCollector.smali" "replace" \
+    "$TOP_LEVEL_KEYS_COLLECTOR" "replace" \
     '<init>(Landroid/content/Context;)V' \
     'filled-new-array/range {v1 .. v35}, [Ljava/lang/String;' \
     '    const-string v36, "top_level_unica"\n\n    filled-new-array/range {v1 .. v36}, [Ljava/lang/String;' \
@@ -113,6 +131,8 @@ if [[ "$(GET_PROP "ro.hwui.use_vulkan")" != "true" ]]; then
     SET_PROP "system" "persist.sys.unica.vulkan" "false"
 fi
 
-unset PATCH_INST CONTENT
+unset PATCH_INST CONTENT SECSETTINGS_APK SOFTWARE_UPDATE_UTILS
+unset ONEUI_VERSION_CONTROLLER MODEL_NAME_GETTER SEARCH_INDEXABLE_RESOURCES SEARCH_FEATURE_PROVIDER
+unset TOP_LEVEL_KEYS_COLLECTOR
 
 LOG_STEP_OUT

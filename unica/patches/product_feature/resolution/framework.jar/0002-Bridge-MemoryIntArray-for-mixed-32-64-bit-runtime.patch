@@ -1,0 +1,177 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: UN1CA y2slte maintainers <noreply@localhost>
+Date: Tue, 1 Sep 2026 08:10:00 -0300
+Subject: [PATCH] Bridge MemoryIntArray for mixed 32/64-bit runtime
+
+The Android 16 S926B graphics stack adds the array size to nativeOpen and
+nativeClose, while the 32-bit S711B runtime retained by Exynos990 still
+uses the older JNI contracts. Expose both overloads and select the matching
+calls at runtime so zygote64 can use the ABI-compatible S926B
+libandroid_runtime without breaking zygote32.
+---
+ .../android/util/MemoryIntArray.smali         | 89 ++++++++++++++++++----
+ 1 file changed, 73 insertions(+), 16 deletions(-)
+
+diff --git a/smali_classes4/android/util/MemoryIntArray.smali b/smali_classes4/android/util/MemoryIntArray.smali
+index 4c94cf71..97116221 100644
+--- a/smali_classes4/android/util/MemoryIntArray.smali
++++ b/smali_classes4/android/util/MemoryIntArray.smali
+@@ -49,7 +49,7 @@
+ .end method
+ 
+ .method public constructor greylist-max-o <init>(I)V
+-    .locals 3
++    .locals 4
+     .annotation system Ldalvik/annotation/Throws;
+         value = {
+             Ljava/io/IOException;
+@@ -90,19 +90,33 @@
+ 
+     iput p1, p0, Landroid/util/MemoryIntArray;->mFd:I
+ 
+-    invoke-direct {p0, p1, v1}, Landroid/util/MemoryIntArray;->nativeOpen(IZ)J
++    invoke-direct {p0, p1}, Landroid/util/MemoryIntArray;->nativeSize(I)I
+ 
+-    move-result-wide v1
++    move-result p1
+ 
+-    iput-wide v1, p0, Landroid/util/MemoryIntArray;->mMemoryAddr:J
++    iput p1, p0, Landroid/util/MemoryIntArray;->mSize:I
+ 
+-    iget p1, p0, Landroid/util/MemoryIntArray;->mFd:I
++    iget v2, p0, Landroid/util/MemoryIntArray;->mFd:I
+ 
+-    invoke-direct {p0, p1}, Landroid/util/MemoryIntArray;->nativeSize(I)I
++    invoke-static {}, Landroid/os/Process;->is64Bit()Z
+ 
+-    move-result p1
++    move-result v3
+ 
+-    iput p1, p0, Landroid/util/MemoryIntArray;->mSize:I
++    if-eqz v3, :cond_unica_open_32_owner
++
++    invoke-direct {p0, v2, v1, p1}, Landroid/util/MemoryIntArray;->nativeOpen(IZI)J
++
++    move-result-wide v1
++
++    goto :goto_unica_open_owner_done
++
++    :cond_unica_open_32_owner
++    invoke-direct {p0, v2, v1}, Landroid/util/MemoryIntArray;->nativeOpen(IZ)J
++
++    move-result-wide v1
++
++    :goto_unica_open_owner_done
++    iput-wide v1, p0, Landroid/util/MemoryIntArray;->mMemoryAddr:J
+ 
+     const-string p0, "MemoryIntArray.close"
+ 
+@@ -162,19 +176,33 @@
+ 
+     iput p1, p0, Landroid/util/MemoryIntArray;->mFd:I
+ 
+-    invoke-direct {p0, p1, v1}, Landroid/util/MemoryIntArray;->nativeOpen(IZ)J
++    invoke-direct {p0, p1}, Landroid/util/MemoryIntArray;->nativeSize(I)I
+ 
+-    move-result-wide v1
++    move-result p1
+ 
+-    iput-wide v1, p0, Landroid/util/MemoryIntArray;->mMemoryAddr:J
++    iput p1, p0, Landroid/util/MemoryIntArray;->mSize:I
+ 
+-    iget p1, p0, Landroid/util/MemoryIntArray;->mFd:I
++    iget v2, p0, Landroid/util/MemoryIntArray;->mFd:I
+ 
+-    invoke-direct {p0, p1}, Landroid/util/MemoryIntArray;->nativeSize(I)I
++    invoke-static {}, Landroid/os/Process;->is64Bit()Z
+ 
+-    move-result p1
++    move-result v3
+ 
+-    iput p1, p0, Landroid/util/MemoryIntArray;->mSize:I
++    if-eqz v3, :cond_unica_open_32_parcel
++
++    invoke-direct {p0, v2, v1, p1}, Landroid/util/MemoryIntArray;->nativeOpen(IZI)J
++
++    move-result-wide v1
++
++    goto :goto_unica_open_parcel_done
++
++    :cond_unica_open_32_parcel
++    invoke-direct {p0, v2, v1}, Landroid/util/MemoryIntArray;->nativeOpen(IZ)J
++
++    move-result-wide v1
++
++    :goto_unica_open_parcel_done
++    iput-wide v1, p0, Landroid/util/MemoryIntArray;->mMemoryAddr:J
+ 
+     const-string p0, "MemoryIntArray.close"
+ 
+@@ -294,6 +322,9 @@
+ .method private native greylist-max-o nativeClose(IJZ)V
+ .end method
++
++.method private native blacklist nativeClose(IJZI)V
++.end method
+ 
+ .method private native greylist-max-o nativeCreate(Ljava/lang/String;I)I
+ .end method
+ 
+@@ -303,6 +334,9 @@
+ 
+ .method private native greylist-max-o nativeOpen(IZ)J
+ .end method
++
++.method private native blacklist nativeOpen(IZI)J
++.end method
+ 
+ .method private native greylist-max-o nativeSet(IJII)V
+ .end method
+@@ -312,7 +346,7 @@
+ 
+ # virtual methods
+ .method public whitelist test-api close()V
+-    .locals 4
++    .locals 7
+     .annotation system Ldalvik/annotation/Throws;
+         value = {
+             Ljava/io/IOException;
+@@ -325,6 +359,27 @@
+ 
+     if-nez v0, :cond_0
+ 
++    invoke-static {}, Landroid/os/Process;->is64Bit()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_unica_close_32
++
++    iget v2, p0, Landroid/util/MemoryIntArray;->mFd:I
++
++    iget-wide v3, p0, Landroid/util/MemoryIntArray;->mMemoryAddr:J
++
++    iget-boolean v5, p0, Landroid/util/MemoryIntArray;->mIsOwner:Z
++
++    iget v6, p0, Landroid/util/MemoryIntArray;->mSize:I
++
++    move-object v1, p0
++
++    invoke-direct/range {v1 .. v6}, Landroid/util/MemoryIntArray;->nativeClose(IJZI)V
++
++    goto :goto_unica_close_done
++
++    :cond_unica_close_32
+     iget v0, p0, Landroid/util/MemoryIntArray;->mFd:I
+ 
+     iget-wide v1, p0, Landroid/util/MemoryIntArray;->mMemoryAddr:J
+@@ -333,6 +388,8 @@
+ 
+     invoke-direct {p0, v0, v1, v2, v3}, Landroid/util/MemoryIntArray;->nativeClose(IJZ)V
+ 
++    :goto_unica_close_done
++
+     const/4 v0, -0x1
+ 
+     iput v0, p0, Landroid/util/MemoryIntArray;->mFd:I
+-- 
+2.52.0
