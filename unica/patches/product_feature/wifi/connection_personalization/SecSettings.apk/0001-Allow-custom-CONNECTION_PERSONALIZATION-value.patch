@@ -16,7 +16,7 @@ index 35f1f2740..3f9a8166d 100644
  .method public getAvailabilityStatus()I
      .locals 1
  
--    const-string p0, "1"
+-    const-string p0, "2"
 +    const-string p0, "CONFIG_CONNECTION_PERSONALIZATION"
  
      invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
