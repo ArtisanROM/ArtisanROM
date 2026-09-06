@@ -1,0 +1,7 @@
+vendor 0 0 755 capabilities=0x0
+vendor/lib 0 0 755 capabilities=0x0
+vendor/lib/soundfx 0 0 755 capabilities=0x0
+vendor/lib/soundfx/libv4a_re.so 0 0 644 capabilities=0x0
+vendor/lib64 0 0 755 capabilities=0x0
+vendor/lib64/soundfx 0 0 755 capabilities=0x0
+vendor/lib64/soundfx/libv4a_re.so 0 0 644 capabilities=0x0
