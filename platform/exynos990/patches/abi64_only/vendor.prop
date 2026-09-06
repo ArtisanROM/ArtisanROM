@@ -1,0 +1,6 @@
+# The S926B base is zygote64-only; keep the y2s vendor ABI contract aligned.
+ro.zygote=zygote64
+dalvik.vm.dex2oat64.enabled=true
+ro.vendor.product.cpu.abilist=arm64-v8a
+ro.vendor.product.cpu.abilist32=
+ro.vendor.product.cpu.abilist64=arm64-v8a
