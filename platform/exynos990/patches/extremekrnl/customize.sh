@@ -1,97 +1,135 @@
 # [
-EXTREMEKRNL_REPO="https://github.com/Android-Artisan/android_kernel_samsung_exynos990"
+EXTREMEKRNL_REPO="https://github.com/At30c/SSM_990v2BYEXTREME/"
+
+KERNEL_MODEL="$TARGET_CODENAME"
+if [[ ":${TARGET_ASSERT_MODEL}:" == *":SM-G985F:"* ]]; then
+    KERNEL_MODEL="${TARGET_CODENAME}lte"
+fi
+
+GET_KERNEL_CACHE_KEY()
+{
+    # Include the commit, local source changes, submodules, and build arguments.
+    # This invalidates the cache whenever any input that can affect an image changes.
+    {
+        git -C "$KERNEL_TMP_DIR" rev-parse HEAD
+        git -C "$KERNEL_TMP_DIR" diff --no-ext-diff --binary
+        git -C "$KERNEL_TMP_DIR" diff --cached --no-ext-diff --binary
+        git -C "$KERNEL_TMP_DIR" submodule status --recursive
+        printf 'main: model=%s ksu=y recovery=n\n' "$KERNEL_MODEL"
+    } | sha256sum | cut -d " " -f 1
+}
+
+KERNEL_CACHE_IS_VALID()
+{
+    local CACHE_FILE="$KERNEL_TMP_DIR/.unica-kernel-cache-${TARGET_CODENAME}"
+
+    [ -f "$CACHE_FILE" ] || return 1
+    [ "$(cat "$CACHE_FILE")" = "$KERNEL_CACHE_KEY" ] || return 1
+    [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/boot.img" ] || return 1
+    [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" ] || return 1
+
+    return 0
+}
 
 BUILD_KERNEL()
 {
-    local PARENT=$(pwd)
-    
-    # Ensure we are in the correct directory
-    cd "$KERNEL_TMP_DIR" || ABORT "BUILD_KERNEL: Cannot find $KERNEL_TMP_DIR"
+    local PARENT
+    local RESULT="0"
+    PARENT="$(pwd)"
+    cd "$KERNEL_TMP_DIR" || return 1
 
-    LOG "- Running build for ${TARGET_CODENAME}"
-    ./build.sh -m ${TARGET_CODENAME} -k y -r n
+    # Kernel builds are long-running and their output is needed to diagnose
+    # compiler failures. Do not hide it inside EVAL's command substitution.
+    ./build.sh -m "$KERNEL_MODEL" -k y -r n || RESULT="$?"
 
-    # Fixup for LTE devices
-    LOG "- Running build for ${TARGET_CODENAME}lte"
-    ./build.sh -m ${TARGET_CODENAME}lte -k n -r n -d y
+    cd "$PARENT" || return 1
+    return "$RESULT"
+}
 
-    cd "$PARENT"
+INIT_KERNEL_SUBMODULES()
+{
+    # The kernel repository pins the tested KernelSU-Next legacy revision.
+    # Sync first so URL/branch changes from a kernel update are respected.
+    EVAL "git -C \"$KERNEL_TMP_DIR\" submodule sync --recursive"
+    EVAL "git -C \"$KERNEL_TMP_DIR\" submodule update --init --recursive"
 }
 
 SAFE_PULL_CHANGES()
-{
+(
+    # Keep errexit/pipefail local to this subshell. Leaking errexit caused a
+    # later failed kernel command to terminate before EVAL could print it.
     set -eo pipefail
-    local PARENT=$(pwd)
 
-    cd "$KERNEL_TMP_DIR" || ABORT "SAFE_PULL: Directory missing"
+    local PARENT
+    PARENT="$(pwd)"
+
+    cd "$KERNEL_TMP_DIR" || return 1
+
     EVAL "git fetch origin"
 
     LOCAL=$(git rev-parse @)
     REMOTE=$(git rev-parse origin/main)
     BASE=$(git merge-base @ origin/main)
 
+    # Now we have three cases that we need to take care of.
     if [[ "$LOCAL" == "$REMOTE" ]]; then
-        LOG "- Local branch is up-to-date."
+        LOG "- Local branch is up-to-date with remote."
     elif [[ "$LOCAL" == "$BASE" ]]; then
-        LOG "- Fast-forwarding."
+        LOG "- Fast-forward possible. Pulling."
         EVAL "git pull --ff-only"
+    elif [[ "$REMOTE" == "$BASE" ]]; then
+        LOGW "- Local branch is ahead of remote. Not doing anything."
     else
-        LOGW "- Local branch diverged or ahead. Resetting to remote."
-        git reset --hard origin/main
+        cd "$PARENT" || return 1
+        ABORT "Remote history has diverged (possible force-push)."
     fi
 
-    cd "$PARENT"
-}
+    cd "$PARENT" || return 1
+)
 
 REPLACE_KERNEL_BINARIES()
 {
-    # 1. Define the directory name based on your requirement
-    # Using 'out' as the parent folder
-    KERNEL_TMP_DIR="out/kernel_tmp-${TARGET_PLATFORM}"
+    local KERNEL_TMP_DIR="$OUT_DIR/kernel_tmp-$TARGET_PLATFORM"
+    local CACHE_FILE="$KERNEL_TMP_DIR/.unica-kernel-cache-${TARGET_CODENAME}"
+    local KERNEL_COMMIT
+    [[ ! -d "$KERNEL_TMP_DIR" ]] && mkdir -p "$KERNEL_TMP_DIR"
 
-    # 2. Check if the directory is missing
-    if [[ ! -d "$KERNEL_TMP_DIR" ]]; then
-        LOG "- Kernel directory missing. Cloning into $KERNEL_TMP_DIR..."
-        # Ensure 'out' exists before cloning
-        mkdir -p -- "out"
-        EVAL "git clone --branch bpf111 --single-branch --recurse-submodules \"$EXTREMEKRNL_REPO\" \"$KERNEL_TMP_DIR\"" || ABORT "Clone failed"
+    if [[ -d "$KERNEL_TMP_DIR/.git" ]]; then
+        LOG "- Existing git repo found, trying to pull latest changes"
+        if ! SAFE_PULL_CHANGES; then
+            ABORT "Could not pull latest Kernel changes. If you hold local changes, please rebase to the new base. If not, cleaning the kernel_tmp_dir should suffice."
+        fi
+    else
+        LOG "- Cloning ExtremeKernel"
+        EVAL "git clone \"$EXTREMEKRNL_REPO\" --single-branch \"$KERNEL_TMP_DIR\""
     fi
 
-    # 3. Repository Sync
-    #if [[ -d "$KERNEL_TMP_DIR/.git" ]]; then
-        #cd "$KERNEL_TMP_DIR" || exit
-        #LOG "- Syncing source code..."
-      # 3 git fetch --all
-      #  git reset --hard FETCH_HEAD
-     #   cd - > /dev/null || exit
-    #else
-    #    ABORT "Directory exists but is not a git repo: $KERNEL_TMP_DIR"
-   # fi
+    INIT_KERNEL_SUBMODULES
 
-    # 4. Execute Build
-    LOG "- Starting kernel build process."
-    BUILD_KERNEL
+    KERNEL_CACHE_KEY="$(GET_KERNEL_CACHE_KEY)" || ABORT "Could not calculate the kernel cache key."
+    KERNEL_COMMIT="$(git -C "$KERNEL_TMP_DIR" rev-parse --short=12 HEAD)" || ABORT "Could not determine the kernel commit."
 
-    # 5. Artifact Management
-    [[ ! -d "$WORK_DIR/kernel" ]] && mkdir -p -- "$WORK_DIR/kernel"
+    if KERNEL_CACHE_IS_VALID; then
+        LOG "- Reusing cached kernel images from $KERNEL_COMMIT."
+    else
+        LOG "- Kernel cache is missing or outdated. Running the kernel build script."
+        BUILD_KERNEL
 
-    for i in "boot" "dtbo"; do
-        local SRC="$KERNEL_TMP_DIR/build/out/$TARGET_CODENAME/$i.img"
-        if [[ -f "$SRC" ]]; then
-            rm -f "$WORK_DIR/kernel/$i.img"
-            cp -f "$SRC" "$WORK_DIR/kernel/$i.img"
-        else
-            LOGW "Artifact $i.img not found at $SRC"
-        fi
-    done
+        [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/boot.img" ] || ABORT "Kernel build did not produce boot.img."
+        [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" ] || ABORT "Kernel build did not produce dtbo.img."
 
-    # LTE Artifacts
-    if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
-        local LTE_SRC="$KERNEL_TMP_DIR/build/out/${TARGET_CODENAME}lte/dtbo.img"
-        if [[ -f "$LTE_SRC" ]]; then
-            cp -f "$LTE_SRC" "$WORK_DIR/kernel/dtbo_lte.img"
-        fi
+        # Some kernel build scripts adjust their source tree while preparing
+        # KernelSU. Record the post-build state used to create these images.
+        KERNEL_CACHE_KEY="$(GET_KERNEL_CACHE_KEY)" || ABORT "Could not update the kernel cache key."
+        printf '%s' "$KERNEL_CACHE_KEY" > "$CACHE_FILE"
     fi
+
+    rm -f "$WORK_DIR/kernel/boot.img" "$WORK_DIR/kernel/dtbo.img" \
+        "$WORK_DIR/kernel/dtbo_lte.img"
+    cp -a "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/boot.img" \
+        "$WORK_DIR/kernel/boot.img"
+    cp -a "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" \
+        "$WORK_DIR/kernel/dtbo.img"
 }
 # ]
 
