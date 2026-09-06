@@ -14,7 +14,7 @@ on:
   pull_request:
   push:
     branches:
-      - 'sixteen'
+      - 'dirty_test'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
