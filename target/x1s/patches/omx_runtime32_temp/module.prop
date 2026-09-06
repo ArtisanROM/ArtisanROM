@@ -1,6 +1,0 @@
-id=omx_runtime32_temp
-name=Temporary 32-bit runtime for legacy OMX
-version=1.0
-versionCode=1
-author=Ats0c_
-description=Experimental M35x Android 16 runtime, linker links, and audited ARM32 system library closure; no vendor HAL import.
