@@ -1,0 +1,5 @@
+id=nfc_antenna_compat
+name=Y2S NFC antenna compatibility
+version=1.0
+description=Matches the NFC antenna guide configuration to the target vendor property.
+author=UN1CA
