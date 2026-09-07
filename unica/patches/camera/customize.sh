@@ -360,6 +360,12 @@ fi
 if [ -f "$WORK_DIR/system/system/lib64/libstagefright.so" ]; then
     HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
         "726f2e70726f647563742e6d6f64656c00" "726f2e626f6f742e656d2e6d6f64656c00"
+    # Fix __fread_chk buffer overflow in reconfigEncoder4OtherApps
+    # Source platform's ACodec reads 512 bytes into a 255-byte buffer via __fread_chk,
+    # causing SIGABRT in mediaserver when third-party apps (WhatsApp/Telegram) use
+    # the video encoder. Patch the read size from 0x200 to 0xff to match the buffer.
+    HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
+        "02408052e30314aae41f8052" "e21f8052e30314aae41f8052"
 else
     LOG "- Skipping 64-bit libstagefright model patch (library is absent)"
 fi

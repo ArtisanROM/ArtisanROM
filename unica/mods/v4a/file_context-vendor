@@ -1,0 +1,7 @@
+/vendor u:object_r:vendor_file:s0
+/vendor/lib u:object_r:vendor_file:s0
+/vendor/lib/soundfx u:object_r:vendor_file:s0
+/vendor/lib/soundfx/libv4a_re\.so u:object_r:vendor_file:s0
+/vendor/lib64 u:object_r:vendor_file:s0
+/vendor/lib64/soundfx u:object_r:vendor_file:s0
+/vendor/lib64/soundfx/libv4a_re\.so u:object_r:vendor_file:s0

@@ -1,0 +1,4 @@
+id=eden
+name=Eden fix
+author=miguelbarretoo, Yacinegti
+description=Fixes camera crashes by removing EDEN debug logging and patching libvpl.so unload routine.

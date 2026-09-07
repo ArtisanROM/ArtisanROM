@@ -65,10 +65,22 @@ SYSTEM_DEBLOAT+="
 system/app/MAPSAgent
 "
 
+# AppUpdateCenter
+SYSTEM_DEBLOAT+="
+system/etc/permissions/privapp-permissions-com.samsung.android.app.updatecenter.xml
+system/priv-app/AppUpdateCenter
+"
+
 # BCService
 SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.sec.bcservice.xml
 system/priv-app/BCService
+"
+
+# CIDManager
+SYSTEM_DEBLOAT+="
+system/priv-app/CIDManager
+system/etc/permissions/privapp-permissions-com.samsung.android.cidmanager.xml
 "
 
 # Gaming Hub
@@ -81,14 +93,39 @@ ADD_TO_WORK_DIR "pa2qxxx" "system" \
     "system/etc/permissions/signature-permissions-com.samsung.android.game.gamehome.xml" \
     0 0 644 "u:object_r:system_file:s0"
 
+# Gemini shortcut
+PRODUCT_DEBLOAT+="
+app/BardShell
+"
+
+# Gmail
+PRODUCT_DEBLOAT+="
+app/Gmail2
+"
+
 # Google Assistant shortcut
 PRODUCT_DEBLOAT+="
 app/AssistantShell
 "
 
+# Google Chrome
+PRODUCT_DEBLOAT+="
+app/Chrome
+"
+
 # Google Duo
 PRODUCT_DEBLOAT+="
 app/DuoStub
+"
+
+# Google Maps
+PRODUCT_DEBLOAT+="
+app/Maps
+"
+
+# Google PAI (Play Autoinstall)
+SYSTEM_DEBLOAT+="
+system/app/PlayAutoInstallConfig
 "
 
 # HwModuleTest
@@ -108,13 +145,33 @@ system/priv-app/FactoryTestProvider
 # Language packs
 SYSTEM_DEBLOAT+="$(find "$WORK_DIR/system" -type d -name "*TTSVoice*" | sed "s|$WORK_DIR/system/||g")"
 
+# Main TTS app
+SYSTEM_DEBLOAT+="
+system/app/SamsungTTS
+"
+
+# Samsung Kids
+SYSTEM_DEBLOAT+="
+system/etc/permissions/signature-permissions-com.sec.android.app.kidshome.xml
+system/app/KidsHome_Installer
+"
+
+# Bixby
+SYSTEM_DEBLOAT+="
+system/priv-app/Bixby
+system/app/BixbyWakeup
+system/priv-app/BixbyInterpreter
+system/etc/preferred-apps/com.samsung.android.bixby.agent.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.bixby.agent.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.bixby.wakeup.xml
+system/etc/permissions/signature-permissions-com.samsung.android.bixby.agent.xml
+"
+
 # LED Cover Service
-LED_COVER_LEVEL="$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")"
-[[ "$LED_COVER_LEVEL" =~ ^[0-9]+$ ]] && [ "$LED_COVER_LEVEL" -lt "30" ] && SYSTEM_DEBLOAT+="
+[ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_CONFIG_NFC_LED_COVER_LEVEL")" -lt "30" ] && SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.sec.android.cover.ledcover.xml
 system/priv-app/LedCoverService
 "
-unset LED_COVER_LEVEL
 
 # Link to Windows
 # Replace full apk with stub apk to save space
@@ -176,6 +233,16 @@ system/priv-app/AREmojiEditor
 system/priv-app/AvatarEmojiSticker
 "
 
+# Samsung Calendar
+SYSTEM_DEBLOAT+="
+system/app/SamsungCalendar
+"
+
+# Samsung Clock
+SYSTEM_DEBLOAT+="
+system/app/ClockPackage
+"
+
 # Samsung Free
 SYSTEM_DEBLOAT+="
 system/app/MinusOnePage
@@ -185,6 +252,11 @@ system/app/MinusOnePage
 SYSTEM_DEBLOAT+="
 system/etc/permissions/signature-permissions-com.samsung.android.offline.languagemodel.xml
 system/priv-app/OfflineLanguageModel_stub
+"
+
+# Google Messages
+PRODUCT_DEBLOAT+="
+product/priv-app/Messages
 "
 
 # Samsung Pass
@@ -200,6 +272,11 @@ system/etc/sysconfig/samsungauthframework.xml
 system/etc/sysconfig/samsungpassapp.xml
 system/priv-app/AuthFramework
 system/priv-app/SamsungPass
+"
+
+# Samsung Reminder
+SYSTEM_DEBLOAT+="
+system/app/SmartReminder
 "
 
 # Samsung Visit In
