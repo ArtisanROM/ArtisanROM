@@ -1,0 +1,5 @@
+
+# target/c2s/installer/install-end.edify
+if is_substring("N980F", getprop("ro.bootloader")) then
+    package_extract_file("dtbo_lte.img", "/dev/block/by-name/dtbo");
+endif;
