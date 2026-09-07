@@ -119,6 +119,14 @@ PATCHED=false
 # - Add ro.surface_flinger.game_default_frame_rate_override if missing
 BACKPORT_SF_PROPS
 
+# Support legacy Camera HAL (pre-API 34)
+# - Some legacy devices (e.g. r8q) expect GPS tags to be non-null
+if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "34" ]; then
+    PATCHED=true
+    APPLY_PATCH "system" "system/framework/framework.jar" \
+        "$MODPATH/camera/framework.jar/0001-Backport-legacy-CameraMetadataNative-code.patch"
+fi
+
 # Support legacy Face HAL (pre-API 34)
 if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "34" ]; then
     if [ ! -f "$WORK_DIR/vendor/bin/hw/vendor.samsung.hardware.biometrics.face@3.0-service" ]; then
@@ -300,6 +308,17 @@ if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
     fi
 fi
 
+# Ensure IQtiComposer support (pre-API 36)
+# - Disable "ro.product.first_api_level" < 34 check
+if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "36" ]; then
+    if [[ "$TARGET_OS_SINGLE_SYSTEM_IMAGE" == "qssi" ]] && \
+            ! grep -q -r "IQtiComposer" "$WORK_DIR/vendor/etc/vintf"; then
+        PATCHED=true
+        # [b.lt #0x729be8] -> [nop]
+        HEX_PATCH "$WORK_DIR/system/system/bin/surfaceflinger" "9f8a00712b03005400068052" "9f8a00711f2003d500068052"
+    fi
+fi
+
 # Support schedtune cgroup controller (pre-API 36)
 # - Check for TARGET_PLATFORM_SDK_VERSION < 36 as 4.19 kernel support has been deprecated in Android B
 if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "36" ]; then
@@ -400,6 +419,54 @@ if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
         SMALI_PATCH "system" "system/framework/services.jar" \
             "smali/com/android/server/StorageManagerService.smali" "return" \
             'isPassSupport()Z' 'false'
+    fi
+fi
+
+# Support SECOND_PICTURE_CONFIG camera feature (pre-API 35)
+if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
+    PATCHED=true
+    if $TARGET_CAMERA_SUPPORT_MASS_APP_FLAVOR; then
+        APPLY_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+            "$MODPATH/camera_mass/SamsungCamera.apk/0001-Backport-CONTROL_AVAILABLE_FEATURE_SECOND_PICTURE_CO.patch"
+    else
+        APPLY_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+            "$MODPATH/camera/SamsungCamera.apk/0001-Backport-CONTROL_AVAILABLE_FEATURE_SECOND_PICTURE_CO.patch"
+    fi
+fi
+
+# Support OMX hardware video codecs (pre-API 35)
+# https://android.googlesource.com/platform/frameworks/av/+/android-16.0.0_r2/media/libstagefright/omx/OMXNodeInstance.cpp#1687
+if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
+    if ! find "$WORK_DIR/vendor/etc" -maxdepth 1 -type f -name "media_codecs*.xml" ! -name "*performance*" -exec cat {} + | \
+            grep -q -P -z '<MediaCodec\s[^>]*name="c2\.(?!android\.|sec\.)[^"]*"(?:(?!</?MediaCodec[\s>])[\s\S])*?="video/'; then
+        PATCHED=true
+        SMALI_PATCH "system" "system/app/MotionPhoto/MotionPhoto.apk" \
+            "smali/com/samsung/android/motionphoto/utils/v2/video/VideoTranscoder.smali" "replace" \
+            'configVideoEncoderParameters(Landroid/media/MediaFormat;Lcom/samsung/android/motionphoto/utils/v2/video/VideoTranscodingTask;)V' \
+            'const p2, 0x7f420888' \
+            'const p2, 0x7f000789'
+        SMALI_PATCH "system" "system/app/MotionPhoto/MotionPhoto.apk" \
+            "smali/com/samsung/android/sum/core/filter/EncoderFilter.smali" "replace" \
+            'configCodec(Lcom/samsung/android/sum/core/message/Message;)V' \
+            'const v4, 0x7f420888' \
+            'const v4, 0x7f000789'
+        if [ -f "$WORK_DIR/system/system/priv-app/GlobalPostProcMgr/GlobalPostProcMgr.apk" ]; then
+            SMALI_PATCH "system" "system/priv-app/GlobalPostProcMgr/GlobalPostProcMgr.apk" \
+                "smali/com/samsung/android/sum/core/filter/EncoderFilter.smali" "replace" \
+                'configCodec(Lcom/samsung/android/sum/core/message/Message;)V' \
+                'const v3, 0x7f420888' \
+                'const v3, 0x7f000789'
+        fi
+        SMALI_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+            "smali_classes3/com/samsung/android/sum/core/filter/EncoderFilter.smali" "replace" \
+            'configCodec(Lcom/samsung/android/sum/core/message/Message;)V' \
+            'const v4, 0x7f420888' \
+            'const v4, 0x7f000789'
+        SMALI_PATCH "system" "system/priv-app/vexfwk_service/vexfwk_service.apk" \
+            "smali/com/samsung/android/sum/core/filter/EncoderFilter.smali" "replace" \
+            'configCodec(Lcom/samsung/android/sum/core/message/Message;)V' \
+            'const v3, 0x7f420888' \
+            'const v3, 0x7f000789'
     fi
 fi
 

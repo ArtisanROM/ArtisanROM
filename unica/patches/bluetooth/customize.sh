@@ -271,6 +271,11 @@ if xxd -p -c 0 "$TMP_DIR/unknown/apex_payload/lib64/libbluetooth_jni.so" | \
         grep -q "8876743948050037"; then
     VK_FROM="8876743948050037"
     VK_TO="887674392a000014"
+elif xxd -p -c 0 "$TMP_DIR/unknown/apex_payload/lib64/libbluetooth_jni.so" | \
+        grep -q "28f7773948050037"; then
+    # August firmware variant used by current upstream donors.
+    VK_FROM="28f7773948050037"
+    VK_TO="28f777392a000014"
 fi
 
 HEX_PATCH "$TMP_DIR/unknown/apex_payload/lib64/libbluetooth_jni.so" \
