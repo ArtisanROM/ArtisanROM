@@ -422,8 +422,14 @@ if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
     fi
 fi
 
-# Support SECOND_PICTURE_CONFIG camera feature (pre-API 35)
-if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
+# Support SECOND_PICTURE_CONFIG camera feature (pre-API 35).
+# The Android 16 SamsungCamera used by the Exynos 990 port has the newer
+# map-backed FeatureCapability implementation and moves the app-side engine
+# classes to classes4.  The upstream backport targets the older field-backed
+# implementation; applying it here creates invalid references (and currently
+# fails before the APK can be rebuilt).  Keep the stock camera path for this
+# platform until the feature is ported against the new capability model.
+if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ] && [ "$TARGET_PLATFORM" != "exynos990" ]; then
     PATCHED=true
     if $TARGET_CAMERA_SUPPORT_MASS_APP_FLAVOR; then
         APPLY_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
@@ -441,10 +447,10 @@ if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
             grep -q -P -z '<MediaCodec\s[^>]*name="c2\.(?!android\.|sec\.)[^"]*"(?:(?!</?MediaCodec[\s>])[\s\S])*?="video/'; then
         PATCHED=true
         SMALI_PATCH "system" "system/app/MotionPhoto/MotionPhoto.apk" \
-            "smali/com/samsung/android/motionphoto/utils/v2/video/VideoTranscoder.smali" "replace" \
-            'configVideoEncoderParameters(Landroid/media/MediaFormat;Lcom/samsung/android/motionphoto/utils/v2/video/VideoTranscodingTask;)V' \
-            'const p2, 0x7f420888' \
-            'const p2, 0x7f000789'
+            "smali/com/samsung/android/motionphoto/utils/v2/video/transcoding/VideoTrackTranscoder.smali" "replace" \
+            'getVideoEncodingFormat(Lcom/samsung/android/motionphoto/utils/v2/video/VideoTranscodingTask;)Landroid/media/MediaFormat;' \
+            'const v1, 0x7f420888' \
+            'const v1, 0x7f000789'
         SMALI_PATCH "system" "system/app/MotionPhoto/MotionPhoto.apk" \
             "smali/com/samsung/android/sum/core/filter/EncoderFilter.smali" "replace" \
             'configCodec(Lcom/samsung/android/sum/core/message/Message;)V' \
@@ -465,8 +471,8 @@ if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "35" ]; then
         SMALI_PATCH "system" "system/priv-app/vexfwk_service/vexfwk_service.apk" \
             "smali/com/samsung/android/sum/core/filter/EncoderFilter.smali" "replace" \
             'configCodec(Lcom/samsung/android/sum/core/message/Message;)V' \
-            'const v3, 0x7f420888' \
-            'const v3, 0x7f000789'
+            'const v2, 0x7f420888' \
+            'const v2, 0x7f000789'
     fi
 fi
 
