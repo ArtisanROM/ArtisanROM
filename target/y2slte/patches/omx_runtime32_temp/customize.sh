@@ -4,9 +4,9 @@
 # /system/bin/linker or 32-bit system library namespace.  The M35x runtime
 # APEX is also Android 16, but contains both Bionic architectures.  Keep this
 # module target-local and do not change zygote/abilist properties: the goal is
-# only to expose the 32-bit runtime entry points.  Vendor/SoC-specific HAL
-# libraries remain untouched; only the Android 16 system-side ARM32 closure
-# required by the existing 32-bit vendor executables is imported.
+# only to expose the 32-bit runtime entry points.  The complete non-Bionic
+# ARM32 system library stack is supplied by the Android 16 r11s donor;
+# vendor/SoC-specific HAL libraries remain untouched.
 
 if [[ "$SOURCE_PLATFORM_SDK_VERSION" -lt 36 ]]; then
     LOG "- Source is not Android 16; skipping temporary 32-bit runtime"
@@ -28,9 +28,9 @@ fi
 
 # These are the system-side ARM32 libraries that are absent from the S926B
 # 64-bit-only source but are required by the target's existing 32-bit vendor
-# executables and the legacy audio HAL shared-object graph; no SoC-specific
-# vendor library is copied here.  The closure is kept explicit so a future
-# donor update cannot silently pull in unrelated files.
+# executables and the legacy audio HAL shared-object graph.  Use r11s for all
+# loose libraries; m35x is retained only as the multilib Runtime APEX donor.
+# No SoC-specific vendor library is copied here.
 RUNTIME_LIBS="
 android.hardware.common-V2-ndk.so
 android.hardware.configstore-utils.so
@@ -40,7 +40,6 @@ android.hardware.graphics.allocator-V2-ndk.so
 android.hardware.graphics.allocator@2.0.so
 android.hardware.graphics.allocator@3.0.so
 android.hardware.graphics.allocator@4.0.so
-android.hardware.graphics.common-V6-ndk.so
 android.hardware.graphics.common-V7-ndk.so
 android.hardware.graphics.common@1.0.so
 android.hardware.graphics.common@1.1.so
@@ -100,7 +99,7 @@ server_configurable_flags.so
 
 while read -r RUNTIME_LIB; do
     [ "$RUNTIME_LIB" ] || continue
-    ADD_TO_WORK_DIR "m35xxx" "system" "system/lib/$RUNTIME_LIB" \
+    ADD_TO_WORK_DIR "r11sxxx" "system" "system/lib/$RUNTIME_LIB" \
         0 0 644 "u:object_r:system_lib_file:s0" || return 1
 done <<< "$RUNTIME_LIBS"
 
@@ -135,6 +134,54 @@ while read -r LEGACY_AUDIO_LIB; do
     ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib/$LEGACY_AUDIO_LIB" \
         0 0 644 "u:object_r:system_lib_file:s0" || return 1
 done <<< "$LEGACY_AUDIO_LIBS"
+
+# The source firmware is 64-bit-only, while a few Exynos 990 vendor blobs
+# still require system-side ARM32 libraries that are not supplied by VNDK.
+# Start from the two missing roots found by the dependency audit and follow
+# DT_NEEDED recursively.  Existing ARM32 libraries are retained, and only
+# missing Android 16 libraries are imported from r11s.
+declare -A R11S_VISITED=()
+R11S_IMPORTED_COUNT=0
+
+ADD_R11S_SYSTEM_LIB()
+{
+    local LIB_NAME="$1"
+    local DONOR_LIB="$SRC_DIR/prebuilts/samsung/r11sxxx/system/lib/$LIB_NAME"
+    local NEEDED_LIB
+
+    [ "$LIB_NAME" ] || return 0
+    [ "${R11S_VISITED[$LIB_NAME]+set}" ] && return 0
+    R11S_VISITED["$LIB_NAME"]=1
+
+    # Bionic and ICU are provided by the multilib Runtime/I18n APEXes.
+    case "$LIB_NAME" in
+        libc.so|libdl.so|libdl_android.so|libm.so|libandroidicu.so)
+            return 0
+            ;;
+    esac
+
+    if [ -e "$WORK_DIR/system/system/lib/$LIB_NAME" ]; then
+        return 0
+    fi
+    if [ ! -f "$DONOR_LIB" ]; then
+        ABORT "Missing r11s ARM32 dependency: system/lib/$LIB_NAME"
+        return 1
+    fi
+
+    ADD_TO_WORK_DIR "r11sxxx" "system" "system/lib/$LIB_NAME" \
+        0 0 644 "u:object_r:system_lib_file:s0" || return 1
+    ((R11S_IMPORTED_COUNT += 1))
+
+    while read -r NEEDED_LIB; do
+        ADD_R11S_SYSTEM_LIB "$NEEDED_LIB" || return 1
+    done < <(readelf -d "$DONOR_LIB" 2>/dev/null | \
+        sed -n 's/.*(NEEDED).*\[\(.*\)\].*/\1/p')
+}
+
+LOG "- Adding required r11s Android 16 ARM32 system libraries"
+ADD_R11S_SYSTEM_LIB "libmediandk.so" || return 1
+ADD_R11S_SYSTEM_LIB "libselinux.so" || return 1
+LOG "  - Imported $R11S_IMPORTED_COUNT libraries from the r11s dependency closure"
 
 OMX_SERVICE="$WORK_DIR/vendor/bin/hw/android.hardware.media.omx@1.0-service"
 if [ ! -f "$OMX_SERVICE" ]; then
@@ -203,9 +250,10 @@ done <<< "$RUNTIME_LINKS"
 
 unset RUNTIME_APEX RUNTIME_APEX_PATH RUNTIME_LIBS RUNTIME_LIB LEGACY_AUDIO_LIBS \
     LEGACY_AUDIO_LIB OMX_SERVICE \
+    R11S_VISITED R11S_IMPORTED_COUNT \
     RUNTIME_LINKS RUNTIME_RELATIVE RUNTIME_TARGET RUNTIME_USER RUNTIME_GROUP \
     RUNTIME_MODE RUNTIME_LABEL
-unset -f ADD_RUNTIME_LINK
+unset -f ADD_R11S_SYSTEM_LIB ADD_RUNTIME_LINK
 
-LOG "  - M35x runtime APEX and 32-bit linker links added (no vendor libraries imported)"
+LOG "  - M35x Runtime APEX and r11s ARM32 libraries added (no donor vendor libraries imported)"
 LOG_STEP_OUT
