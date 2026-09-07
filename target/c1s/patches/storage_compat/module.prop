@@ -1,0 +1,4 @@
+id=storage_compat
+name=Android 16 storage compatibility
+author=ExtremeXT
+description=Initializes the legacy unencrypted user storage layout.
