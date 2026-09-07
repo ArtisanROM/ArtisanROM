@@ -348,6 +348,22 @@ SMALI_PATCH()
     # Replace a string with another string inside the method
     # or Replace a line with another line inside the method
     elif [[ "$OPERATION" == "replace" ]]; then
+        local METHOD_CONTENT
+        METHOD_CONTENT="$(awk -v FN="$METHOD" '
+            /^\.method/ && index($0, FN) { inside = 1 }
+            inside { print }
+            inside && /^\.end method/ { exit }
+        ' "$FILE_PATH/$SMALI")"
+
+        # Decoded-cache entries may already contain a patch from an earlier
+        # build.  Treat the exact replacement as success only when the old
+        # value is no longer present in the selected method.
+        if ! grep -Fq -- "$VALUE" <<< "$METHOD_CONTENT" && \
+                grep -Fq -- "$REPLACEMENT" <<< "$METHOD_CONTENT"; then
+            LOG "- Value in method \"$METHOD\" is already patched; skipping"
+            return 0
+        fi
+
         LOG "- Replacing value \"$VALUE\" of method \"$METHOD\" in /$PARTITION/$FILE/$SMALI with \"$REPLACEMENT\""
 
         awk -v FN="$METHOD" -v STR="$VALUE" -v REP="$REPLACEMENT" '
