@@ -1,0 +1,2 @@
+# S926B already carries the native Android 16 HFR/content-detection policy.
+# Keep this module available for rollback, but do not apply it to this base.

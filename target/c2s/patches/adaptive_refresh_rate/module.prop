@@ -1,0 +1,4 @@
+id=adaptive_refresh_rate
+name=Adaptive refresh rate for y2slte
+author=At30c
+description=Enables SurfaceFlinger content detection v2 while preserving the stock Exynos 990 refresh-rate policy.
