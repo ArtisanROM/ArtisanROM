@@ -12,7 +12,7 @@ on:
           - release
         default: debug
     branches:
-      - 'dirty_test'
+      - 'sixteen'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
