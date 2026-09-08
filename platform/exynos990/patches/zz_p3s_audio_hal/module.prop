@@ -1,0 +1,6 @@
+id=p3s_audio_hal
+name=P3S audio HAL
+version=1.0
+versionCode=1
+author=Ats0c_
+description=Imports P3S audio HAL blobs for Exynos 990 targets and switches generic audio VINTF declarations to HIDL 6.0.

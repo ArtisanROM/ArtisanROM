@@ -21,7 +21,7 @@ ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.biometrics.fac
 ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.vibrator-service"
 # Keep the existing non-audio p3s HAL support explicit.  Do not copy the
 # whole directory: p3sxxx also contains the experimental audio @6.0 blobs,
-# which are handled by target/y2slte/patches/p3s_audio_hal.
+# which are handled later by platform/exynos990/patches/zz_p3s_audio_hal.
 P3S_VENDOR_LIBS="
 lib64/android.hardware.light-V1-ndk_platform.so
 lib64/vendor.samsung.hardware.light-V1-ndk_platform.so

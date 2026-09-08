@@ -1,6 +1,0 @@
-id=abi64_only
-name=Force 64-bit userspace
-version=1.0
-versionCode=1
-author=Ats0c_
-description=Forces the legacy target vendor and system properties to advertise an arm64-only userspace.

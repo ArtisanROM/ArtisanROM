@@ -1,0 +1,4 @@
+id=adaptive_refresh_rate
+name=Adaptive refresh rate for Exynos 990
+author=At30c
+description=Enables SurfaceFlinger content detection v2 on high-refresh-rate Exynos 990 panels while excluding the 60 Hz Note20.
