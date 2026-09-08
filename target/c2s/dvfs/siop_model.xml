@@ -59,7 +59,6 @@
 
     <overheatcontrol>
         <complex>
-            <MW     formula="LRP*BAT" temp="470.465" />
             <LTB    formula="LRP*BAT" temp="470.465" />
             <LCD    formula="LRP*BAT" temp="450.445" />
             <GDM    formula="LRP*BAT" temp="440.435" />
