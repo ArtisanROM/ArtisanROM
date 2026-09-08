@@ -11,8 +11,6 @@ on:
           - test
           - release
         default: debug
-  pull_request:
-  push:
     branches:
       - 'dirty_test'
 
