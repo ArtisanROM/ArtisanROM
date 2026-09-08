@@ -3,7 +3,7 @@
 # The Android 16 S926B source image is 64-bit-only and therefore has no
 # /system/bin/linker or 32-bit system library namespace.  The M35x runtime
 # APEX is also Android 16, but contains both Bionic architectures.  Keep this
-# module target-local and do not change zygote/abilist properties: the goal is
+# module platform-wide and do not change zygote/abilist properties: the goal is
 # only to expose the 32-bit runtime entry points.  The complete non-Bionic
 # ARM32 system library stack is supplied by the Android 16 r11s donor;
 # vendor/SoC-specific HAL libraries remain untouched.
@@ -114,7 +114,7 @@ ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" \
 
 # Do not import the M35x vendor audio HAL here: its service is 64-bit and its
 # implementation is bound to the Exynos 1380 (s5e8835) primary driver.  The
-# y2slte audio path is a 32-bit Exynos 990 HIDL 5.0 service.  Only generic
+# Exynos 990 audio path is a 32-bit HIDL 5.0 service.  Only generic
 # system-side ABI libraries are safe to share between those devices.
 #
 # The target's legacy 32-bit audio HAL is HIDL 5.0.  Its interface libraries
