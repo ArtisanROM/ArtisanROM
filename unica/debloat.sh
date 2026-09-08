@@ -77,12 +77,6 @@ system/etc/permissions/privapp-permissions-com.sec.bcservice.xml
 system/priv-app/BCService
 "
 
-# CIDManager
-SYSTEM_DEBLOAT+="
-system/priv-app/CIDManager
-system/etc/permissions/privapp-permissions-com.samsung.android.cidmanager.xml
-"
-
 # Gaming Hub
 SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.samsung.android.game.gamehome.xml

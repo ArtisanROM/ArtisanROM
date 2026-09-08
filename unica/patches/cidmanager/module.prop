@@ -1,0 +1,4 @@
+id=cidmanager
+name=CIDManager compatibility
+author=UN1CA
+description=Keeps CIDManager and uses the r11s HIDL 2.0 system bridge with legacy Samsung vendors.
