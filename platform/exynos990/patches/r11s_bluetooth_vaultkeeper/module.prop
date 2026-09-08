@@ -1,0 +1,6 @@
+id=r11s_bluetooth_vaultkeeper
+name=Exynos 990 Bluetooth and VaultKeeper compatibility
+version=1.0
+versionCode=1
+author=At30c
+description=Ports the coherent Android 16 S23 FE Bluetooth APEX and VaultKeeper HIDL 2.0 system clients for every Galaxy S20 and Note20 target using the Exynos 990 platform.
