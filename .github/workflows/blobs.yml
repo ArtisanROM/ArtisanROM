@@ -108,6 +108,9 @@ jobs:
           ./scripts/internal/update_prebuilt_blobs.sh "${{ matrix.device }}" "${{ matrix.firmware }}"
           echo "PDA_BUILD=$(cat "./prebuilts/samsung/${{ matrix.device }}/.current" | cut -d "/" -f "1")" >> "$GITHUB_ENV"
 
+      - name: Discard unstaged changes
+        run: git checkout -- .
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
