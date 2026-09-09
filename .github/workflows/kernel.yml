@@ -135,6 +135,7 @@ jobs:
           fi
 
           cd "$ZIP_DIR"
+          rm -f "$KERNEL_ZIP"
           zip -r -qq "$KERNEL_ZIP" .
           echo "Updated $KERNEL_ZIP ($(stat -c%s "$KERNEL_ZIP") bytes)"
 
