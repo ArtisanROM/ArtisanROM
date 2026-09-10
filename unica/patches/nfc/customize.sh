@@ -37,6 +37,18 @@ if [ "$(GET_PROP "vendor" "ro.vendor.nfc.feature.chipname")" ]; then
     fi
 fi
 
+# If the target device uses the same NXP SN100U chip as the Note 20 Ultra,
+# pull libnfc_nci_jni.so from its stock firmware so the source API 36
+# NFC app can find the JNI library.
+if [[ "$(GET_PROP "vendor" "ro.vendor.nfc.feature.chipname")" == "NXP_SN100U" ]]; then
+    if [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_nci_jni.so" ]; then
+        ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib/libnfc_nci_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    fi
+    if [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nci_jni.so" ]; then
+        ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libnfc_nci_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    fi
+fi
+
 # SEC_PRODUCT_FEATURE_NFC_CHIP_NAME:=NXP_SN100U/NXP_PN553
 # - API 35 and below: libnfc_nxpsn_jni.so/libnfc_nxppn_jni.so
 # - API 36: libnfc_nci_jni.so
