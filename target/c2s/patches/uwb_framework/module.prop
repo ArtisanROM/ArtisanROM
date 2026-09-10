@@ -1,0 +1,4 @@
+id=uwb_framework
+name=UWB framework compatibility
+author=At30c
+description=Registers the UWB HAL callback only after the Samsung UWB framework is fully initialized

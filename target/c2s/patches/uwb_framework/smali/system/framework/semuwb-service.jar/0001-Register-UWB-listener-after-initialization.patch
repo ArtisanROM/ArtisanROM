@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: At30c <PabloAtsoc9993@outlook.com>
+Date: Thu, 10 Sep 2026 13:00:00 -0300
+Subject: [PATCH] Register UWB listener after framework initialization
+
+The legacy c2s UWB HAL can report its device state as soon as the listener is
+registered. SamsungExtension currently publishes itself before constructing
+BigdataManager and the remaining UWB managers, allowing the callback to kill
+system_server with a NullPointerException.
+
+Register the listener after every callback dependency has been initialized.
+
+Signed-off-by: At30c <PabloAtsoc9993@outlook.com>
+---
+ .../android/server/uwb/SamsungExtension.smali | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/smali/com/samsung/android/server/uwb/SamsungExtension.smali b/smali/com/samsung/android/server/uwb/SamsungExtension.smali
+--- a/smali/com/samsung/android/server/uwb/SamsungExtension.smali
++++ b/smali/com/samsung/android/server/uwb/SamsungExtension.smali
+@@ -217,11 +217,6 @@
+ 
+     iput-object v0, p0, Lcom/samsung/android/server/uwb/SamsungExtension;->mVendorExtensionWrapper:Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;
+ 
+-    .line 112
+-    iget-object v0, p0, Lcom/samsung/android/server/uwb/SamsungExtension;->mVendorExtensionWrapper:Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;
+-
+-    invoke-virtual {v0, p0}, Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;->setDeviceListener(Lcom/samsung/android/server/uwb/IVendorExtension$DeviceNotification;)V
+-
+     .line 114
+     invoke-static {}, Lcom/samsung/android/server/uwb/calibration/SamsungCalibrationData;->readCalibrationFile()Z
+ 
+@@ -320,4 +315,9 @@
+ 
+     iput-object v1, p0, Lcom/samsung/android/server/uwb/SamsungExtension;->mEnableTask:Lcom/samsung/android/server/uwb/SamsungUwbEnableTask;
+ 
++    .line 112
++    iget-object v1, p0, Lcom/samsung/android/server/uwb/SamsungExtension;->mVendorExtensionWrapper:Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;
++
++    invoke-virtual {v1, p0}, Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;->setDeviceListener(Lcom/samsung/android/server/uwb/IVendorExtension$DeviceNotification;)V
++
+     .line 149
