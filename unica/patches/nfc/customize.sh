@@ -1,5 +1,38 @@
 # [
 _LOG() { if $DEBUG; then LOGW "$1"; else ABORT "$1"; fi }
+
+_IMPORT_LEGACY_NXP_JNI()
+{
+    local ABI_DIR="$1"
+    local NXP_VARIANT="$2"
+    local JNI_PATH="system/$ABI_DIR/libnfc_${NXP_VARIANT}_jni.so"
+    local CORE_PATH="system/$ABI_DIR/libnfc-${NXP_VARIANT}.so"
+    local GENERIC_PATH="system/$ABI_DIR/libnfc_nci_jni.so"
+
+    if [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/$CORE_PATH" ]; then
+        _LOG "Missing direct NFC dependency in target firmware: $CORE_PATH"
+        return 1
+    fi
+
+    ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "$JNI_PATH" \
+        0 0 644 "u:object_r:system_lib_file:s0"
+    ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "$CORE_PATH" \
+        0 0 644 "u:object_r:system_lib_file:s0"
+
+    # Samsung's pre-U NFC JNI uses the old Java method capitalization.
+    if [ "$TARGET_PLATFORM_SDK_VERSION" -lt 34 ]; then
+        sed -i "s/\<CoverAttached\>/coverAttached/g" "$WORK_DIR/system/$JNI_PATH"
+        sed -i "s/\<StartLedCover\>/startLedCover/g" "$WORK_DIR/system/$JNI_PATH"
+        sed -i "s/\<StopLedCover\>/stopLedCover/g" "$WORK_DIR/system/$JNI_PATH"
+        sed -i "s/\<TransceiveLedCover\>/transceiveLedCover/g" "$WORK_DIR/system/$JNI_PATH"
+    fi
+
+    # API 36 unified the NXP JNI filename. Preserve the original filename and
+    # expose a copy under the name requested by System.loadLibrary().
+    cp -f "$WORK_DIR/system/$JNI_PATH" "$WORK_DIR/system/$GENERIC_PATH"
+    SET_METADATA "system" "$GENERIC_PATH" \
+        0 0 644 "u:object_r:system_lib_file:s0"
+}
 # ]
 
 TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$TARGET_FIRMWARE")"
@@ -56,8 +89,8 @@ fi
 # Use NXP_SN100U blobs for devices with legacy NXP_PN553 impl.
 if [ -f "$WORK_DIR/system/system/lib/libnfc_nci_jni.so" ]; then
     if [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_nci_jni.so" ] && \
-            [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nxppn_jni.so" ] && \
-            [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nxpsn_jni.so" ] && \
+            [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_nxppn_jni.so" ] && \
+            [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_nxpsn_jni.so" ] && \
             [ ! -f "$WORK_DIR/vendor/lib/nfc_nci_nxpsn.so" ] && \
             [ ! -f "$WORK_DIR/vendor/lib/nfc_nci_nxp.so" ] && \
             [ ! -f "$WORK_DIR/vendor/lib64/nfc_nci_nxpsn.so" ] && \
@@ -70,8 +103,10 @@ elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_nci_jni.so" ];
     ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib/libnfc_nci_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
     ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib/libnfc_prop_extn.so" 0 0 644 "u:object_r:system_lib_file:s0"
     ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib/libnfc_vendor_extn.so" 0 0 644 "u:object_r:system_lib_file:s0"
-elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nxpsn_jni.so" ]; then
-    :
+elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_nxpsn_jni.so" ]; then
+    _IMPORT_LEGACY_NXP_JNI "lib" "nxpsn"
+elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_nxppn_jni.so" ]; then
+    _IMPORT_LEGACY_NXP_JNI "lib" "nxppn"
 fi
 if [ -f "$WORK_DIR/system/system/lib64/libnfc_nci_jni.so" ]; then
     if [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nci_jni.so" ] && \
@@ -88,8 +123,9 @@ elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nci_jni.so" 
     ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libnfc_prop_extn.so" 0 0 644 "u:object_r:system_lib_file:s0"
     ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libnfc_vendor_extn.so" 0 0 644 "u:object_r:system_lib_file:s0"
 elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nxpsn_jni.so" ]; then
-    ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libnfc_nxpsn_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
-    ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libnfc-nxpsn.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    _IMPORT_LEGACY_NXP_JNI "lib64" "nxpsn"
+elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_nxppn_jni.so" ]; then
+    _IMPORT_LEGACY_NXP_JNI "lib64" "nxppn"
 fi
 
 # SEC_PRODUCT_FEATURE_NFC_CHIP_NAME:=STM_ST21
@@ -153,4 +189,4 @@ elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_sec_jni.so" 
 fi
 
 unset TARGET_FIRMWARE_PATH
-unset -f _LOG
+unset -f _IMPORT_LEGACY_NXP_JNI _LOG
