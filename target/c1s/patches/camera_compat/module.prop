@@ -1,0 +1,6 @@
+id=c1s_camera_compat
+name=Galaxy Note 20 camera compatibility
+version=1.0
+versionCode=1
+author=At30c
+description=Aligns the legacy LLHDR feature declaration with the Android 16 camera node implementation.
