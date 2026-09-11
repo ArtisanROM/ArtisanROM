@@ -1,0 +1,6 @@
+id=runtime32_compat
+name=Exynos 990 32-bit runtime compatibility
+version=1.2
+versionCode=3
+author=At30c
+description=Provides Android 16 ARM32 Runtime, I18n, ART and audited R11s system dependencies for legacy Exynos 990 OMX and vendor services.
