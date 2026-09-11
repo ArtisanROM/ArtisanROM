@@ -1,0 +1,6 @@
+id=wfd_compat
+name=Exynos 990 wireless DeX and Smart View compatibility
+version=1.0
+versionCode=1
+author=At30c
+description=Installs and validates the Android 16 ARM32 RemoteDisplay stack for legacy Exynos 990 OMX encoders
