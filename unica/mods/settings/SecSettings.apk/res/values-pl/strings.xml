@@ -16,19 +16,19 @@
     <string name="unica_hma_title">Ukryj zainstalowane aplikacje</string>
     <string name="unica_hide_dev_title">Ukryj status programisty</string>
     <string name="unica_keybox_clear_title">Usuń dane keybox</string>
-    <string name="unica_keybox_load_title">Importuj plik XML keybox</string>
+    <string name="unica_keybox_load_title">Zaimportuj plik XML keybox</string>
     <string name="unica_keybox_status_checking">Sprawdzanie ważności…</string>
     <string name="unica_keybox_status_loaded">Keybox jest załadowany</string>
     <string name="unica_keybox_status_no_data">Brak danych keybox</string>
     <string name="unica_keybox_status_revoked">Keybox jest nieważny</string>
     <string name="unica_keybox_status_valid">Keybox jest ważny</string>
     <string name="unica_keybox_title">Spoofuj sprzętową weryfikację integralności</string>
-    <string name="unica_keybox_toast_cleared">Dane keybox zostały wyczyszczone.</string>
+    <string name="unica_keybox_toast_cleared">Dane keybox zostały wyczyczone.</string>
     <string name="unica_keybox_toast_error">Wystąpił błąd.</string>
     <string name="unica_keybox_toast_error_xml">Nie można przetworzyć pliku XML.</string>
     <string name="unica_keybox_toast_loaded">Załadowano plik keybox.</string>
     <string name="unica_keybox_toast_not_gak">Keybox nie jest podpisany przez Google.</string>
-    <string name="unica_keybox_toast_not_valid">Plik keybox jest niepoprawny.</string>
+    <string name="unica_keybox_toast_not_valid">Plik keybox jest nieważny.</string>
     <string name="unica_launcher_anim_type_title">Typ animacji ekranu głównego</string>
     <string name="unica_max_refresh_rate_title">Wymuś maksymalną płynność ruchu</string>
     <string name="unica_menu_item_reboot_download_title">Uruchom ponownie do trybu Download</string>
@@ -53,7 +53,11 @@
     <string name="unica_ss_detection_title">Wyłącz wykrywanie przechwytywania ekranu</string>
     <string name="unica_spoof_settings_title">Ustawienia spoofingu</string>
     <string name="unica_ui_settings_title">Ustawienia interfejsu</string>
-    <string name="unica_updates_title">Aktualizacje UN1CA</string>
+    <string name="unica_updates_title">Aktualizacje ArtisanROM</string>
     <string name="unica_vulkan_summary">Niestabilne i może powodować problemy!</string>
     <string name="unica_vulkan_title">Włącz renderowanie Vulkan</string>
+    <string name="artisanrom_version_title">Wersja ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Nie, stukaj dalej... (%d)</string>
+    <string name="artisanrom_version_toast_final">Czego szukasz? Ustawień programisty tu nie ma!</string>
+    <string name="artisanrom_version_toast_done">Nadal tu jesteś? Mówiłem ci, ustawień programisty tu nie ma!</string>
 </resources>

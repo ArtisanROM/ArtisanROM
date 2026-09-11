@@ -26,12 +26,16 @@
     <string name="unica_pif_toast_checking">Verificando atualizações…</string>
     <string name="unica_pif_toast_error">Ocorreu um erro.</string>
     <string name="unica_pif_toast_error_custom">Ficheiro inválido.</string>
-    <string name="unica_pif_toast_up_to_date">"Já está a utilizar a versão mais recente."</string>
+    <string name="unica_pif_toast_up_to_date">"Você já esta usando a versão mais atual."</string>
     <string name="unica_pif_toast_updated">Atualização concluída.</string>
     <string name="unica_rom_version_title">Versão da ROM</string>
     <string name="unica_secure_ss_title">Permitir captura de tela segura</string>
-    <string name="unica_settings_title">Configurações da UN1CA</string>
+    <string name="unica_settings_title">Configurações da ArtisanROM</string>
     <string name="unica_spoof_settings_title">Configurações de spoof</string>
     <string name="unica_ui_settings_title">Configurações da interface</string>
     <string name="unica_updates_title">Atualizações da UN1CA</string>
+    <string name="artisanrom_version_title">Versão do ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Não, continua a tocar... (%d)</string>
+    <string name="artisanrom_version_toast_final">O que procuras? As definições de programador não estão aqui!</string>
+    <string name="artisanrom_version_toast_done">Ainda aqui? Eu disse-te, as definições de programador não estão aqui!</string>
 </resources>

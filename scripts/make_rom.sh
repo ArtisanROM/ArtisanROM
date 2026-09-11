@@ -8,8 +8,7 @@ source "$SRC_DIR/scripts/utils/build_utils.sh" || exit 1
 FORCE=false
 USE_APK_CACHE=false
 BUILD_ROM=false
-BUILD_TARGET_FILES=true
-BUILD_FLASHABLE_ZIP=false
+BUILD_ZIP=true
 SKIP_DEBUG_INSTALL=false
 
 START_TIME="$(date +%s)"
@@ -124,9 +123,6 @@ BUILD_APKS()
 GET_WORK_DIR_HASH()
 {
     if [ "${TARGET_PLATFORM//none/}" ] && [ -d "$SRC_DIR/platform/$TARGET_PLATFORM" ]; then
-        # Some device codenames are aliases (for example target/y2s points to
-        # target/y2slte). Follow command-line symlinks so device patches are
-        # part of the incremental-build fingerprint as well.
         find -H "$SRC_DIR/scripts" "$SRC_DIR/unica" "$SRC_DIR/platform/$TARGET_PLATFORM" \
             "$SRC_DIR/target/$TARGET_CODENAME" -type f -print0 | \
             sort -z | xargs -0 sha1sum | sha1sum | cut -d " " -f 1
@@ -144,14 +140,8 @@ PREPARE_SCRIPT()
             FORCE=true
         elif [[ "$1" == "--use-apk-cache" ]] || [[ "$1" == "-c" ]]; then
             USE_APK_CACHE=true
-        elif [[ "$1" == "--no-target-files" ]] || [[ "$1" == "-x" ]]; then
-            BUILD_TARGET_FILES=false
-            BUILD_FLASHABLE_ZIP=false
-        elif [[ "$1" == "--build-rom-zip" ]] || [[ "$1" == "-z" ]]; then
-            BUILD_TARGET_FILES=true
-            BUILD_FLASHABLE_ZIP=true
-        elif [[ "$1" == "--no-debug-install" ]]; then
-            SKIP_DEBUG_INSTALL=true
+        elif [[ "$1" == "--no-rom-zip" ]] || [[ "$1" == "-z" ]]; then
+            BUILD_ZIP=false
         else
             if [[ "$1" == "-"* ]]; then
                 LOGE "Unknown option: $1"
@@ -187,9 +177,7 @@ PRINT_USAGE()
     echo "Usage: make_rom [options]" >&2
     echo " -f, --force : Force ROM build" >&2
     echo " -c, --use-apk-cache : Reuse decoded and compiled APKs/JARs when sources match" >&2
-    echo " -x, --no-target-files : Do not build target-files zip" >&2
-    echo " -z, --build-rom-zip : Build flashable zip" >&2
-    echo " --no-debug-install : Do not install a debug ZIP after building it" >&2
+    echo " --no-rom-zip : Do not build ROM zip" >&2
 }
 # ]
 
@@ -280,47 +268,10 @@ if $BUILD_ROM; then
     echo -n "$(GET_WORK_DIR_HASH)" > "$WORK_DIR/.completed"
 fi
 
-if $BUILD_TARGET_FILES || $BUILD_FLASHABLE_ZIP; then
-    ZIP_FILE_NAME="${TARGET_CODENAME}_"
-    if [ "$(GET_PROP "system" "ro.unica.version")" ]; then
-        ZIP_FILE_NAME+="$(GET_PROP "system" "ro.unica.version")"
-    else
-        ZIP_FILE_NAME+="$ROM_VERSION"
-    fi
-    ZIP_FILE_NAME+="-target_files.zip"
-
-    # A rebuilt work dir must never be packaged through a stale target-files
-    # archive left by a previous build with the same ROM version.
-    if $BUILD_ROM || [ ! -f "$OUT_DIR/$ZIP_FILE_NAME" ]; then
-        rm -f "$OUT_DIR/$ZIP_FILE_NAME"
-        LOG_STEP_IN true "Creating target-files zip"
-        "$SRC_DIR/scripts/internal/create_target_files_zip.sh" "$OUT_DIR/$ZIP_FILE_NAME" || exit 1
-        LOG_STEP_OUT
-    else
-        LOGW "File already exists: ${OUT_DIR//$SRC_DIR\//}/$ZIP_FILE_NAME"
-    fi
-
-    if $BUILD_FLASHABLE_ZIP; then
-        FLASHABLE_ZIP="$OUT_DIR/UN1CA_"
-        BUILD_INFO="$(unzip -p "$OUT_DIR/$ZIP_FILE_NAME" "build_info.txt")" || exit 1
-        FLASHABLE_ZIP+="$(grep "^version" <<< "$BUILD_INFO" | cut -d "=" -f 2 -s)_"
-        FLASHABLE_ZIP+="$(date -d "@$(grep "^timestamp" <<< "$BUILD_INFO" | cut -d "=" -f 2 -s)" "+%Y%m%d")_"
-        FLASHABLE_ZIP+="$(grep "^device" <<< "$BUILD_INFO" | cut -d "=" -f 2 -s)"
-        if ! $DEBUG || $ROM_IS_OFFICIAL; then
-            FLASHABLE_ZIP+="-sign"
-        fi
-        FLASHABLE_ZIP+=".zip"
-
-        LOG_STEP_IN true "Creating flashable zip"
-        "$SRC_DIR/scripts/build_flashable_zip.sh" -o "$FLASHABLE_ZIP" "$OUT_DIR/$ZIP_FILE_NAME" || exit 1
-        LOG_STEP_OUT
-
-        if $DEBUG && ! $SKIP_DEBUG_INSTALL; then
-            LOG_STEP_IN true "Installing debug zip"
-            "$SRC_DIR/scripts/install_debug_zip.sh" "$FLASHABLE_ZIP" || exit 1
-            LOG_STEP_OUT
-        fi
-    fi
+if $BUILD_ZIP; then
+    LOG_STEP_IN true "Creating zip"
+    "$SRC_DIR/scripts/internal/build_flashable_zip.sh" || exit 1
+    LOG_STEP_OUT
 fi
 
 exit 0

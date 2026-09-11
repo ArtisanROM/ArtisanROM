@@ -37,7 +37,7 @@
     <string name="unica_menu_item_reboot_title">Újraindítás</string>
     <string name="unica_menu_reboot_title">Újraindítási opciók</string>
     <string name="unica_native_blur_title">Élő elmosódás effekt engedélyezése</string>
-    <string name="unica_pif_custom_title">Egyedi PIF props importálása fájlból</string>
+    <string name="unica_pif_custom_title">Egyedi PIF props improtálása fájlból</string>
     <string name="unica_pif_summary">Az eszköz hamisítása a Google Play hitelesítés eléréséhez.</string>
     <string name="unica_pif_title">Play Integrity Fix</string>
     <string name="unica_pif_toast_checking">Frissítések keresése…</string>
@@ -53,7 +53,11 @@
     <string name="unica_ss_detection_title">Képernyőfelvétel észlelésének letiltása</string>
     <string name="unica_spoof_settings_title">Spoof beállítások</string>
     <string name="unica_ui_settings_title">UI beállítások</string>
-    <string name="unica_updates_title">UN1CA Frissítések</string>
+    <string name="unica_updates_title">ArtisanROM Frissítések</string>
     <string name="unica_vulkan_summary">Ez instabil és problémákat okozhat!</string>
     <string name="unica_vulkan_title">Vulkan renderer engedélyezése</string>
+    <string name="artisanrom_version_title">ArtisanROM verzió</string>
+    <string name="artisanrom_version_toast_counting">Nem, koppintson tovább... (%d)</string>
+    <string name="artisanrom_version_toast_final">Mit keresel? A fejlesztői beállítások nincsenek itt!</string>
+    <string name="artisanrom_version_toast_done">Még mindig itt? Mondtam, hogy a fejlesztői beállítások nincsenek itt!</string>
 </resources>

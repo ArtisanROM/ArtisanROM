@@ -1,4 +1,4 @@
-on property:persist.sys.unica.bootsound=true && property:service.media.powersnd=1
+on property:persist.sys.artisanrom.bootsound=true && property:service.media.powersnd=1
     start powersound
 
 service powersound /system/bin/samsungpowersoundplay

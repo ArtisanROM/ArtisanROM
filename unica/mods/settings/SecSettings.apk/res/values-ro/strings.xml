@@ -53,7 +53,11 @@
     <string name="unica_ss_detection_title">Dezactivați detecția capturii de ecran</string>
     <string name="unica_spoof_settings_title">Falsificarea setărilor</string>
     <string name="unica_ui_settings_title">Setări IU</string>
-    <string name="unica_updates_title">Actualizări UN1CA</string>
+    <string name="unica_updates_title">Actualizări ArtisanROM</string>
     <string name="unica_vulkan_summary">Acesta este instabil și poate cauza probleme!</string>
     <string name="unica_vulkan_title">Activați randarea prin Vulkan</string>
+    <string name="artisanrom_version_title">Versiunea ArtisanROM</string>
+    <string name="artisanrom_version_toast_counting">Nu, continuă să apeși... (%d)</string>
+    <string name="artisanrom_version_toast_final">Ce cauți? Setările de dezvoltator nu sunt aici!</string>
+    <string name="artisanrom_version_toast_done">Încă aici? Ți-am spus, setările de dezvoltator nu sunt aici!</string>
 </resources>

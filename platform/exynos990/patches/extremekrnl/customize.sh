@@ -16,6 +16,9 @@ GET_KERNEL_CACHE_KEY()
         git -C "$KERNEL_TMP_DIR" diff --cached --no-ext-diff --binary
         git -C "$KERNEL_TMP_DIR" submodule status --recursive
         printf 'main: model=%s ksu=y recovery=n\n' "$KERNEL_MODEL"
+        if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
+            printf 'main: model=%s ksu=n recovery=n dt_overlay=y\n' "${TARGET_CODENAME}lte"
+        fi
     } | sha256sum | cut -d " " -f 1
 }
 
@@ -27,6 +30,10 @@ KERNEL_CACHE_IS_VALID()
     [ "$(cat "$CACHE_FILE")" = "$KERNEL_CACHE_KEY" ] || return 1
     [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/boot.img" ] || return 1
     [ -f "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" ] || return 1
+    # Check LTE dtbo if applicable
+    if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
+        [ -f "$KERNEL_TMP_DIR/build/out/${TARGET_CODENAME}lte/dtbo.img" ] || return 1
+    fi
 
     return 0
 }
@@ -40,7 +47,14 @@ BUILD_KERNEL()
 
     # Kernel builds are long-running and their output is needed to diagnose
     # compiler failures. Do not hide it inside EVAL's command substitution.
+    LOG "- Building kernel for ${TARGET_CODENAME}"
     ./build.sh -m "$KERNEL_MODEL" -k y -r n || RESULT="$?"
+
+    # Fixup for LTE devices: build LTE variant without KernelSU, with DT overlay
+    if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
+        LOG "- Building kernel for ${TARGET_CODENAME}lte (DT overlay)"
+        ./build.sh -m "${TARGET_CODENAME}lte" -k n -r n -d y || RESULT="$?"
+    fi
 
     cd "$PARENT" || return 1
     return "$RESULT"
@@ -130,6 +144,14 @@ REPLACE_KERNEL_BINARIES()
         "$WORK_DIR/kernel/boot.img"
     cp -a "$KERNEL_TMP_DIR/build/out/$KERNEL_MODEL/dtbo.img" \
         "$WORK_DIR/kernel/dtbo.img"
+
+    # Copy LTE dtbo artifact if available (not for r8s or z3s)
+    if [[ "$TARGET_CODENAME" != "r8s" ]] && [[ "$TARGET_CODENAME" != "z3s" ]]; then
+        local LTE_SRC="$KERNEL_TMP_DIR/build/out/${TARGET_CODENAME}lte/dtbo.img"
+        if [[ -f "$LTE_SRC" ]]; then
+            cp -a "$LTE_SRC" "$WORK_DIR/kernel/dtbo_lte.img"
+        fi
+    fi
 }
 # ]
 

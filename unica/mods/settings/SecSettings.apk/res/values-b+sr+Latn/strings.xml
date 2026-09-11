@@ -22,7 +22,7 @@
     <string name="unica_keybox_status_no_data">Nema podataka za keybox</string>
     <string name="unica_keybox_status_revoked">Keybox sprečen</string>
     <string name="unica_keybox_status_valid">Validan keybox</string>
-    <string name="unica_keybox_title">Lažiranje hardverske atestacije</string>
+    <string name="unica_keybox_title">Blokiraj otkrivanje hardvera</string>
     <string name="unica_keybox_toast_cleared">Podaci za keybox očišćeni.</string>
     <string name="unica_keybox_toast_error">Došlo je do greške.</string>
     <string name="unica_keybox_toast_error_xml">Raščlanivanje XML dokumenta nije uspešno.</string>
@@ -53,7 +53,11 @@
     <string name="unica_ss_detection_title">Onemogući otkrivanje snimanja ekrana</string>
     <string name="unica_spoof_settings_title">Korisna podešavanja</string>
     <string name="unica_ui_settings_title">UI podešavanja</string>
-    <string name="unica_updates_title">UN1CA Ažuriranje</string>
+    <string name="unica_updates_title">ArtisanROM Ažuriranje</string>
     <string name="unica_vulkan_summary">Ovo je nestabilni i može da izazove probleme!</string>
     <string name="unica_vulkan_title">Omogući Vulkan renderer</string>
+    <string name="artisanrom_version_title">ArtisanROM verzija</string>
+    <string name="artisanrom_version_toast_counting">Ne, nastavi da tapkaš... (%d)</string>
+    <string name="artisanrom_version_toast_final">Šta tražiš? Developer podešavanja nisu ovde!</string>
+    <string name="artisanrom_version_toast_done">Još uvek si ovde? Rekao sam ti, developer podešavanja nisu ovde!</string>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen android:title="@string/unica_about_artisanrom_title" settings:hierarchicalParentFragment="io.mesalabs.unica.settings.UnicaSettingsFragment" settings:topLevelPreferenceKey="top_level_unica"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/artisanrom_about_title" android:key="about_category">
+        <com.android.settingslib.widget.LayoutPreference android:selectable="false" android:key="about_description" android:layout="@layout/unica_settings_description_layout" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/artisanrom_people_title" android:key="people_category" />
+</PreferenceScreen>
