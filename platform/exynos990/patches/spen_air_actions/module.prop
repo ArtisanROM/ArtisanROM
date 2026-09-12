@@ -1,0 +1,6 @@
+id=spen_air_actions
+name=Exynos 990 Air Actions compatibility
+version=1.0
+versionCode=1
+author=At30c, Mesazane, Code Malaya
+description=Uses the compatible One UI 6.0 AirCommand package on Exynos 990 targets with an S Pen stack

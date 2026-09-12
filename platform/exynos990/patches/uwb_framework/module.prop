@@ -1,0 +1,4 @@
+id=uwb_framework
+name=UWB framework compatibility
+author=At30c
+description=Fixes UWB framework initialization races only on Exynos 990 targets that declare UWB hardware

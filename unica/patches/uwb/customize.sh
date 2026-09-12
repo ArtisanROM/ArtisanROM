@@ -51,8 +51,38 @@ else
         # controller/firmware to service them, and exposing the donor feature
         # can leave stale framework and permission entries behind. Treat this
         # as an expected hardware mismatch instead of aborting the build.
-        LOG "- Donor has UWB but target has no UWB hardware; skipping UWB blobs"
+        LOG "- Donor has UWB but target has no UWB hardware; removing hardware-specific UWB remnants"
+
+        # Keep the generic com.android.uwb APEX: Samsung also ships it on
+        # targets without an UWB controller. Remove only items which expose or
+        # start donor hardware that the target cannot service.
+        while IFS='|' read -r UWB_PARTITION UWB_PATH; do
+            [ "$UWB_PARTITION" ] || continue
+            if [ -e "$WORK_DIR/$UWB_PARTITION/$UWB_PATH" ] || \
+                    [ -L "$WORK_DIR/$UWB_PARTITION/$UWB_PATH" ]; then
+                DELETE_FROM_WORK_DIR "$UWB_PARTITION" "$UWB_PATH"
+            fi
+        done <<'EOF'
+product|overlay/UwbRROverlay.apk
+vendor|bin/hw/vendor.samsung.hardware.uwb@1.0-service
+vendor|etc/init/init.vendor.uwb.rc
+vendor|etc/init/nxp-uwb-service.rc
+vendor|etc/init/vendor.samsung.hardware.uwb@1.0-service.rc
+vendor|etc/libuwb-countrycode.conf
+vendor|etc/libuwb-feature.conf
+vendor|etc/libuwb-nxp.conf
+vendor|etc/libuwb-uci.conf
+vendor|etc/permissions/android.hardware.uwb.xml
+vendor|etc/permissions/samsung.hardware.uwb.xml
+vendor|etc/uwb_key
+vendor|etc/vintf/manifest/uwb-service.xml
+vendor|etc/vintf/manifest/vendor.samsung.hardware.uwb@1.0-service.xml
+vendor|firmware/uwb
+vendor|lib64/uwb_uci.hal.so
+vendor|overlay/UwbRROverlay_gsi.apk
+EOF
     fi
 fi
 
-unset SOURCE_FIRMWARE_PATH TARGET_FIRMWARE_PATH SOURCE_HAS_UWB TARGET_HAS_UWB
+unset SOURCE_FIRMWARE_PATH TARGET_FIRMWARE_PATH SOURCE_HAS_UWB TARGET_HAS_UWB \
+    UWB_PARTITION UWB_PATH
