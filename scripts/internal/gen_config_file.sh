@@ -476,6 +476,13 @@ fi
     # keep its resolution/HFR framework and floating-feature values intact.
     # This is opt-in so existing ports retain the historical behaviour.
     GET_BUILD_VAR "SOURCE_USE_NATIVE_DISPLAY_STACK" "false"
+    # Newer Android 16 donors expose optical UDFPS through their generic
+    # Settings/SystemUI code. Keep the legacy low-level conversion patches,
+    # but do not inject the old app-specific optical implementation.
+    GET_BUILD_VAR "SOURCE_USE_NATIVE_FINGERPRINT_UI" "false"
+    # Current services implementations honor the mDNIe feature gates patched
+    # in framework.jar and do not need the legacy services control-flow port.
+    GET_BUILD_VAR "SOURCE_USE_MODERN_MDNIE_SERVICE" "false"
     GET_BUILD_VAR "TARGET_NAME"
     GET_BUILD_VAR "TARGET_CODENAME"
     GET_BUILD_VAR "TARGET_PLATFORM" "none"

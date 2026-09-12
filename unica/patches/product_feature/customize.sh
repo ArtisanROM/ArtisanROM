@@ -32,6 +32,9 @@ PRESERVE_NATIVE_DISPLAY_STACK="${SOURCE_USE_NATIVE_DISPLAY_STACK:-false}"
 if $PRESERVE_NATIVE_DISPLAY_STACK; then
     LOG "Preserving native source resolution/HFR framework implementation"
 fi
+
+PRESERVE_NATIVE_FINGERPRINT_UI="${SOURCE_USE_NATIVE_FINGERPRINT_UI:-false}"
+USE_MODERN_MDNIE_SERVICE="${SOURCE_USE_MODERN_MDNIE_SERVICE:-false}"
 # ]
 
 # SEC_PRODUCT_FEATURE_BUILD_MAINLINE_API_LEVEL
@@ -325,10 +328,46 @@ if $SOURCE_COMMON_SUPPORT_HDR_EFFECT; then
     if ! $TARGET_COMMON_SUPPORT_HDR_EFFECT; then
         SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_COMMON_SUPPORT_HDR_EFFECT" --delete
 
-        APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-            "$MODPATH/mdnie/hdr/SecSettings.apk/0001-Disable-HDR-Settings.patch"
-        APPLY_PATCH "system" "system/priv-app/SettingsProvider/SettingsProvider.apk" \
-            "$MODPATH/mdnie/hdr/SettingsProvider.apk/0001-Disable-HDR-Settings.patch"
+        # The dex bucket used by these controllers changes whenever
+        # SecSettings is rebuilt. Locate both classes dynamically instead of
+        # relying on the smali_classesN paths recorded in the old patch.
+        HDR_SETTINGS_APK="system/priv-app/SecSettings/SecSettings.apk"
+        DECODE_APK "system" "$HDR_SETTINGS_APK" || return 1
+        HDR_SETTINGS_APKTOOL="$APKTOOL_DIR/system/priv-app/SecSettings/SecSettings.apk"
+
+        for HDR_SETTINGS_CLASS in \
+            "com/samsung/android/settings/usefulfeature/videoenhancer/SecBrightenUpVideoPreferenceController.smali" \
+            "com/samsung/android/settings/usefulfeature/videoenhancer/VideoEnhancerPreferenceController.smali"; do
+            HDR_SETTINGS_SMALI="$(find "$HDR_SETTINGS_APKTOOL" -type f \
+                -path "*/$HDR_SETTINGS_CLASS" -printf '%P\n' -quit)"
+
+            if [ ! "$HDR_SETTINGS_SMALI" ]; then
+                LOGE "Could not find $HDR_SETTINGS_CLASS in /system/$HDR_SETTINGS_APK"
+                return 1
+            fi
+
+            # Keep decoded-cache reuse idempotent: SMALI_PATCH intentionally
+            # reports no-op replacements as errors.
+            if awk '
+                /^\.method.*getAvailabilityStatus\(\)I/ { inside = 1 }
+                inside { print }
+                inside && /^\.end method/ { exit }
+            ' "$HDR_SETTINGS_APKTOOL/$HDR_SETTINGS_SMALI" | \
+                    grep -q -F "const/4 p0, 0x3"; then
+                LOG "- HDR controller is already disabled in $HDR_SETTINGS_SMALI"
+            else
+                SMALI_PATCH "system" "$HDR_SETTINGS_APK" "$HDR_SETTINGS_SMALI" \
+                    "return" "getAvailabilityStatus()I" "0x3" || return 1
+            fi
+        done
+
+        unset HDR_SETTINGS_APK HDR_SETTINGS_APKTOOL HDR_SETTINGS_CLASS HDR_SETTINGS_SMALI
+
+        # Keep SettingsProvider's stock `hdr_effect=0` initialization.  Older
+        # sources removed that write, but zero already means disabled and the
+        # feature/controller gates above prevent it from being exposed.  The
+        # register allocation of SecUpgradeController varies between bases,
+        # making the old deletion-only git patch needlessly source-specific.
     else
         if [ ! "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_COMMON_SUPPORT_HDR_EFFECT")" ]; then
             SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_COMMON_SUPPORT_HDR_EFFECT" "TRUE"
@@ -405,10 +444,19 @@ if [[ "$SOURCE_FINGERPRINT_CONFIG_SENSOR" != "$TARGET_FINGERPRINT_CONFIG_SENSOR"
                     "$MODPATH/fingerprint/optical_fod/framework.jar/0001-Add-optical-FOD-support.patch"
                 APPLY_PATCH "system" "system/framework/services.jar" \
                     "$MODPATH/fingerprint/optical_fod/services.jar/0001-Add-optical-FOD-support.patch"
-                APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-                    "$MODPATH/fingerprint/optical_fod/SecSettings.apk/0001-Add-optical-FOD-support.patch"
-                APPLY_PATCH "system_ext" "priv-app/SystemUI/SystemUI.apk" \
-                    "$MODPATH/fingerprint/optical_fod/SystemUI.apk/0001-Add-optical-FOD-support.patch"
+
+                if $PRESERVE_NATIVE_FINGERPRINT_UI; then
+                    # The old app patches were generated from the first
+                    # Android 16 implementation.  Current Settings/SystemUI
+                    # already consume the optical feature exposed above and
+                    # their classes/control flow have since been redesigned.
+                    LOG "Using native Android 16 optical fingerprint UI"
+                else
+                    APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
+                        "$MODPATH/fingerprint/optical_fod/SecSettings.apk/0001-Add-optical-FOD-support.patch"
+                    APPLY_PATCH "system_ext" "priv-app/SystemUI/SystemUI.apk" \
+                        "$MODPATH/fingerprint/optical_fod/SystemUI.apk/0001-Add-optical-FOD-support.patch"
+                fi
 
                 if [[ "$TARGET_FINGERPRINT_CONFIG_SENSOR" == *"no_delay_in_screen_off"* ]]; then
                     APPLY_PATCH "system" "system/priv-app/BiometricSetting/BiometricSetting.apk" \
@@ -771,8 +819,16 @@ if $SOURCE_LCD_SUPPORT_MDNIE_HW && [[ "$SOURCE_LCD_CONFIG_COLOR_WEAKNESS_SOLUTIO
             APPLY_PATCH "system" "system/framework/framework.jar" \
                 "$MODPATH/mdnie/hw/framework.jar/0002-Disable-A11Y_COLOR_BOOL_SUPPORT_DMC_COLORWEAKNESS.patch"
         fi
-        APPLY_PATCH "system" "system/framework/services.jar" \
-            "$MODPATH/mdnie/hw/services.jar/0001-Disable-HW-mDNIe.patch"
+        if $USE_MODERN_MDNIE_SERVICE; then
+            # A11yRune's MDNIE_HW/DMC flags were disabled by the framework
+            # patches above.  Recent services.jar builds consume those gates
+            # directly; the legacy patch instead rewrites whole methods and
+            # synthetic lambda numbering from an older implementation.
+            LOG "Using feature-gated Android 16 mDNIe services implementation"
+        else
+            APPLY_PATCH "system" "system/framework/services.jar" \
+                "$MODPATH/mdnie/hw/services.jar/0001-Disable-HW-mDNIe.patch"
+        fi
     fi
 elif $SOURCE_LCD_SUPPORT_MDNIE_HW && [[ "$SOURCE_LCD_CONFIG_COLOR_WEAKNESS_SOLUTION" == "0" ]]; then
     # TODO handle these conditions

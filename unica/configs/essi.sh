@@ -18,6 +18,14 @@ SOURCE_SUPER_GROUP_NAME="group_basic"
 # native 24/10/30/48/60/80/120-Hz policy). Do not apply y2s resolution/HFR
 # compatibility patches on top of it.
 SOURCE_USE_NATIVE_DISPLAY_STACK=true
+# Current Android 16 Settings/SystemUI use the generic fingerprint feature
+# gates and already support optical UDFPS.  Only the legacy HIDL/framework
+# sensor mapping still needs conversion when the target is optical.
+SOURCE_USE_NATIVE_FINGERPRINT_UI=true
+# The current services.jar gates the hardware mDNIe paths through A11yRune.
+# Its classes were redesigned, so the old control-flow transplant must not be
+# applied after the framework flags have already disabled those paths.
+SOURCE_USE_MODERN_MDNIE_SERVICE=true
 
 # SEC Product Feature
 SOURCE_AUDIO_CONFIG_RECORDALIVE_LIB_VERSION="08020"
