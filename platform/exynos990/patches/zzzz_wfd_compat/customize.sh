@@ -48,6 +48,15 @@ HEX_PATCH "$WORK_DIR/system/system/lib/libremotedisplay_wfd.so" \
     "94f81d0318b994f8241301290ed1" \
     "00f00fb818b994f8241301290ed1" || return 1
 
+# Fix the ARM32 __fread_chk overflow observed when RemoteDisplay configures
+# the legacy encoder. ACodec::reconfigEncoder4OtherApps reads 512 bytes into a
+# 255-byte stack buffer and immediately aborts under FORTIFY. Limit the read
+# to 254 bytes so the following NUL terminator remains inside the buffer. The
+# surrounding Thumb instructions make this call site unique.
+HEX_PATCH "$WORK_DIR/system/system/lib/libstagefright.so" \
+    "01214ff4007230462b460097" \
+    "01214ff0fe0230462b460097" || return 1
+
 # Do not leave an alternative ARM64 graph that can be selected by stale
 # processes in preference to the matching ARM32 stack.
 R9S_WFD_64_REMOVE="
