@@ -37,7 +37,7 @@ _IMPORT_LEGACY_NXP_JNI()
             NFC_INTERFACE_SOURCE="$FW_DIR/$SOURCE_FIRMWARE_PATH/vendor/lib64/$NFC_INTERFACE_LIB"
 
             if [ -f "$NFC_INTERFACE_SOURCE" ]; then
-                ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "vendor/lib64/$NFC_INTERFACE_LIB" \
+                ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "lib64/$NFC_INTERFACE_LIB" \
                     0 0 644 "u:object_r:vendor_file:s0"
                 cp -f "$WORK_DIR/vendor/lib64/$NFC_INTERFACE_LIB" \
                     "$WORK_DIR/system/system/lib64/$NFC_INTERFACE_LIB"
