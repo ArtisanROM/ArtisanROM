@@ -1,4 +1,0 @@
-id=emulated_storage
-name=Emulated Storage support
-author=ata-kaner
-description=Enables Emulated Storage support for API 29 shipping devices.

@@ -1,3 +1,0 @@
-is_substring("M526BXX", getprop("ro.boot.bootloader")) && verify_no_downgrade(getprop("ro.boot.bootloader"), "M526BXXU1CVJ7") && abort("E3003: This package requires Android 13 firmware.");
-is_substring("M526BPU", getprop("ro.boot.bootloader")) && verify_no_downgrade(getprop("ro.boot.bootloader"), "M526BPUU1CVJ7") && abort("E3003: This package requires Android 13 firmware.");
-is_substring("M526BRXX", getprop("ro.boot.bootloader")) && verify_no_downgrade(getprop("ro.boot.bootloader"), "M526BRXXU1CVJ7") && abort("E3003: This package requires Android 13 firmware.");
