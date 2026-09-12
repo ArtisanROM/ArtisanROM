@@ -1,0 +1,6 @@
+id=frp_migration_compat
+name=Android 16 FRP migration compatibility
+version=1.0
+versionCode=1
+author=At30c
+description=Prevents the Android 16 persistent-data FRP service from remaining active after a clean port installation with an incompatible legacy persistent partition.
