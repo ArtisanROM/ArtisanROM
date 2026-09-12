@@ -15,6 +15,7 @@ system/framework 0 0 755 capabilities=0x0
 system/framework/com.samsung.android.spensdk.framework-v1.jar 0 0 644 capabilities=0x0
 system/lib64 0 0 755 capabilities=0x0
 system/lib64/aidl_comm_iccc_client.so 0 0 644 capabilities=0x0
+system/lib64/libnfc_nci_jni.so 0 0 644 capabilities=0x0
 system/lib64/libnfc_nxpsn_jni.so 0 0 644 capabilities=0x0
 system/lib64/libsmpsft.smps.samsung.so 0 0 644 capabilities=0x0
 system/lib64/vendor.samsung.hardware.nfc_aidl-V1-ndk.so 0 0 644 capabilities=0x0

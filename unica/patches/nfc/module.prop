@@ -1,4 +1,4 @@
 id=nfc
 name=NFC patches
-author=salvogiangri
-description=Applies NFC patches in work dir.
+author=salvogiangri, At30c
+description=Applies NFC stack compatibility and target-specific antenna guide patches in work dir.

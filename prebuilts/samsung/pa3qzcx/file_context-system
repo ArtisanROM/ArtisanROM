@@ -13,6 +13,7 @@
 /system/framework/com\.samsung\.android\.spensdk\.framework-v1\.jar u:object_r:system_file:s0
 /system/lib64 u:object_r:system_lib_file:s0
 /system/lib64/aidl_comm_iccc_client\.so u:object_r:system_lib_file:s0
+/system/lib64/libnfc_nci_jni\.so u:object_r:system_lib_file:s0
 /system/lib64/libnfc_nxpsn_jni\.so u:object_r:system_lib_file:s0
 /system/lib64/libsmpsft\.smps\.samsung\.so u:object_r:system_lib_file:s0
 /system/lib64/vendor\.samsung\.hardware\.nfc_aidl-V1-ndk\.so u:object_r:system_lib_file:s0
