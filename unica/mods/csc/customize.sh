@@ -17,4 +17,21 @@ SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
     "$REMOTE_SUPPORT_CONTROLLER" "return" \
     'getAvailabilityStatus()I' '3'
 
+# Fixing secure folder
+SMALI_PATCH "system" "system/framework/services.jar" \
+        "smali/com/android/server/knox/dar/DarManagerService.smali" "return" \
+        "checkDeviceIntegrity([Ljava/security/cert/Certificate;)Z" "true"
+
+SMALI_PATCH "system" "system/framework/services.jar" \
+    "smali/com/android/server/knox/dar/DarManagerService.smali" "return" \
+    "isDeviceRootKeyInstalled()Z" "true"
+
+SMALI_PATCH "system" "system/framework/services.jar" \
+    "smali/com/android/server/knox/dar/DarManagerService.smali" "return" \
+    "isKnoxKeyInstallable()Z" "true"
+
+SMALI_PATCH "system" "system/framework/services.jar" \
+    "smali/com/android/server/StorageManagerService.smali" "return" \
+    "isRootedDevice()Z" "false"
+
 unset SYSTEMUI_DEVICE_CONTROLLER REMOTE_SUPPORT_CONTROLLER
