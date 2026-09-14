@@ -1,0 +1,4 @@
+id=uwb_data_compat
+name=Galaxy Note20 Ultra UWB data compatibility
+author=At30c
+description=Allows the Android 16 Samsung UWB framework to use the legacy c2s UWB data domain safely
