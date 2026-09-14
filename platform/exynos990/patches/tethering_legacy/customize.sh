@@ -10,6 +10,24 @@ if [ ! -f "$CAPEX" ]; then
     return 1
 fi
 
+if ! sudo -n -v &> /dev/null; then
+    LOG "\033[0;33m! Root permissions are required to unpack the Tethering APEX\033[0m"
+    if ! sudo -v 2> /dev/null; then
+        LOGE "Root permissions are required to unpack the Tethering APEX"
+        return 1
+    fi
+fi
+
+# A terminated build may leave the read-only payload mounted below PATCH_TMP.
+# Unmount it before removing the previous temporary tree.
+if mountpoint -q "$PATCH_TMP/mnt"; then
+    LOGW "Unmounting stale Tethering APEX payload from a previous build"
+    if ! sudo umount "$PATCH_TMP/mnt"; then
+        LOGE "Failed to unmount stale Tethering APEX payload: ${PATCH_TMP//$SRC_DIR/}/mnt"
+        return 1
+    fi
+fi
+
 rm -rf "$PATCH_TMP"
 mkdir -p "$PATCH_TMP"
 
@@ -29,25 +47,46 @@ fi
 LOG "- Decoding original Tethering APEX"
 EVAL "apktool d -j \"$(nproc)\" -o \"$DECODED\" -r \"$PATCH_TMP/original.apex\""
 
-if ! sudo -n -v &> /dev/null; then
-    LOG "\033[0;33m! Root permissions are required to unpack the Tethering APEX\033[0m"
-    if ! sudo -v 2> /dev/null; then
-        LOGE "Root permissions are required to unpack the Tethering APEX"
-        return 1
-    fi
-fi
-
 LOG "- Extracting apex_payload.img"
 mkdir -p "$PAYLOAD" "$PATCH_TMP/mnt"
-EVAL "sudo mount -o ro \"$DECODED/unknown/apex_payload.img\" \"$PATCH_TMP/mnt\""
-EVAL "sudo cp -a -T \"$PATCH_TMP/mnt\" \"$PAYLOAD\""
-sudo chown -hR "$(whoami):$(whoami)" "$PAYLOAD"
+if ! sudo mount -o ro "$DECODED/unknown/apex_payload.img" "$PATCH_TMP/mnt"; then
+    LOGE "Failed to mount Tethering APEX payload"
+    return 1
+fi
+if ! sudo cp -a -T "$PATCH_TMP/mnt" "$PAYLOAD"; then
+    LOGE "Failed to copy Tethering APEX payload"
+    sudo umount "$PATCH_TMP/mnt" || true
+    return 1
+fi
+if ! sudo chown -hR "$(whoami):$(whoami)" "$PAYLOAD"; then
+    LOGE "Failed to change ownership of the extracted Tethering APEX payload"
+    sudo umount "$PATCH_TMP/mnt" || true
+    return 1
+fi
 rm -rf "$PAYLOAD/lost+found"
 
 LOG "- Recording Tethering APEX filesystem metadata"
-EVAL "sudo find \"$PATCH_TMP/mnt\" | sudo xargs -I \"{}\" -P \"$(nproc)\" stat -c \"%n %u %g %a capabilities=0x0\" \"{}\" > \"$PATCH_TMP/fs_config\""
-EVAL "sudo find \"$PATCH_TMP/mnt\" | sudo xargs -I \"{}\" -P \"$(nproc)\" sh -c 'echo \"\$1 \$(getfattr -n security.selinux --only-values -h --absolute-names \"\$1\")\"' \"sh\" \"{}\" > \"$PATCH_TMP/file_contexts\""
-EVAL "sudo umount \"$PATCH_TMP/mnt\""
+if ! sudo find "$PATCH_TMP/mnt" \
+        -exec stat -c "%n %u %g %a capabilities=0x0" "{}" \; \
+        > "$PATCH_TMP/fs_config"; then
+    LOGE "Failed to record Tethering APEX fs_config metadata"
+    sudo umount "$PATCH_TMP/mnt" || true
+    return 1
+fi
+if ! sudo find "$PATCH_TMP/mnt" -exec sh -c '
+        for path do
+            label="$(getfattr -n security.selinux --only-values -h --absolute-names "$path")" || exit 1
+            printf "%s %s\n" "$path" "$label"
+        done
+    ' sh "{}" + > "$PATCH_TMP/file_contexts"; then
+    LOGE "Failed to record Tethering APEX SELinux contexts"
+    sudo umount "$PATCH_TMP/mnt" || true
+    return 1
+fi
+if ! sudo umount "$PATCH_TMP/mnt"; then
+    LOGE "Failed to unmount Tethering APEX payload"
+    return 1
+fi
 rm -rf "$PATCH_TMP/mnt" "$DECODED/unknown/apex_payload.img"
 
 sort -o "$PATCH_TMP/file_contexts" "$PATCH_TMP/file_contexts"
