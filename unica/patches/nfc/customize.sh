@@ -6,6 +6,7 @@ _IMPORT_LEGACY_NXP_JNI()
     local ABI_DIR="$1"
     local NXP_VARIANT="$2"
     local NFC_INTERFACE_LIB
+    local NFC_INTERFACE_PATTERN
     local NFC_INTERFACE_SOURCE
     local JNI_PATH="system/$ABI_DIR/libnfc_${NXP_VARIANT}_jni.so"
     local CORE_PATH="system/$ABI_DIR/libnfc-${NXP_VARIANT}.so"
@@ -27,33 +28,39 @@ _IMPORT_LEGACY_NXP_JNI()
         # its Android 16 NFC interface libraries.  Both the legacy NXP HAL and
         # libnfc-nxpsn.so list these sonames in DT_NEEDED, so the HAL exits
         # before NfcService can publish an NfcAdapter when they are absent.
-        # Prefer the source Android 16 implementations, while retaining the
-        # target's chip-specific HAL, firmware, configuration and Samsung ABI.
+        # Use the pa3q interface stack that accompanies the modern NFC JNI,
+        # while retaining the target's chip-specific HAL, firmware,
+        # configuration and Samsung ABI.
+        # Do not mix these interfaces with the older target system copies: this
+        # test intentionally keeps all four NFC interface generations from the
+        # same donor family.
         for NFC_INTERFACE_LIB in \
             "android.hardware.nfc@1.0.so" \
             "android.hardware.nfc@1.1.so" \
             "android.hardware.nfc@1.2.so" \
             "android.hardware.nfc-V1-ndk.so"; do
-            NFC_INTERFACE_SOURCE="$FW_DIR/$SOURCE_FIRMWARE_PATH/vendor/lib64/$NFC_INTERFACE_LIB"
+            NFC_INTERFACE_SOURCE="$SRC_DIR/prebuilts/samsung/pa3qzcx/vendor/lib64/$NFC_INTERFACE_LIB"
 
-            if [ -f "$NFC_INTERFACE_SOURCE" ]; then
-                ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "lib64/$NFC_INTERFACE_LIB" \
-                    0 0 644 "u:object_r:vendor_file:s0"
-                cp -f "$WORK_DIR/vendor/lib64/$NFC_INTERFACE_LIB" \
-                    "$WORK_DIR/system/system/lib64/$NFC_INTERFACE_LIB"
-                SET_METADATA "system" "system/lib64/$NFC_INTERFACE_LIB" \
-                    0 0 644 "u:object_r:system_lib_file:s0"
-            elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/$NFC_INTERFACE_LIB" ]; then
-                ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/$NFC_INTERFACE_LIB" \
-                    0 0 644 "u:object_r:system_lib_file:s0"
-                cp -f "$WORK_DIR/system/system/lib64/$NFC_INTERFACE_LIB" \
-                    "$WORK_DIR/vendor/lib64/$NFC_INTERFACE_LIB"
-                SET_METADATA "vendor" "vendor/lib64/$NFC_INTERFACE_LIB" \
-                    0 0 644 "u:object_r:vendor_file:s0"
-            else
-                _LOG "Missing NFC interface dependency: $NFC_INTERFACE_LIB"
+            if [ ! -f "$NFC_INTERFACE_SOURCE" ]; then
+                _LOG "Missing pa3q NFC interface dependency: $NFC_INTERFACE_LIB"
                 return 1
             fi
+
+            # The legacy target exposes these interfaces from /system/lib64
+            # to its vendor processes. Keep the stock layout and remove the
+            # source device's private vendor copy.
+            if [ -f "$WORK_DIR/vendor/lib64/$NFC_INTERFACE_LIB" ]; then
+                rm -f "$WORK_DIR/vendor/lib64/$NFC_INTERFACE_LIB"
+                NFC_INTERFACE_PATTERN="${NFC_INTERFACE_LIB//./\\.}"
+                sed -i "\\|^vendor/lib64/$NFC_INTERFACE_PATTERN |d" \
+                    "$WORK_DIR/configs/fs_config-vendor"
+                sed -i "\\|^/vendor/lib64/$NFC_INTERFACE_PATTERN |d" \
+                    "$WORK_DIR/configs/file_context-vendor"
+            fi
+            cp -f "$NFC_INTERFACE_SOURCE" \
+                "$WORK_DIR/system/system/lib64/$NFC_INTERFACE_LIB"
+            SET_METADATA "system" "system/lib64/$NFC_INTERFACE_LIB" \
+                0 0 644 "u:object_r:system_lib_file:s0"
         done
 
         if [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/vendor.samsung.hardware.nfc@2.0.so" ]; then
