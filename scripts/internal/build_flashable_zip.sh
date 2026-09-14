@@ -15,6 +15,11 @@ TARGET_FINGERPRINT="${TARGET_FINGERPRINT//$(GET_PROP "$FW_DIR/$TARGET_FIRMWARE_P
 
 TMP_DIR="$OUT_DIR/zip"
 
+# Partition payloads dominate ZIP creation time. Quality 1 keeps the standard
+# Brotli OTA format while favouring fast test-build turnaround. Release jobs
+# can override this with UNICA_BROTLI_QUALITY=6 (valid range: 0-11).
+BROTLI_QUALITY="${UNICA_BROTLI_QUALITY:-1}"
+
 ROM_STATUS="UNOFFICIAL"
 $ROM_IS_OFFICIAL && ROM_STATUS="OFFICIAL"
 
@@ -554,6 +559,14 @@ BUILD_SUPER_EMPTY
 LOG "- Generating dynamic_partitions_op_list"
 GENERATE_OP_LIST
 
+if ! $DEBUG; then
+    if ! [[ "$BROTLI_QUALITY" =~ ^([0-9]|1[01])$ ]]; then
+        LOGE "Invalid Brotli quality: $BROTLI_QUALITY (expected 0-11)"
+        exit 1
+    fi
+    LOG "- Using fast Brotli quality $BROTLI_QUALITY for partition payloads"
+fi
+
 while IFS= read -r f; do
     PARTITION="$(basename "$f" | sed "s/.img//g")"
     IS_VALID_PARTITION_NAME "$PARTITION" || continue
@@ -565,7 +578,7 @@ while IFS= read -r f; do
     if ! $DEBUG; then
         LOG "- Compressing $PARTITION.new.dat"
         # https://android.googlesource.com/platform/build/+/refs/tags/android-15.0.0_r1/tools/releasetools/common.py#3585
-        EVAL "brotli --quality=6 --output=\"$TMP_DIR/$PARTITION.new.dat.br\" \"$TMP_DIR/$PARTITION.new.dat\"" || exit 1
+        EVAL "brotli --quality=\"$BROTLI_QUALITY\" --output=\"$TMP_DIR/$PARTITION.new.dat.br\" \"$TMP_DIR/$PARTITION.new.dat\"" || exit 1
         rm -f "$TMP_DIR/$PARTITION.new.dat"
     fi
 done < <(find "$TMP_DIR" -maxdepth 1 -type f -name "*.img")
@@ -620,8 +633,11 @@ EVAL "rm -f \"$TMP_DIR/rom.zip\"" || exit 1
 # https://android.googlesource.com/platform/build/+/refs/tags/android-15.0.0_r1/tools/releasetools/common.py#3609
 # https://android.googlesource.com/platform/build/+/refs/tags/android-15.0.0_r1/tools/releasetools/ota_utils.py#184
 # https://android.googlesource.com/platform/build/+/refs/tags/android-15.0.0_r1/tools/releasetools/ota_utils.py#186
-EVAL "cd \"$TMP_DIR\" && 7z a -tzip -mx=0 -mmt=$(nproc) $TMP_DIR/rom.zip -r *.patch.dat -ir!META-INF/com/android/* -i!*.new.dat.br" || exit 1
-EVAL "cd \"$TMP_DIR\" && 7z a -tzip -mx=3 -mmt=$(nproc) $TMP_DIR/rom.zip -r * -xr!META-INF/com/android/* -x!*.new.dat.br -x!*.patch.dat -x!rom.zip" || exit 1
+# Partition payloads are already Brotli-compressed in regular builds. Debug
+# builds deliberately keep raw new.dat files; storing those files avoids a
+# second, very expensive Deflate pass over several gigabytes.
+EVAL "cd \"$TMP_DIR\" && 7z a -tzip -mx=0 -mmt=$(nproc) $TMP_DIR/rom.zip -r *.patch.dat -ir!META-INF/com/android/* -i!*.new.dat -i!*.new.dat.br" || exit 1
+EVAL "cd \"$TMP_DIR\" && 7z a -tzip -mx=3 -mmt=$(nproc) $TMP_DIR/rom.zip -r * -xr!META-INF/com/android/* -x!*.new.dat -x!*.new.dat.br -x!*.patch.dat -x!rom.zip" || exit 1
 
 if ! $DEBUG || $ROM_IS_OFFICIAL; then
     LOG "- Signing zip"
