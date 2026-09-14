@@ -492,18 +492,21 @@ EVAL()
     local CMD="$1"
 
     local OUT
-    OUT="$(eval "$CMD" 2>&1)"
-    # shellcheck disable=SC2181,SC2291
-    if [ $? -ne 0 ]; then
+    local STATUS
+
+    # Keep the command substitution in an if condition so errexit cannot
+    # terminate the caller before we print the captured diagnostics.
+    if OUT="$(eval "$CMD" 2>&1)"; then
+        return 0
+    else
+        STATUS=$?
         LOGE "Command returned a non-zero exit code\n"
         echo -e    '\033[0;31m'"$CMD"'\033[0m\n' >&2
         echo -n -e '\033[0;33m' >&2
         echo -n    "$OUT" >&2
         echo -e    '\033[0m' >&2
-        return 1
+        return "$STATUS"
     fi
-
-    return 0
 }
 
 # GET_PROP "<partition>/<file>" "<prop>"

@@ -2,6 +2,21 @@
 # Copyright (c) 2025 Salvo Giangreco
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# Run from an immutable snapshot. A build can take hours, and changing this
+# file while Bash is still reading it can otherwise corrupt the command being
+# parsed at the current file offset.
+if [ -z "${UNICA_MAKE_ROM_SNAPSHOT:-}" ]; then
+    UNICA_MAKE_ROM_SNAPSHOT_PATH="$(mktemp "${TMPDIR:-/tmp}/unica-make-rom.XXXXXX")" || exit 1
+    cp -a "${BASH_SOURCE[0]}" "$UNICA_MAKE_ROM_SNAPSHOT_PATH" || {
+        rm -f -- "$UNICA_MAKE_ROM_SNAPSHOT_PATH"
+        exit 1
+    }
+    export UNICA_MAKE_ROM_SNAPSHOT=1
+    export UNICA_MAKE_ROM_SNAPSHOT_PATH
+    trap 'rm -f -- "$UNICA_MAKE_ROM_SNAPSHOT_PATH"' EXIT
+    exec bash "$UNICA_MAKE_ROM_SNAPSHOT_PATH" "$@"
+fi
+
 # [
 source "$SRC_DIR/scripts/utils/build_utils.sh" || exit 1
 
@@ -161,6 +176,9 @@ PRINT_BUILD_OUTCOME()
     local END_TIME
     local ESTIMATED
 
+    [ -n "${UNICA_MAKE_ROM_SNAPSHOT_PATH:-}" ] && \
+        rm -f -- "$UNICA_MAKE_ROM_SNAPSHOT_PATH"
+
     END_TIME="$(date +%s)"
     ESTIMATED="$((END_TIME - START_TIME))"
 
@@ -193,6 +211,14 @@ else
     rm -rf "$APK_DECODE_CACHE_DIR"
 fi
 
+# Every make_rom invocation starts from a pristine filesystem tree, regardless
+# of the selected options. APK/JAR caches are stored outside WORK_DIR and remain
+# available when -c/--use-apk-cache is used.
+if [ -d "$WORK_DIR" ]; then
+    LOG "- Cleaning previous work dir"
+    rm -rf "${WORK_DIR:?}"
+fi
+
 if $FORCE || ! $USE_APK_CACHE; then
     # A regular invocation intentionally performs a clean ROM rebuild and
     # refreshes the APK/JAR cache. Cache reuse is opt-in with -c.
@@ -216,7 +242,6 @@ trap 'echo' INT
 
 if $BUILD_ROM; then
     [ -d "$APKTOOL_DIR" ] && rm -rf "$APKTOOL_DIR"
-    [ -f "$WORK_DIR/.completed" ] && rm -f "$WORK_DIR/.completed"
 
     if [ ! -f "$FW_DIR/$SOURCE_FIRMWARE_PATH/.extracted" ] || [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/.extracted" ]; then
         if [ ! -f "$ODIN_DIR/$SOURCE_FIRMWARE_PATH/.downloaded" ] || [ ! -f "$ODIN_DIR/$TARGET_FIRMWARE_PATH/.downloaded" ]; then
