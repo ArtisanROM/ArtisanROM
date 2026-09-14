@@ -77,6 +77,23 @@ else
     ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" \
         "system/lib64/libstagefright.so" 0 0 644 \
         "u:object_r:system_lib_file:s0"
+
+    # The Android 16 media stack retained Samsung's background recording API,
+    # but MediaCodecSource::suspendRecording(bool) is now a no-op. Exynos 990
+    # Super Slow Motion still creates its persistent encoder input suspended
+    # and relies on that method to resume it, otherwise the recording finishes
+    # with zero encoded frames. Start that input active instead.
+    HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
+        "810240f97ef9019421f5ffd021481091e00314aa2200805225fd0194" \
+        "810240f97ef9019421f5ffd021481091e00314aa0200805225fd0194"
+
+    # Android 16 configures temporal SVC for high-frame-rate recordings. The
+    # legacy Exynos HEVC OMX encoder does not implement the queried extension
+    # and returns ERROR_UNSUPPORTED. Keep the encoder setup going without SVC;
+    # AVC encoders that support the extension continue through the same path.
+    HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
+        "e10740b9e22340b9e00313aa44aa059420020034fa03002a" \
+        "e10740b9e22340b9e00313aa44aa059411000014fa03002a"
 fi
 LOG_STEP_OUT
 
