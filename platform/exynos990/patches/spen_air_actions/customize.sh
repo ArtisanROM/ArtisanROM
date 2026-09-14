@@ -19,4 +19,11 @@ ADD_TO_WORK_DIR "$MODPATH" "system" \
     "system/priv-app/AirCommand/AirCommand.apk" \
     0 0 644 "u:object_r:system_file:s0"
 
+# Exynos 990 stock firmware defines this read-only framework property in the
+# vendor partition. Android 16 rejects vendor_init setting an unnamespaced
+# default_prop, leaving the SMPS/S Pen feature disabled at runtime. Define it
+# from the system partition instead and remove the rejected vendor copy.
+SET_PROP "vendor" "ro.smps.enable" --delete
+SET_PROP "system" "ro.smps.enable" "true"
+
 unset TARGET_FIRMWARE_PATH TARGET_AIRCOMMAND TARGET_PEN_SOUNDS
