@@ -6,13 +6,12 @@ SKIPUNZIP=1
 
 UWB_INIT="system/etc/init/init.system.uwb.rc"
 UWB_JAR="system/framework/semuwb-service.jar"
-UWB_EXTENSION="smali/com/samsung/android/server/uwb/SamsungExtension.smali"
 UWB_CALLBACK='smali/com/samsung/android/server/uwb/UwbVendorExtensionWrapper$1.smali'
 VENDOR_POLICY="etc/selinux/vendor_sepolicy.cil"
 
 if [ ! -f "$WORK_DIR/vendor/etc/permissions/android.hardware.uwb.xml" ]; then
     LOG "- UWB hardware declaration is not present; skipping c2s UWB compatibility"
-    unset UWB_INIT UWB_JAR UWB_EXTENSION UWB_CALLBACK VENDOR_POLICY
+    unset UWB_INIT UWB_JAR UWB_CALLBACK VENDOR_POLICY
     return 0
 fi
 
@@ -80,8 +79,7 @@ if ! grep -q -F 'restorecon_recursive /data/uwb' \
 fi
 
 # A failed SamsungExtension construction must never leave an unguarded OEM
-# callback capable of killing system_server. This is also protection against a
-# synchronous notification sent by older SR100 HAL implementations.
+# callback capable of killing system_server.
 if [ ! -f "$WORK_DIR/system/$UWB_JAR" ]; then
     LOGE "File not found: /system/$UWB_JAR"
     return 1
@@ -90,88 +88,9 @@ fi
 DECODE_APK "system" "$UWB_JAR" || return 1
 
 UWB_CALLBACK_PATH="$APKTOOL_DIR/system/${UWB_JAR//system\//}/$UWB_CALLBACK"
-UWB_EXTENSION_PATH="$APKTOOL_DIR/system/${UWB_JAR//system\//}/$UWB_EXTENSION"
-if [ ! -f "$UWB_EXTENSION_PATH" ] || [ ! -f "$UWB_CALLBACK_PATH" ]; then
+if [ ! -f "$UWB_CALLBACK_PATH" ]; then
     LOGE "Required Samsung UWB smali files were not found in /system/$UWB_JAR"
     return 1
-fi
-
-# Older SR100 HALs may deliver their initial status synchronously from
-# setDeviceListener(). Register only after every SamsungExtension constructor
-# branch has initialized all of its fields and receivers.
-UWB_LISTENER_SIGNATURE='Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;->setDeviceListener(Lcom/samsung/android/server/uwb/IVendorExtension$DeviceNotification;)V'
-UWB_FINAL_LISTENER_CALL='invoke-virtual {v1, p0}, Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;->setDeviceListener(Lcom/samsung/android/server/uwb/IVendorExtension$DeviceNotification;)V'
-
-if awk -v CALL="$UWB_FINAL_LISTENER_CALL" '
-    /^\.method public constructor <init>\(Landroid\/content\/Context;\)V$/ {
-        in_constructor = 1
-    }
-
-    in_constructor {
-        line = $0
-        gsub(/^[ \t]+|[ \t]+$/, "", line)
-
-        if (line == "return-void") {
-            returns++
-            if (last_instruction == CALL) safe_returns++
-        }
-
-        if (line != "" && line !~ /^:/ && line !~ /^\./ && line !~ /^#/) {
-            last_instruction = line
-        }
-    }
-
-    in_constructor && /^\.end method$/ {
-        in_constructor = 0
-    }
-
-    END { exit(returns > 0 && safe_returns == returns ? 0 : 1) }
-' "$UWB_EXTENSION_PATH"; then
-    LOG "- c2s UWB listener registration is already deferred; skipping"
-else
-    LOG "- Deferring c2s UWB listener registration until initialization completes"
-
-    if ! awk -v SIGNATURE="$UWB_LISTENER_SIGNATURE" \
-            -v NEW_CALL="$UWB_FINAL_LISTENER_CALL" '
-        /^\.method public constructor <init>\(Landroid\/content\/Context;\)V$/ {
-            in_constructor = 1
-        }
-
-        in_constructor {
-            line = $0
-            gsub(/^[ \t]+|[ \t]+$/, "", line)
-
-            if (index(line, SIGNATURE) != 0) {
-                removed++
-                next
-            }
-
-            if (line == "return-void") {
-                print ""
-                print "    iget-object v1, p0, Lcom/samsung/android/server/uwb/SamsungExtension;->mVendorExtensionWrapper:Lcom/samsung/android/server/uwb/UwbVendorExtensionWrapper;"
-                print ""
-                print "    " NEW_CALL
-                print ""
-                inserted++
-            }
-        }
-
-        { print }
-
-        in_constructor && /^\.end method$/ {
-            in_constructor = 0
-        }
-
-        END {
-            if (removed < 1 || inserted < 1) exit 42
-        }
-    ' "$UWB_EXTENSION_PATH" > "$UWB_EXTENSION_PATH.tmp"; then
-        rm -f "$UWB_EXTENSION_PATH.tmp"
-        LOGE "Could not defer UWB listener registration in /system/$UWB_JAR"
-        return 1
-    fi
-
-    mv -f "$UWB_EXTENSION_PATH.tmp" "$UWB_EXTENSION_PATH"
 fi
 
 if grep -q -F ':cond_unica_no_device_listener' "$UWB_CALLBACK_PATH"; then
@@ -220,6 +139,4 @@ else
     mv -f "$UWB_CALLBACK_PATH.tmp" "$UWB_CALLBACK_PATH"
 fi
 
-unset UWB_INIT UWB_JAR UWB_EXTENSION UWB_CALLBACK VENDOR_POLICY \
-    UWB_EXTENSION_PATH UWB_CALLBACK_PATH UWB_LISTENER_SIGNATURE \
-    UWB_FINAL_LISTENER_CALL
+unset UWB_INIT UWB_JAR UWB_CALLBACK VENDOR_POLICY UWB_CALLBACK_PATH
