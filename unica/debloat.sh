@@ -65,12 +65,6 @@ SYSTEM_DEBLOAT+="
 system/app/MAPSAgent
 "
 
-# AppUpdateCenter
-SYSTEM_DEBLOAT+="
-system/etc/permissions/privapp-permissions-com.samsung.android.app.updatecenter.xml
-system/priv-app/AppUpdateCenter
-"
-
 # BCService
 SYSTEM_DEBLOAT+="
 system/etc/permissions/privapp-permissions-com.sec.bcservice.xml
@@ -100,11 +94,6 @@ app/Gmail2
 # Google Assistant shortcut
 PRODUCT_DEBLOAT+="
 app/AssistantShell
-"
-
-# Google Chrome
-PRODUCT_DEBLOAT+="
-app/Chrome
 "
 
 # Google Duo
@@ -139,11 +128,6 @@ system/priv-app/FactoryTestProvider
 # Language packs
 SYSTEM_DEBLOAT+="$(find "$WORK_DIR/system" -type d -name "*TTSVoice*" | sed "s|$WORK_DIR/system/||g")"
 
-# Main TTS app
-SYSTEM_DEBLOAT+="
-system/app/SamsungTTS
-"
-
 # Samsung Kids
 SYSTEM_DEBLOAT+="
 system/etc/permissions/signature-permissions-com.sec.android.app.kidshome.xml
@@ -174,12 +158,6 @@ system/priv-app/YourPhone_P1_5
 "
 
 ADD_TO_WORK_DIR "gta9pxxx" "system" "system/priv-app/YourPhone_Stub/YourPhone_Stub.apk" 0 0 644 "u:object_r:system_file:s0"
-
-# Live Transcribe
-SYSTEM_DEBLOAT+="
-system/app/LiveTranscribe
-system/etc/sysconfig/feature-a11y-preload.xml
-"
 
 # Meta
 SYSTEM_DEBLOAT+="
@@ -225,16 +203,6 @@ system/etc/permissions/privapp-permissions-com.sec.android.mimage.avatarstickers
 system/etc/permissions/signature-permissions-com.sec.android.mimage.avatarstickers.xml
 system/priv-app/AREmojiEditor
 system/priv-app/AvatarEmojiSticker
-"
-
-# Samsung Calendar
-SYSTEM_DEBLOAT+="
-system/app/SamsungCalendar
-"
-
-# Samsung Clock
-SYSTEM_DEBLOAT+="
-system/app/ClockPackage
 "
 
 # Samsung Free
