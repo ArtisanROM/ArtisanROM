@@ -218,7 +218,7 @@ system/priv-app/OfflineLanguageModel_stub
 
 # Google Messages
 PRODUCT_DEBLOAT+="
-product/priv-app/Messages
+priv-app/Messages
 "
 
 # Samsung Pass
@@ -323,4 +323,9 @@ system/etc/sysconfig/feature-a11y-preload-voacc.xml
 # YouTube
 PRODUCT_DEBLOAT+="
 app/YouTube
+"
+
+# Google Chrome
+PRODUCT_DEBLOAT+="
+app/Chrome64
 "
