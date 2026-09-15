@@ -2,7 +2,13 @@ SOURCE_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$SOURCE_FIRMWARE")_$(cut -d "/" 
 TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$TARGET_FIRMWARE")"
 
 SOURCE_HAS_UWB="$(test -f "$FW_DIR/$SOURCE_FIRMWARE_PATH/vendor/etc/permissions/android.hardware.uwb.xml" && echo "true" || echo "false")"
-TARGET_HAS_UWB="$(test -f "$FW_DIR/$TARGET_FIRMWARE_PATH/vendor/etc/permissions/android.hardware.uwb.xml" && echo "true" || echo "false")"
+# Check both the original firmware AND the work directory: target vendor
+# customize.sh may have already added UWB blobs from a donor (e.g. c2s pulls
+# UWB HAL from p3sxxx even though the base firmware SM-G981B lacks UWB).
+TARGET_HAS_UWB="$( { test -f "$FW_DIR/$TARGET_FIRMWARE_PATH/vendor/etc/permissions/android.hardware.uwb.xml" \
+    || test -f "$WORK_DIR/vendor/etc/permissions/android.hardware.uwb.xml" \
+    || test -f "$WORK_DIR/vendor/bin/hw/vendor.samsung.hardware.uwb@1.0-service"; } \
+    && echo "true" || echo "false")"
 
 if ! $SOURCE_HAS_UWB; then
     if $TARGET_HAS_UWB; then

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010 The Android Open Source Project
+     ... Apache 2.0 ... -->
+<!-- using Ultra Wide Band(UWB) -->
+<permissions>
+    <feature name="android.hardware.uwb" />
+</permissions>
