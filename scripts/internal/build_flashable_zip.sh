@@ -18,7 +18,7 @@ TMP_DIR="$OUT_DIR/zip"
 # Partition payloads dominate ZIP creation time. Quality 1 keeps the standard
 # Brotli OTA format while favouring fast test-build turnaround. Release jobs
 # can override this with UNICA_BROTLI_QUALITY=6 (valid range: 0-11).
-BROTLI_QUALITY="${UNICA_BROTLI_QUALITY:-1}"
+BROTLI_QUALITY="${UNICA_BROTLI_QUALITY:-6}"
 
 ROM_STATUS="UNOFFICIAL"
 $ROM_IS_OFFICIAL && ROM_STATUS="OFFICIAL"
