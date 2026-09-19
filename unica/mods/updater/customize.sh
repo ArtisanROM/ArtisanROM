@@ -17,6 +17,14 @@ LOG "- Patching /system/system/etc/security/otacerts.zip"
 EVAL "rm \"$WORK_DIR/system/system/etc/security/otacerts.zip\""
 EVAL "cd \"$SRC_DIR\"; zip -q \"$WORK_DIR/system/system/etc/security/otacerts.zip\" \"./security/artisanrom_ota.x509.pem\""
 
+# On Android 16/One UI 8.5+ bases the PackageManager only registers preloaded apps
+# that are listed in /system/system/etc/sysconfig/allowed-system-preload-apps.xml.
+if [ -f "$WORK_DIR/system/system/etc/sysconfig/allowed-system-preload-apps.xml" ] && \
+        ! grep -q 'com.artisan.updater' "$WORK_DIR/system/system/etc/sysconfig/allowed-system-preload-apps.xml"; then
+    LOG "- Adding com.artisan.updater to the system preload allowlist"
+    EVAL "sed -i 's#</config>#\\t<allowed-system-preload package=\"com.artisan.updater\"/>\\n</config>#' \"$WORK_DIR/system/system/etc/sysconfig/allowed-system-preload-apps.xml\""
+fi
+
 # Dynamically patch SecSettings
 # - Add missing/non-xml files in place
 # - Patch existing files
