@@ -25,6 +25,8 @@ unica/mods/prophide/system/bin/rezetprop binary
 
 # Device-specific prebuilt blobs
 target/y2slte/blobs/display/system/bin/surfaceflinger -text -diff -merge !eol
+target/x1s/blobs/display/system/bin/surfaceflinger -text -diff -merge !eol
+target/z3s/blobs/display/system/bin/surfaceflinger -text -diff -merge !eol
 target/a52sxq/patches/wpss/vendor/firmware/** binary
 target/a53x/patches/*/vendor/** binary
 target/a73xq/patches/wpss/vendor/firmware/** binary

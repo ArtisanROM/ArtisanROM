@@ -242,7 +242,7 @@ fi
 
 CERT_PREFIX="aosp"
 if $ROM_IS_OFFICIAL; then
-    CERT_PREFIX="unica"
+    CERT_PREFIX="artisanrom"
 fi
 
 LOG "- Signing Tethering APEX container"
