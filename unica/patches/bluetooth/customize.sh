@@ -90,7 +90,7 @@ EXTRACT_PAYLOAD()
 {
     LOG_STEP_IN "- Unpacking apex_payload.img"
 
-    if ! sudo -n -v &> /dev/null; then
+    if ! sudo -n true &> /dev/null; then
         LOG "\033[0;33m! Asking user for sudo password\033[0m"
         if ! sudo -v 2> /dev/null; then
             ABORT "Root permissions are required to unpack APEX image"

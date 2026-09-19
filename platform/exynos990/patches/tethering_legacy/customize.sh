@@ -10,7 +10,7 @@ if [ ! -f "$CAPEX" ]; then
     return 1
 fi
 
-if ! sudo -n -v &> /dev/null; then
+if ! sudo -n true &> /dev/null; then
     LOG "\033[0;33m! Root permissions are required to unpack the Tethering APEX\033[0m"
     if ! sudo -v 2> /dev/null; then
         LOGE "Root permissions are required to unpack the Tethering APEX"

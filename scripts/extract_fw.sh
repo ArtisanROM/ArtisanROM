@@ -101,7 +101,7 @@ EXTRACT_OS_PARTITIONS()
 
         [ -f "$FW_DIR/${MODEL}_${CSC}/$f" ] || continue
 
-        if ! sudo -n -v &> /dev/null; then
+        if ! sudo -n true &> /dev/null; then
             LOG "\033[0;33m! Asking user for sudo password\033[0m"
             if ! sudo -v 2> /dev/null; then
                 LOGE "Root permissions are required to unpack OS partitions"
