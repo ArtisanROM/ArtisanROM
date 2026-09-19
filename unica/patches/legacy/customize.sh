@@ -121,10 +121,18 @@ BACKPORT_SF_PROPS
 
 # Support legacy Camera HAL (pre-API 34)
 # - Some legacy devices (e.g. r8q) expect GPS tags to be non-null
+# - Support legacy Scene detection camera feature
 if [ "$TARGET_PLATFORM_SDK_VERSION" -lt "34" ]; then
     PATCHED=true
     APPLY_PATCH "system" "system/framework/framework.jar" \
         "$MODPATH/camera/framework.jar/0001-Backport-legacy-CameraMetadataNative-code.patch"
+    if $TARGET_CAMERA_SUPPORT_MASS_APP_FLAVOR; then
+        APPLY_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+            "$MODPATH/camera_mass/SamsungCamera.apk/0001-Backport-legacy-Scene-detection-code.patch"
+    else
+        APPLY_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+            "$MODPATH/camera/SamsungCamera.apk/0001-Backport-legacy-Scene-detection-code.patch"
+    fi
 fi
 
 # Support legacy Face HAL (pre-API 34)
