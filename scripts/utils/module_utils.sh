@@ -158,32 +158,14 @@ GET_FLOATING_FEATURE_CONFIG()
 # Applies the supplied hex patch to the desidered file.
 HEX_PATCH()
 {
-    _CHECK_NON_EMPTY_PARAM "FILE" "$1" || return 1
-    _CHECK_NON_EMPTY_PARAM "FROM" "$2" || return 1
-    _CHECK_NON_EMPTY_PARAM "TO" "$3" || return 1
+    _CHECK_NON_EMPTY_PARAM "FILE" "$1" || return 2
+    _CHECK_NON_EMPTY_PARAM "FROM" "$2" || return 2
+    _CHECK_NON_EMPTY_PARAM "TO" "$3" || return 2
 
-    local FILE="$1"
-    local FROM="$2"
-    local TO="$3"
-
-    if [ ! -f "$FILE" ]; then
-        LOGE "File not found: ${FILE//$WORK_DIR/}"
-        return 1
-    fi
-
-    FROM="$(tr "[:upper:]" "[:lower:]" <<< "$FROM")"
-    TO="$(tr "[:upper:]" "[:lower:]" <<< "$TO")"
-
-    if ! xxd -p -c 0 "$FILE" | grep -q "$FROM"; then
-        LOGE "No \"$FROM\" match in ${FILE//$WORK_DIR/}"
-        return 1
-    fi
-
-    LOG "- Patching \"$FROM\" to \"$TO\" in ${FILE//$WORK_DIR/}"
-    xxd -p -c 0 "$FILE" | sed "s/$FROM/$TO/" | xxd -r -p > "$FILE.tmp"
-    mv "$FILE.tmp" "$FILE"
-
-    return 0
+    # Match bytes, not hex-string substrings. Only an absent pattern returns 1;
+    # validation and I/O failures return 2 without publishing partial output.
+    LOG "- Patching \"$2\" to \"$3\" in ${1//$WORK_DIR/}"
+    python3 "$SRC_DIR/scripts/utils/hex_patch.py" "$1" "$2" "$3"
 }
 
 # SET_FLOATING_FEATURE_CONFIG "<config>" "<value>"

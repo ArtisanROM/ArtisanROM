@@ -251,10 +251,18 @@ fi
 # Before: [tbnz w8, #0, #0xXXXXXX]
 # After: [b #0xXXXXXX]
 LOG "- Patching \"00122a0140395f01086b00020054\" to \"00122a0140395f01086bde030014\" in apex_payload/lib64/libbluetooth_jni.so"
+BT_HEX_STATUS=0
 HEX_PATCH "$TMP_DIR/unknown/apex_payload/lib64/libbluetooth_jni.so" \
-    "00122a0140395f01086b00020054" "00122a0140395f01086bde030014" > /dev/null || \
-HEX_PATCH "$TMP_DIR/unknown/apex_payload/lib64/libbluetooth_jni.so" \
-    "2897673948050037" "289767392a000014" > /dev/null
+    "00122a0140395f01086b00020054" "00122a0140395f01086bde030014" > /dev/null || BT_HEX_STATUS=$?
+case "$BT_HEX_STATUS" in
+    0) ;;
+    1)
+        HEX_PATCH "$TMP_DIR/unknown/apex_payload/lib64/libbluetooth_jni.so" \
+            "2897673948050037" "289767392a000014" > /dev/null || return 1
+        ;;
+    *) LOGE "Bluetooth native patch failed"; return 1 ;;
+esac
+unset BT_HEX_STATUS
 
 BUILD_APK_IN_APEX "$TMP_DIR/unknown/apex_payload/app/$BT_FOLDER/Bluetooth.apk"
 BUILD_APK_IN_APEX "$TMP_DIR/unknown/apex_payload/javalib/framework-bluetooth.jar"
