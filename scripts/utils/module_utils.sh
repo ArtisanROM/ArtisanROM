@@ -203,13 +203,27 @@ SET_FLOATING_FEATURE_CONFIG()
         return 1
     fi
 
-    if grep -q "$CONFIG" "$FILE"; then
+    # Count exact opening tags, including duplicates on the same line.
+    # A substring match could otherwise produce an empty sed address and
+    # replace every line when only a longer feature name exists.
+    local MATCHES MATCH_LINES MATCH_COUNT STATUS
+    STATUS=0
+    MATCHES="$(grep -nFo "<${CONFIG}>" "$FILE")" || STATUS=$?
+    if [ "$STATUS" -gt 1 ]; then
+        return 1
+    fi
+    MATCH_LINES="$(cut -d: -f1 <<< "$MATCHES")"
+    MATCH_COUNT="$([ -n "$MATCHES" ] && wc -l <<< "$MATCHES" || echo 0)"
+    if [ "$MATCH_COUNT" -gt 1 ]; then
+        LOGE "Expected at most one \"$CONFIG\" entry, found $MATCH_COUNT"
+        return 1
+    elif [ "$MATCH_COUNT" -eq 1 ]; then
         if [[ "$VALUE" == "-d" ]] || [[ "$VALUE" == "--delete" ]]; then
             LOG "- Deleting \"$CONFIG\" config in /system/system/etc/floating_feature.xml"
-            sed -i "/<$CONFIG>/d" "$FILE"
+            sed -i "${MATCH_LINES}d" "$FILE"
         else
             LOG "- Replacing \"$CONFIG\" config with \"$VALUE\" in /system/system/etc/floating_feature.xml"
-            sed -i "$(sed -n "/<${CONFIG}>/=" "$FILE") c\ \ \ \ <${CONFIG}>${VALUE}</${CONFIG}>" "$FILE"
+            sed -i "${MATCH_LINES} c\ \ \ \ <${CONFIG}>${VALUE}</${CONFIG}>" "$FILE"
         fi
     elif [[ "$VALUE" != "-d" ]] && [[ "$VALUE" != "--delete" ]]; then
         LOG "- Adding \"$CONFIG\" config with \"$VALUE\" in /system/system/etc/floating_feature.xml"
