@@ -221,6 +221,11 @@ PRODUCT_DEBLOAT+="
 priv-app/Messages
 "
 
+# App recomendations
+SYSTEM_DEBLOAT+="
+system/priv-app/OMCAgent5
+"
+
 # Samsung Pass
 SYSTEM_DEBLOAT+="
 system/app/SamsungPassAutofill_v1
