@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<!-- These are the standard packages that are white-listed to always have internet access while in power save mode, even if they aren't in the foreground. -->
+	<!-- Moments must always have network access for provide real-time push service to other Samsung Services -->
+	<allow-in-power-save package="com.samsung.android.app.moments" />
+	<allow-in-power-save-except-idle package="com.samsung.android.app.moments" />
+	
+	<!-- These are the standard packages that are white-listed to always have internet access while in data save mode, even if they aren't in the foreground. -->
+	<!-- Moments must always have network access for provide real-time push service to other Samsung Services -->
+	<allow-in-data-usage-save package="com.samsung.android.app.moments" />
+</config>

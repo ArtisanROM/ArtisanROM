@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<!--
+This XML file declares which signature|privileged permissions should be granted to privileged
+applications that come with the platform
+-->
+<permissions>
+    <privapp-permissions package="com.samsung.mediasearch">
+       <permission name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+       <permission name="android.permission.READ_MEDIA_IMAGES" />
+       <permission name="android.permission.READ_MEDIA_VIDEO" />
+       <permission name="android.permission.ACCESS_MEDIA_LOCATION" />
+       <permission name="com.samsung.cmh.data.READ" />
+       <permission name="com.samsung.cmh.data.WRITE" />
+       <permission name="com.samsung.android.providers.media.READ" />
+	     <permission name="com.samsung.android.providers.media.CMH" />
+       <permission name="com.samsung.android.permission.SEM_MEDIA_CONTENTS" />
+       <permission name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    </privapp-permissions>
+</permissions>

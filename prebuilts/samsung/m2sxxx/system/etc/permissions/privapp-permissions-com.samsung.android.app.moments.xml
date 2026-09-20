@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+        <privapp-permissions package="com.samsung.android.app.moments">
+            <permission name="android.permission.REAL_GET_TASKS"/>
+			<permission name="android.permission.SCHEDULE_EXACT_ALARM"/>
+			<permission name="com.samsung.permission.ACCESS_KEEP_STORAGE"/>
+			<permission name="com.samsung.android.permission.GENAI_RECLAIM"/>
+        </privapp-permissions>
+</permissions>

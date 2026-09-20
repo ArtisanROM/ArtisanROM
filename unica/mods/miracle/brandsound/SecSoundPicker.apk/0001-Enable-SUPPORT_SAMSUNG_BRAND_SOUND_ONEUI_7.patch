@@ -1,0 +1,34 @@
+From aedd5a4ba7504e1c0004a5fc2edec6d2410480ef Mon Sep 17 00:00:00 2001
+From: Salvo Giangreco <giangrecosalvo9@gmail.com>
+Date: Sun, 2 Nov 2025 15:38:03 +0100
+Subject: [PATCH] Enable SUPPORT_SAMSUNG_BRAND_SOUND_ONEUI_7
+
+---
+ .../android/secsoundpicker/util/PickerRune.smali      | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/smali/com/samsung/android/secsoundpicker/util/PickerRune.smali b/smali/com/samsung/android/secsoundpicker/util/PickerRune.smali
+index 111c1c3..c215dfe 100644
+--- a/smali/com/samsung/android/secsoundpicker/util/PickerRune.smali
++++ b/smali/com/samsung/android/secsoundpicker/util/PickerRune.smali
+@@ -39,16 +39,7 @@
+     :goto_0
+     sput-boolean v0, Lcom/samsung/android/secsoundpicker/util/PickerRune;->SUPPORT_SOUND_THEME_ONEUI31_EXTENSION:Z
+ 
+-    sget v0, Landroid/os/Build$VERSION;->SEM_FIRST_SDK_INT:I
+-
+-    const/16 v1, 0x23
+-
+-    if-lt v0, v1, :cond_1
+-
+-    move v2, v3
+-
+-    :cond_1
+-    sput-boolean v2, Lcom/samsung/android/secsoundpicker/util/PickerRune;->SUPPORT_SAMSUNG_BRAND_SOUND_ONEUI_7:Z
++    sput-boolean v3, Lcom/samsung/android/secsoundpicker/util/PickerRune;->SUPPORT_SAMSUNG_BRAND_SOUND_ONEUI_7:Z
+ 
+     return-void
+ .end method
+-- 
+2.51.1
+

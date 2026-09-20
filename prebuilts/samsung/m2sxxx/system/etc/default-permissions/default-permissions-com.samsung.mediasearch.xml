@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<exceptions>
+ 
+  <exception package="com.samsung.mediasearch">
+    <permission name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" fixed="false"/>
+    <permission name="android.permission.READ_MEDIA_IMAGES" fixed="false"/>
+    <permission name="android.permission.READ_MEDIA_VIDEO" fixed="false"/>
+    <permission name="android.permission.ACCESS_MEDIA_LOCATION" fixed="false"/>
+  </exception>
+
+</exceptions>
