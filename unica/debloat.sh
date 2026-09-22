@@ -138,7 +138,6 @@ system/app/KidsHome_Installer
 SYSTEM_DEBLOAT+="
 system/priv-app/Bixby
 system/app/BixbyWakeup
-system/priv-app/BixbyInterpreter
 system/etc/preferred-apps/com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.agent.xml
 system/etc/permissions/privapp-permissions-com.samsung.android.bixby.wakeup.xml
