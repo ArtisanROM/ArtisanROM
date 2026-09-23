@@ -1,0 +1,320 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: xyMEyx <developer@artisan.rom>
+Date: Thu, 27 Aug 2026 17:15:00 +0200
+Subject: [PATCH] Remove fixed tethering wait and use callback signaling
+
+---
+ smali_classes6/com/artisan/tether/EthTetherBinder.smali   |  41 ++++++
+ smali_classes6/com/artisan/tether/EthTetherCmd.smali      | 129 +++++++++++++++++++++++
+ smali_classes6/com/artisan/tether/EthTetherListener.smali |  31 ++++++
+ smali_classes6/com/artisan/tether/EthTetherRequest.smali  |  23 +++++
+ smali_classes6/com/artisan/tether/EthTetherState.smali    |  47 +++++++++
+ 5 files changed, 271 insertions(+)
+ create mode 100644 smali_classes6/com/artisan/tether/EthTetherBinder.smali
+ create mode 100644 smali_classes6/com/artisan/tether/EthTetherCmd.smali
+ create mode 100644 smali_classes6/com/artisan/tether/EthTetherListener.smali
+ create mode 100644 smali_classes6/com/artisan/tether/EthTetherRequest.smali
+ create mode 100644 smali_classes6/com/artisan/tether/EthTetherState.smali
+diff --git a/smali_classes6/com/artisan/tether/EthTetherBinder.smali b/smali_classes6/com/artisan/tether/EthTetherBinder.smali
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/smali_classes6/com/artisan/tether/EthTetherBinder.smali
+@@ -0,0 +1,41 @@
++.class public final Lcom/artisan/tether/EthTetherBinder;
++.super Ljava/lang/Object;
++.source "EthTetherBinder.java"
++
++.method public constructor <init>()V
++    .locals 0
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++    return-void
++.end method
++
++.method public static getConnector()Landroid/net/ITetheringConnector;
++    .locals 1
++    const-string v0, "tethering"
++    invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
++    move-result-object v0
++    if-nez v0, :service_ok
++    const/4 v0, 0x0
++    return-object v0
++:service_ok
++    invoke-static {v0}, Landroid/net/ITetheringConnector$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ITetheringConnector;
++    move-result-object v0
++    return-object v0
++.end method
++
++.method public static start(Landroid/net/ITetheringConnector;Landroid/net/TetheringRequestParcel;Ljava/lang/String;)V
++    .locals 2
++    invoke-static {}, Lcom/artisan/tether/EthTetherListener;->create()Landroid/net/IIntResultListener;
++    move-result-object v0
++    const/4 v1, 0x0
++    invoke-interface {p0, p1, p2, v1, v0}, Landroid/net/ITetheringConnector;->startTethering(Landroid/net/TetheringRequestParcel;Ljava/lang/String;Ljava/lang/String;Landroid/net/IIntResultListener;)V
++    return-void
++.end method
++
++.method public static stop(Landroid/net/ITetheringConnector;ILjava/lang/String;)V
++    .locals 2
++    invoke-static {}, Lcom/artisan/tether/EthTetherListener;->create()Landroid/net/IIntResultListener;
++    move-result-object v0
++    const/4 v1, 0x0
++    invoke-interface {p0, p1, p2, v1, v0}, Landroid/net/ITetheringConnector;->stopTethering(ILjava/lang/String;Ljava/lang/String;Landroid/net/IIntResultListener;)V
++    return-void
++.end method
+diff --git a/smali_classes6/com/artisan/tether/EthTetherCmd.smali b/smali_classes6/com/artisan/tether/EthTetherCmd.smali
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/smali_classes6/com/artisan/tether/EthTetherCmd.smali
+@@ -0,0 +1,132 @@
++.class public final Lcom/artisan/tether/EthTetherCmd;
++.super Ljava/lang/Object;
++.source "EthTetherCmd.java"
++
++.field private static final TAG:Ljava/lang/String; = "EthTetherCmd"
++
++.method public constructor <init>()V
++    .locals 0
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++    return-void
++.end method
++
++.method public static main([Ljava/lang/String;)V
++    .locals 4
++
++    const-string v0, "ENTER main"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++
++    array-length v0, p0
++    if-lez v0, :usage
++
++    const/4 v0, 0x0
++    aget-object v0, p0, v0
++    invoke-virtual {v0}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
++    move-result-object v0
++
++    invoke-static {}, Landroid/os/Process;->myUid()I
++    move-result v1
++    invoke-static {v1}, Lcom/artisan/tether/EthTetherCmd;->logUid(I)V
++
++    const-string v2, "off"
++    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++    move-result v2
++    if-eqz v2, :check_on
++
++    invoke-static {}, Lcom/artisan/tether/EthTetherState;->reset()V
++    invoke-static {}, Lcom/artisan/tether/EthTetherBinder;->getConnector()Landroid/net/ITetheringConnector;
++    move-result-object v2
++    if-nez v2, :off_service_ok
++
++    const-string v0, "tethering connector unavailable"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    const/4 v0, 0x2
++    invoke-static {v0}, Ljava/lang/System;->exit(I)V
++    return-void
++
++:off_service_ok
++    const-string v0, "calling stopTethering type=5 callerPkg=com.android.shell"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    const-string v3, "com.android.shell"
++    const/4 v0, 0x5
++    invoke-static {v2, v0, v3}, Lcom/artisan/tether/EthTetherBinder;->stop(Landroid/net/ITetheringConnector;ILjava/lang/String;)V
++    const-string v0, "stopTethering returned"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    invoke-static {}, Lcom/artisan/tether/EthTetherState;->waitForResult()I
++    move-result v0
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->logResult(I)V
++    invoke-static {v0}, Ljava/lang/System;->exit(I)V
++    return-void
++
++:check_on
++    const-string v2, "on"
++    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++    move-result v2
++    if-eqz v2, :usage
++
++    invoke-static {}, Lcom/artisan/tether/EthTetherState;->reset()V
++    invoke-static {}, Lcom/artisan/tether/EthTetherBinder;->getConnector()Landroid/net/ITetheringConnector;
++    move-result-object v2
++    if-nez v2, :on_service_ok
++
++    const-string v0, "tethering connector unavailable"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    const/4 v0, 0x2
++    invoke-static {v0}, Ljava/lang/System;->exit(I)V
++    return-void
++
++:on_service_ok
++    invoke-static {}, Lcom/artisan/tether/EthTetherRequest;->create()Landroid/net/TetheringRequestParcel;
++    move-result-object v1
++    const-string v3, "com.android.shell"
++    const-string v0, "calling startTethering type=5 scope=1 callerPkg=com.android.shell"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    invoke-static {v2, v1, v3}, Lcom/artisan/tether/EthTetherBinder;->start(Landroid/net/ITetheringConnector;Landroid/net/TetheringRequestParcel;Ljava/lang/String;)V
++    const-string v0, "startTethering returned"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    invoke-static {}, Lcom/artisan/tether/EthTetherState;->waitForResult()I
++    move-result v0
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->logResult(I)V
++    invoke-static {v0}, Ljava/lang/System;->exit(I)V
++    return-void
++
++:usage
++    const-string v0, "usage: eth_tethering [on|off]"
++    invoke-static {v0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    const/4 v0, 0x1
++    invoke-static {v0}, Ljava/lang/System;->exit(I)V
++    return-void
++.end method
++
++.method static log(Ljava/lang/String;)V
++    .locals 1
++    sget-object v0, Lcom/artisan/tether/EthTetherCmd;->TAG:Ljava/lang/String;
++    invoke-static {v0, p0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++    return-void
++.end method
++
++.method private static logUid(I)V
++    .locals 2
++    const-string v0, "uid="
++    invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++    move-result-object v1
++    invoke-static {v0, v1}, Lcom/artisan/tether/EthTetherCmd;->logPair(Ljava/lang/String;Ljava/lang/String;)V
++    return-void
++.end method
++
++.method private static logResult(I)V
++    .locals 2
++    const-string v0, "result="
++    invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++    move-result-object v1
++    invoke-static {v0, v1}, Lcom/artisan/tether/EthTetherCmd;->logPair(Ljava/lang/String;Ljava/lang/String;)V
++    return-void
++.end method
++
++.method private static logPair(Ljava/lang/String;Ljava/lang/String;)V
++    .locals 1
++    sget-object v0, Lcom/artisan/tether/EthTetherCmd;->TAG:Ljava/lang/String;
++    invoke-static {v0, p0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++    invoke-static {v0, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++    return-void
++.end method
+diff --git a/smali_classes6/com/artisan/tether/EthTetherListener.smali b/smali_classes6/com/artisan/tether/EthTetherListener.smali
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/smali_classes6/com/artisan/tether/EthTetherListener.smali
+@@ -0,0 +1,25 @@
++.class public final Lcom/artisan/tether/EthTetherListener;
++.super Landroid/net/IIntResultListener$Stub;
++.source "EthTetherListener.java"
++
++.method public constructor <init>()V
++    .locals 0
++    invoke-direct {p0}, Landroid/net/IIntResultListener$Stub;-><init>()V
++    return-void
++.end method
++
++.method public static create()Landroid/net/IIntResultListener;
++    .locals 1
++    new-instance v0, Lcom/artisan/tether/EthTetherListener;
++    invoke-direct {v0}, Lcom/artisan/tether/EthTetherListener;-><init>()V
++    return-object v0
++.end method
++
++.method public onResult(I)V
++    .locals 0
++    sput p1, Lcom/artisan/tether/EthTetherState;->sResult:I
++    invoke-static {}, Lcom/artisan/tether/EthTetherState;->open()V
++    const-string p0, "callback received"
++    invoke-static {p0}, Lcom/artisan/tether/EthTetherCmd;->log(Ljava/lang/String;)V
++    return-void
++.end method
+diff --git a/smali_classes6/com/artisan/tether/EthTetherRequest.smali b/smali_classes6/com/artisan/tether/EthTetherRequest.smali
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/smali_classes6/com/artisan/tether/EthTetherRequest.smali
+@@ -0,0 +1,23 @@
++.class public final Lcom/artisan/tether/EthTetherRequest;
++.super Ljava/lang/Object;
++.source "EthTetherRequest.java"
++
++.method public constructor <init>()V
++    .locals 0
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++    return-void
++.end method
++
++.method public static create()Landroid/net/TetheringRequestParcel;
++    .locals 2
++    new-instance v0, Landroid/net/TetheringRequestParcel;
++    invoke-direct {v0}, Landroid/net/TetheringRequestParcel;-><init>()V
++    const/4 v1, 0x5
++    iput v1, v0, Landroid/net/TetheringRequestParcel;->tetheringType:I
++    const/4 v1, 0x0
++    iput-boolean v1, v0, Landroid/net/TetheringRequestParcel;->exemptFromEntitlementCheck:Z
++    const/4 v1, 0x1
++    iput-boolean v1, v0, Landroid/net/TetheringRequestParcel;->showProvisioningUi:Z
++    iput v1, v0, Landroid/net/TetheringRequestParcel;->connectivityScope:I
++    return-object v0
++.end method
+diff --git a/smali_classes6/com/artisan/tether/EthTetherState.smali b/smali_classes6/com/artisan/tether/EthTetherState.smali
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/smali_classes6/com/artisan/tether/EthTetherState.smali
+@@ -0,0 +1,50 @@
++.class public final Lcom/artisan/tether/EthTetherState;
++.super Ljava/lang/Object;
++.source "EthTetherState.java"
++
++.field static sResult:I
++.field private static sWaiting:Landroid/os/ConditionVariable;
++
++.method public constructor <init>()V
++    .locals 0
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++    return-void
++.end method
++
++.method static constructor <clinit>()V
++    .locals 1
++    const/4 v0, -0x1
++    sput v0, Lcom/artisan/tether/EthTetherState;->sResult:I
++    const/4 v0, 0x0
++    sput-object v0, Lcom/artisan/tether/EthTetherState;->sWaiting:Landroid/os/ConditionVariable;
++    return-void
++.end method
++
++.method static reset()V
++    .locals 1
++    const/4 v0, -0x1
++    sput v0, Lcom/artisan/tether/EthTetherState;->sResult:I
++    new-instance v0, Landroid/os/ConditionVariable;
++    invoke-direct {v0}, Landroid/os/ConditionVariable;-><init>()V
++    sput-object v0, Lcom/artisan/tether/EthTetherState;->sWaiting:Landroid/os/ConditionVariable;
++    return-void
++.end method
++
++.method static open()V
++    .locals 1
++    sget-object v0, Lcom/artisan/tether/EthTetherState;->sWaiting:Landroid/os/ConditionVariable;
++    if-eqz v0, :done
++    invoke-virtual {v0}, Landroid/os/ConditionVariable;->open()V
++:done
++    return-void
++.end method
++
++.method static waitForResult()I
++    .locals 1
++    sget-object v0, Lcom/artisan/tether/EthTetherState;->sWaiting:Landroid/os/ConditionVariable;
++    if-eqz v0, :no_waiter
++    invoke-virtual {v0}, Landroid/os/ConditionVariable;->block()V
++:no_waiter
++    sget v0, Lcom/artisan/tether/EthTetherState;->sResult:I
++    return v0
++.end method
+--
+2.47.3

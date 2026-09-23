@@ -1,0 +1,4 @@
+id=eth_tethering
+name=Ethernet Tethering CLI Core
+author=xyMEyx
+description=Framework-basierte Ethernet-Tethering-Steuerung für ArtisanROM unter Android 16.
