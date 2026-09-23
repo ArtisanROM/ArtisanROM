@@ -1,0 +1,45 @@
+From 96f014ac0d5ed0e2b85ff7d0574ef828dfca5c18 Mon Sep 17 00:00:00 2001
+From: ArtisanROM <artisanrom@example.com>
+Date: Wed, 23 Sep 2026 00:00:00 +0000
+Subject: [PATCH] Make device image product code configurable
+
+DeviceImageManager reads the model code from the "ril.product_code"
+property to fetch the device image via SCPM. Read a custom
+"persist.sys.unica.device_image" property first and fall back to
+"ril.product_code" when it is empty, so the device image can be changed
+at runtime from ArtisanROM Settings.
+
+--- a/smali_classes5/com/samsung/android/settings/deviceinfo/aboutphone/DeviceImageManager$1.smali
++++ b/smali_classes5/com/samsung/android/settings/deviceinfo/aboutphone/DeviceImageManager$1.smali
+@@ -159,9 +159,22 @@
+     if-eqz v2, :cond_3
+ 
+-    const-string/jumbo v0, "ril.product_code"
+-
+-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
+-
++    const-string/jumbo v0, "persist.sys.unica.device_image"
++
++    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v0
++
++    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
++
++    move-result v2
++
++    if-eqz v2, :cond_5
++
++    const-string/jumbo v0, "ril.product_code"
++
++    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v0
++
++    :cond_5
+     const-string/jumbo v2, "requestPki - model_code = "
+ 
+--
+2.53.0
