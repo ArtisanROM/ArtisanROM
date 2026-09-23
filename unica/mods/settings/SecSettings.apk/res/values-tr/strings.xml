@@ -49,7 +49,7 @@
     <string name="unica_pif_update_title">"Play Integrity Fix'i güncelle"</string>
     <string name="unica_rom_version_title">ROM sürümü</string>
     <string name="unica_secure_ss_title">Güvenli uygulamalarda ekran görüntülerine izin ver</string>
-    <string name="unica_settings_title">UN1CA Ayarları</string>
+    <string name="unica_settings_title">ArtisanROM Ayarları</string>
     <string name="unica_ss_detection_title">Ekran yakalama tespitini devre dışı bırak</string>
     <string name="unica_spoof_settings_title">Sistem aldatma ayarları</string>
     <string name="unica_ui_settings_title">Arayüz Ayarları</string>
