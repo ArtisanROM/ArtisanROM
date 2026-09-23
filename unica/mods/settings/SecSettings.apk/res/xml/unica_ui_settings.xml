@@ -2,6 +2,7 @@
 <PreferenceScreen android:title="@string/unica_ui_settings_title" settings:hierarchicalParentFragment="io.mesalabs.unica.settings.UnicaSettingsFragment" settings:topLevelPreferenceKey="unica_ui_settings"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res-auto">
     <SecSwitchPreference android:title="@string/unica_native_blur_title" android:key="unica_native_blur" settings:controller="io.mesalabs.unica.settings.ui.LiveBlurPreferenceController" />
+    <SecPreference android:title="@string/unica_device_image_title" android:key="unica_device_image" settings:controller="io.mesalabs.unica.settings.ui.DeviceImagePreferenceController" />
     <SecDropDownPreference android:title="@string/unica_launcher_anim_type_title" android:key="unica_launcher_anim_type" android:summary="%s" settings:controller="io.mesalabs.unica.settings.ui.LauncherAnimationTypePreferenceController" />
     <com.samsung.android.settings.widget.SecInsetCategoryPreference />
     <SecSwitchPreference android:title="@string/unica_vulkan_title" android:key="unica_vulkan" android:summary="@string/unica_vulkan_summary" settings:controller="io.mesalabs.unica.settings.ui.VulkanPreferenceController" />

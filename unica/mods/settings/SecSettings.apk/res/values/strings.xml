@@ -7,6 +7,12 @@
     <string name="unica_asks_title">Disable ASKS</string>
     <string name="unica_boot_sound_title">Play boot sound effect</string>
     <string name="unica_device_name_title">Device name</string>
+    <string name="unica_device_image_title">Set device image</string>
+    <string name="unica_device_image_dialog_title">Set device image</string>
+    <string name="unica_device_image_dialog_msg">Enter the product code to use for the device image, or leave empty to reset to the default. The image will update the next time you open About phone.</string>
+    <string name="unica_device_image_dialog_apply">Apply</string>
+    <string name="unica_device_image_dialog_reset">Reset to default</string>
+    <string name="unica_device_image_dialog_cancel">Cancel</string>
     <string name="unica_dialog_reboot_msg">To apply the changes, a restart is required.</string>
     <string name="unica_dialog_reboot_negative">Not now</string>
     <string name="unica_dialog_reboot_positive">Restart</string>
