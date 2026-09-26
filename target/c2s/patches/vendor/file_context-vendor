@@ -1,0 +1,4 @@
+/vendor/etc/permissions/android\.hardware\.uwb\.xml u:object_r:vendor_configs_file:s0
+/vendor/etc/permissions/samsung\.hardware\.uwb\.xml u:object_r:vendor_configs_file:s0
+/vendor/etc/vintf/manifest/android\.hardware\.uwb\.xml u:object_r:vendor_configs_file:s0
+/vendor/etc/vintf/manifest\.xml u:object_r:vendor_configs_file:s0
