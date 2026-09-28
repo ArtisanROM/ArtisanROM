@@ -82,7 +82,7 @@ fi
 LOG_STEP_OUT
 
 # Set AI Version to 20253 (latest)
-SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_COMMON_CONFIG_AI_VERSION" "20253"
+SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_COMMON_CONFIG_AI_VERSION" "20261"
 ADD_TO_WORK_DIR "m2sxxx" "system" "system/app/SketchBook/SketchBook.apk" 0 0 644 "u:object_r:system_file:s0"
 
 # Media Context Analyzer
@@ -131,16 +131,7 @@ ADD_TO_WORK_DIR "m2sxxx" "system" \
 ADD_TO_WORK_DIR "m2sxxx" "system" "system/priv-app/Moments/Moments.apk" 0 0 644 "u:object_r:system_file:s0"
 ADD_TO_WORK_DIR "$MODPATH" "system" \
     "system/priv-app/SamsungSmartSuggestions/SamsungSmartSuggestions.apk" 0 0 644 "u:object_r:system_file:s0"
-# HACK [
-# Samsung has released an update for the Smart suggestions app in March 2026.
-# The versioning of the "basic-global-release" flavor differs from the "full-global-release" one.
-# This is done on purpose: Samsung uses a lower version number to avoid installing this variant
-# on unsupported devices by triggering the downgrade check in PM. To avoid users updating to the
-# "non-AI" app, let's fake the versionCode so that it matches the latest available version.
-DECODE_APK "system" "system/priv-app/SamsungSmartSuggestions/SamsungSmartSuggestions.apk"
-LOG "- Patching versionCode in SamsungSmartSuggestions.apk"
-EVAL "sed -i \"s/710500000/711100100/g\" \"$APKTOOL_DIR/system/priv-app/SamsungSmartSuggestions/SamsungSmartSuggestions.apk/apktool.yml\""
-# ]
+
 SET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_FRAMEWORK_SUPPORT_PERSONALIZED_DATA_CORE" "TRUE"
 LOG_STEP_OUT
 
