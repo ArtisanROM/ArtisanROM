@@ -295,7 +295,7 @@
 
     const-string v3, "com.artisan.updater"
 
-    const-string v4, "com.artisan.updater.MainActivity"
+    const-string v4, "com.artisan.updater.SecSettingsActivity"
 
     invoke-direct {v2, v3, v4}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 

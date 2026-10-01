@@ -40,7 +40,7 @@ index 1d2c2da8e..6f1e8f374 100644
 +    const-string v2, "com.artisan.updater"
  
 -    move-result-object p1
-+    const-string v3, "com.artisan.updater.MainActivity"
++    const-string v3, "com.artisan.updater.SecSettingsActivity"
  
 -    invoke-virtual {p0, p1}, Landroid/content/Context;->sendBroadcast(Landroid/content/Intent;)V
 +    invoke-direct {v1, v2, v3}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
