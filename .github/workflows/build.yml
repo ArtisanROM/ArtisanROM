@@ -11,8 +11,10 @@ on:
           - test
           - release
         default: debug
+  pull_request:
+  push:
     branches:
-      - 'sixteen'
+      - 'sixteen-qpr2'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [c2s, c1s, x1s, y2slte, y2s, z3s, r8s]
+        target: [c1s, c2s, x1s, y2s, z3s]
 
     steps:
       - name: Checkout repo
@@ -56,23 +58,15 @@ jobs:
             attr ccache clang ffmpeg libbrotli-dev libbz2-dev \
             libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
             libzstd-dev linux-modules-extra-$(uname -r) lld protobuf-compiler webp \
-            build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu \
-            python-is-python3 python3 wget curl
-
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          source "$HOME/.cargo/env"
-
-          rustc --version
-          cargo --version
-
+            build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu python-is-python3 python3 wget
           wget https://raw.githubusercontent.com/kdrag0n/kramflash/refs/heads/master/mkbootimg.py && sudo ln -sf $(pwd)/mkbootimg.py /usr/bin/mkbootimg && chmod +x /usr/bin/mkbootimg
-
           sudo modprobe erofs f2fs
-
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
           echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
+          echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
+          echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
 
       - name: Set up JDK 17
         uses: actions/setup-java@v5
@@ -99,32 +93,15 @@ jobs:
           source ./buildenv.sh ${{ matrix.target }}
           ./scripts/extract_fw.sh
 
-      - name: Add swap space
-        run: |
-          SWAP_FILE=$(swapon --show=NAME | tail -n 1)
-
-          if [ -n "$SWAP_FILE" ]; then
-            echo "Existing swap found: $SWAP_FILE"
-            sudo swapoff "$SWAP_FILE"
-            sudo rm -f "$SWAP_FILE"
-          else
-            SWAP_FILE="/swapfile"
-            echo "No existing swap found. Creating $SWAP_FILE"
-          fi
-
-          sudo fallocate -l 12G "$SWAP_FILE"
-          sudo chmod 600 "$SWAP_FILE"
-          sudo mkswap "$SWAP_FILE"
-          sudo swapon "$SWAP_FILE"
-
-          echo "Swap configured:"
-          free -h
-          swapon --show
+      - name: Add swapspace
+        uses: pierotofy/set-swap-space@v1.0
+        with:
+          swap-size-gb: 12
       
       - name: Build ROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh
+          ./scripts/make_rom.sh 
           
       - name: Upload to Pixeldrain, GitHub Release, Split, XML
         if: github.event_name == 'workflow_dispatch'
