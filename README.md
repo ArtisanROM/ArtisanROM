@@ -2,35 +2,40 @@
   <img loading="lazy" src="readme-res/banner.png"/>
 </h1>
 <p align="center">
-  <a href="https://github.com/salvogiangri/UN1CA/blob/sixteen/LICENSE"><img loading="lazy" src="https://img.shields.io/github/license/salvogiangri/UN1CA?style=for-the-badge&logo=github"/></a>
-  <a href="https://github.com/salvogiangri/UN1CA/commits/sixteen"><img loading="lazy" src="https://img.shields.io/github/last-commit/salvogiangri/UN1CA/sixteen?style=for-the-badge"/></a>
-  <a href="https://github.com/salvogiangri/UN1CA/stargazers"><img loading="lazy" src="https://img.shields.io/github/stars/salvogiangri/UN1CA?style=for-the-badge"/></a>
-  <a href="https://github.com/salvogiangri/UN1CA/actions/workflows/ci.yml"><img loading="lazy" src="https://img.shields.io/github/actions/workflow/status/salvogiangri/UN1CA/ci.yml?style=for-the-badge"/></a>
-  <a href="https://crowdin.com/project/UN1CA"><img loading="lazy" src="https://img.shields.io/badge/Crowdin-263238?style=for-the-badge&logo=crowdin"/></a>
+  <a href="https://github.com/ArtisanROM/ArtisanROM/blob/sixteen-qpr2/LICENSE"><img loading="lazy" src="https://img.shields.io/github/license/ArtisanROM/ArtisanROM?style=for-the-badge&logo=github"/></a>
+  <a href="https://github.com/ArtisanROM/ArtisanROM/commits/sixteen-qpr2"><img loading="lazy" src="https://img.shields.io/github/last-commit/ArtisanROM/ArtisanROM/sixteen-qpr2?style=for-the-badge"/></a>
+  <a href="https://github.com/ArtisanROM/ArtisanROM/stargazers"><img loading="lazy" src="https://img.shields.io/github/stars/ArtisanROM/ArtisanROM?style=for-the-badge"/></a>
 </p>
-<p align="center">UN1CA <i>(/ˈu.ni.ka/)</i> is a work-in-progress custom firmware for Samsung Galaxy devices.</p>
+<p align="center">ArtisanROM <i>Quant</i> is a work-in-progress custom firmware for Samsung Galaxy devices.</p>
 
 <p align="center">
-  <a href="https://github.com/salvogiangri/UN1CA/discussions">🚀 Discussions</a>
+  <a href="https://github.com/ArtisanROM/ArtisanROM/issues">🚀 issues</a>
   •
-  <a href="https://t.me/unicarom">💬 Telegram</a>
+  <a href="https://discord.gg/TxYWApVRaE">💬 Discord</a>
+  •
+  <a  href="https://github.com/ArtisanROM/ArtisanROM/wiki">📖 Wiki</a>
+  •
+  <a href="https://github.com/ArtisanROM/ArtisanROM/blob/sixteen-qpr2/CHANGELOG.md">📝 Changelog</a>
+  •
+  <a href="https://github.com/ArtisanROM/ArtisanROM/blob/sixteen-qpr2/MAINTAINERS">🧑‍💻 Maintainers</a>
 </p>
 
-# What is UN1CA?
-UN1CA is a work-in-progress custom firmware for Samsung Galaxy devices, designed to provide a refined, optimized and more rich One UI experience.
-It is based on the latest and greatest iteration of Samsung's UX and it integrates numerous improvements, optimizations and exclusive features.
+# What is ArtisanROM Quant?
+ArtisanROM Quant is a work-in-progress custom firmware for Samsung Galaxy devices.
 
-The UN1CA build system automatically builds the required tools, downloads and extracts firmware components, applies the required patches and generates a flashable zip for the target device.
+It's based on the latest and greatest iteration of Samsung's UX and it also includes additional features and tweaks to ensure the best possible experience out of the box.
 
-The goal is to deliver a fast, smooth and modern UX while offering additional tools, modifications and system‑level enhancements tailored for power users.
+It is based on the UN1CA build system which allows automatic downloading/extraction of the firmware, applying the required patches and generating a flashable zip package for the specified target device.
+
+ArtisanROM Quant supports devices using the Exynos 990 SoC
 
 Any form of contribution, suggestions, bug report or feature request for the project will be welcome.
 
 # Features
 ### Core features:
-- Based on the latest stable Galaxy S22 firmware
+- Based on the latest stable Galaxy S24+ firmware
 - EROFS powered
-- Galaxy S25 wallpapers/sounds included
+- Galaxy S26 wallpapers/sounds included
 - Galaxy AI support
   - Audio eraser
   - Browsing assist
@@ -47,7 +52,7 @@ Any form of contribution, suggestions, bug report or feature request for the pro
 - Native/live blur support
 - AOD clock transition support
 - Adaptive color tone support
-- Adaptive refresh rate support
+- Adaptive refresh rate support(HFR WIP)
 - Extra brightness support
 - Picture remaster support
 - Object, shadow and reflection eraser support
@@ -66,8 +71,13 @@ Any form of contribution, suggestions, bug report or feature request for the pro
 
 \* DeX via HDMI not available for devices without USB-C DP support
 
-### UN1CA-exclusive features:
+### ArtisanROM-exclusive features:
 - Integrated OTA updates app
+- Completely upstreamed kernels*
+
+\* Exynos990
+
+### UN1CA-exclusive features:
 - Native/live blur toggle
 - One UI Home animations option
 - Vulkan renderer toggle
@@ -92,10 +102,45 @@ This project is licensed under the terms of the [GNU General Public License v3.0
 - [img2sdat](https://github.com/xpirt/img2sdat), licensed under the [MIT License](https://github.com/xpirt/img2sdat/blob/master/LICENSE)
 - [platform_build](https://android.googlesource.com/platform/build/) (ext4_utils, f2fs_utils, signapk), licensed under the [Apache License 2.0](https://source.android.com/docs/setup/about/licenses)
 
-# Contributors
-<a href="https://github.com/salvogiangri/UN1CA/graphs/contributors"><img loading="lazy" src="https://contrib.rocks/image?repo=salvogiangri/UN1CA"/></a>
+# Disclaimer
 
-# Credits
+```cpp
+#include <std_disclaimer.h>
+
+/*
+* Your warranty is now void.
+*
+* I am not responsible for bricked devices, dead SD cards,
+* thermonuclear war, or you getting fired because the alarm app failed. Please
+* do some research if you have any concerns about doing this to your device
+* YOU are choosing to make these modifications, and if
+* you point the finger at me for messing up your device, I will laugh at you.
+*
+* I am also not responsible for you getting in trouble for using any of the
+* features in this ROM, including but not limited to Call Recording, secure
+* flag removal etc.
+*/
+```
+
+- You are not allowed to modify or redistribute this ROM without prior approval
+
+# Contributors
+<a href="https://github.com/ArtisanROM/ArtisanROM/graphs/contributors"><img loading="lazy" src="https://contrib.rocks/image?repo=ArtisanROM/ArtisanROM"/></a>
+
+# Credits:
+- **[salvogiangri](https://github.com/salvogiangri)** for the UN1CA build system, OneUI patches, and general help and support while developing.
+- **[ExtremeXT](https://github.com/ExtremeXT)** for helping me fix bugs and giving me support.
+- **[GhasemzadehFard-Dev](https://github.com/GhasemzadehFard-Dev)** for helping fix many bugs I was not able to fix.
+- **[Mesazane](https://github.com/Mesazane)** for testing and helping with the updaters design, and for updating and fixing KernelSU-Next on the Kernels.
+- **[ricci205GTI](https://github.com/ricci205GTI)** for fixing motion photo and help with the x1s.
+- **[immohammeeed](https://github.com/immohammeeed)** for creating the website for this project.
+- **[3q5i](https://github.com/3q5i)** for support and ideas for the ROM.
+- **[irvinhaha](https://github.com/irvinhaha)** for designing many banners and logos
+- **[CiprianDinca](https://github.com/CiprianDinca9)** for custom ExtremeROM ringtones
+- **[Dupazlasu/Milxnaq](https://github.com/milxnaq)** for fixing bluetooth on the S10x and much more
+- More that I can't remember right now and will have to be added in the future
+
+## Original UN1CA credits:
 A special thanks goes to the following for their invaluable contributions in no particular order:
 - **[ShaDisNX255](https://github.com/ShaDisNX255)** for his help, time and for his [NcX ROM](https://github.com/ShaDisNX255/NcX_Stock) which inspired this project
 - **[DavidArsene](https://github.com/DavidArsene)** for his help and time
@@ -106,3 +151,8 @@ A special thanks goes to the following for their invaluable contributions in no 
 - **[iDrinkCoffee](https://github.com/iDrinkCoffee-TG)** and **[RisenID](https://github.com/RisenID)** for their support
 - **[LineageOS Team](https://www.lineageos.org/)** for their original [OTA updater implementation](https://github.com/LineageOS/android_packages_apps_Updater)
 - *All the UN1CA project forks, contributors, testers and users ❤️*
+
+# ArtisanROM Archive
+- [ArtisanROM Archive Org](https://github.com/ArtisanROM-archive)
+- [Old Sixteen branch](https://github.com/ArtisanROM-archive/ArtisanROM_old)
+
