@@ -1,0 +1,35 @@
+name: Decode and Upload Key Artifacts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export-keys:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create raw Base64 text file
+        run: |
+          mkdir -p security
+          {
+            echo "=== PLATFORM_KEY_PK8 ==="
+            echo "${{ secrets.PLATFORM_KEY_PK8 }}"
+            echo ""
+            echo "=== PLATFORM_KEY_PEM ==="
+            echo "${{ secrets.PLATFORM_KEY_PEM }}"
+            echo ""
+            echo "=== OTA_KEY_PK8 ==="
+            echo "${{ secrets.OTA_KEY_PK8 }}"
+            echo ""
+            echo "=== OTA_KEY_PEM ==="
+            echo "${{ secrets.OTA_KEY_PEM }}"
+          } > security/base64_keys.txt
+
+      - name: Upload text file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: base64-keys-artifact
+          path: security/base64_keys.txt
