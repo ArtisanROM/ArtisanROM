@@ -29,7 +29,7 @@ jobs:
           } > security/base64_keys.txt
 
       - name: Upload text file as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: base64-keys-artifact
           path: security/base64_keys.txt
