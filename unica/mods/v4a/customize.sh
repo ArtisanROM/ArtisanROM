@@ -1,12 +1,15 @@
-# https://github.com/WSTxda/ViPERFX_RE/blob/github-actions/module/post-fs-data.sh
-# https://github.com/WSTxda/ViPERFX_RE/blob/github-actions/module/common/install.sh
+# https://github.com/likelikeslike/ViPERFX_RE/blob/dev/module/post-fs-data.sh
+# https://github.com/likelikeslike/ViPERFX_RE/blob/dev/module/common/install.sh
 
-LOG_STEP_IN "- Adding Viper4AndroidFX-RE"
+LOG_STEP_IN "- Adding ViPER4Android-RE v2.1.0"
 
 ADD_TO_WORK_DIR "$SRC_DIR/unica/mods/v4a" "vendor" "lib/soundfx/libv4a_re.so" 0 0 644 "u:object_r:vendor_file:s0"
 ADD_TO_WORK_DIR "$SRC_DIR/unica/mods/v4a" "vendor" "lib64/soundfx/libv4a_re.so" 0 0 644 "u:object_r:vendor_file:s0"
 
-CFGS="$(find "$WORK_DIR/system" "$WORK_DIR/vendor" -type f -name "*audio_effects*.conf" -o -name "*audio_effects*.xml")"
+# Same config search as upstream common/install.sh (/odm /system /vendor)
+CFGS_PATHS=("$WORK_DIR/system" "$WORK_DIR/vendor")
+[ -d "$WORK_DIR/odm" ] && CFGS_PATHS+=("$WORK_DIR/odm")
+CFGS="$(find "${CFGS_PATHS[@]}" -type f \( -name "*audio_effects*.conf" -o -name "*audio_effects*.xml" \))"
 
 for f in ${CFGS}; do
     case "$f" in
@@ -26,8 +29,8 @@ for f in ${CFGS}; do
 done
 
 
-V4A_APK="https://github.com/WSTxda/ViperFX-RE-Releases/releases/download/8.0/viperfx-release.apk"
-APK_PATH="system/preload/Viper4AndroidFX-RE/com.wstxda.viper4android==/base.apk"
+V4A_APK="https://github.com/likelikeslike/ViPER4Android/releases/download/2.1.0/ViPER4Android-2.1.0.apk"
+APK_PATH="system/preload/Viper4AndroidFX-RE/com.llsl.viper4android==/base.apk"
 
 DOWNLOAD_FILE "$V4A_APK" "$WORK_DIR/system/$APK_PATH"
 
