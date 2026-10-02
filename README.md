@@ -6,7 +6,7 @@
   <a href="https://github.com/ArtisanROM/ArtisanROM/commits/sixteen-qpr2"><img loading="lazy" src="https://img.shields.io/github/last-commit/ArtisanROM/ArtisanROM/sixteen-qpr2?style=for-the-badge"/></a>
   <a href="https://github.com/ArtisanROM/ArtisanROM/stargazers"><img loading="lazy" src="https://img.shields.io/github/stars/ArtisanROM/ArtisanROM?style=for-the-badge"/></a>
 </p>
-<p align="center">ArtisanROM <i>Quant</i> is a work-in-progress custom firmware for Samsung Galaxy devices.</p>
+<p align="center">ArtisanROM <i>Aether</i> is a work-in-progress custom firmware for Samsung Galaxy devices.</p>
 
 <p align="center">
   <a href="https://github.com/ArtisanROM/ArtisanROM/issues">🚀 issues</a>
@@ -20,14 +20,14 @@
   <a href="https://github.com/ArtisanROM/ArtisanROM/blob/sixteen-qpr2/MAINTAINERS">🧑‍💻 Maintainers</a>
 </p>
 
-# What is ArtisanROM Quant?
-ArtisanROM Quant is a work-in-progress custom firmware for Samsung Galaxy devices.
+# What is ArtisanROM Aether?
+ArtisanROM Aether is a work-in-progress custom firmware for Samsung Galaxy devices.
 
 It's based on the latest and greatest iteration of Samsung's UX and it also includes additional features and tweaks to ensure the best possible experience out of the box.
 
 It is based on the UN1CA build system which allows automatic downloading/extraction of the firmware, applying the required patches and generating a flashable zip package for the specified target device.
 
-ArtisanROM Quant supports devices using the Exynos 990 SoC
+ArtisanROM Aether supports devices using the Exynos 990 SoC
 
 Any form of contribution, suggestions, bug report or feature request for the project will be welcome.
 
