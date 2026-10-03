@@ -97,6 +97,18 @@ else
 fi
 LOG_STEP_OUT
 
+LOG_STEP_IN "- Adding OFI/SEVA libs required by MFP20 (LLHDR/MFHDR)"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libinference_engine.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libofi_gc.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libofi_klm.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libofi_plugin.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libofi_rt_framework_user.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libofi_service_interface.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libofi_seva.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/vendor.samsung_slsi.hardware.ofi@2.0.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/vendor.samsung_slsi.hardware.ofi@2.1.so" 0 0 644 "u:object_r:system_lib_file:s0"
+LOG_STEP_OUT
+
 LOG_STEP_IN "- Adding prebuilt libs from other devices"
 BLOBS_LIST="
 system/lib64/libc++_shared.so
