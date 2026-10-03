@@ -103,6 +103,8 @@ EXPECTED_85_SHA256="7b77a7ac01d01b6787544f2a01a77f4fd929ec6da0625c6f413764e8622f
 BROKEN_PATCHED_85_SHA256="d7b634fad672b400656f2dced2504b25090e54992d189133b3eaf1dab7c54813"
 Q2_ONLY_PATCHED_85_SHA256="8ee75c6fc3eaf73cd6d93cfd9d96b253e4297706921bd57bedf224a5df16468a"
 PATCHED_85_SHA256="13e9fedd343f603445b7094aa6d44266614bbd7e1962c10f56b87f445b219ad0"
+EXPECTED_85Q4_SHA256="3b83d6814fdc91e807ebcef22ca1058a48186bd5c67fa1dab5965804246e1425"
+PATCHED_85Q4_SHA256="cab2517da651484ddc3598f59d49490a40392e349858fb2c960496db5f2cb3f1"
 ACTUAL_SHA256="$(sha256sum "$NETBPFLOAD" | cut -d ' ' -f 1)"
 
 if [ "$ACTUAL_SHA256" = "$EXPECTED_SHA256" ]; then
@@ -154,6 +156,25 @@ elif [ "$ACTUAL_SHA256" = "$Q2_ONLY_PATCHED_85_SHA256" ]; then
 elif [ "$ACTUAL_SHA256" = "$PATCHED_85_SHA256" ]; then
     LOG "- NetBpfLoad One UI 8.5 kernel gate is already disabled"
     FINAL_SHA256="$PATCHED_85_SHA256"
+elif [ "$ACTUAL_SHA256" = "$EXPECTED_85Q4_SHA256" ]; then
+    # Android 16 QPR2 (25Q4) ships sdk_full 36.1, which raises the compat flag
+    # past both 0xe0f and 0xe19. A 4.19 kernel then reaches the 5.4 gate and,
+    # once skipped, the 5.10 gate right after it, so both error blocks have to
+    # be jumped over while preserving the real kernel version for BPF program
+    # selection.
+    #
+    # Before: tbz w10, #0, <after Android 25Q2 kernel 5.4 error block>
+    # After:  b <after Android 25Q2 kernel 5.4 error block>
+    # Before: tbz w8, #0, <after Android 25Q4 kernel 5.10 error block>
+    # After:  b <after Android 25Q4 kernel 5.10 error block>
+    LOG "- Disabling NetBpfLoad Android 16 QPR2 kernel 5.4/5.10 version gates"
+    HEX_PATCH "$NETBPFLOAD" \
+        "8a924439ca010036c1ffff90214c1891" \
+        "8a9244390e000014c1ffff90214c1891" > /dev/null
+    HEX_PATCH "$NETBPFLOAD" \
+        "08a1443928010036" \
+        "08a1443909000014" > /dev/null
+    FINAL_SHA256="$PATCHED_85Q4_SHA256"
 else
     LOGE "Unsupported netbpfload build: $ACTUAL_SHA256"
     LOGE "Expected a supported One UI 8.0/8.5 original or patched build"
@@ -171,6 +192,8 @@ PATCHED_NETD_SHA256="3ebd27e5f3a6f6c4efe04672c6b835701c8cf6cec584792e907e75d140b
 EXPECTED_NETD_85_SHA256="b15352158c8633d3a3b743331ce149daa29c6b7d656eed014392da082cf187cc"
 BROKEN_PATCHED_NETD_85_SHA256="4a6ba0362a869ee8e91b8317b57614cbd9d77872416543c413262e4c52b10aa2"
 PATCHED_NETD_85_SHA256="d62c8a9d351296e992f965e396c52cddc0db435ebd89b02d3c6834ade7b0c0d3"
+EXPECTED_NETD_85Q4_SHA256="5a23d23324abd7fc9a606e5a0e234b20313d0c003a4d117c17a64d71e8b47743"
+PATCHED_NETD_85Q4_SHA256="0708880c6593ed49915c8608438719fd34eddbf44a67157ff6082ab669f5df64"
 ACTUAL_NETD_SHA256="$(sha256sum "$NETD_UPDATABLE" | cut -d ' ' -f 1)"
 
 if [ "$ACTUAL_NETD_SHA256" = "$EXPECTED_NETD_SHA256" ]; then
@@ -206,6 +229,14 @@ elif [ "$ACTUAL_NETD_SHA256" = "$BROKEN_PATCHED_NETD_85_SHA256" ]; then
 elif [ "$ACTUAL_NETD_SHA256" = "$PATCHED_NETD_85_SHA256" ]; then
     LOG "- netd One UI 8.5 kernel gate is already disabled"
     FINAL_NETD_SHA256="$PATCHED_NETD_85_SHA256"
+elif [ "$ACTUAL_NETD_SHA256" = "$EXPECTED_NETD_85Q4_SHA256" ]; then
+    # Same TBZ -> B rewrite as the One UI 8.5 gate above, on the Android 16
+    # QPR2 libnetd_updatable build.
+    LOG "- Disabling netd Android 16 QPR2 kernel 5.4 version gate"
+    HEX_PATCH "$NETD_UPDATABLE" \
+        "48d341398805003600088052" \
+        "48d341392c00001400088052" > /dev/null
+    FINAL_NETD_SHA256="$PATCHED_NETD_85Q4_SHA256"
 else
     LOGE "Unsupported libnetd_updatable build: $ACTUAL_NETD_SHA256"
     LOGE "Expected a supported One UI 8.0/8.5 original or patched build"
@@ -255,8 +286,10 @@ rm -rf "$PATCH_TMP"
 
 unset CAPEX PATCH_TMP DECODED PAYLOAD NETBPFLOAD EXPECTED_SHA256 PATCHED_SHA256 \
     EXPECTED_85_SHA256 BROKEN_PATCHED_85_SHA256 \
-    Q2_ONLY_PATCHED_85_SHA256 PATCHED_85_SHA256 ACTUAL_SHA256 FINAL_SHA256 \
+    Q2_ONLY_PATCHED_85_SHA256 PATCHED_85_SHA256 \
+    EXPECTED_85Q4_SHA256 PATCHED_85Q4_SHA256 ACTUAL_SHA256 FINAL_SHA256 \
     NETD_UPDATABLE EXPECTED_NETD_SHA256 PATCHED_NETD_SHA256 \
     EXPECTED_NETD_85_SHA256 BROKEN_PATCHED_NETD_85_SHA256 \
-    PATCHED_NETD_85_SHA256 ACTUAL_NETD_SHA256 FINAL_NETD_SHA256 SALT \
+    PATCHED_NETD_85_SHA256 EXPECTED_NETD_85Q4_SHA256 PATCHED_NETD_85Q4_SHA256 \
+    ACTUAL_NETD_SHA256 FINAL_NETD_SHA256 SALT \
     BUILT_APEX CERT_PREFIX
