@@ -36,8 +36,8 @@ VALUE=${SOURCE_FIRMWARE:0:8}
 DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
 
 FTP="
-system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/deviceinfo/batteryinfo/BatteryRegulatoryPreferenceController.smali
-system/priv-app/SecSettings/SecSettings.apk/smali_classes4/com/samsung/android/settings/deviceinfo/batteryinfo/SecBatteryInfoFragment.smali
+system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/deviceinfo/batteryinfo/BatteryRegulatoryPreferenceController.smali
+system/priv-app/SecSettings/SecSettings.apk/smali_classes5/com/samsung/android/settings/deviceinfo/batteryinfo/SecBatteryInfoFragment.smali
 "
 
 for i in $FTP; do
