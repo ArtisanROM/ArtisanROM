@@ -102,7 +102,7 @@ GET_LATEST_FIRMWARE()
     _CHECK_NON_EMPTY_PARAM "MODEL" "$1" || return 1
     _CHECK_NON_EMPTY_PARAM "CSC" "$2" || return 1
 
-    curl -s --retry 3 -m 3 "https://fota-cloud-dn.ospserver.net/firmware/$2/$1/version.xml" \
+    curl -s --retry 3 -m 3 -A "Kies2.0_FUS" "https://fota-cloud-dn.ospserver.net/firmware/$2/$1/version.xml" \
         | perl -nE 'say $1 if /<latest[^>]*>(.*?)<\/latest>/'
 }
 
