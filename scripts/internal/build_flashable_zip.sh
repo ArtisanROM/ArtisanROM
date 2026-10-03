@@ -4,6 +4,7 @@
 
 # [
 source "$SRC_DIR/scripts/utils/build_utils.sh" || exit 1
+source "$SRC_DIR/scripts/utils/install_utils.sh" || exit 1
 
 SOURCE_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$SOURCE_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$SOURCE_FIRMWARE")"
 TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$TARGET_FIRMWARE")"
@@ -402,21 +403,21 @@ GENERATE_UPDATER_SCRIPT()
         echo -e "\n# --- End patching dynamic partitions ---\n"
         if $HAS_DTBO; then
             echo    'ui_print("Full Patching dtbo.img img...");'
-            echo -n 'package_extract_file("dtbo.img", "'
-            echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
-            echo    '/dtbo");'
+            echo -n 'package_extract_file("dtbo.img", '
+            GET_DEVICE_FROM_MOUNTPOINT "/dtbo"
+            echo    ');'
         fi
         if $HAS_INIT_BOOT; then
             echo    'ui_print("Full Patching init_boot.img img...");'
-            echo -n 'package_extract_file("init_boot.img", "'
-            echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
-            echo    '/init_boot");'
+            echo -n 'package_extract_file("init_boot.img", '
+            GET_DEVICE_FROM_MOUNTPOINT "/init_boot"
+            echo    ');'
         fi
         if $HAS_VENDOR_BOOT; then
             echo    'ui_print("Full Patching vendor_boot.img img...");'
-            echo -n 'package_extract_file("vendor_boot.img", "'
-            echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
-            echo    '/vendor_boot");'
+            echo -n 'package_extract_file("vendor_boot.img", '
+            GET_DEVICE_FROM_MOUNTPOINT "/vendor_boot"
+            echo    ');'
         fi
         if $HAS_LK3RD; then
             cp -a "$SRC_DIR/prebuilts/extras/setup-boot.sh" "$TMP_DIR/setup-boot.sh"
@@ -433,15 +434,15 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if ! $HAS_LK3RD && $HAS_BOOT; then
             echo    'ui_print("Installing boot image...");'
-            echo -n 'package_extract_file("boot.img", "'
-            echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
-            echo    '/boot");'
+            echo -n 'package_extract_file("boot.img", '
+            GET_DEVICE_FROM_MOUNTPOINT "/boot"
+            echo    ');'
         fi
         if $HAS_UP_PARAM; then
             echo    'ui_print("Installing up_param image...");'
-            echo -n 'package_extract_file("up_param.bin", "'
-            echo -n "$TARGET_OS_BOOT_DEVICE_PATH"
-            echo    '/up_param");'
+            echo -n 'package_extract_file("up_param.bin", '
+            GET_DEVICE_FROM_MOUNTPOINT "/up_param"
+            echo    ');'
         fi
 
         if [ -f "$SRC_DIR/target/$TARGET_CODENAME/installer/install-end.edify" ]; then

@@ -11,6 +11,7 @@ odm                             /odm            erofs   ro           logical,fir
 /dev/block/by-name/boot         /boot           emmc    defaults     recoveryonly
 /dev/block/by-name/recovery     /recovery       emmc    defaults     recoveryonly
 /dev/block/by-name/dtbo         /dtbo           emmc    defaults     recoveryonly
+/dev/block/by-name/up_param     /up_param       emmc    defaults     recoveryonly
 /dev/block/by-name/vbmeta       /vbmeta         emmc    defaults     recoveryonly
 /dev/block/by-name/vbmeta_system /vbmeta_system emmc    defaults     recoveryonly
 /dev/block/by-name/cache        /cache          ext4    defaults     recoveryonly
