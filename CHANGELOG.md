@@ -2,7 +2,7 @@
 
 # 4.0.0
 - Switch to S24+ firmware
-- OneUI 8.5
+- OneUI 8.5 (thx pablo aka ats0c_ and Miguelito aka MIG29)
 - Fix UWB
 - Fix Airplanemode
 - Fix bootloop after flashing zygisk on c1s
