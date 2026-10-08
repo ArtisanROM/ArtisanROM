@@ -1,2 +1,0 @@
-/one_ui_version/i
-    <Preference android:title="@string/artisanrom_version_title" android:key="artisanrom_version" android:summary="@string/summary_placeholder" settings:controller="com.samsung.android.settings.deviceinfo.softwareinfo.ArtisanROMVersionPreferenceController" />
