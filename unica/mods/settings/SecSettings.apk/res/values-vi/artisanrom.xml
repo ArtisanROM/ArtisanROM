@@ -1,54 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="artisanrom_about_description">BenlyROM is a work-in-progress custom firmware for Samsung Galaxy devices.
+    <string name="artisanrom_about_description">BenlyROM là một bản ROM tùy chỉnh dựa vào UN1CA cho các thiết bị Exynos 990 Samsung Galaxy Note 20 Ultra.
 
-It\'s based on new OneUI 8.0 includes additional features and tweaks to ensure the best possible experience out of the box.
-
-BenlyROM supports devices using the Exynos 990 SoC
-
-Any form of contribution, suggestions, bug report or feature request for the project will be welcome.
+BenlyROM này được xây dựng dựa trên phiên bản giao diện OneUI 8.0 với nhiều tùy biến.
 
 &#160;</string>
-
     <string name="maintainer_1_name">Binh24</string>
-    <string name="maintainer_1_role">Lead Developer</string>
+    <string name="maintainer_1_role">Trưởng nhóm ROM</string>
     <string name="maintainer_1_github">binh24</string>
     <string name="maintainer_1_avatar">binh24_avatar</string>
-    
+	
     <string name="maintainer_2_name">ExtremeXT</string>
-    <string name="maintainer_2_role">EROM DAD</string>
+    <string name="maintainer_2_role">Bản gốc Oneui 7</string>
     <string name="maintainer_2_github">ExtremeXT</string>
     <string name="maintainer_2_avatar">extremext_avatar</string>
 	
     <string name="maintainer_3_name">Android Artisan</string>
-    <string name="maintainer_3_role">Artisan Developer</string>
+    <string name="maintainer_3_role">Phát triển Artisan</string>
     <string name="maintainer_3_github">Android-Artisan</string>
     <string name="maintainer_3_avatar">artisan_avatar</string>
     
     <string name="maintainer_4_name">GhasemzadehFard-dev</string>
-    <string name="maintainer_4_role">r8s Developer</string>
+    <string name="maintainer_4_role">Nhà phát triển r8s</string>
     <string name="maintainer_4_github">GhasemzadehFard-dev</string>
     <string name="maintainer_4_avatar">mohammad_avatar</string>
     
     <string name="maintainer_5_name">Vinsies</string>
-    <string name="maintainer_5_role">Lead Graphic Designer / Tester</string>
+    <string name="maintainer_5_role">Trưởng nhóm Thiết kế Đồ họa</string>
     <string name="maintainer_5_github">irvinhaha</string>
     <string name="maintainer_5_avatar">irvin_avatar</string>
     
     <string name="maintainer_6_name">Miguel Barreto</string>
-    <string name="maintainer_6_role">Tester / Recognised Troll / KRNL Dev</string>
+    <string name="maintainer_6_role">Người thử / Recognised Troll / KRNL Dev</string>
     <string name="maintainer_6_github">miguelbarretoo</string>
     <string name="maintainer_6_avatar">miguel_avatar</string>
-
-    <string name="maintainer_7_name">mrd83</string>
-    <string name="maintainer_7_role">Developer</string>
-    <string name="maintainer_7_github">mrd83</string>
-    <string name="maintainer_7_avatar">mrd83_avatar</string>
-
-    <string name="maintainer_8_name">Milena</string>
-    <string name="maintainer_8_role">Developer</string>
-    <string name="maintainer_8_github"></string>
-    <string name="maintainer_8_avatar">fishe_avatar</string>
     
     <string name="maintainer_10_name">Miguel Barreto</string>
     <string name="maintainer_10_role">Tester / Recognised Troll / Lead 8.5 Dev</string>
