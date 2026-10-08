@@ -27,7 +27,7 @@ IS_ROM_CERT_AVAILABLE()
     local PLATFORM_KEY_SHA1="1c7539462761b312c7db18908344ab45863cf6af"
     local OTA_KEY_SHA1="04cad1d2dc784eacdb668c9da15e4ceae0c82c1b"
 
-    local USES_ROM_CERT="false"
+    local USES_ROM_CERT="true"
     if [[ "$(sha1sum "$SRC_DIR/security/artisanrom_platform.pk8" 2> /dev/null | cut -d " " -f 1)" == "$PLATFORM_KEY_SHA1" ]] && \
             [[ "$(sha1sum "$SRC_DIR/security/artisanrom_ota.pk8" 2> /dev/null | cut -d " " -f 1)" == "$OTA_KEY_SHA1" ]]; then
         USES_ROM_CERT="true"
