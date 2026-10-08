@@ -130,18 +130,30 @@ jobs:
 
             # Always upload to Pixeldrain
             echo "Uploading $FILE_NAME to Pixeldrain..."
-            RESPONSE=$(curl -s -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/)
-            FILE_ID=$(echo "$RESPONSE" | jq -r '.id')
+            RESPONSE=$(curl -sS --fail --retry 3 --retry-delay 5 -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/) || {
+              echo "ERROR: Pixeldrain upload failed for $FILE_NAME"
+              exit 1
+            }
+            FILE_ID=$(echo "$RESPONSE" | jq -r '.id // empty')
+            if [ -z "$FILE_ID" ] || [ "$FILE_ID" = "null" ]; then
+              echo "ERROR: Pixeldrain returned no file id: $RESPONSE"
+              exit 1
+            fi
             PIXEL_URL="https://pixeldrain.com/u/$FILE_ID"
             echo "Pixeldrain URL: $PIXEL_URL"
 
             # Split + GitHub Release for release + test
             PART_LINKS=()
             if [ "$BUILD_TYPE" = "release" ] || [ "$BUILD_TYPE" = "test" ]; then
-              echo "Splitting $FILE_NAME into 6 parts..."
-              cd split_tmp
-              split -d -n 6 "../$file" "${FILE_NAME}.part_"
-              cd ..
+              # GitHub caps every release asset at 2 GiB, so add parts until each one fits.
+              MAX_ASSET_BYTES=$((1900 * 1024 * 1024))
+              NUM_PARTS=$(( (FILE_SIZE + MAX_ASSET_BYTES - 1) / MAX_ASSET_BYTES ))
+              if [ "$NUM_PARTS" -lt 6 ]; then NUM_PARTS=6; fi
+              echo "Splitting $FILE_NAME ($FILE_SIZE bytes) into $NUM_PARTS parts..."
+
+              rm -rf split_tmp
+              mkdir -p split_tmp
+              split -d -n "$NUM_PARTS" "$file" "split_tmp/${FILE_NAME}.part_"
 
               TAG_NAME="v$VERSION-${{ matrix.target }}"
               RELEASE_NAME="${VERSION}-${{ matrix.target }}-${BUILD_DATE}"
@@ -153,28 +165,57 @@ jobs:
                 --arg name "$RELEASE_NAME" \
                 '{ tag_name: $tag, name: $name, draft: false, prerelease: false }')
 
-              RELEASE_RESPONSE=$(curl -s -X POST \
+              RELEASE_RESPONSE=$(curl -sS -X POST \
                 -H "Authorization: token $GH_TOKEN" \
                 -H "Content-Type: application/json" \
                 -d "$RELEASE_DATA" \
                 https://api.github.com/repos/$RELEASE_REPO/releases)
+              RELEASE_ID=$(echo "$RELEASE_RESPONSE" | jq -r '.id // empty' 2>/dev/null)
 
-              RELEASE_ID=$(echo "$RELEASE_RESPONSE" | jq -r '.id')
-              if [ "$RELEASE_ID" = "null" ]; then
+              # A re-run finds the release the previous run created instead of failing.
+              if [ -z "$RELEASE_ID" ] || [ "$RELEASE_ID" = "null" ]; then
+                echo "Release not created for $TAG_NAME, looking up the existing one..."
+                RELEASE_ID=$(curl -sS -H "Authorization: token $GH_TOKEN" \
+                  -H "Accept: application/vnd.github+json" \
+                  "https://api.github.com/repos/$RELEASE_REPO/releases/tags/$TAG_NAME" \
+                  | jq -r '.id // empty' 2>/dev/null)
+              fi
+              if [ -z "$RELEASE_ID" ] || [ "$RELEASE_ID" = "null" ]; then
                 echo "ERROR: Release not created. Check GH_TOKEN and permissions."
+                echo "$RELEASE_RESPONSE"
                 exit 1
               fi
-              echo "Release created: $RELEASE_ID"
+              echo "Release id: $RELEASE_ID"
 
-              # Upload all split parts
+              # Drop stale assets so re-runs don't hit HTTP 422 on duplicate names.
+              EXISTING_ASSETS=$(curl -sS -H "Authorization: token $GH_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/$RELEASE_REPO/releases/$RELEASE_ID/assets")
+              for asset_id in $(echo "$EXISTING_ASSETS" | jq -r '.[].id // empty' 2>/dev/null); do
+                echo "Deleting existing asset $asset_id..."
+                curl -sS -X DELETE -H "Authorization: token $GH_TOKEN" \
+                  "https://api.github.com/repos/$RELEASE_REPO/releases/assets/$asset_id" >/dev/null
+              done
+
+              # Upload all split parts. -T streams the file instead of buffering it in
+              # RAM the way --data-binary does, which OOMs the runner on large parts.
               for part in split_tmp/*; do
                 PART_NAME=$(basename "$part")
-                UPLOAD_RESPONSE=$(curl -s -X POST \
+                echo "Uploading $PART_NAME ($(stat -c%s "$part") bytes)..."
+                UPLOAD_RESPONSE=$(curl -sS -f --retry 3 --retry-delay 5 -X POST \
                   -H "Authorization: token $GH_TOKEN" \
                   -H "Content-Type: application/octet-stream" \
-                  --data-binary @"$part" \
-                  "https://uploads.github.com/repos/$RELEASE_REPO/releases/$RELEASE_ID/assets?name=$PART_NAME")
-                PART_URL=$(echo "$UPLOAD_RESPONSE" | jq -r '.browser_download_url')
+                  -T "$part" \
+                  "https://uploads.github.com/repos/$RELEASE_REPO/releases/$RELEASE_ID/assets?name=$PART_NAME") || {
+                    echo "ERROR: failed to upload $PART_NAME"
+                    exit 1
+                  }
+                PART_URL=$(echo "$UPLOAD_RESPONSE" | jq -r '.browser_download_url // empty')
+                if [ -z "$PART_URL" ] || [ "$PART_URL" = "null" ]; then
+                  echo "ERROR: no download url for $PART_NAME: $UPLOAD_RESPONSE"
+                  exit 1
+                fi
+                echo "Uploaded: $PART_URL"
                 PART_LINKS+=("$PART_URL")
               done
             fi
