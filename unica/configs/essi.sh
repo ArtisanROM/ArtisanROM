@@ -6,7 +6,7 @@
 # Galaxy S24+ (Exynos 2400) (One UI 8.5)
 # Keep the tested S926B release pinned so framework/display behaviour is
 # reproducible instead of silently moving with monthly FUS updates.
-SOURCE_FIRMWARE="SM-S926B/EUX/350330051234562"
+SOURCE_FIRMWARE="SM-S926B/XXV/350110542353456"
 
 SOURCE_EXTRA_FIRMWARES=()
 SOURCE_PLATFORM_SDK_VERSION=36
