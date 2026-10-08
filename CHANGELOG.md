@@ -1,5 +1,33 @@
 # ArtisanROM changelog
 
+# 4.0.0
+- Switch to S24+ firmware
+- OneUI 8.5
+- Fix UWB
+- Fix Airplanemode
+- Fix bootloop after flashing zygisk on c1s
+- Fix screen off spen
+- Fix Post processing on Note20/Ultra
+- Fix Screen Resolution changer showing on incompatible model
+- Fix Refresh Rate changer showing on incompatible model
+- Fix Updater App not showing kernel updates
+- Update KernelSU-Next to latest v3.4.0
+- Add liquid glass to updater app
+- Improve battery life
+- Switch to S26 wallpapers
+- Add Device Image Changer
+- Remove Bootsound
+- Fix distortion after increasing image resolution
+- Fix Galaxy AI photo remastering
+- Fix Secure folder
+- Fix lag on pin/pattern/password setup
+- Fix fingerprint not scanning after clearing cache in twrp
+- Fix Outdoor mode not working
+- Fix LOG not working on Pro video
+- Fix VOLD
+- Update Viper4Android to latest
+- General QOL improvements on Kernel
+
 # 3.5.1
 - Switch to S22 Ultra firmware
 - Fix 120hz
