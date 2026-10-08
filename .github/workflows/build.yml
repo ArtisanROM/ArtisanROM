@@ -10,11 +10,11 @@ on:
           - debug
           - test
           - release
-        default: debug
+        default: test
   pull_request:
   push:
     branches:
-      - 'sixteen-qpr2'
+      - 'sixteen'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [c1s, c2s, x1s, y2s, z3s]
+        target: [c1s, c2s, r8s, x1s, y2s, z3s]
 
     steps:
       - name: Checkout repo
@@ -54,19 +54,19 @@ jobs:
       - name: Set up build environment
         run: |
           sudo apt update
+          KERNEL_VERSION=$(uname -r)
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
             attr ccache clang ffmpeg libbrotli-dev libbz2-dev \
             libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
-            libzstd-dev linux-modules-extra-$(uname -r) lld protobuf-compiler webp \
+            libzstd-dev "linux-modules-extra-${KERNEL_VERSION}" lld protobuf-compiler webp \
             build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu python-is-python3 python3 wget
           wget https://raw.githubusercontent.com/kdrag0n/kramflash/refs/heads/master/mkbootimg.py && sudo ln -sf $(pwd)/mkbootimg.py /usr/bin/mkbootimg && chmod +x /usr/bin/mkbootimg
           sudo modprobe erofs f2fs
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/artisanrom_platform.pk8
-          echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/artisanrom_platform.x509.pem
-          echo -n "${{ secrets.OTA_KEY_PK8 }}" | base64 --decode > security/artisanrom_ota.pk8
-          echo -n "${{ secrets.OTA_KEY_PEM }}" | base64 --decode > security/artisanrom_ota.x509.pem
+          mkdir -p security
+          cp -f security/artisanrom_ota.pk8 security/_ota.pk8 2>/dev/null || true
+          cp -f security/artisanrom_ota.x509.pem security/_ota.x509.pem 2>/dev/null || true
 
       - name: Set up JDK 17
         uses: actions/setup-java@v5
@@ -74,9 +74,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
-
-      - name: Set up Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
 
       - name: Build dependencies
         run: |
@@ -96,165 +93,85 @@ jobs:
           source ./buildenv.sh ${{ matrix.target }}
           ./scripts/extract_fw.sh
 
-      - name: Add swapspace
-        uses: pierotofy/set-swap-space@v1.0
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
         with:
           swap-size-gb: 12
-      
-      - name: Build ROM
+
+      - name: Build BenlyROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
           ./scripts/make_rom.sh 
           
-      - name: Upload to Pixeldrain, GitHub Release, Split, XML
-        if: github.event_name == 'workflow_dispatch'
+      - name: Upload to Pixeldrain
+        # Cho phép chạy khi trigger thủ công HOẶC khi push code
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
         env:
-          PIXELDRAIN_API_KEY: ${{ secrets.PD_API }}
+          PIXELDRAIN_API_KEY: "97e0067f-7ee5-412b-99e3-b2442c1ebb8d"
           GH_TOKEN: ${{ secrets.PAT }}
           RELEASE_REPO: "ArtisanROM/rom_resources"
-          BUILD_TYPE: ${{ github.event.inputs.build_type }}
+          # Nếu không phải workflow_dispatch thì mặc định lấy 'debug'
+          BUILD_TYPE: ${{ github.event.inputs.build_type || 'debug' }}
         run: |
-          mkdir -p split_tmp
+          # Bật shopt nullglob để nếu không có file zip thì vòng lặp không bị chạy lỗi với chuỗi thô "out/*.zip"
+          shopt -s nullglob
+          
+          ZIP_FILES=(out/*.zip)
+          if [ ${#ZIP_FILES[@]} -eq 0 ]; then
+            echo "ERROR: No ZIP files found in out/ directory!"
+            ls -la out/ || echo "Directory out/ does not exist."
+            exit 1
+          fi
 
-          for file in out/*.zip; do
-            if [ ! -f "$file" ]; then
-              echo "No ZIP files found to upload."
-              continue
-            fi
-
+          for file in "${ZIP_FILES[@]}"; do
             FILE_NAME=$(basename "$file")
             FILE_SIZE=$(stat -c%s "$file")
             FILE_MD5=$(md5sum "$file" | awk '{print $1}')
-            VERSION=$(echo "$FILE_NAME" | grep -oP '\d+\.\d+\.\d+')
+            VERSION=$(echo "$FILE_NAME" | grep -oP '\d+\.\d+\.\d+' | head -n 1)
+            [ -z "$VERSION" ] && VERSION="1.0.0" # Mặc định nếu không tìm thấy chuỗi version
             BUILD_DATE=$(date +%Y-%m-%d)
 
-            # Always upload to Pixeldrain
+            # 1. Tải lên Pixeldrain và lấy Link
             echo "Uploading $FILE_NAME to Pixeldrain..."
-            RESPONSE=$(curl -sS --fail --retry 3 --retry-delay 5 -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/) || {
-              echo "ERROR: Pixeldrain upload failed for $FILE_NAME"
-              exit 1
-            }
-            FILE_ID=$(echo "$RESPONSE" | jq -r '.id // empty')
-            if [ -z "$FILE_ID" ] || [ "$FILE_ID" = "null" ]; then
-              echo "ERROR: Pixeldrain returned no file id: $RESPONSE"
+            RESPONSE=$(curl -s -T "$file" -u :$PIXELDRAIN_API_KEY https://pixeldrain.com/api/file/)
+            FILE_ID=$(echo "$RESPONSE" | jq -r '.id')
+
+            if [ "$FILE_ID" = "null" ] || [ -z "$FILE_ID" ]; then
+              echo "ERROR: Failed to upload $FILE_NAME to Pixeldrain."
+              echo "Response: $RESPONSE"
               exit 1
             fi
+
             PIXEL_URL="https://pixeldrain.com/u/$FILE_ID"
             echo "Pixeldrain URL: $PIXEL_URL"
 
-            # Split + GitHub Release for release + test
-            PART_LINKS=()
+            # 2. Tạo GitHub Release (Áp dụng cho 'release' và 'test')
             if [ "$BUILD_TYPE" = "release" ] || [ "$BUILD_TYPE" = "test" ]; then
-              # GitHub caps every release asset at 2 GiB, so add parts until each one fits.
-              MAX_ASSET_BYTES=$((1900 * 1024 * 1024))
-              NUM_PARTS=$(( (FILE_SIZE + MAX_ASSET_BYTES - 1) / MAX_ASSET_BYTES ))
-              if [ "$NUM_PARTS" -lt 6 ]; then NUM_PARTS=6; fi
-              echo "Splitting $FILE_NAME ($FILE_SIZE bytes) into $NUM_PARTS parts..."
-
-              rm -rf split_tmp
-              mkdir -p split_tmp
-              split -d -n "$NUM_PARTS" "$file" "split_tmp/${FILE_NAME}.part_"
-
               TAG_NAME="v$VERSION-${{ matrix.target }}"
               RELEASE_NAME="${VERSION}-${{ matrix.target }}-${BUILD_DATE}"
 
               echo "Creating GitHub Release: $RELEASE_NAME"
 
+              RELEASE_BODY="### Download Link\n- **Pixeldrain:** [$FILE_NAME]($PIXEL_URL)\n\n**MD5:** \`$FILE_MD5\`\n**Size:** $FILE_SIZE bytes"
+
               RELEASE_DATA=$(jq -n \
                 --arg tag "$TAG_NAME" \
                 --arg name "$RELEASE_NAME" \
-                '{ tag_name: $tag, name: $name, draft: false, prerelease: false }')
+                --arg body "$RELEASE_BODY" \
+                '{ tag_name: $tag, name: $name, body: $body, draft: false, prerelease: false }')
 
-              RELEASE_RESPONSE=$(curl -sS -X POST \
+              RELEASE_RESPONSE=$(curl -s -X POST \
                 -H "Authorization: token $GH_TOKEN" \
                 -H "Content-Type: application/json" \
                 -d "$RELEASE_DATA" \
-                https://api.github.com/repos/$RELEASE_REPO/releases)
-              RELEASE_ID=$(echo "$RELEASE_RESPONSE" | jq -r '.id // empty' 2>/dev/null)
+                "https://api.github.com/repos/$RELEASE_REPO/releases")
 
-              # A re-run finds the release the previous run created instead of failing.
-              if [ -z "$RELEASE_ID" ] || [ "$RELEASE_ID" = "null" ]; then
-                echo "Release not created for $TAG_NAME, looking up the existing one..."
-                RELEASE_ID=$(curl -sS -H "Authorization: token $GH_TOKEN" \
-                  -H "Accept: application/vnd.github+json" \
-                  "https://api.github.com/repos/$RELEASE_REPO/releases/tags/$TAG_NAME" \
-                  | jq -r '.id // empty' 2>/dev/null)
-              fi
-              if [ -z "$RELEASE_ID" ] || [ "$RELEASE_ID" = "null" ]; then
+              RELEASE_ID=$(echo "$RELEASE_RESPONSE" | jq -r '.id')
+              if [ "$RELEASE_ID" = "null" ] || [ -z "$RELEASE_ID" ]; then
                 echo "ERROR: Release not created. Check GH_TOKEN and permissions."
-                echo "$RELEASE_RESPONSE"
+                echo "Response: $RELEASE_RESPONSE"
                 exit 1
               fi
-              echo "Release id: $RELEASE_ID"
-
-              # Drop stale assets so re-runs don't hit HTTP 422 on duplicate names.
-              EXISTING_ASSETS=$(curl -sS -H "Authorization: token $GH_TOKEN" \
-                -H "Accept: application/vnd.github+json" \
-                "https://api.github.com/repos/$RELEASE_REPO/releases/$RELEASE_ID/assets")
-              for asset_id in $(echo "$EXISTING_ASSETS" | jq -r '.[].id // empty' 2>/dev/null); do
-                echo "Deleting existing asset $asset_id..."
-                curl -sS -X DELETE -H "Authorization: token $GH_TOKEN" \
-                  "https://api.github.com/repos/$RELEASE_REPO/releases/assets/$asset_id" >/dev/null
-              done
-
-              # Upload all split parts. -T streams the file instead of buffering it in
-              # RAM the way --data-binary does, which OOMs the runner on large parts.
-              for part in split_tmp/*; do
-                PART_NAME=$(basename "$part")
-                echo "Uploading $PART_NAME ($(stat -c%s "$part") bytes)..."
-                UPLOAD_RESPONSE=$(curl -sS -f --retry 3 --retry-delay 5 -X POST \
-                  -H "Authorization: token $GH_TOKEN" \
-                  -H "Content-Type: application/octet-stream" \
-                  -T "$part" \
-                  "https://uploads.github.com/repos/$RELEASE_REPO/releases/$RELEASE_ID/assets?name=$PART_NAME") || {
-                    echo "ERROR: failed to upload $PART_NAME"
-                    exit 1
-                  }
-                PART_URL=$(echo "$UPLOAD_RESPONSE" | jq -r '.browser_download_url // empty')
-                if [ -z "$PART_URL" ] || [ "$PART_URL" = "null" ]; then
-                  echo "ERROR: no download url for $PART_NAME: $UPLOAD_RESPONSE"
-                  exit 1
-                fi
-                echo "Uploaded: $PART_URL"
-                PART_LINKS+=("$PART_URL")
-              done
-            fi
-
-            # Generate OTA XML for release only
-            if [ "$BUILD_TYPE" = "release" ]; then
-              echo "Generating OTA XML..."
-              git clone --single-branch --branch main https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }} updater_repo
-              cd updater_repo
-              git checkout main
-              mkdir -p updater
-              XML_FILE="updater/v2/${{ matrix.target }}.xml"
-
-              {
-                echo '<?xml version="1.0" encoding="UTF-8"?>'
-                echo '<roms>'
-                echo '  <rom channel="stable">'
-                echo "    <version>$VERSION</version>"
-                echo "    <date>$BUILD_DATE</date>"
-                echo "    <filename>$FILE_NAME</filename>"
-              } > $XML_FILE
-
-              INDEX=1
-              for url in "${PART_LINKS[@]}"; do
-                echo "    <part$INDEX>$url</part$INDEX>" >> $XML_FILE
-                INDEX=$((INDEX+1))
-              done
-
-              {
-                echo "    <md5>$FILE_MD5</md5>"
-                echo "    <size>$FILE_SIZE</size>"
-                echo '  </rom>'
-                echo '</roms>'
-              } >> $XML_FILE
-
-              git add $XML_FILE
-              git commit -m "updater: v2: ${{ matrix.target }}.xml: Update to $VERSION" || true
-              git pull --rebase origin main
-              git push origin main
-              cd ..
+              echo "Release created successfully. ID: $RELEASE_ID"
             fi
           done
