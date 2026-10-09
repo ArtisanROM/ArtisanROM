@@ -26,6 +26,7 @@ BUILD_ROM=false
 BUILD_ZIP=true
 SKIP_DEBUG_INSTALL=false
 DEBUG=false
+BETA=false
 
 START_TIME="$(date +%s)"
 
@@ -160,6 +161,8 @@ PREPARE_SCRIPT()
             BUILD_ZIP=false
 	elif [[ "$1" == "--debug" ]] || [[ "$1" == "-d" ]]; then
             DEBUG=true
+        elif [[ "$1" == "--beta" ]] || [[ "$1" == "-b" ]]; then
+            BETA=true
         else
             if [[ "$1" == "-"* ]]; then
                 LOGE "Unknown option: $1"
@@ -200,6 +203,7 @@ PRINT_USAGE()
     echo " -c, --use-apk-cache : Reuse decoded and compiled APKs/JARs when sources match" >&2
     echo " --no-rom-zip : Do not build ROM zip" >&2
     echo " -d, --debug : Create a debug build" >&2
+    echo " -b, --beta : Create a beta build" >&2
 }
 # ]
 

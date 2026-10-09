@@ -1,0 +1,4 @@
+id=beta
+name=Beta build notice
+author=Android-Artisan
+description=Shows a warning dialog on every boot to remind the user that the installed build is a beta release. Only applied when the ROM is built with the --beta flag.
