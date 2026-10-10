@@ -1,0 +1,6 @@
+id=sf_renderengine_compat
+name=SurfaceFlinger RenderEngine invalid-texture compatibility
+version=1.0
+versionCode=1
+author=At30c
+description=Stops SurfaceFlinger from aborting (soft reboot) when RenderEngine cannot import P010 video buffers
