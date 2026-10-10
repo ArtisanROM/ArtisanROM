@@ -1,5 +1,11 @@
 # ArtisanROM changelog
 
+# 4.0.1
+- Fix Google play system updates
+- Fix instagram crash
+- Fix random reboots
+- Add stock wallpapers
+
 # 4.0.0
 - Switch to S24+ firmware
 - OneUI 8.5 (thx pablo aka ats0c_ and Miguelito aka MIG29)
