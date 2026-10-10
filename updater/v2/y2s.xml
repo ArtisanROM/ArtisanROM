@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <roms>
   <rom channel="stable">
-    <version>4.0.0</version>
-    <date>2026-10-08</date>
-    <filename>ArtisanROM_OFFICIAL_4.0.0_20261008_y2s-sign.zip</filename>
-    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.0-y2s/ArtisanROM_OFFICIAL_4.0.0_20261008_y2s-sign.zip.part_00</part1>
-    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.0-y2s/ArtisanROM_OFFICIAL_4.0.0_20261008_y2s-sign.zip.part_01</part2>
-    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.0-y2s/ArtisanROM_OFFICIAL_4.0.0_20261008_y2s-sign.zip.part_02</part3>
-    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.0-y2s/ArtisanROM_OFFICIAL_4.0.0_20261008_y2s-sign.zip.part_03</part4>
-    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.0-y2s/ArtisanROM_OFFICIAL_4.0.0_20261008_y2s-sign.zip.part_04</part5>
-    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.0-y2s/ArtisanROM_OFFICIAL_4.0.0_20261008_y2s-sign.zip.part_05</part6>
-    <md5>237f7119344b88048114cdf3def18687</md5>
-    <size>7186633900</size>
+    <version>4.0.1</version>
+    <date>2026-10-10</date>
+    <filename>ArtisanROM_OFFICIAL_4.0.1_20261010_y2s-sign.zip</filename>
+    <part1>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.1-y2s/ArtisanROM_OFFICIAL_4.0.1_20261010_y2s-sign.zip.part_00</part1>
+    <part2>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.1-y2s/ArtisanROM_OFFICIAL_4.0.1_20261010_y2s-sign.zip.part_01</part2>
+    <part3>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.1-y2s/ArtisanROM_OFFICIAL_4.0.1_20261010_y2s-sign.zip.part_02</part3>
+    <part4>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.1-y2s/ArtisanROM_OFFICIAL_4.0.1_20261010_y2s-sign.zip.part_03</part4>
+    <part5>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.1-y2s/ArtisanROM_OFFICIAL_4.0.1_20261010_y2s-sign.zip.part_04</part5>
+    <part6>https://github.com/ArtisanROM/rom_resources/releases/download/v4.0.1-y2s/ArtisanROM_OFFICIAL_4.0.1_20261010_y2s-sign.zip.part_05</part6>
+    <md5>f9a1c6ffbfaa14bec28f4a2725ed6ee4</md5>
+    <size>6700930743</size>
   </rom>
 </roms>
