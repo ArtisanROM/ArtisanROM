@@ -1,0 +1,24 @@
+diff --git a/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali b/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali
+--- a/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali
++++ b/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali
+@@ -4068,7 +4068,20 @@
+ 
+     const/4 v2, 0x1
+ 
+-    if-ne v0, v2, :cond_3
++    if-ne v0, v2, :cond_check_doc_scan
++
++    return v2
++
++    :cond_check_doc_scan
++    iget-object p0, p0, Lcom/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager;->mCameraSettings:Lcom/sec/android/app/camera/interfaces/CameraSettings;
++
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;->ADDITIONAL_SCENE_DOCUMENT_SCAN:Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;
++
++    invoke-interface {p0, v0}, Lcom/sec/android/app/camera/interfaces/CameraSettings;->get(Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;)I
++
++    move-result p0
++
++    if-ne p0, v2, :cond_3
+ 
+     return v2
