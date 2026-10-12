@@ -170,3 +170,36 @@ done
 wait $(jobs -p) || exit 1
 
 LOG_STEP_OUT
+
+LOG_STEP_IN "- Passing per-frame EV to ArcSoft LLHDR/MFHDR"
+# The ArcSoft LLHDR/MFHDR nodes send samsung.android.sensor.captureEv as the frame EV,
+# but the Exynos 990 HAL does not reflect the bracket there, so the p3s ArcSoft libs reject
+# every burst (ARC_LLHDR_Process fail(2)). The bracket offset, in the same 1/256 EV units,
+# is in samsung.android.sensor.multiFrameEv (SemCaptureResult.D1 in SamsungCamera 16.5.02.36).
+# The native LLHDR node passes (ref EV - frame EV) to the library, so it gets the negated
+# offset; the MFHDR node uses the value as is.
+SMALI_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+    "smali_classes3/com/samsung/android/camera/core2/node/llhdr/arcsoft/ArcLlHdrNodeBase.smali" "replace" \
+    'setExtraCaptureInfo(Lcom/samsung/android/camera/core2/local/vendorkey/CaptureMetadata;)V' \
+    'sget-object v2, Lcom/samsung/android/camera/core2/local/vendorkey/SemCaptureResult;->y1:Landroid/hardware/camera2/CaptureResult$Key;' \
+    'sget-object v2, Lcom/samsung/android/camera/core2/local/vendorkey/SemCaptureResult;->D1:Landroid/hardware/camera2/CaptureResult$Key;' \
+    > /dev/null
+SMALI_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+    "smali_classes3/com/samsung/android/camera/core2/node/llhdr/arcsoft/ArcLlHdrNodeBase.smali" "replace" \
+    'setExtraCaptureInfo(Lcom/samsung/android/camera/core2/local/vendorkey/CaptureMetadata;)V' \
+    '.locals 3' \
+    '.locals 4' \
+    > /dev/null
+SMALI_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+    "smali_classes3/com/samsung/android/camera/core2/node/llhdr/arcsoft/ArcLlHdrNodeBase.smali" "replace" \
+    'setExtraCaptureInfo(Lcom/samsung/android/camera/core2/local/vendorkey/CaptureMetadata;)V' \
+    'filled-new-array {v0, v1, p1}, [Ljava/lang/Object;' \
+    $'    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I\n    move-result v3\n    neg-int v3, v3\n    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;\n    move-result-object v3\n    filled-new-array {v0, v1, v3}, [Ljava/lang/Object;' \
+    > /dev/null
+SMALI_PATCH "system" "system/priv-app/SamsungCamera/SamsungCamera.apk" \
+    "smali_classes3/com/samsung/android/camera/core2/node/mfhdr/arcsoft/v4/ArcMfHdrNode.smali" "replace" \
+    'nativeCallSpecificCommand(Lcom/samsung/android/camera/core2/local/vendorkey/CaptureMetadata;Lcom/samsung/android/camera/core2/container/ExtraBundle;)V' \
+    'sget-object p2, Lcom/samsung/android/camera/core2/local/vendorkey/SemCaptureResult;->y1:Landroid/hardware/camera2/CaptureResult$Key;' \
+    'sget-object p2, Lcom/samsung/android/camera/core2/local/vendorkey/SemCaptureResult;->D1:Landroid/hardware/camera2/CaptureResult$Key;' \
+    > /dev/null
+LOG_STEP_OUT
