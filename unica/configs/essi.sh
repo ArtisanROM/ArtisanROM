@@ -4,27 +4,15 @@
 # UN1CA configuration file for Exynos devices (essi)
 
 # Galaxy S24+ (Exynos 2400) (One UI 8.5)
-# Keep the tested S926B release pinned so framework/display behaviour is
-# reproducible instead of silently moving with monthly FUS updates.
 SOURCE_FIRMWARE="SM-S926B/EUX/350330051234562"
-
+SOURCE_FIRMWARE_VERSION="S926BXXSHDZI1/S926BOXMHDZI1/S926BXXSHDZI1"
 SOURCE_EXTRA_FIRMWARES=()
 SOURCE_PLATFORM_SDK_VERSION=36
-# S926B launched with Android 14 (API 34).
 SOURCE_PRODUCT_SHIPPING_API_LEVEL=34
 SOURCE_BOARD_API_LEVEL=34
 SOURCE_SUPER_GROUP_NAME="group_basic"
-# S926B already ships the Android 16 display stack (dynamic resolution and
-# native 24/10/30/48/60/80/120-Hz policy). Do not apply y2s resolution/HFR
-# compatibility patches on top of it.
 SOURCE_USE_NATIVE_DISPLAY_STACK=true
-# Current Android 16 Settings/SystemUI use the generic fingerprint feature
-# gates and already support optical UDFPS.  Only the legacy HIDL/framework
-# sensor mapping still needs conversion when the target is optical.
 SOURCE_USE_NATIVE_FINGERPRINT_UI=true
-# The current services.jar gates the hardware mDNIe paths through A11yRune.
-# Its classes were redesigned, so the old control-flow transplant must not be
-# applied after the framework flags have already disabled those paths.
 SOURCE_USE_MODERN_MDNIE_SERVICE=true
 
 # SEC Product Feature
@@ -58,13 +46,9 @@ SOURCE_LCD_CONFIG_SEAMLESS_LUX="none"
 SOURCE_LCD_SUPPORT_MDNIE_HW=true
 SOURCE_SECURITY_CONFIG_ESE_CHIP_VENDOR="GEMALTO"
 SOURCE_SECURITY_CONFIG_ESE_COS_NAME="UT8.2U"
-# S926B's actual TelephonyFeatures value is entitlement_sa.  The generic
-# ESSI template used satellite_carrier, which made the RIL compatibility patch
-# search for a string that is not present in this Android 16 framework.
 SOURCE_RIL_FEATURES="onebinary entitlement_sa"
 SOURCE_RIL_SIM_CONFIG_MULTISIM_TRAYCOUNT="2"
 SOURCE_RIL_SUPPORT_WATERPROOF_SIM_TRAY_MSG=true
-# S926B's SemWifiInjector literal is 2 (the generic template used 1).
 SOURCE_WLAN_CONFIG_CONNECTION_PERSONALIZATION="2"
 SOURCE_WLAN_CONFIG_CPU_CSTATE_DISABLE_THRESHOLD="100"
 SOURCE_WLAN_CONFIG_CUSTOM_BACKOFF="none"
@@ -87,7 +71,5 @@ SOURCE_WLAN_SUPPORT_MOBILEAP_PRIORITIZE_TRAFFIC=true
 SOURCE_WLAN_SUPPORT_MOBILEAP_WIFI_CONCURRENCY=true
 SOURCE_WLAN_SUPPORT_MOBILEAP_WIFISHARING_LITE=false
 SOURCE_WLAN_SUPPORT_SWITCH_FOR_INDIVIDUAL_APPS=true
-# S926B's Android 16 WifiDriverFeatureProvider does not add feature ID 2
-# (TWT) to its default feature map, so TWT is already unavailable in source.
 SOURCE_WLAN_SUPPORT_TWT_CONTROL=false
 SOURCE_WLAN_SUPPORT_WIFI_TO_CELLULAR=true
