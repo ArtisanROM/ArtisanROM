@@ -39,6 +39,11 @@ ADD_TO_WORK_DIR "m2sxxx" "system" \
     "system/media/audio/ui/Media_preview_Over_the_horizon.ogg" 0 0 644 "u:object_r:system_file:s0"
 APPLY_PATCH "system" "system/priv-app/SecSoundPicker/SecSoundPicker.apk" \
     "$MODPATH/brandsound/SecSoundPicker.apk/0001-Enable-SUPPORT_SAMSUNG_BRAND_SOUND_ONEUI_7.patch"
+    
+ADD_TO_WORK_DIR "zeroltexxx" "system" \
+    "system/media/audio/ringtones/Morning_Flower.ogg" \
+    "system/media/audio/ringtones/SoundTheme/Galaxy/Morning_Flower.ogg" \
+    0 0 644 "u:object_r:system_file:s0"
 LOG_STEP_OUT
 
 # Adaptive colour tone
