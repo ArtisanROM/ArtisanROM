@@ -94,6 +94,11 @@ else
     HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
         "e10740b9e22340b9e00313aa44aa059420020034fa03002a" \
         "e10740b9e22340b9e00313aa44aa059411000014fa03002a"
+        
+    #Patch the backward-in-time check to fall through and adopt the new session's timestamp.
+    HEX_PATCH "$WORK_DIR/vendor/lib/libstagefright_bufferqueue_helper_vendor.so" \
+        "d7e94601401b71eb060006da" \
+        "d7e94601401b71eb060000bf"     
 fi
 LOG_STEP_OUT
 
