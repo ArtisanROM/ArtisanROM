@@ -1,0 +1,5 @@
+system 0 0 755 capabilities=0x0
+system/media 0 0 755 capabilities=0x0
+system/media/audio 0 0 755 capabilities=0x0
+system/media/audio/ringtones 0 0 755 capabilities=0x0
+system/media/audio/ringtones/Morning_Flower.ogg 0 0 644 capabilities=0x0

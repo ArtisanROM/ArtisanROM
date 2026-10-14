@@ -1,0 +1,5 @@
+/system u:object_r:system_file:s0
+/system/media u:object_r:system_file:s0
+/system/media/audio u:object_r:system_file:s0
+/system/media/audio/ringtones u:object_r:system_file:s0
+/system/media/audio/ringtones/Morning_Flower\.ogg u:object_r:system_file:s0
