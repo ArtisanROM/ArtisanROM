@@ -178,13 +178,18 @@ _HANDLE_SPECIAL_CHARS()
 }
 # ]
 
-# ADD_TO_WORK_DIR <source> <partition> <file/dir> <user> <group> <mode> <label>
+# ADD_TO_WORK_DIR <source> <partition> <file/dir> [<dest>] <user> <group> <mode> <label>
 # Adds the supplied file/directory in work dir along with its entries in fs_config/file_context.
 #
 # `source` argument can be:
 # - a full path
 # - a string in the following format: "MODEL/CSC" (the folder MUST exist under `out/fw`)
 # - a string with the product name of the desired device's prebuilt blobs (the folder MUST exist under `prebuilts/samsung`)
+#
+# `dest` argument is optional: when supplied, the file/dir is copied to that path inside the
+# target partition instead of the path given in `file/dir` (useful when a prebuilt stores the
+# file in a different folder depending on its Android version). It must be a relative path
+# (within the partition) and, being non-numeric, it is never confused with the other arguments.
 #
 # `user`/`group`/`mode`/`label`/ arguments can be omitted as long as the respective entry is present in `source`/fs_config and `source`/file_context.
 ADD_TO_WORK_DIR()
@@ -196,10 +201,28 @@ ADD_TO_WORK_DIR()
     local SOURCE="$1"
     local PARTITION="$2"
     local FILE="$3"
-    local USER="$4"
-    local GROUP="$5"
-    local MODE="$6"
-    local LABEL="$7"
+    shift 3
+
+    # Optional: alternate destination path inside the partition.
+    # `user`/`group`/`mode` are always numeric, so a non-numeric argument here is the destination.
+    local DEST=""
+    if [ "$1" ] && ! [[ "$1" =~ ^[0-9]+$ ]]; then
+        DEST="$1"
+        shift
+    fi
+
+    local USER="$1"
+    local GROUP="$2"
+    local MODE="$3"
+    local LABEL="$4"
+
+    while [[ "${DEST:0:1}" == "/" ]]; do
+        DEST="${DEST:1}"
+    done
+
+    # Path inside the target partition (source path unless `dest` is supplied)
+    local TARGET_PATH="$FILE"
+    [ "$DEST" ] && TARGET_PATH="$DEST"
 
     if [ ! -d "$SOURCE" ]; then
         if [ "$(cut -d "/" -f 2 -s <<< "$SOURCE")" ]; then
@@ -235,23 +258,23 @@ ADD_TO_WORK_DIR()
         fi
 
         if $TARGET_OS_BUILD_SYSTEM_EXT_PARTITION; then
-            TARGET_FILE+="/system_ext/$FILE"
+            TARGET_FILE+="/system_ext/$TARGET_PATH"
         else
             PARTITION="system"
-            FILE="system/system_ext/$FILE"
+            FILE="system/system_ext/$TARGET_PATH"
             TARGET_FILE+="/system/$FILE"
         fi
     elif [[ "$PARTITION" == "system" ]]; then
         if [ -d "$SOURCE/system/system" ]; then
             SOURCE_FILE+="/system/$FILE"
-            TARGET_FILE+="/system/$FILE"
+            TARGET_FILE+="/system/$TARGET_PATH"
         else
             SOURCE_FILE+="/system/${FILE//system\//}"
-            TARGET_FILE+="/system/system/${FILE//system\//}"
+            TARGET_FILE+="/system/system/${TARGET_PATH//system\//}"
         fi
     else
         SOURCE_FILE+="/$PARTITION/$FILE"
-        TARGET_FILE+="/$PARTITION/$FILE"
+        TARGET_FILE+="/$PARTITION/$TARGET_PATH"
     fi
 
     if [ ! -e "$SOURCE_FILE" ] && [ ! -L "$SOURCE_FILE" ]; then
@@ -312,18 +335,35 @@ ADD_TO_WORK_DIR()
     fi
 
     if [ -d "$TARGET_FILE" ]; then
+        # Relative path of the copied directory in the source tree, used as base for its
+        # children entries so they can be pointed at the destination when `dest` is supplied
+        local SRC_ASSET="${SOURCE_FILE%/.}"
+        SRC_ASSET="${SRC_ASSET//$SOURCE\//}"
+
         local FILES
         FILES="$(find "${SOURCE_FILE%/.}")"
-        FILES="${FILES//$SOURCE\//}"
-        [[ "$PARTITION" == "system" ]] && FILES="${FILES//system\/system\//system/}"
-        $TARGET_OS_BUILD_SYSTEM_EXT_PARTITION || FILES="${FILES//system_ext\//system/system_ext/}"
 
-        while IFS= read -r f; do
+        while IFS= read -r F; do
+            # Suffix of the entry relative to the copied directory
+            local S
+            S="${F#"${SOURCE_FILE%/.}"}"
+
+            # `f` is the entry as seen in the source, `e` the one in the work dir
+            local f="$SRC_ASSET$S"
+            local e="$ENTRY$S"
+            [[ "$PARTITION" == "system" ]] && f="${f//system\/system\//system/}" && e="${e//system\/system\//system/}"
+            if ! $TARGET_OS_BUILD_SYSTEM_EXT_PARTITION; then
+                f="${f//system_ext\//system/system_ext/}"
+                e="${e//system_ext\//system/system_ext/}"
+            fi
+
             IS_VALID_PARTITION_NAME "$f" && continue
 
-            if ! grep -q -F "$f " "$WORK_DIR/configs/fs_config-$PARTITION" 2> /dev/null; then
+            if ! grep -q -F "$e " "$WORK_DIR/configs/fs_config-$PARTITION" 2> /dev/null; then
                 if grep -q -F "$f " "$SOURCE/fs_config-$PARTITION" 2> /dev/null; then
-                    grep -F "$f " "$SOURCE/fs_config-$PARTITION" >> "$WORK_DIR/configs/fs_config-$PARTITION"
+                    while IFS= read -r L; do
+                        echo "$e${L#"$f"}" >> "$WORK_DIR/configs/fs_config-$PARTITION"
+                    done < <(grep -F "$f " "$SOURCE/fs_config-$PARTITION")
                 else
                     LOGW "No fs_config entry found for \"$f\" in \"${SOURCE//$SRC_DIR\//}\". Using default values"
 
@@ -335,19 +375,26 @@ ADD_TO_WORK_DIR()
                         MODE=755
                     fi
 
-                    echo "$f $USER $GROUP $MODE capabilities=0x0" >> "$WORK_DIR/configs/fs_config-$PARTITION"
+                    echo "$e $USER $GROUP $MODE capabilities=0x0" >> "$WORK_DIR/configs/fs_config-$PARTITION"
                 fi
             fi
 
-            if ! grep -q -F "/$(_HANDLE_SPECIAL_CHARS "$f") " "$WORK_DIR/configs/file_context-$PARTITION" 2> /dev/null; then
+            if ! grep -q -F "/$(_HANDLE_SPECIAL_CHARS "$e") " "$WORK_DIR/configs/file_context-$PARTITION" 2> /dev/null; then
                 if grep -q -F "/$(_HANDLE_SPECIAL_CHARS "$f") " "$SOURCE/file_context-$PARTITION" 2> /dev/null; then
-                    grep -F "/$(_HANDLE_SPECIAL_CHARS "$f") " "$SOURCE/file_context-$PARTITION" >> "$WORK_DIR/configs/file_context-$PARTITION"
+                    local SRC_ENTRY_ESC
+                    SRC_ENTRY_ESC="/$(_HANDLE_SPECIAL_CHARS "$f")"
+                    local DEST_ENTRY_ESC
+                    DEST_ENTRY_ESC="/$(_HANDLE_SPECIAL_CHARS "$e")"
+
+                    while IFS= read -r L; do
+                        echo "$DEST_ENTRY_ESC${L#"$SRC_ENTRY_ESC"}" >> "$WORK_DIR/configs/file_context-$PARTITION"
+                    done < <(grep -F "$SRC_ENTRY_ESC " "$SOURCE/file_context-$PARTITION")
                 else
                     LOGW "No file_context entry found for \"$f\" in \"${SOURCE//$SRC_DIR\//}\". Using default value"
 
-                    LABEL="$(_GET_SELINUX_LABEL "$PARTITION" "/$f")"
+                    LABEL="$(_GET_SELINUX_LABEL "$PARTITION" "/$e")"
 
-                    echo "/$(_HANDLE_SPECIAL_CHARS "$f") $LABEL" >> "$WORK_DIR/configs/file_context-$PARTITION"
+                    echo "/$(_HANDLE_SPECIAL_CHARS "$e") $LABEL" >> "$WORK_DIR/configs/file_context-$PARTITION"
                 fi
             fi
         done <<< "$FILES"
