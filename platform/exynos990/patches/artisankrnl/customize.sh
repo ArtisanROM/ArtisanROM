@@ -43,6 +43,35 @@ SAFE_PULL_CHANGES()
     cd "$PARENT"
 }
 
+APPLY_PATCH_ONCE()
+{
+    local REPO="$1" PATCH="$2" LABEL="$3"
+
+    [[ -f "$PATCH" ]] || ABORT "$LABEL: patch missing at $PATCH"
+
+    if git -C "$REPO" apply --check "$PATCH" >/dev/null 2>&1; then
+        LOG "- Applying $LABEL"
+        git -C "$REPO" apply "$PATCH" || ABORT "$LABEL: git apply failed"
+    elif git -C "$REPO" apply --reverse --check "$PATCH" >/dev/null 2>&1; then
+        LOG "- $LABEL already applied"
+    else
+        ABORT "$LABEL: does not apply to $REPO"
+    fi
+}
+
+APPLY_SEPOLICY_FIX()
+{
+    local PATCH_DIR="$(pwd)/platform/exynos990/patches/artisankrnl"
+
+    # Fixes the selinux policy_rwlock write-side deadlock (6-way soft lockup at
+    # post-fs-data) plus the skipped AVC cache flush. The patches live in the
+    # ROM tree so they survive `git reset --hard FETCH_HEAD` on the kernel
+    # superproject, and are re-applied per build instead of being committed to
+    # KernelSU-Next.
+    APPLY_PATCH_ONCE "$KERNEL_TMP_DIR"               "$PATCH_DIR/selinux-atomic-alloc.patch"  "selinux-atomic-alloc.patch"
+    APPLY_PATCH_ONCE "$KERNEL_TMP_DIR/KernelSU-Next" "$PATCH_DIR/kernelsu-sepolicy-fix.patch" "kernelsu-sepolicy-fix.patch"
+}
+
 REPLACE_KERNEL_BINARIES()
 {
     # 1. Define the directory name based on your requirement
@@ -68,11 +97,14 @@ REPLACE_KERNEL_BINARIES()
         ABORT "Directory exists but is not a git repo: $KERNEL_TMP_DIR"
     fi
 
-    # 4. Execute Build
+    # 4. Apply the selinux/KSU fixes (must run after the reset above)
+    APPLY_SEPOLICY_FIX
+
+    # 5. Execute Build
     LOG "- Starting kernel build process."
     BUILD_KERNEL
 
-    # 5. Artifact Management
+    # 6. Artifact Management
     [[ ! -d "$WORK_DIR/kernel" ]] && mkdir -p -- "$WORK_DIR/kernel"
 
     for i in "boot" "dtbo"; do
