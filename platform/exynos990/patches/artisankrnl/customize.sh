@@ -63,12 +63,12 @@ APPLY_SEPOLICY_FIX()
 {
     local PATCH_DIR="$(pwd)/platform/exynos990/patches/artisankrnl"
 
-    # Fixes the selinux policy_rwlock write-side deadlock (6-way soft lockup at
-    # post-fs-data) plus the skipped AVC cache flush. The patches live in the
-    # ROM tree so they survive `git reset --hard FETCH_HEAD` on the kernel
-    # superproject, and are re-applied per build instead of being committed to
-    # KernelSU-Next.
-    APPLY_PATCH_ONCE "$KERNEL_TMP_DIR"               "$PATCH_DIR/selinux-atomic-alloc.patch"  "selinux-atomic-alloc.patch"
+    # KernelSU-Next is an external submodule, so its half of the fix (the
+    # policy_rwlock write-side deadlock and the skipped AVC cache flush) lives
+    # in the ROM tree and is re-applied every build: `git reset --hard
+    # FETCH_HEAD` on the superproject does not touch the submodule working
+    # tree. The kernel-side half (security/selinux) is committed to the kernel
+    # source itself, so it needs no patch here.
     APPLY_PATCH_ONCE "$KERNEL_TMP_DIR/KernelSU-Next" "$PATCH_DIR/kernelsu-sepolicy-fix.patch" "kernelsu-sepolicy-fix.patch"
 }
 
