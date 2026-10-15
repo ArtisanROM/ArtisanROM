@@ -104,8 +104,12 @@ jobs:
       - name: Build ROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh 
-          
+          if [ "${{ github.event.inputs.build_type }}" = "debug" ]; then
+            ./scripts/make_rom.sh --beta
+          else
+            ./scripts/make_rom.sh
+          fi
+
       - name: Upload to Pixeldrain, GitHub Release, Split, XML
         if: github.event_name == 'workflow_dispatch'
         env:
