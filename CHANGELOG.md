@@ -1,5 +1,16 @@
 # ArtisanROM changelog
 
+# 4.0.2
+- Fix HDR photos on Exynos 990 (ArcSoft LLHDR/MFHDR now get proper per-frame EV, rear MFHDR merges correctly, no more HDR crashes) (thx @utzy)
+- Use ArcSoft LLHDR/MFHDR nodes on c2s/c1s (thx @utzy)
+- Fix dropped frames when switching back to video recording (thx @HackMeGG)
+- Fix screen shrinking during boot on Exynos 990 (DDIScaler fix) (thx @HackMeGG)
+- Enable scene detection for document scan in camera (thx @HackMeGG)
+- Fix KernelSU SELinux issues (moved kernel-side fix into kernel source, rebased sepolicy patch)
+- Update KernelSU-Next manager to v3.4.2
+- Update Play Integrity default fingerprint (thx @salvogiangri)
+- Add Morning Flower ringtone
+
 # 4.0.1
 - Fix Google play system updates
 - Fix instagram crash
