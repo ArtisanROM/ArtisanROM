@@ -1,6 +1,7 @@
 SOURCE_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$SOURCE_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$SOURCE_FIRMWARE")"
 
-if [[ "$(sha1sum "$WORK_DIR/system/system/apex/com.android.bt.apex" | cut -d " " -f 1)" != \
+if [[ "${BT_FINALIZE_R8S_STACK:-false}" != true ]] && \
+        [[ "$(sha1sum "$WORK_DIR/system/system/apex/com.android.bt.apex" | cut -d " " -f 1)" != \
         "$(sha1sum "$FW_DIR/$SOURCE_FIRMWARE_PATH/system/system/apex/com.android.bt.apex" | cut -d " " -f 1)" ]]; then
     LOG "\033[0;33m! Nothing to do\033[0m"
     unset SOURCE_FIRMWARE_PATH
@@ -90,28 +91,23 @@ EXTRACT_PAYLOAD()
 {
     LOG_STEP_IN "- Unpacking apex_payload.img"
 
-    if ! sudo -n true &> /dev/null; then
-        LOG "\033[0;33m! Asking user for sudo password\033[0m"
-        if ! sudo -v 2> /dev/null; then
-            ABORT "Root permissions are required to unpack APEX image"
-        fi
-    fi
+    REQUIRE_EXTRACTION_PRIVILEGES || return 1
 
     LOG_STEP_OUT
 
     mkdir -p "$TMP_DIR/unknown/apex_payload"
     mkdir -p "$TMP_DIR/tmp_out"
-    EVAL "sudo mount -o ro \"$TMP_DIR/unknown/apex_payload.img\" \"$TMP_DIR/tmp_out\""
-    EVAL "sudo cp -a -T \"$TMP_DIR/tmp_out\" \"$TMP_DIR/unknown/apex_payload\""
-    sudo chown -hR "$(whoami):$(whoami)" "$TMP_DIR/unknown/apex_payload"
+    EVAL "RUN_AS_ROOT mount -o ro \"$TMP_DIR/unknown/apex_payload.img\" \"$TMP_DIR/tmp_out\""
+    EVAL "RUN_AS_ROOT cp -a -T \"$TMP_DIR/tmp_out\" \"$TMP_DIR/unknown/apex_payload\""
+    RUN_AS_ROOT chown -hR "$(whoami):$(whoami)" "$TMP_DIR/unknown/apex_payload"
     if [ -d "$TMP_DIR/unknown/apex_payload/lost+found" ]; then
         rm -rf "$TMP_DIR/unknown/apex_payload/lost+found"
     fi
 
     LOG "- Generating fs_config/file_context for apex_payload.img"
 
-    EVAL "sudo find \"$TMP_DIR/tmp_out\" | sudo xargs -I \"{}\" -P \"$(nproc)\" stat -c \"%n %u %g %a capabilities=0x0\" \"{}\" > \"$TMP_DIR/unknown/fs_config-apex_payload\""
-    EVAL "sudo find \"$TMP_DIR/tmp_out\" | sudo xargs -I \"{}\" -P \"$(nproc)\" sh -c 'echo \"\$1 \$(getfattr -n security.selinux --only-values -h --absolute-names \"\$1\")\"' \"sh\" \"{}\" > \"$TMP_DIR/unknown/file_context-apex_payload\""
+    EVAL "RUN_AS_ROOT find \"$TMP_DIR/tmp_out\" | RUN_AS_ROOT xargs -I \"{}\" -P \"$(nproc)\" stat -c \"%n %u %g %a capabilities=0x0\" \"{}\" > \"$TMP_DIR/unknown/fs_config-apex_payload\""
+    EVAL "RUN_AS_ROOT find \"$TMP_DIR/tmp_out\" | RUN_AS_ROOT xargs -I \"{}\" -P \"$(nproc)\" sh -c 'echo \"\$1 \$(getfattr -n security.selinux --only-values -h --absolute-names \"\$1\")\"' \"sh\" \"{}\" > \"$TMP_DIR/unknown/file_context-apex_payload\""
     sort -o "$TMP_DIR/unknown/file_context-apex_payload" "$TMP_DIR/unknown/file_context-apex_payload"
     sort -o "$TMP_DIR/unknown/fs_config-apex_payload" "$TMP_DIR/unknown/fs_config-apex_payload"
     sed -i -e "s|$TMP_DIR/tmp_out |/ |g" -e "s|$TMP_DIR/tmp_out||g" "$TMP_DIR/unknown/file_context-apex_payload"
@@ -119,7 +115,7 @@ EXTRACT_PAYLOAD()
         -e "s|\]|\\\]|g" -e "s|\*|\\\*|g" "$TMP_DIR/unknown/file_context-apex_payload"
     sed -i -e "s|$TMP_DIR/tmp_out | |g" -e "s|$TMP_DIR/tmp_out/||g" "$TMP_DIR/unknown/fs_config-apex_payload"
 
-    EVAL "sudo umount \"$TMP_DIR/tmp_out\""
+    EVAL "RUN_AS_ROOT umount \"$TMP_DIR/tmp_out\""
     rm -rf "$TMP_DIR/tmp_out" "$TMP_DIR/unknown/apex_payload.img"
 }
 
@@ -180,6 +176,21 @@ if [ -z "$BT_APK" ]; then
 fi
 BT_APK_REL="${BT_APK#$TMP_DIR/unknown/apex_payload/}"
 BT_APK_WORK_PATH="system/$BT_APK_REL"
+
+if [[ "${BT_FINALIZE_R8S_STACK:-false}" == true ]]; then
+    # CIDManager has just staged the authoritative donor APEX. Discard only
+    # temporary decoded classes for this APEX, not framework.jar/services.jar.
+    # Otherwise a reused APK cache can rebuild an earlier Bluetooth release.
+    rm -f "$WORK_DIR/system/$BT_APK_WORK_PATH"
+    rm -rf "$APKTOOL_DIR/system/${BT_APK_REL}" \
+        "$APKTOOL_DIR/system/framework/framework-bluetooth.jar"
+    DECODE_APK_IN_APEX "$BT_APK"
+    # The donor APK predates the source firmware's recursive MMS parser fix.
+    # Preserve its hardware adaptations while restoring that exact fix.
+    APPLY_PATCH system "$BT_APK_WORK_PATH" \
+        "$MODPATH/security/Bluetooth.apk/0001-Restore-source-MMS-parsing-depth-limit.patch" \
+        > /dev/null
+fi
 
 # SEC_PRODUCT_FEATURE_BLUETOOTH_SUPPORT_A2DPSINK_PROFILE
 if $SOURCE_BLUETOOTH_SUPPORT_A2DPSINK_PROFILE; then

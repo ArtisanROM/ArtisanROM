@@ -5,11 +5,10 @@ Subject: [PATCH] Introduce SamsungPropsHooks
 
 UN1CA: this patch is not complete! Please check unica/mods/settings/customize.sh for more info.
 ---
- .../android/os/SemSystemProperties.smali      |  11 +-
- .../io/mesalabs/unica/SamsungPropsHooks.smali | 598 ++++++++++++++++++
- 2 files changed, 608 insertions(+), 1 deletion(-)
+.../android/os/SemSystemProperties.smali           |   11
+ .../io/mesalabs/unica/SamsungPropsHooks.smali      |  499 ++++++++++++++++++++
+ 2 files changed, 509 insertions(+), 1 deletion(-)
  create mode 100644 smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali
-
 diff --git a/smali_classes3/android/os/SemSystemProperties.smali b/smali_classes3/android/os/SemSystemProperties.smali
 index d40468a0..626ff234 100644
 --- a/smali_classes3/android/os/SemSystemProperties.smali
@@ -35,10 +34,10 @@ index d40468a0..626ff234 100644
      move-result-object p0
 diff --git a/smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali b/smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali
 new file mode 100644
-index 00000000..084b994e
+index 00000000..7ea260eb
 --- /dev/null
 +++ b/smali_classes6/io/mesalabs/unica/SamsungPropsHooks.smali
-@@ -0,0 +1,598 @@
+@@ -0,0 +1,499 @@
 +.class public final Lio/mesalabs/unica/SamsungPropsHooks;
 +.super Ljava/lang/Object;
 +.source "SamsungPropsHooks.java"
@@ -436,78 +435,11 @@ index 00000000..084b994e
 +    const/4 v0, 0x0
 +
 +    :goto_0
-+    if-eqz v0, :cond_1
-+
-+    new-instance v1, Ljava/lang/StringBuilder;
-+
-+    const-string v2, "Spoofing \""
-+
-+    invoke-direct {v1, v2}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+
-+    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object p0
-+
-+    const-string v1, "\" prop to \""
-+
-+    invoke-virtual {p0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object p0
-+
-+    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object p0
-+
-+    const-string v1, "\""
-+
-+    invoke-virtual {p0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object p0
-+
-+    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+
-+    move-result-object p0
-+
-+    invoke-static {p0}, Lio/mesalabs/unica/SamsungPropsHooks;->dlog(Ljava/lang/String;)V
-+
-+    :cond_1
 +    return-object v0
 +.end method
 +
 +.method private static blacklist setBuildField(Ljava/lang/String;Ljava/lang/Object;)V
 +    .locals 2
-+
-+    new-instance v0, Ljava/lang/StringBuilder;
-+
-+    const-string v1, "Spoofing Build."
-+
-+    invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+
-+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    const-string v1, " to \""
-+
-+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    const-string v1, "\""
-+
-+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+
-+    move-result-object v0
-+
-+    invoke-static {v0}, Lio/mesalabs/unica/SamsungPropsHooks;->dlog(Ljava/lang/String;)V
 +
 +    :try_start_0
 +    const-class v0, Landroid/os/Build;
@@ -558,38 +490,6 @@ index 00000000..084b994e
 +
 +.method private static blacklist setVersionField(Ljava/lang/String;Ljava/lang/Object;)V
 +    .locals 2
-+
-+    new-instance v0, Ljava/lang/StringBuilder;
-+
-+    const-string v1, "Spoofing Build.VERSION."
-+
-+    invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+
-+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    const-string v1, " to \""
-+
-+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    const-string v1, "\""
-+
-+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    move-result-object v0
-+
-+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+
-+    move-result-object v0
-+
-+    invoke-static {v0}, Lio/mesalabs/unica/SamsungPropsHooks;->dlog(Ljava/lang/String;)V
 +
 +    :try_start_0
 +    const-class v0, Landroid/os/Build$VERSION;

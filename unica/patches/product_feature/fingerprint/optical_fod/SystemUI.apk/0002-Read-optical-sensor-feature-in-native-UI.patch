@@ -1,0 +1,34 @@
+From: ArtisanROM contributors <noreply@github.com>
+Subject: [PATCH] Read optical fingerprint capability from the target feature
+
+The donor caches optical fingerprint support as false. Retain the cache but
+initialize it from the target sensor feature rather than the donor hardware.
+
+diff --git a/smali_classes4/com/android/systemui/util/DeviceType.smali b/smali_classes4/com/android/systemui/util/DeviceType.smali
+--- a/smali_classes4/com/android/systemui/util/DeviceType.smali
++++ b/smali_classes4/com/android/systemui/util/DeviceType.smali
+@@ -747,7 +747,23 @@
+ 
+     if-ne v0, v1, :cond_0
+ 
+-    sput v2, Lcom/android/systemui/util/DeviceType;->supportOpticalFingerprint:I
++    invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
++
++    move-result-object v0
++
++    const-string v1, "SEC_FLOATING_FEATURE_BIOAUTH_CONFIG_FINGERPRINT_FEATURES"
++
++    invoke-virtual {v0, v1}, Lcom/samsung/android/feature/SemFloatingFeature;->getString(Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v0
++
++    const-string v1, "optical"
++
++    invoke-virtual {v0, v1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
++
++    move-result v0
++
++    sput v0, Lcom/android/systemui/util/DeviceType;->supportOpticalFingerprint:I
+ 
+     :cond_0
+     sget v0, Lcom/android/systemui/util/DeviceType;->supportOpticalFingerprint:I

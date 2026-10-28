@@ -101,31 +101,25 @@ EXTRACT_OS_PARTITIONS()
 
         [ -f "$FW_DIR/${MODEL}_${CSC}/$f" ] || continue
 
-        if ! sudo -n true &> /dev/null; then
-            LOG "\033[0;33m! Asking user for sudo password\033[0m"
-            if ! sudo -v 2> /dev/null; then
-                LOGE "Root permissions are required to unpack OS partitions"
-                exit 1
-            fi
-        fi
+        REQUIRE_EXTRACTION_PRIVILEGES || exit 1
 
         LOG "- Unpacking $(basename "$f")..."
 
         mkdir -p "$FW_DIR/${MODEL}_${CSC}/$PARTITION"
-        sudo umount "$FW_DIR/${MODEL}_${CSC}/$f" &> /dev/null
+        RUN_AS_ROOT umount "$FW_DIR/${MODEL}_${CSC}/$f" &> /dev/null
         if [[ "$(GET_IMAGE_FILE_SYSTEM "$FW_DIR/${MODEL}_${CSC}/$f")" == "erofs" ]]; then
-            EVAL "sudo env \"PATH=$PATH\" fuse.erofs \"$FW_DIR/${MODEL}_${CSC}/$f\" \"$TMP_DIR\"" || exit 1
+            EVAL "RUN_AS_ROOT env \"PATH=$PATH\" fuse.erofs \"$FW_DIR/${MODEL}_${CSC}/$f\" \"$TMP_DIR\"" || exit 1
         else
-            EVAL "sudo mount -o ro \"$FW_DIR/${MODEL}_${CSC}/$f\" \"$TMP_DIR\"" || exit 1
+            EVAL "RUN_AS_ROOT mount -o ro \"$FW_DIR/${MODEL}_${CSC}/$f\" \"$TMP_DIR\"" || exit 1
         fi
-        EVAL "sudo cp -a -T \"$TMP_DIR\" \"$FW_DIR/${MODEL}_${CSC}/$PARTITION\"" || exit 1
-        sudo chown -hR "$(whoami):$(whoami)" "$FW_DIR/${MODEL}_${CSC}/$PARTITION"
+        EVAL "RUN_AS_ROOT cp -a -T \"$TMP_DIR\" \"$FW_DIR/${MODEL}_${CSC}/$PARTITION\"" || exit 1
+        RUN_AS_ROOT chown -hR "$(whoami):$(whoami)" "$FW_DIR/${MODEL}_${CSC}/$PARTITION"
         [ -d "$FW_DIR/${MODEL}_${CSC}/$PARTITION/lost+found" ] && rm -rf "$FW_DIR/${MODEL}_${CSC}/$PARTITION/lost+found"
 
         LOG "- Generating fs_config/file_context for $(basename "$f")..."
 
-        EVAL "sudo find \"$TMP_DIR\" | sudo xargs -I \"{}\" -P \"$(nproc)\" stat -c \"%n %u %g %a capabilities=0x0\" \"{}\" > \"$FW_DIR/${MODEL}_${CSC}/fs_config-$PARTITION\"" || exit 1
-        EVAL "sudo find \"$TMP_DIR\" | sudo xargs -I \"{}\" -P \"$(nproc)\" sh -c 'echo \"\$1 \$(getfattr -n security.selinux --only-values -h --absolute-names \"\$1\")\"' \"sh\" \"{}\" > \"$FW_DIR/${MODEL}_${CSC}/file_context-$PARTITION\"" || exit 1
+        EVAL "RUN_AS_ROOT find \"$TMP_DIR\" | RUN_AS_ROOT xargs -I \"{}\" -P \"$(nproc)\" stat -c \"%n %u %g %a capabilities=0x0\" \"{}\" > \"$FW_DIR/${MODEL}_${CSC}/fs_config-$PARTITION\"" || exit 1
+        EVAL "RUN_AS_ROOT find \"$TMP_DIR\" | RUN_AS_ROOT xargs -I \"{}\" -P \"$(nproc)\" sh -c 'echo \"\$1 \$(getfattr -n security.selinux --only-values -h --absolute-names \"\$1\")\"' \"sh\" \"{}\" > \"$FW_DIR/${MODEL}_${CSC}/file_context-$PARTITION\"" || exit 1
         sort -o "$FW_DIR/${MODEL}_${CSC}/fs_config-$PARTITION" "$FW_DIR/${MODEL}_${CSC}/fs_config-$PARTITION"
         sort -o "$FW_DIR/${MODEL}_${CSC}/file_context-$PARTITION" "$FW_DIR/${MODEL}_${CSC}/file_context-$PARTITION"
         # https://source.android.com/docs/core/architecture/partitions/system-as-root
@@ -147,7 +141,7 @@ EXTRACT_OS_PARTITIONS()
                 sed -i "$(sed -n "/simpleperf_app_runner/=" "$FW_DIR/${MODEL}_${CSC}/fs_config-system") s/0x0/0xc0/g" "$FW_DIR/${MODEL}_${CSC}/fs_config-system"
         fi
 
-        EVAL "sudo umount \"$TMP_DIR\"" || exit 1
+        EVAL "RUN_AS_ROOT umount \"$TMP_DIR\"" || exit 1
         rm -f "$FW_DIR/${MODEL}_${CSC}/$f"
     done
 

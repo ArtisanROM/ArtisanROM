@@ -61,6 +61,16 @@ if IS_VAULTKEEPER_HIDL_2_MANAGER "$VK_CURRENT_MANAGER"; then
         fi
     done
 
+    if [[ "$TARGET_CODENAME" == r8s && "$SOURCE_PLATFORM_SDK_VERSION" -ge 36 ]]; then
+        # Run after the authoritative copy above, so it cannot overwrite r8s
+        # Bluetooth feature fixes or restore the older MMS parser afterwards.
+        (
+            MODPATH="$SRC_DIR/unica/patches/bluetooth"
+            BT_FINALIZE_R8S_STACK=true
+            . "$MODPATH/customize.sh"
+        ) || return 1
+    fi
+
     unset VK_CURRENT_MANAGER VK_FILE VK_RELATIVE_FILE VK_STACK_MARKER VK_STACK_PATH
     unset -f IS_VAULTKEEPER_HIDL_2_MANAGER
     return 0

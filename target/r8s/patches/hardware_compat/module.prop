@@ -1,0 +1,5 @@
+id=r8s_hardware_compat
+name=r8s service initialization compatibility
+author=ArtisanROM contributors
+version=1
+description=Initializes the r8s display density, native service cpusets and dynamic SIM-count bridge without replacing drivers.

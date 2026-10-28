@@ -4,6 +4,29 @@
 # [
 source "$SRC_DIR/scripts/utils/log_utils.sh"
 
+# Privileges are only needed for mounting firmware images and reading their
+# original ownership/security labels. Never prompt for credentials in a build.
+# An already-root process does not depend on sudo being installed.
+RUN_AS_ROOT()
+{
+    if [ "$(id -u)" -eq 0 ]; then
+        "$@"
+    elif command -v sudo > /dev/null 2>&1; then
+        sudo -n -- "$@"
+    else
+        LOGE "This extraction step requires root or non-interactive sudo"
+        return 1
+    fi
+}
+
+REQUIRE_EXTRACTION_PRIVILEGES()
+{
+    if ! RUN_AS_ROOT true; then
+        LOGE "Image extraction needs root or already-authorized sudo; password prompts are disabled"
+        return 1
+    fi
+}
+
 _CHECK_NON_EMPTY_PARAM()
 {
     if [ ! "$2" ]; then

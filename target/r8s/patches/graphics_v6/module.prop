@@ -1,0 +1,4 @@
+name=r8s optical graphics ARM64 compatibility
+author=edugrepo1-jpg
+version=1.0
+description=Supply the real Graphics Common V6 system library required by the optical r8s graphics stack without replacing vendor HALs.

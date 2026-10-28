@@ -1,0 +1,6 @@
+# Samsung's modern compositor reads the initial density before WindowManager.
+# Match the r8s stock vendor density; an absent value falls back to 213 DPI.
+ro.sf.init.lcd_density=480
+# Match the physically tested SystemUI ART filter. ART owns cache validation
+# and first-boot/update preparation; no custom boot-time compilation service.
+dalvik.vm.systemuicompilerfilter=speed

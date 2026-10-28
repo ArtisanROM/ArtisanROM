@@ -35,5 +35,10 @@ target/m52xq/patches/wpss/vendor/firmware/** binary
 target/o1s/patches/variants/vendor/** binary
 target/p3s/patches/variants/vendor/** binary
 target/r8s/patches/vendor/vendor/** binary
+target/r8s/patches/system/system/priv-app/SamsungCamera/** binary
 target/r9s/patches/vendor/vendor/** binary
 target/t2s/patches/variants/vendor/** binary
+
+# Pin native display executables without text normalization.
+target/r8s/blobs/display/system/bin/surfaceflinger binary
+target/y2s/blobs/display/system/bin/surfaceflinger binary

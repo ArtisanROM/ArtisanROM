@@ -1,0 +1,10 @@
+# The Exynos vendor detects one or two physical slots during sim_config.
+# Publish that hardware result to the Android 16 telephony framework, as in
+# the r8s Paradox source. Do not hard-code a single/dual-SIM variant.
+on property:ro.vendor.multisim.simslotcount=*
+    setprop ro.telephony.sim_slots.count ${ro.vendor.multisim.simslotcount}
+
+# Retain the stock single-SIM guard lost when the generic platform rc replaces
+# init.vendor.rilcommon.rc. Dual-SIM variants retain both RIL processes.
+on property:ro.vendor.multisim.simslotcount=1
+    stop ril-daemon1

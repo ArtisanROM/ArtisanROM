@@ -220,15 +220,15 @@ PREPARE_SCRIPT()
 
     if [ "$JOBS" -gt "1" ]; then
         # Split 3/4 of total system memory between the requested instances
-        HEAP_SIZE="$(bc -l <<< "scale=0; (($MEM_TOTAL_MB * 3) / 4) / $JOBS")"
+        HEAP_SIZE="$(( (MEM_TOTAL_MB * 3 / 4) / JOBS ))"
         [ "$HEAP_SIZE" -lt "1024" ] && HEAP_SIZE="1024"
 
-        MAX_THREADS="$(bc -l <<< "scale=0; $(nproc) / $JOBS")"
+        MAX_THREADS="$(( $(nproc) / JOBS ))"
         [ "$MAX_THREADS" -lt "1" ] && MAX_THREADS="1"
         [ -n "$GITHUB_ACTIONS" ] && MAX_THREADS="1"
 
         # Do not use more threads than half the heap in GB
-        THREAD_COUNT="$(bc -l <<< "scale=0; $HEAP_SIZE / (1024 * 2)")"
+        THREAD_COUNT="$(( HEAP_SIZE / (1024 * 2) ))"
         [ "$THREAD_COUNT" -gt "$MAX_THREADS" ] && THREAD_COUNT="$MAX_THREADS"
         [ "$THREAD_COUNT" -lt "1" ] && THREAD_COUNT="1"
     else
@@ -239,7 +239,7 @@ PREPARE_SCRIPT()
         [ -n "$GITHUB_ACTIONS" ] && MAX_THREADS="1"
 
         # Do not use more threads than half the total system memory in GB
-        THREAD_COUNT="$(bc -l <<< "scale=0; $MEM_TOTAL_MB / (1024 * 2)")"
+        THREAD_COUNT="$(( MEM_TOTAL_MB / (1024 * 2) ))"
         [ "$THREAD_COUNT" -gt "$MAX_THREADS" ] && THREAD_COUNT="$MAX_THREADS"
         [ "$THREAD_COUNT" -lt "1" ] && THREAD_COUNT="1"
     fi

@@ -54,10 +54,10 @@ GET_IMAGE_SIZE()
 DEPENDENCIES=(
     "7z" "awk" "basename" "bc" "brotli" "cat" "clang" "cmake"
     "cp" "cpio" "curl" "cut" "cwebp" "dd" "dirname" "du" "ffmpeg"
-    "file" "getfattr" "git" "grep" "head" "java" "ln"
+    "file" "getfattr" "git" "grep" "head" "id" "java" "ln"
     "lz4" "make" "md5sum" "mkdir" "mount" "mv" "perl" "protoc"
     "python3" "rm" "rsync" "sed" "sha1sum" "sort" "split" "stat"
-    "sudo" "tail" "tar" "touch" "tr" "truncate" "umount" "unzip"
+    "tail" "tar" "touch" "tr" "truncate" "umount" "unzip"
     "wc" "whoami" "xargs" "xxd" "zip" "zstd"
 )
 MISSING=()
