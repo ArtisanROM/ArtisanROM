@@ -4,13 +4,12 @@ Date: Sun, 26 Oct 2025 15:31:23 +0100
 Subject: [PATCH] Introduce HideDeveloperStatusUtils
 
 ---
- .../android/provider/Settings$Global.smali    |  15 +
- .../HideDeveloperStatusUtils$Action.smali     | 152 +++++++
- .../unica/HideDeveloperStatusUtils.smali      | 371 ++++++++++++++++++
- 3 files changed, 538 insertions(+)
+.../android/provider/Settings$Global.smali         |   15 +
+ .../unica/HideDeveloperStatusUtils$Action.smali    |  152 ++++++++
+ .../mesalabs/unica/HideDeveloperStatusUtils.smali  |  370 ++++++++++++++++++++
+ 3 files changed, 537 insertions(+)
  create mode 100644 smali_classes6/io/mesalabs/unica/HideDeveloperStatusUtils$Action.smali
  create mode 100644 smali_classes6/io/mesalabs/unica/HideDeveloperStatusUtils.smali
-
 diff --git a/smali_classes3/android/provider/Settings$Global.smali b/smali_classes3/android/provider/Settings$Global.smali
 index 25bf82f9..e46b5e33 100644
 --- a/smali_classes3/android/provider/Settings$Global.smali
@@ -197,10 +196,10 @@ index 00000000..71db276a
 +.end method
 diff --git a/smali_classes6/io/mesalabs/unica/HideDeveloperStatusUtils.smali b/smali_classes6/io/mesalabs/unica/HideDeveloperStatusUtils.smali
 new file mode 100644
-index 00000000..7126a143
+index 00000000..e121cf46
 --- /dev/null
 +++ b/smali_classes6/io/mesalabs/unica/HideDeveloperStatusUtils.smali
-@@ -0,0 +1,371 @@
+@@ -0,0 +1,370 @@
 +.class public final Lio/mesalabs/unica/HideDeveloperStatusUtils;
 +.super Ljava/lang/Object;
 +.source "HideDeveloperStatusUtils.java"
@@ -451,6 +450,16 @@ index 00000000..7126a143
 +
 +    if-eqz p2, :cond_4
 +
++    # Most Settings.Global reads are unrelated to developer status. Reject
++    # them before querying boot state or the per-user Settings provider.
++    sget-object v1, Lio/mesalabs/unica/HideDeveloperStatusUtils;->settingsToHide:Ljava/util/Set;
++
++    invoke-interface {v1, p2}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-eqz v1, :goto_0
++
 +    invoke-static {}, Lio/mesalabs/unica/HideDeveloperStatusUtils;->isBootCompleted()Z
 +
 +    move-result v1
@@ -473,17 +482,6 @@ index 00000000..7126a143
 +    return v0
 +
 +    :cond_1
-+    sget-object v1, Lio/mesalabs/unica/HideDeveloperStatusUtils;->settingsToHide:Ljava/util/Set;
-+
-+    invoke-interface {v1, p2}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
-+
-+    move-result p2
-+
-+    if-nez p2, :cond_2
-+
-+    return v0
-+
-+    :cond_2
 +    invoke-static {p0}, Lio/mesalabs/unica/HideDeveloperStatusUtils;->getApps(Landroid/content/ContentResolver;)Ljava/util/Set;
 +
 +    move-result-object p0

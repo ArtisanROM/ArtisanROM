@@ -113,20 +113,23 @@ SMALI_PATCH()
         return 0
     fi
 
-    # Check if provided method is method and exists inside smali
-    if ! grep "^\.method.*" "$FILE_PATH/$SMALI" | grep -q -F -- "$METHOD" "$FILE_PATH/$SMALI"; then
+    # Whole-class replacements do not take a method argument.
+    # Check a method declaration only for method-scoped operations.
+    # Match a declaration, not an invocation of the same method. The previous
+    # second grep read the file again instead of its stdin, breaking the first
+    # grep's pipe and causing false failures when pipefail was enabled.
+    if [[ "$OPERATION" != "replaceall" ]] && ! awk -v method="$METHOD" \
+            '$1 == ".method" && $NF == method { found = 1; exit }
+             END { exit !found }' "$FILE_PATH/$SMALI"; then
         LOGE "Method \"$METHOD\" not found in /$PARTITION/$FILE/$SMALI"
 
-        local MATCHES
-        MATCHES="$(grep -r "^\.method.*$METHOD" "$FILE_PATH")"
-
-        if [ "$MATCHES" ]; then
-            echo -e "\n\033[0;31mPossible matches?" >&2
-            echo -e "$(head -n 10 <<< "${MATCHES//$FILE_PATH\//    - }")" >&2
-            [ "$(wc -l <<< "$MATCHES")" -gt 10 ] && \
-                echo -n "    ...and other $(($(wc -l <<< "$MATCHES") - 10)) matches" >&2
-            echo -e "\033[0m" >&2
-        fi
+        # Keep diagnostics local and bounded. Recursively collecting every
+        # declaration in the decoded framework can create a huge shell value
+        # and spend minutes formatting an error instead of failing promptly.
+        echo -e "\n\033[0;31mMethods declared in $SMALI (first 10):" >&2
+        awk '$1 == ".method" { print "    - " $0; if (++count == 10) exit }' \
+            "$FILE_PATH/$SMALI" >&2
+        echo -e "\033[0m" >&2
 
         return 1
     fi
@@ -139,8 +142,12 @@ SMALI_PATCH()
     # Remove the method completely
     if [[ "$OPERATION" == "strip" ]]; then
         local USED
-        USED="$(grep -r -n -- "invoke.*$(basename "$SMALI" | cut -d "." -f "1");" "$FILE_PATH")"
-        USED="$(grep -F "$METHOD" <<< "$USED" | cut -d ":" -f 1-2)"
+        # A declaration with no callers is removable; grep's no-match status
+        # must not abort the build under errexit/pipefail. Match the literal
+        # class and method reference so similarly named methods do not block it.
+        local CLASS
+        CLASS="$(awk '$1 == ".class" { print $NF; exit }' "$FILE_PATH/$SMALI")"
+        USED="$(grep -r -n -F -- "$CLASS->$METHOD" "$FILE_PATH" | cut -d ":" -f 1-2 || true)"
 
         if [ "$USED" ]; then
             LOGE "Cannot strip method \"$METHOD\" in /$PARTITION/$FILE/$SMALI as it is used elsewhere"
@@ -156,7 +163,7 @@ SMALI_PATCH()
 
         awk -v FN="$METHOD" '
             BEGIN { inside = 0; skip = 0 }
-            /^\.method/ && index($0, FN) {
+            $1 == ".method" && $NF == FN {
                 inside = 1
                 next
             }
@@ -198,7 +205,7 @@ SMALI_PATCH()
 
         awk -v FN="$METHOD" -v LOC="$LOC" -v RET="$RET" '
             BEGIN { inside = 0 }
-            /^\.method/ && index($0, FN) {
+            $1 == ".method" && $NF == FN {
                 print
                 print "    " LOC
                 print "    "
@@ -230,8 +237,9 @@ SMALI_PATCH()
         # Decide on register
         REG="p0"
         LOC=".locals 0"
-        if [[ "$(grep "^\.method.*" "$FILE_PATH/$SMALI" | \
-                    grep -F -- "$METHOD" "$FILE_PATH/$SMALI")" == *" static "* ]] && \
+        if [[ "$(awk -v method="$METHOD" \
+                    '$1 == ".method" && $NF == method { print; exit }' \
+                    "$FILE_PATH/$SMALI")" == *" static "* ]] && \
                 [[ "$METHOD" == *"()"* ]]; then
             REG="v0"
             LOC=".locals 1"
@@ -320,7 +328,7 @@ SMALI_PATCH()
 
         awk -v FN="$METHOD" -v LOC="$LOC" -v VAL="$VALUE" -v RET="$RET" '
             BEGIN { inside = 0 }
-            /^\.method/ && index($0, FN) {
+            $1 == ".method" && $NF == FN {
                 print
                 print "    " LOC
                 print ""
@@ -350,7 +358,7 @@ SMALI_PATCH()
     elif [[ "$OPERATION" == "replace" ]]; then
         local METHOD_CONTENT
         METHOD_CONTENT="$(awk -v FN="$METHOD" '
-            /^\.method/ && index($0, FN) { inside = 1 }
+            $1 == ".method" && $NF == FN { inside = 1 }
             inside { print }
             inside && /^\.end method/ { exit }
         ' "$FILE_PATH/$SMALI")"
@@ -368,7 +376,7 @@ SMALI_PATCH()
 
         awk -v FN="$METHOD" -v STR="$VALUE" -v REP="$REPLACEMENT" '
             BEGIN { inside = 0; isline = (index(REP, "\n") > 0) }
-            /^\.method/ && index($0, FN) { inside = 1 }
+            $1 == ".method" && $NF == FN { inside = 1 }
             inside {
                 if (isline) {
                     if (index($0, STR)) {

@@ -1,0 +1,6 @@
+id=artisan_camera_port
+name=Artisan Camera Port
+version=1.0
+versionCode=1
+author=GhasemzadehFard-Dev
+description=Keep the matched Android 16 camera; retain the legacy camera only for older bases.

@@ -1,0 +1,24 @@
+# Keep the groups required by the native Samsung service profiles available.
+# These groups do not raise minimum frequencies or disable thermal limits.
+on init
+    mkdir /dev/cpuset/foreground-boost 0755 system system
+    copy /dev/cpuset/cpus /dev/cpuset/foreground-boost/cpus
+    copy /dev/cpuset/mems /dev/cpuset/foreground-boost/mems
+    chown system system /dev/cpuset/foreground-boost/tasks
+    chown system system /dev/cpuset/foreground-boost/cgroup.procs
+    chmod 0664 /dev/cpuset/foreground-boost/tasks
+    chmod 0664 /dev/cpuset/foreground-boost/cgroup.procs
+    mkdir /dev/cpuset/sf 0755 system system
+    copy /dev/cpuset/cpus /dev/cpuset/sf/cpus
+    copy /dev/cpuset/mems /dev/cpuset/sf/mems
+    chown system system /dev/cpuset/sf/tasks
+    chown system system /dev/cpuset/sf/cgroup.procs
+    chown system system /dev/cpuset/sf/cpus
+    chmod 0664 /dev/cpuset/sf/tasks
+    chmod 0664 /dev/cpuset/sf/cgroup.procs
+    chmod 0664 /dev/cpuset/sf/cpus
+    mkdir /dev/stune/camera-daemon 0755 system system
+    chown system system /dev/stune/camera-daemon/tasks
+    chown system system /dev/stune/camera-daemon/cgroup.procs
+    chmod 0664 /dev/stune/camera-daemon/tasks
+    chmod 0664 /dev/stune/camera-daemon/cgroup.procs

@@ -1,7 +1,7 @@
 diff --git a/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali b/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali
 --- a/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali
 +++ b/smali_classes4/com/sec/android/app/camera/shootingmode/common/intelligentui/IntelligentManager.smali
-@@ -4068,7 +4068,20 @@
+@@ -4068,6 +4068,19 @@
  
      const/4 v2, 0x1
  

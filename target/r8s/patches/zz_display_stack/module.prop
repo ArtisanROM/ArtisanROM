@@ -1,0 +1,5 @@
+id=r8s_native_display_stack
+name=r8s native Android 16 graphics compatibility
+author=ArtisanROM contributors
+version=1
+description=Stages the coherent SurfaceFlinger, libgui and libui combination tested through boot on SM-G780F; enrollment and hardware validation remain separate.
