@@ -198,8 +198,9 @@
     <local name="SUPPORT_HYPER_LAPSE_ASTROGRAPHY" value="true"/>
 
     <!-- Multi-camera features -->
-   <!--  <local name="BACK_WIDE_CAMERA_ID" value="2"/> -->
-  <!--   <local name="BACK_TELE_CAMERA_ID" value="52"/> -->
+    <!-- CameraService IDs; the HAL's internal sensor indices are different. -->
+    <local name="BACK_WIDE_CAMERA_ID" value="2"/>
+    <local name="BACK_TELE_CAMERA_ID" value="50"/>
 
     <!-- Zoom features -->
     <local name="BACK_TELE_CAMERA_ZOOM_LEVEL" value="3.0"/>
