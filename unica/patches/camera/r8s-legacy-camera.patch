@@ -1,0 +1,666 @@
+Subject: [PATCH] r8s: restore modern camera operation on legacy HAL
+
+diff --git a/smali_classes4/com/sec/android/app/camera/interfaces/Resolution.smali b/smali_classes4/com/sec/android/app/camera/interfaces/Resolution.smali
+--- a/smali_classes4/com/sec/android/app/camera/interfaces/Resolution.smali
++++ b/smali_classes4/com/sec/android/app/camera/interfaces/Resolution.smali
+@@ -14,6 +14,23 @@
+ 
+ 
+ # static fields
++.field public static final enum RESOLUTION_5264X3948:Lcom/sec/android/app/camera/interfaces/Resolution;
++.field public static final enum RESOLUTION_2944X1324:Lcom/sec/android/app/camera/interfaces/Resolution;
++
++.field public static final enum RESOLUTION_2944X1656:Lcom/sec/android/app/camera/interfaces/Resolution;
++
++.field public static final enum RESOLUTION_3648X1640:Lcom/sec/android/app/camera/interfaces/Resolution;
++
++.field public static final enum RESOLUTION_4000X1712:Lcom/sec/android/app/camera/interfaces/Resolution;
++
++.field public static final enum RESOLUTION_4000X2250:Lcom/sec/android/app/camera/interfaces/Resolution;
++
++.field public static final enum RESOLUTION_4000X2256:Lcom/sec/android/app/camera/interfaces/Resolution;
++
++.field public static final enum RESOLUTION_4032X1728:Lcom/sec/android/app/camera/interfaces/Resolution;
++
++.field public static final enum RESOLUTION_6528X4896:Lcom/sec/android/app/camera/interfaces/Resolution;
++
+ .field private static final synthetic $VALUES:[Lcom/sec/android/app/camera/interfaces/Resolution;
+ 
+ .field public static final enum RESOLUTION_1024X576:Lcom/sec/android/app/camera/interfaces/Resolution;
+@@ -5791,6 +5808,36 @@
+ 
+     move-result-object v0
+ 
++    invoke-static {v0}, Lcom/sec/android/app/camera/interfaces/Resolution;->r8sExtendResolutionValues([Lcom/sec/android/app/camera/interfaces/Resolution;)[Lcom/sec/android/app/camera/interfaces/Resolution;
++    move-result-object v0
++    array-length v1, v0
++    add-int/lit8 v1, v1, -8
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_2944X1324:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_2944X1656:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_3648X1640:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_4000X1712:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_4000X2250:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_4000X2256:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_4032X1728:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    aget-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_6528X4896:Lcom/sec/android/app/camera/interfaces/Resolution;
++    add-int/lit8 v1, v1, 1
++    invoke-static {v0}, Lcom/sec/android/app/camera/interfaces/Resolution;->r8sAppendHighCrop([Lcom/sec/android/app/camera/interfaces/Resolution;)[Lcom/sec/android/app/camera/interfaces/Resolution;
++    move-result-object v0
+     sput-object v0, Lcom/sec/android/app/camera/interfaces/Resolution;->$VALUES:[Lcom/sec/android/app/camera/interfaces/Resolution;
+ 
+     invoke-static {}, Lcom/sec/android/app/camera/interfaces/Resolution;->values()[Lcom/sec/android/app/camera/interfaces/Resolution;
+@@ -6001,6 +6048,106 @@
+     return p0
+ .end method
+ 
++.method private static r8sExtendResolutionValues([Lcom/sec/android/app/camera/interfaces/Resolution;)[Lcom/sec/android/app/camera/interfaces/Resolution;
++    .locals 10
++
++    array-length v1, p0
++    const/16 v2, 8
++    add-int v2, v1, v2
++    invoke-static {p0, v2}, Ljava/util/Arrays;->copyOf([Ljava/lang/Object;I)[Ljava/lang/Object;
++    move-result-object v0
++    check-cast v0, [Lcom/sec/android/app/camera/interfaces/Resolution;
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_2944X1324"
++    move v4, v1
++    const/16 v5, 28672
++    const/16 v6, 2944
++    const/16 v7, 1324
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_20x9:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_2944X1656"
++    move v4, v1
++    const/16 v5, 28673
++    const/16 v6, 2944
++    const/16 v7, 1656
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_16x9:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_3648X1640"
++    move v4, v1
++    const/16 v5, 28674
++    const/16 v6, 3648
++    const/16 v7, 1640
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_20x9:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_4000X1712"
++    move v4, v1
++    const/16 v5, 28675
++    const/16 v6, 4000
++    const/16 v7, 1712
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_21x9:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_4000X2250"
++    move v4, v1
++    const/16 v5, 28676
++    const/16 v6, 4000
++    const/16 v7, 2250
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_16x9:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_4000X2256"
++    move v4, v1
++    const/16 v5, 28677
++    const/16 v6, 4000
++    const/16 v7, 2256
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_16x9:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_4032X1728"
++    move v4, v1
++    const/16 v5, 28678
++    const/16 v6, 4032
++    const/16 v7, 1728
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_21x9:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_6528X4896"
++    move v4, v1
++    const/16 v5, 28679
++    const/16 v6, 6528
++    const/16 v7, 4896
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_4x3:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    add-int/lit8 v1, v1, 1
++    return-object v0
++.end method
++
+ .method public static getResolution(I)Lcom/sec/android/app/camera/interfaces/Resolution;
+     .locals 2
+ 
+@@ -6246,3 +6393,24 @@
+ 
+     return p0
+ .end method
++
++.method private static r8sAppendHighCrop([Lcom/sec/android/app/camera/interfaces/Resolution;)[Lcom/sec/android/app/camera/interfaces/Resolution;
++    .locals 10
++    array-length v1, p0
++    add-int/lit8 v2, v1, 1
++    invoke-static {p0, v2}, Ljava/util/Arrays;->copyOf([Ljava/lang/Object;I)[Ljava/lang/Object;
++    move-result-object v0
++    check-cast v0, [Lcom/sec/android/app/camera/interfaces/Resolution;
++    new-instance v2, Lcom/sec/android/app/camera/interfaces/Resolution;
++    const-string v3, "RESOLUTION_5264X3948"
++    move v4, v1
++    const/16 v5, 0x7100
++    const/16 v6, 5264
++    const/16 v7, 3948
++    sget-object v8, Lcom/sec/android/app/camera/interfaces/AspectRatio;->RATIO_4x3:Lcom/sec/android/app/camera/interfaces/AspectRatio;
++    const/16 v9, 30
++    invoke-direct/range {v2 .. v9}, Lcom/sec/android/app/camera/interfaces/Resolution;-><init>(Ljava/lang/String;IIIILcom/sec/android/app/camera/interfaces/AspectRatio;I)V
++    aput-object v2, v0, v1
++    sput-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_5264X3948:Lcom/sec/android/app/camera/interfaces/Resolution;
++    return-object v0
++.end method
+diff --git a/smali_classes4/com/sec/android/app/camera/engine/core/CapabilityProvider.smali b/smali_classes4/com/sec/android/app/camera/engine/core/CapabilityProvider.smali
+--- a/smali_classes4/com/sec/android/app/camera/engine/core/CapabilityProvider.smali
++++ b/smali_classes4/com/sec/android/app/camera/engine/core/CapabilityProvider.smali
+@@ -163,6 +163,9 @@
+ 
+     invoke-static {v2, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
++    invoke-static {v0}, Lcom/sec/android/app/camera/engine/core/CapabilityProvider;->r8sLegacyPhysicalIds(Ljava/util/Set;)Ljava/util/Set;
++    move-result-object v0
++
+     invoke-interface {v0}, Ljava/util/Set;->size()I
+ 
+     move-result v1
+@@ -436,3 +439,35 @@
+ 
+     return-object p0
+ .end method
++
++.method private static r8sLegacyPhysicalIds(Ljava/util/Set;)Ljava/util/Set;
++    .locals 5
++    invoke-interface {p0}, Ljava/util/Set;->isEmpty()Z
++    move-result v0
++    if-eqz v0, :r8s_ids_done
++    sget-object v0, LO1/j;->BACK_NORMAL_CAMERA_ID:LO1/j;
++    invoke-static {v0}, LC/e;->R(LO1/j;)I
++    move-result v0
++    sget-object v1, LO1/j;->BACK_WIDE_CAMERA_ID:LO1/j;
++    invoke-static {v1}, LC/e;->R(LO1/j;)I
++    move-result v1
++    sget-object v2, LO1/j;->BACK_TELE_CAMERA_ID:LO1/j;
++    invoke-static {v2}, LC/e;->R(LO1/j;)I
++    move-result v2
++    if-ltz v0, :r8s_ids_done
++    if-ltz v1, :r8s_ids_done
++    if-ltz v2, :r8s_ids_done
++    new-instance p0, Ljava/util/LinkedHashSet;
++    invoke-direct {p0}, Ljava/util/LinkedHashSet;-><init>()V
++    invoke-static {v0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++    move-result-object v3
++    invoke-interface {p0, v3}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
++    invoke-static {v1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++    move-result-object v3
++    invoke-interface {p0, v3}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
++    invoke-static {v2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++    move-result-object v3
++    invoke-interface {p0, v3}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
++    :r8s_ids_done
++    return-object p0
++.end method
+diff --git a/smali_classes4/a3/s.smali b/smali_classes4/a3/s.smali
+--- a/smali_classes4/a3/s.smali
++++ b/smali_classes4/a3/s.smali
+@@ -6445,6 +6445,8 @@
+     move-result-object v0
+ 
+     check-cast v0, Ljava/util/ArrayList;
++    invoke-static {p0, v0}, La3/s;->r8sSupportedPictureOptions(Lcom/sec/android/app/camera/interfaces/CommandId;Ljava/util/ArrayList;)Ljava/util/ArrayList;
++    move-result-object v0
+ 
+     if-eqz v0, :cond_0
+ 
+@@ -6504,3 +6506,21 @@
+     :cond_1
+     return-object v0
+ .end method
++
++.method private static r8sSupportedPictureOptions(Lcom/sec/android/app/camera/interfaces/CommandId;Ljava/util/ArrayList;)Ljava/util/ArrayList;
++    .locals 2
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_TOGGLE_MENU:Lcom/sec/android/app/camera/interfaces/CommandId;
++    if-ne p0, v0, :r8s_options_done
++    if-eqz p1, :r8s_options_done
++    sget-object v0, LO1/d;->SUPPORT_BACK_HIGH_RESOLUTION:LO1/d;
++    invoke-static {v0}, LC/e;->V(LO1/d;)Z
++    move-result v0
++    if-nez v0, :r8s_options_done
++    new-instance v0, Ljava/util/ArrayList;
++    invoke-direct {v0, p1}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
++    sget-object v1, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_HIGH:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
++    move-object p1, v0
++    :r8s_options_done
++    return-object p1
++.end method
+diff --git a/smali_classes4/x3/p.smali b/smali_classes4/x3/p.smali
+--- a/smali_classes4/x3/p.smali
++++ b/smali_classes4/x3/p.smali
+@@ -401,6 +401,8 @@
+ 
+     sput-object v0, Lx3/p;->b:Lx3/i;
+ 
++    invoke-static {}, Lx3/p;->r8sRegisterFront32Mp()V
++
+     new-instance v0, Lx3/j;
+ 
+     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
+@@ -3402,6 +3404,7 @@
+     move-result-object v0
+ 
+     sput-object v0, Lx3/p;->g:Ljava/util/EnumMap;
++    invoke-static {}, Lx3/p;->r8sCompleteBaseResolutionControls()V
+ 
+     return-void
+ .end method
+@@ -11541,3 +11544,91 @@
+ 
+     return-object v0
+ .end method
++
++.method private static r8sRegisterFront32Mp()V
++    .locals 5
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_6528X4896:Lcom/sec/android/app/camera/interfaces/Resolution;
++    const/16 v1, 0x20
++    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    move-result-object v1
++    sget v2, Lcom/sec/android/app/camera/R$drawable;->key_screen_quick_setting_picture_ratio_selector:I
++    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    move-result-object v2
++    filled-new-array {v2, v1}, [Ljava/lang/Integer;
++    move-result-object v2
++    invoke-static {v2}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
++    move-result-object v2
++    sget-object v3, Lx3/p;->a:Lx3/h;
++    invoke-virtual {v3, v0, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
++    sget v2, Lcom/sec/android/app/camera/R$drawable;->key_screen_quick_setting_indicator_picture_ratio_selector:I
++    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    move-result-object v2
++    filled-new-array {v2, v1}, [Ljava/lang/Integer;
++    move-result-object v2
++    invoke-static {v2}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
++    move-result-object v2
++    sget-object v3, Lx3/p;->b:Lx3/i;
++    invoke-virtual {v3, v0, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
++    return-void
++.end method
++
++
++.method private static r8sCompleteBaseResolutionControls()V
++    .locals 3
++    sget-object v0, Lx3/p;->g:Ljava/util/EnumMap;
++    sget-object v1, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_TOGGLE_MENU:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0, v1}, Ljava/util/EnumMap;->containsKey(Ljava/lang/Object;)Z
++    move-result v2
++    if-nez v2, :r8s_control_0_done
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-static {v2}, Lx3/p;->c(Lcom/sec/android/app/camera/interfaces/CommandId;)Lx3/n;
++    move-result-object v2
++    invoke-virtual {v0, v1, v2}, Ljava/util/EnumMap;->put(Ljava/lang/Enum;Ljava/lang/Object;)Ljava/lang/Object;
++    :r8s_control_0_done
++    sget-object v1, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0, v1}, Ljava/util/EnumMap;->containsKey(Ljava/lang/Object;)Z
++    move-result v2
++    if-nez v2, :r8s_control_1_done
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-static {v2}, Lx3/p;->c(Lcom/sec/android/app/camera/interfaces/CommandId;)Lx3/n;
++    move-result-object v2
++    invoke-virtual {v0, v1, v2}, Ljava/util/EnumMap;->put(Ljava/lang/Enum;Ljava/lang/Object;)Ljava/lang/Object;
++    :r8s_control_1_done
++    sget-object v1, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PRO_PICTURE_SIZE_TOGGLE_MENU:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0, v1}, Ljava/util/EnumMap;->containsKey(Ljava/lang/Object;)Z
++    move-result v2
++    if-nez v2, :r8s_control_2_done
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-static {v2}, Lx3/p;->c(Lcom/sec/android/app/camera/interfaces/CommandId;)Lx3/n;
++    move-result-object v2
++    invoke-virtual {v0, v1, v2}, Ljava/util/EnumMap;->put(Ljava/lang/Enum;Ljava/lang/Object;)Ljava/lang/Object;
++    :r8s_control_2_done
++    sget-object v1, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PORTRAIT_PICTURE_SIZE_TOGGLE_MENU:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0, v1}, Ljava/util/EnumMap;->containsKey(Ljava/lang/Object;)Z
++    move-result v2
++    if-nez v2, :r8s_control_3_done
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/CommandId;->BACK_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-static {v2}, Lx3/p;->c(Lcom/sec/android/app/camera/interfaces/CommandId;)Lx3/n;
++    move-result-object v2
++    invoke-virtual {v0, v1, v2}, Ljava/util/EnumMap;->put(Ljava/lang/Enum;Ljava/lang/Object;)Ljava/lang/Object;
++    :r8s_control_3_done
++    sget-object v1, Lcom/sec/android/app/camera/interfaces/CommandId;->FRONT_CAMERA_PICTURE_SIZE_TOGGLE_MENU:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0, v1}, Ljava/util/EnumMap;->containsKey(Ljava/lang/Object;)Z
++    move-result v2
++    if-nez v2, :r8s_control_4_done
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/CommandId;->FRONT_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-static {v2}, Lx3/p;->c(Lcom/sec/android/app/camera/interfaces/CommandId;)Lx3/n;
++    move-result-object v2
++    invoke-virtual {v0, v1, v2}, Ljava/util/EnumMap;->put(Ljava/lang/Enum;Ljava/lang/Object;)Ljava/lang/Object;
++    :r8s_control_4_done
++    sget-object v1, Lcom/sec/android/app/camera/interfaces/CommandId;->FRONT_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0, v1}, Ljava/util/EnumMap;->containsKey(Ljava/lang/Object;)Z
++    move-result v2
++    if-nez v2, :r8s_control_5_done
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/CommandId;->FRONT_CAMERA_PICTURE_SIZE_NORMAL:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-static {v2}, Lx3/p;->c(Lcom/sec/android/app/camera/interfaces/CommandId;)Lx3/n;
++    move-result-object v2
++    invoke-virtual {v0, v1, v2}, Ljava/util/EnumMap;->put(Ljava/lang/Enum;Ljava/lang/Object;)Ljava/lang/Object;
++    :r8s_control_5_done
++    return-void
++.end method
+diff --git a/smali_classes4/com/sec/android/app/camera/util/CameraResolutionMap.smali b/smali_classes4/com/sec/android/app/camera/util/CameraResolutionMap.smali
+--- a/smali_classes4/com/sec/android/app/camera/util/CameraResolutionMap.smali
++++ b/smali_classes4/com/sec/android/app/camera/util/CameraResolutionMap.smali
+@@ -3342,6 +3342,20 @@
+ 
+     invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+ 
++    const/4 v1, 0x2
++    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    move-result-object v1
++    const/4 v2, 0x0
++    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    move-result-object v2
++    invoke-static {v1, v2}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
++    move-result-object v1
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_5264X3948:Lcom/sec/android/app/camera/interfaces/Resolution;
++    invoke-virtual {v2}, Lcom/sec/android/app/camera/interfaces/Resolution;->getId()I
++    move-result v2
++    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    move-result-object v2
++    invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     return-void
+ .end method
+ 
+@@ -3819,6 +3833,9 @@
+ 
+     invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+ 
++    const-string v1, "6528x4896"
++    const-string v2, "5264x3948"
++    invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     return-void
+ .end method
+ 
+diff --git a/smali_classes4/com/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter.smali b/smali_classes4/com/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter.smali
+--- a/smali_classes4/com/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter.smali
++++ b/smali_classes4/com/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter.smali
+@@ -912,40 +912,15 @@
+ 
+ .method public getItemId(I)J
+     .locals 2
+-
+-    sget-object v0, Lcom/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter;->mItemIdMap:Landroid/util/SparseIntArray;
+-
+-    iget-object v1, p0, Lcom/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter;->mItemList:Ljava/util/List;
+-
+-    invoke-interface {v1, p1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v1
+-
+-    check-cast v1, Li3/p;
+-
+-    invoke-virtual {v1}, Li3/p;->b()I
+-
+-    move-result v1
+-
+-    iget-object p0, p0, Lcom/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter;->mItemList:Ljava/util/List;
+-
+-    invoke-interface {p0, p1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    check-cast p0, Li3/p;
+-
+-    invoke-virtual {p0}, Li3/p;->b()I
+-
+-    move-result p0
+-
+-    invoke-virtual {v0, v1, p0}, Landroid/util/SparseIntArray;->get(II)I
+-
+-    move-result p0
+-
+-    int-to-long p0, p0
+-
+-    return-wide p0
++    iget-object v0, p0, Lcom/sec/android/app/camera/layer/keyscreen/quicksetting/QuickSettingViewAdapter;->mItemList:Ljava/util/List;
++    invoke-interface {v0, p1}, Ljava/util/List;->get(I)Ljava/lang/Object;
++    move-result-object v0
++    check-cast v0, Li3/p;
++    iget-object v0, v0, Li3/p;->a:Lcom/sec/android/app/camera/interfaces/CommandId;
++    invoke-virtual {v0}, Ljava/lang/Enum;->ordinal()I
++    move-result v0
++    int-to-long v0, v0
++    return-wide v0
+ .end method
+ 
+ .method public getItemPositionByCommandId(Lcom/sec/android/app/camera/interfaces/CommandId;)I
+diff --git a/smali_classes4/com/sec/android/app/camera/util/CameraResolution.smali b/smali_classes4/com/sec/android/app/camera/util/CameraResolution.smali
+--- a/smali_classes4/com/sec/android/app/camera/util/CameraResolution.smali
++++ b/smali_classes4/com/sec/android/app/camera/util/CameraResolution.smali
+@@ -5118,6 +5118,15 @@
+ .method public static isHighResolution(Lcom/sec/android/app/camera/interfaces/Resolution;)Z
+     .locals 2
+ 
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_6528X4896:Lcom/sec/android/app/camera/interfaces/Resolution;
++    if-eq p0, v0, :r8s_legacy_high
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_5264X3948:Lcom/sec/android/app/camera/interfaces/Resolution;
++    if-ne p0, v0, :r8s_high_original
++    :r8s_legacy_high
++    const/4 v0, 0x1
++    return v0
++    :r8s_high_original
++
+     invoke-static {p0}, Lcom/sec/android/app/camera/util/CameraResolution;->is8KResolution(Lcom/sec/android/app/camera/interfaces/Resolution;)Z
+ 
+     move-result v0
+diff --git a/smali_classes4/com/sec/android/app/camera/setting/repository/DefaultValueGetterMap.smali b/smali_classes4/com/sec/android/app/camera/setting/repository/DefaultValueGetterMap.smali
+--- a/smali_classes4/com/sec/android/app/camera/setting/repository/DefaultValueGetterMap.smali
++++ b/smali_classes4/com/sec/android/app/camera/setting/repository/DefaultValueGetterMap.smali
+@@ -13790,7 +13790,7 @@
+ .method private static synthetic lambda$initializeDefaultValueGetterMap$268()I
+     .locals 1
+ 
+-    const/4 v0, 0x1
++    const/4 v0, 0x2
+ 
+     return v0
+ .end method
+diff --git a/smali_classes4/com/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter.smali b/smali_classes4/com/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter.smali
+--- a/smali_classes4/com/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter.smali
++++ b/smali_classes4/com/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter.smali
+@@ -410,6 +410,20 @@
+     return-void
+ 
+     :cond_0
++
++    const/4 v0, 0x2
++    if-eq p1, v0, :r8s_pair_ready
++    iget v1, p0, Lcom/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter;->mMainLensIndex:I
++    if-ne v1, v0, :r8s_check_sub_main
++    const/4 v1, 0x0
++    iput-boolean v1, p0, Lcom/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter;->mSubLensLastChanged:Z
++    goto :r8s_pair_ready
++    :r8s_check_sub_main
++    iget v1, p0, Lcom/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter;->mSubLensIndex:I
++    if-ne v1, v0, :r8s_pair_ready
++    const/4 v1, 0x1
++    iput-boolean v1, p0, Lcom/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter;->mSubLensLastChanged:Z
++    :r8s_pair_ready
+     iget-object v0, p0, Lcom/sec/android/app/camera/layer/menu/dualrecordinglensselect/LensSelectMenuPresenter;->mCameraSettings:Lcom/sec/android/app/camera/interfaces/CameraSettings;
+ 
+     sget-object v1, Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;->DUAL_RECORDING_V2_TYPE:Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;
+@@ -642,7 +656,7 @@
+ 
+     invoke-interface {v0, p0}, Lcom/sec/android/app/camera/engine/interfaces/Engine;->registerPreviewEventListener(Lcom/sec/android/app/camera/engine/interfaces/Engine$PreviewEventListener;)V
+ 
+-    sget-object v0, Lcom/sec/android/app/camera/interfaces/CameraId;->BACK_WIDE_AND_FRONT:Lcom/sec/android/app/camera/interfaces/CameraId;
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/CameraId;->BACK_AND_FRONT:Lcom/sec/android/app/camera/interfaces/CameraId;
+ 
+     new-instance v1, Lcom/sec/android/app/camera/layer/menu/dualrecordinglensselect/a;
+ 
+diff --git a/smali_classes4/com/sec/android/app/camera/shootingmode/dualrecordingV2/DualRecordingV2Presenter.smali b/smali_classes4/com/sec/android/app/camera/shootingmode/dualrecordingV2/DualRecordingV2Presenter.smali
+--- a/smali_classes4/com/sec/android/app/camera/shootingmode/dualrecordingV2/DualRecordingV2Presenter.smali
++++ b/smali_classes4/com/sec/android/app/camera/shootingmode/dualrecordingV2/DualRecordingV2Presenter.smali
+@@ -1650,6 +1650,8 @@
+ .method public onConnectMakerPrepared(Lcom/sec/android/app/camera/interfaces/CameraId;Lcom/sec/android/app/camera/engine/interfaces/Capability;Lcom/sec/android/app/camera/engine/interfaces/ConnectionInfo;)V
+     .locals 1
+ 
++    invoke-static {p1, p2, p3}, Lcom/sec/android/app/camera/shootingmode/dualrecordingV2/DualRecordingV2Presenter;->r8sLensSnapshotSize(Lcom/sec/android/app/camera/interfaces/CameraId;Lcom/sec/android/app/camera/engine/interfaces/Capability;Lcom/sec/android/app/camera/engine/interfaces/ConnectionInfo;)V
++
+     const-string p2, "DualRecordingV2Presenter"
+ 
+     const-string v0, "onConnectMakerPrepared"
+@@ -1674,7 +1676,7 @@
+ 
+     if-nez p2, :cond_0
+ 
+-    sget-object p2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_2560X1440:Lcom/sec/android/app/camera/interfaces/Resolution;
++    sget-object p2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_1920X1080:Lcom/sec/android/app/camera/interfaces/Resolution;
+ 
+     invoke-static {p2}, Lcom/sec/android/app/camera/util/CameraResolution;->getSize(Lcom/sec/android/app/camera/interfaces/Resolution;)Landroid/util/Size;
+ 
+@@ -1685,7 +1687,7 @@
+     goto :goto_0
+ 
+     :cond_0
+-    sget-object p2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_960X540:Lcom/sec/android/app/camera/interfaces/Resolution;
++    sget-object p2, Lcom/sec/android/app/camera/interfaces/Resolution;->RESOLUTION_1280X720:Lcom/sec/android/app/camera/interfaces/Resolution;
+ 
+     invoke-static {p2}, Lcom/sec/android/app/camera/util/CameraResolution;->getSize(Lcom/sec/android/app/camera/interfaces/Resolution;)Landroid/util/Size;
+ 
+@@ -2519,3 +2521,52 @@
+ 
+     return p0
+ .end method
++
++.method private static r8sLensSnapshotSize(Lcom/sec/android/app/camera/interfaces/CameraId;Lcom/sec/android/app/camera/engine/interfaces/Capability;Lcom/sec/android/app/camera/engine/interfaces/ConnectionInfo;)V
++    .locals 8
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/CameraId;->BACK_WIDE:Lcom/sec/android/app/camera/interfaces/CameraId;
++    if-eq p0, v0, :r8s_snapshot_sizes
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/CameraId;->BACK_TELE:Lcom/sec/android/app/camera/interfaces/CameraId;
++    if-ne p0, v0, :r8s_snapshot_done
++    :r8s_snapshot_sizes
++    const/4 v0, 0x0
++    invoke-interface {p1, v0}, Lcom/sec/android/app/camera/engine/interfaces/Capability;->getAvailableJpegPictureSizes(Z)Ljava/util/List;
++    move-result-object v0
++    if-eqz v0, :r8s_snapshot_done
++    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
++    move-result-object v0
++    const/4 v1, 0x0
++    const/4 v2, 0x0
++    :r8s_snapshot_loop
++    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
++    move-result v3
++    if-eqz v3, :r8s_snapshot_apply
++    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
++    move-result-object v3
++    check-cast v3, Landroid/util/Size;
++    invoke-virtual {v3}, Landroid/util/Size;->getWidth()I
++    move-result v4
++    invoke-virtual {v3}, Landroid/util/Size;->getHeight()I
++    move-result v5
++    if-lez v5, :r8s_snapshot_loop
++    int-to-float v6, v4
++    int-to-float v7, v5
++    div-float/2addr v6, v7
++    const v7, 0x3fe38e39
++    sub-float/2addr v6, v7
++    invoke-static {v6}, Ljava/lang/Math;->abs(F)F
++    move-result v6
++    const v7, 0x3c23d70a
++    cmpl-float v6, v6, v7
++    if-gtz v6, :r8s_snapshot_loop
++    mul-int/2addr v4, v5
++    if-le v4, v2, :r8s_snapshot_loop
++    move-object v1, v3
++    move v2, v4
++    goto :r8s_snapshot_loop
++    :r8s_snapshot_apply
++    if-eqz v1, :r8s_snapshot_done
++    invoke-interface {p2, v1}, Lcom/sec/android/app/camera/engine/interfaces/ConnectionInfo;->setPictureSize(Landroid/util/Size;)V
++    :r8s_snapshot_done
++    return-void
++.end method
+diff --git a/smali_classes4/com/sec/android/app/camera/engine/CustomMultiCameraIdController.smali b/smali_classes4/com/sec/android/app/camera/engine/CustomMultiCameraIdController.smali
+--- a/smali_classes4/com/sec/android/app/camera/engine/CustomMultiCameraIdController.smali
++++ b/smali_classes4/com/sec/android/app/camera/engine/CustomMultiCameraIdController.smali
+@@ -322,6 +322,8 @@
+ 
+     move-result-object v0
+ 
++    invoke-direct {p0, v0}, Lcom/sec/android/app/camera/engine/CustomMultiCameraIdController;->r8sNormalizeDualPair(Ljava/util/List;)V
++
+     invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
+ 
+     move-result v1
+@@ -458,3 +460,26 @@
+ 
+     throw p0
+ .end method
++
++.method private r8sNormalizeDualPair(Ljava/util/List;)V
++    .locals 5
++    sget-object v0, Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;->DUAL_RECORDING_MAIN_LENS:Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;
++    invoke-interface {p1, v0}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
++    move-result v1
++    if-eqz v1, :r8s_pair_done
++    iget-object v1, p0, Lcom/sec/android/app/camera/engine/CustomMultiCameraIdController;->mCameraSettings:Lcom/sec/android/app/camera/interfaces/CameraSettings;
++    invoke-interface {v1, v0}, Lcom/sec/android/app/camera/interfaces/CameraSettings;->get(Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;)I
++    move-result v2
++    const/4 v3, 0x2
++    if-eq v2, v3, :r8s_pair_done
++    sget-object v2, Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;->DUAL_RECORDING_SUB_LENS:Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;
++    invoke-interface {p1, v2}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
++    move-result v4
++    if-eqz v4, :r8s_pair_done
++    invoke-interface {v1, v2}, Lcom/sec/android/app/camera/interfaces/CameraSettings;->get(Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;)I
++    move-result v2
++    if-eq v2, v3, :r8s_pair_done
++    invoke-interface {v1, v0, v3}, Lcom/sec/android/app/camera/interfaces/CameraSettings;->set(Lcom/sec/android/app/camera/interfaces/CameraSettings$Key;I)V
++    :r8s_pair_done
++    return-void
++.end method
