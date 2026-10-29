@@ -1,0 +1,5 @@
+id=r8s_biometric_dexopt
+name=r8s native biometric UI compilation
+author=ArtisanROM contributors
+version=1
+description=Selects the tested speed filter for the biometric UI during native ART boot, update and background dexopt.
