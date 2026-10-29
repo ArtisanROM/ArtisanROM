@@ -1,0 +1,5 @@
+id=r8s_sysui_diagnostics
+name=r8s QS animation diagnostic overhead
+author=ArtisanROM contributors
+version=1
+description=Retains QS animation diagnostics behind their Android debug log tag, preserving visual setters and controls.
