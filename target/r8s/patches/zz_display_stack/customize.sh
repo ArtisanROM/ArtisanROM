@@ -19,4 +19,10 @@ for R8S_DISPLAY_DSO in libgui.so libui.so; do
         0 0 644 "u:object_r:system_lib_file:s0" || return 1
 done
 
+# Keep r8s' stock allocator and the current Mali ABI. Correct only the tested
+# P010 import mapping used by video TextureViews and GPU/client composition.
+python3 "$SRC_DIR/target/r8s/fix_p010_mapping.py" \
+    "$WORK_DIR/vendor/lib64/egl/libGLES_mali.so" \
+    "$WORK_DIR/vendor/lib64/hw/gralloc.exynos990.so" || return 1
+
 unset R8S_DISPLAY_BLOBS R8S_DISPLAY_DSO
