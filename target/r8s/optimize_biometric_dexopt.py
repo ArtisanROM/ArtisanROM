@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""Use ART's native package filter callback for the r8s biometric UI only."""
+"""Use ART's native filter callback for the r8s biometric and capture UIs."""
 from pathlib import Path
+import hashlib
 import re
 import sys
 
 NAME = "R8sBiometricCompilerFilter"
 DESCRIPTOR = f"Lcom/android/server/pm/{NAME};"
 REGISTER = "->setAdjustCompilerFilterCallback("
+# Only upgrade our exact earlier biometric-only class in reused work directories.
+PREVIOUS_CALLBACK_SHA256 = "87d8b2715c70c87e37c3c6b0395d35318e83ddecd17d6c0155083446ec5c3267"
 ANCHOR = "    const-class p1, Lcom/android/server/art/ArtManagerLocal;"
 METHOD = "initializeArtManagerLocal(Landroid/content/Context;Lcom/android/server/pm/PackageManagerService;)V"
 INSERT = f'''    # Reuse ART's own boot/update/background compilation, without a boot daemon.
@@ -37,8 +40,13 @@ CALLBACK = f'''.class public final {DESCRIPTOR}
     const-string v0, "com.samsung.android.biometrics.app.setting"
     invoke-virtual {{v0, p1}}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
     move-result v0
+    if-nez v0, :automatic_reason
+    const-string v0, "com.samsung.android.app.smartcapture"
+    invoke-virtual {{v0, p1}}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v0
     if-eqz v0, :keep_original
 
+    :automatic_reason
     # Never override explicit shell requests or inactive-package reclamation.
     const-string v0, "first-boot"
     invoke-virtual {{v0, p3}}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -73,8 +81,14 @@ def patch(root: Path) -> None:
     text = source.read_text(encoding="utf-8")
     callback = source.with_name(NAME + ".smali")
     if DESCRIPTOR in text:
-        if text.count(INSERT) != 1 or not callback.exists() or callback.read_text() != CALLBACK:
+        if text.count(INSERT) != 1 or not callback.exists():
             raise ValueError("Partial or changed biometric compiler callback")
+        previous = callback.read_text(encoding="utf-8")
+        if previous == CALLBACK:
+            return
+        if hashlib.sha256(previous.encode("utf-8")).hexdigest() != PREVIOUS_CALLBACK_SHA256:
+            raise ValueError("Partial or changed biometric compiler callback")
+        callback.write_text(CALLBACK, encoding="utf-8", newline="\n")
         return
     # Do not silently displace a future donor's own compiler-filter policy.
     for path in root.glob("smali*/**/*.smali"):
@@ -94,4 +108,4 @@ def patch(root: Path) -> None:
 
 if __name__ == "__main__":
     patch(Path(sys.argv[1]))
-    print("Biometric UI uses speed in native ART boot/update/background dexopt")
+    print("Biometric and capture UIs use speed in native ART boot/update/background dexopt")

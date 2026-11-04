@@ -4,3 +4,7 @@ ro.sf.init.lcd_density=480
 # Match the physically tested SystemUI ART filter. ART owns cache validation
 # and first-boot/update preparation; no custom boot-time compilation service.
 dalvik.vm.systemuicompilerfilter=speed
+# With the r8s swap profile, Samsung's default scaling treated about 6.8 GiB
+# free out of 8 GiB as low swap and reclaimed the screenshot process after use.
+# Keep normal pressure/critical reclaim active; adjust only the base cutoff.
+ro.slmk.swap_free_low_percentage=20
