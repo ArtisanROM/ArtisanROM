@@ -103,7 +103,7 @@ diff --git a/smali_classes5/com/samsung/android/settings/display/SecDisplayUtils
 index 6eb9992..73647f3 100644
 --- a/smali_classes5/com/samsung/android/settings/display/SecDisplayUtils.smali
 +++ b/smali_classes5/com/samsung/android/settings/display/SecDisplayUtils.smali
-@@ -5980,237 +5980,296 @@
+@@ -5980,237 +5980,185 @@
      return-void
  .end method
  
@@ -387,170 +387,59 @@ index 6eb9992..73647f3 100644
 -
 +    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 +    move-result p1
-+    const-string p2, "getInitialDisplaySize() size : "
-+    sget-object v0, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
-+    new-instance v0, Landroid/graphics/Point;
-+    invoke-direct {v0}, Landroid/graphics/Point;-><init>()V
-+    :try_start_3
-+    invoke-static {}, Landroid/view/WindowManagerGlobal;->getWindowManagerService()Landroid/view/IWindowManager;
-+    move-result-object v3
-+    invoke-interface {v3, v5, v0}, Landroid/view/IWindowManager;->getInitialDisplaySize(ILandroid/graphics/Point;)V
-+    invoke-interface {v3, v5}, Landroid/view/IWindowManager;->getInitialDisplayDensity(I)I
-+    move-result v3
-+    new-instance v6, Ljava/lang/StringBuilder;
-+    invoke-direct {v6, p2}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+    invoke-virtual {v6, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+    move-result-object p2
-+    invoke-static {v4, p2}, Landroid/util/Log;->secD(Ljava/lang/String;Ljava/lang/String;)I
-+    :try_end_3
-+    .catch Landroid/os/RemoteException; {:try_start_3 .. :try_end_3} :catch_2
-+    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-+    move-result-object p2
-+    const-string v6, "display_density_forced"
-+    invoke-static {p2, v6, v3, v5}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
-+    move-result p2
-+    new-instance v6, Ljava/lang/StringBuilder;
-+    const-string v7, "currentDensity = "
-+    invoke-direct {v6, v7}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+    invoke-virtual {v6, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+    move-result-object v6
-+    invoke-static {v4, v6}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-+    new-instance v6, Ljava/lang/StringBuilder;
-+    const-string v7, "defaultDensity = "
-+    invoke-direct {v6, v7}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+    move-result-object v6
-+    invoke-static {v4, v6}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-+    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-+    move-result-object v6
-+    const-string v7, "display_size_forced"
-+    invoke-static {v6, v7}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
-+    move-result-object v6
-+    if-eqz v6, :cond_8
-+    const-string v7, ""
-+    invoke-virtual {v7, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-+    move-result v7
-+    if-nez v7, :cond_8
-+    const-string v7, ","
-+    invoke-virtual {v6, v7}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
-+    move-result-object v6
-+    if-eqz v6, :cond_7
-+    array-length v7, v6
-+    if-le v7, v2, :cond_7
-+    aget-object v5, v6, v5
-+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-+    move-result v5
-+    goto :goto_5
-+    :cond_7
-+    iget v5, v0, Landroid/graphics/Point;->x:I
-+    goto :goto_5
-+    :cond_8
-+    iget v5, v0, Landroid/graphics/Point;->x:I
-     :goto_5
-+    new-instance v6, Ljava/lang/StringBuilder;
-+    const-string v7, "currentWidth = "
-+    invoke-direct {v6, v7}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+    move-result-object v6
-+    invoke-static {v4, v6}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-+    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-+    move-result-object v6
-+    const-string v7, "easy_mode_switch"
-+    invoke-static {v6, v7, v2}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    move-result v6
-+    if-nez v6, :cond_9
-+    iget p2, v0, Landroid/graphics/Point;->x:I
-+    int-to-float p2, p2
-+    const/high16 v5, 0x44b40000    # 1440.0f
-+    div-float/2addr p2, v5
-+    const/high16 v5, 0x44340000    # 720.0f
-+    mul-float/2addr p2, v5
-+    float-to-int p2, p2
-+    const-string v5, "easymode)defaultDensity = "
-+    invoke-static {p2, v5, v4}, Landroidx/appcompat/widget/ListPopupWindow$$ExternalSyntheticOutline0;->m(ILjava/lang/String;Ljava/lang/String;)V
-+    goto :goto_6
-+    :cond_9
-+    iget v6, v0, Landroid/graphics/Point;->x:I
-+    int-to-float v6, v6
-+    int-to-float v5, v5
-+    div-float/2addr v6, v5
-+    int-to-float p2, p2
-+    mul-float/2addr v6, p2
-+    float-to-int p2, v6
-+    :goto_6
-+    new-instance v5, Ljava/lang/StringBuilder;
-+    const-string/jumbo v6, "setSelectedScreenResolution() density : "
-+    invoke-direct {v5, v6}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+    move-result-object v5
-+    invoke-static {v4, v5}, Landroid/util/Log;->secD(Ljava/lang/String;Ljava/lang/String;)I
-+    iget v5, v0, Landroid/graphics/Point;->x:I
-+    div-int/lit16 v5, v5, 0x168
-+    if-eqz p1, :cond_c
-+    if-eq p1, v2, :cond_b
-+    if-eq p1, v1, :cond_a
-+    move v1, v5
-+    goto :goto_7
-+    :cond_a
-+    const/4 v1, 0x4
-+    goto :goto_7
-+    :cond_b
-+    const/4 v1, 0x3
-+    :cond_c
-+    :goto_7
-+    int-to-float p1, v1
-+    int-to-float v2, v5
-+    div-float/2addr p1, v2
-+    new-instance v2, Ljava/lang/StringBuilder;
-+    const-string v6, "basePx : "
-+    invoke-direct {v2, v6}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-+    const-string v5, "   targetPx : "
-+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+    move-result-object v1
-+    invoke-static {v4, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
++    const/4 v0, 0x1
++    const/4 v1, 0x2
++    if-eqz p1, :cond_res_hd
++    if-eq p1, v0, :cond_res_fhd
++    if-eq p1, v1, :cond_res_wqhd
++    goto :goto_9
++    :cond_res_hd
++    sget v0, Lcom/samsung/android/settings/display/SecDisplayUtils;->mHDWidth:I
++    if-gtz v0, :cond_res_width_set
++    const/16 v0, 0x2d0
++    goto :cond_res_width_set
++    :cond_res_fhd
++    sget v0, Lcom/samsung/android/settings/display/SecDisplayUtils;->mFHDWidth:I
++    if-gtz v0, :cond_res_width_set
++    const/16 v0, 0x438
++    goto :cond_res_width_set
++    :cond_res_wqhd
++    sget v0, Lcom/samsung/android/settings/display/SecDisplayUtils;->mWQHDWidth:I
++    if-gtz v0, :cond_res_width_set
++    const/16 v0, 0x5a0
++    :cond_res_width_set
++    sget v1, Lcom/samsung/android/settings/display/SecDisplayUtils;->mWQHDWidth:I
++    if-gtz v1, :cond_res_max_set
++    sget v1, Lcom/samsung/android/settings/display/SecDisplayUtils;->mFHDWidth:I
++    if-gtz v1, :cond_res_max_set
++    const/16 v1, 0x5a0
++    :cond_res_max_set
++    const-string v2, "ro.sf.init.lcd_density"
++    const/4 v3, 0x0
++    invoke-static {v2, v3}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++    move-result v2
++    if-gtz v2, :cond_res_density_set
++    const-string v2, "ro.sf.lcd_density"
++    const/16 v3, 0x1a4
++    invoke-static {v2, v3}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++    move-result v2
++    :cond_res_density_set
++    mul-int/2addr v0, v2
++    div-int/2addr v0, v1
++    const-string v4, "SecDisplayUtils"
 +    new-instance v1, Ljava/lang/StringBuilder;
-+    const-string v2, "convertRatio :  "
++    const-string/jumbo v2, "setSelectedScreenResolution() target density: "
 +    invoke-direct {v1, v2}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
++    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 +    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 +    move-result-object v1
-+    invoke-static {v4, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-+    iget v0, v0, Landroid/graphics/Point;->x:I
-+    int-to-double v0, v0
-+    int-to-double v5, p2
-+    const-wide/high16 v7, 0x4064000000000000L    # 160.0
-+    div-double/2addr v5, v7
-+    div-double/2addr v0, v5
-+    double-to-int v0, v0
-+    const/16 v1, 0x140
-+    if-ge v0, v1, :cond_d
-+    const-string/jumbo p2, "smallestWidth is less then 320!!!!! so set default smallestWidth value"
-+    invoke-static {v4, p2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-+    goto :goto_8
-+    :cond_d
-+    move v3, p2
-+    :goto_8
-+    int-to-float p2, v3
-+    mul-float/2addr p2, p1
-+    float-to-int p1, p2
-+    if-gtz p1, :cond_e
-+    goto :goto_9
-+    :cond_e
-+    invoke-static {p0, p1}, Lcom/samsung/android/settings/display/SecDisplayUtils;->applyForcedDisplayDensity(Landroid/content/Context;I)V
-+    goto :goto_9
-+    :catch_2
-+    const-string p0, "getInitialDisplaySize() exception!!!"
-+    invoke-static {v4, p0}, Landroid/util/Log;->secD(Ljava/lang/String;Ljava/lang/String;)I
++    invoke-static {v4, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++    if-lez v0, :cond_res_apply_end
++    invoke-static {p0, v0}, Lcom/samsung/android/settings/display/SecDisplayUtils;->applyForcedDisplayDensity(Landroid/content/Context;I)V
++    :cond_res_apply_end
 +    :goto_9
 +    return-void
+     :goto_5
 +    :goto_a
      new-instance p1, Ljava/lang/StringBuilder;
 -
