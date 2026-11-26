@@ -1,0 +1,27 @@
+From: abcvicelli <147180743+abcvicelli@users.noreply.github.com>
+Subject: [PATCH] f2fs: take the HPB inode from the pagecache page
+
+f2fs_submit_page_write() took the inode for the Samsung HPB flag from
+bio_page->mapping. With fs-layer encryption bio_page is the fscrypt
+bounce page, which has no mapping, so the first fdatasync() of an
+encrypted file oopses (NULL dereference at f2fs_submit_page_write+0x228,
+data.c:1021) and the device bootloops as soon as /data uses FBEv2.
+
+Use fio->page, the pagecache page that is always attached to a mapping,
+like the f2fs_crypt_mergeable_bio()/f2fs_set_bio_crypt_ctx() calls in the
+same function.
+
+---
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 724791c13..81ac7efb1 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1018,7 +1018,7 @@ void f2fs_submit_page_write(struct f2fs_io_info *fio)
+ 	else
+ 		bio_page = fio->page;
+ 
+-	inode = bio_page->mapping->host;
++	inode = fio->page->mapping->host;
+ 
+ 	/* set submitted = true as a return value */
+ 	fio->submitted = true;

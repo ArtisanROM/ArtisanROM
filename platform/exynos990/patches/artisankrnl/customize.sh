@@ -100,6 +100,12 @@ REPLACE_KERNEL_BINARIES()
     # 4. Apply the selinux/KSU fixes (must run after the reset above)
     APPLY_SEPOLICY_FIX
 
+    # 4b. f2fs: HPB inode lookup must not dereference the fscrypt bounce
+    # page's (NULL) mapping, otherwise FBEv2 on /data oopses at first write.
+    APPLY_PATCH_ONCE "$KERNEL_TMP_DIR" \
+        "$(pwd)/platform/exynos990/patches/artisankrnl/f2fs-fix-hpb-inode-encrypted-page.patch" \
+        "f2fs-fix-hpb-inode-encrypted-page.patch"
+
     # 5. Execute Build
     LOG "- Starting kernel build process."
     BUILD_KERNEL
