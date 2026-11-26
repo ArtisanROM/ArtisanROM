@@ -86,9 +86,18 @@ else
     LOG_STEP_OUT
 fi
 
-LOG "- Disabling encryption"
+# Encrypt /data with standard FBEv2. The stock "fileencryption=ice" asks for
+# Samsung's private v1 contents mode (127), which the upstream fscrypt in
+# this kernel rejects ("Failed to set encryption policy ... v1 modes 127/4:
+# Invalid argument" -> init reboots to recovery). AES-256-XTS/CTS v2 is
+# supported by the kernel (CONFIG_FS_ENCRYPTION) and keeps app data
+# protected instead of leaving /data in plain text.
+LOG "- Switching /data to FBEv2 (aes-256-xts:aes-256-cts:v2)"
 LINE=$(sed -n "/^\/dev\/block\/by-name\/userdata/=" "$WORK_DIR/vendor/etc/fstab.exynos990")
-sed -i "${LINE}s/,fileencryption=ice//g" "$WORK_DIR/vendor/etc/fstab.exynos990"
+sed -i "${LINE}s/fileencryption=ice/fileencryption=aes-256-xts:aes-256-cts:v2/" "$WORK_DIR/vendor/etc/fstab.exynos990"
+grep -q "fileencryption=aes-256-xts:aes-256-cts:v2" "$WORK_DIR/vendor/etc/fstab.exynos990" || \
+    ABORT "Failed to switch /data to FBEv2"
+SET_PROP "vendor" "ro.crypto.volume.options" "::v2"
 
 # ODE
 sed -i -e "/ODE/d" -e "/keydata/d" -e "/keyrefuge/d" "$WORK_DIR/vendor/etc/fstab.exynos990"
