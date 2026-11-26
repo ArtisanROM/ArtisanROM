@@ -1,0 +1,4 @@
+id=zz_ce_unlock_token
+name=Unlock FBE CE storage without Gatekeeper token
+author=abcvicelli
+description=Lets an encrypted /data unlock on Exynos 990 (first API 29) with the S926B vold.
