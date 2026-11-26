@@ -1,0 +1,4 @@
+id=zz_hfr_idle_timer
+name=SurfaceFlinger idle timer for Galaxy S20 series
+author=abcvicelli
+description=Lets SurfaceFlinger drop from 120 Hz while an app is static on Exynos 990 S20 panels, which have no kernel idle timer.
