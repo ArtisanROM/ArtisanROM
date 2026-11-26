@@ -78,14 +78,14 @@ else
         "system/lib64/libstagefright.so" 0 0 644 \
         "u:object_r:system_lib_file:s0"
 
-    # The Android 16 media stack retained Samsung's background recording API,
-    # but MediaCodecSource::suspendRecording(bool) is now a no-op. Exynos 990
-    # Super Slow Motion still creates its persistent encoder input suspended
-    # and relies on that method to resume it, otherwise the recording finishes
-    # with zero encoded frames. Start that input active instead.
-    HEX_PATCH "$WORK_DIR/system/system/lib64/libstagefright.so" \
-        "810240f97ef9019421f5ffd021481091e00314aa2200805225fd0194" \
-        "810240f97ef9019421f5ffd021481091e00314aa0200805225fd0194"
+    # Keep MediaCodecSource's "create-input-buffers-suspended" = 1 (stock).
+    # Forcing it to 0 (previous workaround for Super Slow Motion) lets the
+    # reused persistent input surface feed frames to the encoder before
+    # MediaRecorder.start(): when a video is started < ~2 s after the previous
+    # one, those stale frames carry absolute timestamps, MPEG4Writer hits
+    # "timestampUs >= 0LL failed" and the camera shows "Recording error".
+    # Tested on x1s (SM-G980F) with the stock value: back-to-back videos OK,
+    # Super Slow Motion OK (1020 frames per take, two takes in a row).
 
     # Android 16 configures temporal SVC for high-frame-rate recordings. The
     # legacy Exynos HEVC OMX encoder does not implement the queried extension
